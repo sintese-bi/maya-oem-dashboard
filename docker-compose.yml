@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+
+  dev:
+    container_name: maya-front-dashboard-dev
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - '3002:3000'
+    environment:
+      - REACT_APP_BASE_URL=http://localhost:8888
+      - REACT_APP_STAGE=dev  
+
+  prod:
+      container_name: maya-front-dashboard-prod
+      build:
+        context: ./
+        dockerfile: Dockerfile
+      volumes:
+        - ./:/app
+      ports:
+        - '3002:3000'
+      environment:
+        - REACT_APP_BASE_URL=https://app.mayaoem.com.br
+        - REACT_APP_STAGE=prod 
+  # prod:
+  #   container_name: maya-front-dashboard-prod
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile-prod
+  #   volumes:
+  #     - ./:/app
+  #   ports:
+  #     - '3002:80'
+  #   environment:
+  #     - REACT_APP_BASE_URL=https://app.mayaoem.com.br
+  #     - REACT_APP_STAGE=prod 
