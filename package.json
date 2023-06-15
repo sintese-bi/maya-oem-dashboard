@@ -41,7 +41,10 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-hot-toast": "^2.3.0",
+<<<<<<< HEAD
     "react-input-mask": "^2.0.4",
+=======
+>>>>>>> 946334443d7e8c13425aad4d080ff2aaf7d3b184
     "react-number-format": "^4.9.3",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
