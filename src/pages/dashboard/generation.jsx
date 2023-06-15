@@ -117,6 +117,7 @@ const Generation = () => {
       </Backdrop>
     );
   }
+  console.log("deviceInfo ", deviceInfo)
 
   return (
     <Box

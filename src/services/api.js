@@ -3,7 +3,7 @@ import { getUserCookie } from "./session";
 
 console.log("--- ", `${process.env.REACT_APP_BASE_URL}v1`)
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}v1`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}/v1`,
 });
 
 export const configRequest = () => {
