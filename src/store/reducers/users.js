@@ -291,8 +291,7 @@ export default function userReducer(state = initialState, action) {
                 dev.generation.length !== 0
                   ? dev.generation[0].gen_estimated
                   : 0,
-              alAlerts: dev.alerts.length ? dev.alerts[0].al_alerts : false,
-              alInv: dev.alerts.length ? dev.alerts[0].al_inv : false,
+              alert: dev.alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
             };
@@ -307,7 +306,7 @@ export default function userReducer(state = initialState, action) {
       const generationBelowEstimated = dataDevices.filter(
         (item) => item.generationRealDay < item.generationEstimated
       );
-      const alerts = dataDevices.filter((item) => item.alAlerts !== false);
+      const alerts = dataDevices.filter((item) => item.alert !== 0);
 
       const offline = dataDevices.filter((item) => item.staCode === "offline");
       const online = dataDevices.filter((item) => item.staCode === "online");

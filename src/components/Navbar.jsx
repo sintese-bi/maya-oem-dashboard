@@ -4,13 +4,7 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
 // COMPONENTS
-import {
-  AppBar,
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 // import { DashboardSidebar } from "./Sidebar";
 import { NavItem } from "./NavItem";
 
@@ -20,6 +14,7 @@ import {
   AccountCircle,
   BrandingWatermark,
   Dashboard,
+  ExitToApp,
   House,
 } from "@mui/icons-material";
 
@@ -34,7 +29,6 @@ export const DashboardNavbar = () => {
   const name = useNameState ? useNameState : useName;
 
   const { brand } = useParams();
-
 
   const navbarPages = [
     {
@@ -60,23 +54,23 @@ export const DashboardNavbar = () => {
     },
   ];
 
-
-  function handleLogOut(){
-    removeUserCookie()
+  function handleLogOut() {
+    removeUserCookie();
     navigate("/login");
   }
 
   const renderNavItems = () =>
-    navbarPages.map((page) => 
-      page.disabled && (
-        <NavItem
-          key={page.to}
-          href={page.to}
-          title={page.label}
-          icon={page.icon}
-          active={page.active}
-        />
-      )
+    navbarPages.map(
+      (page) =>
+        page.disabled && (
+          <NavItem
+            key={page.to}
+            href={page.to}
+            title={page.label}
+            icon={page.icon}
+            active={page.active}
+          />
+        )
     );
 
   const renderStageItems = () => {
@@ -148,45 +142,50 @@ export const DashboardNavbar = () => {
             minHeight: 64,
             left: 0,
             px: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-
-          <Typography
-            sx={{
-              m: 1,
-              color: theme.palette.text.secondary,
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-            variant="subtitle1"
-          >
-            {renderStageItems()}
-          </Typography>
-
           <Box
             sx={{
-              borderLeft: `1px solid ${theme.palette.divider}`,
               display: "flex",
               ml: 3,
-            }}
-          >
-            {renderNavItems()}
-
-            <Typography
-            sx={{
-              m: 1,
-              color: theme.palette.text.secondary,
-              display: "flex",
               alignItems: "center",
               flexWrap: "wrap",
-              justifyContent: "space-between"
             }}
-            variant="subtitle1"
           >
-            <Button onClick={() => handleLogOut()} variant="outlined">Sair</Button>
-          </Typography>
+            <Typography
+              sx={{
+                m: 1,
+                color: theme.palette.text.secondary,
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+              variant="subtitle1"
+            >
+              {renderStageItems()}
+            </Typography>
+
+            <Box
+              sx={{
+                borderLeft: `1px solid ${theme.palette.divider}`,
+                display: "flex",
+                ml: 3,
+              }}
+            >
+              {renderNavItems()}
+            </Box>
           </Box>
+
+          <Button
+            onClick={() => handleLogOut()}
+            variant="outlined"
+            startIcon={<ExitToApp />}
+          >
+            Sair
+          </Button>
         </Toolbar>
       </AppBar>
     </>
