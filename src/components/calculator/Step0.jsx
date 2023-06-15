@@ -5,29 +5,29 @@ import axios from "axios";
 
 const Form0 = ({ onNextStep }) => {
   const [nome, setNome] = useState("");
-  const [cidadeEstado, setCidadeEstado] = useState("");
+  const [cidade, setCidade] = useState("");
   const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
 
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
-    cidadeEstado: yup.string().required("Campo obrigatório"),
+    cidade: yup.string().required("Campo obrigatório"),
   });
 
   useEffect(() => {
     const storedData = localStorage.getItem("form0Data");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      setNome(parsedData.nome);
-      setCidadeEstado(parsedData.cidadeEstado);
+      setNome(parsedData.nome || ""); // Define um valor padrão vazio se for undefined
+      setCidade(parsedData.cidade || ""); // Define um valor padrão vazio se for undefined
     }
   }, []);
 
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidadeEstado)}`
+        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -42,10 +42,10 @@ const Form0 = ({ onNextStep }) => {
 
   const calcularValorEstimado = () => {
     if (radiacao) {
-      const potenciaModulos = 5; // Exemplo: Potência dos módulos em Kwp
-      const numeroModulos = 10; // Exemplo: Número de módulos
-      const eficienciaModulos = 0.8; // Exemplo: Eficiência dos módulos
-      const dias = 30; // Exemplo: Número de dias
+      const potenciaModulos = 5; 
+      const numeroModulos = 10; 
+      const eficienciaModulos = 0.8; 
+      const dias = 30; 
 
       const estimada =
         radiacao * potenciaModulos * numeroModulos * dias * eficienciaModulos;
@@ -58,18 +58,18 @@ const Form0 = ({ onNextStep }) => {
       .validate(
         {
           nome,
-          cidadeEstado,
+          cidade,
         },
         { abortEarly: false }
       )
       .then(() => {
         console.log("Dados do formulário:", {
           nome,
-          cidadeEstado,
+          cidade,
         });
         localStorage.setItem(
           "form0Data",
-          JSON.stringify({ nome, cidadeEstado })
+          JSON.stringify({ nome, cidade })
         );
         fetchRadiacao(); // Chamada da API após a validação
         onNextStep();
@@ -112,12 +112,12 @@ const Form0 = ({ onNextStep }) => {
         <Grid item xs={12}>
           <TextField
             label="Cidade"
-            value={cidadeEstado}
-            onChange={(event) => setCidadeEstado(event.target.value)}
+            value={cidade}
+            onChange={(event) => setCidade(event.target.value)}
             fullWidth
             margin="normal"
-            error={!!errors.cidadeEstado}
-            helperText={errors.cidadeEstado}
+            error={!!errors.cidade}
+            helperText={errors.cidade}
           />
         </Grid>
         <Grid item xs={12}>
