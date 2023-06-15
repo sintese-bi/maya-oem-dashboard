@@ -13,6 +13,7 @@ import Alerts from "./pages/dashboard/alerts";
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
+import StepForms from "./components/calculator";
 
 export default function App() {
   return (
@@ -20,7 +21,7 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
+      <Route path="/calculator" element={<StepForms />} />
       <Route path="dashboard" element={<LayoutDashboard />}>
 
         <Route element={<PrivateRoute />}>
