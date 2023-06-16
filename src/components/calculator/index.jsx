@@ -4,7 +4,7 @@ import Form1 from "./Step1";
 // import Form2 from "./Step2";
 // import Form3 from "./Step3";
 // import Form4 from "./Step4";
-import StepTypeOfEntitie from "./Step01";
+import StepTypeOfEntitie from "./StepCalc";
 
 export default function StepForms() {
   const [step, setStep] = useState(1);
