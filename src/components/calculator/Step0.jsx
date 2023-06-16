@@ -68,7 +68,13 @@ const Form0 = ({ onNextStep }) => {
   const armazenarValorEstimado = () => {
     localStorage.setItem(
       "form0Data",
-      JSON.stringify({ nome, cidade, valorEstimado, potenciaModulos, numeroModulos })
+      JSON.stringify({
+        nome,
+        cidade,
+        valorEstimado,
+        potenciaModulos,
+        numeroModulos,
+      })
     );
   };
 
@@ -130,8 +136,17 @@ const Form0 = ({ onNextStep }) => {
   }, [cidade]); // Atualizar a radiação quando a cidade for alterada
 
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
       <Grid container spacing={2}>
+        <img src="Maya.png" alt="Descrição da imagem" />
         <Grid item xs={12}>
           <Typography fontWeight="bold" variant="h5" align="center">
             Formulário Cadastral
@@ -161,7 +176,7 @@ const Form0 = ({ onNextStep }) => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="Potência dos módulos"
+            label="Potência dos módulos(KWP)"
             type="number"
             value={potenciaModulos}
             onChange={(event) => setPotenciaModulos(event.target.value)}
