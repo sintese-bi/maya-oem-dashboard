@@ -12,7 +12,9 @@ import WarningIcon from "@mui/icons-material/Warning";
 const Tabs = () => {
   const { brand } = useParams();
   const location = useLocation();
-  const { blUuidState } = location.state || {};
+  const { devUuidState, blUuidState, useNameState } = location.state || {};
+
+  console.log("location.state ", location.state)
 
   const DASHBOARD_TABS = [
     {
@@ -51,7 +53,7 @@ const Tabs = () => {
             startIcon={<IconComponent fontSize="small" />}
             component={Link}
             to={{ pathname }}
-            state={{ blUuidState }}
+            state={{ devUuidState, blUuidState, useNameState }}
             {...(isActive ? { color: "primary", variant: "contained" } : {})}
           >
             {label}

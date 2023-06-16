@@ -20,12 +20,11 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingGeneration: true,
         generation: [],
-        alerts: [],
         temperature: [],
       };
 
     case generation.GET_GENERATION_SUCCESS:
-      const { deviceData, latestTemp, recentAlerts } = result;
+      const { deviceData, latestTemp } = result;
       const { date, type } = args;
 
       const month = parseInt(moment(date).format("MM"));
@@ -69,7 +68,6 @@ export default function userReducer(state = initialState, action) {
                 generationPercentageTotal: 0,
                 generationPercentage: [],
               },
-        alerts: recentAlerts,
         temperature: latestTemp?.[0]?.temperature[0]?.temp_temperature,
       };
 
@@ -78,8 +76,38 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingGeneration: false,
         generation: [],
-        alerts: [],
         temperature: [],
+      };
+
+    case generation.GET_GENERATION_ALERTS_REQUEST:
+      return {
+        ...state,
+        isLoadingGeneration: true,
+        alerts: [],
+      };
+
+    case generation.GET_GENERATION_ALERTS_SUCCESS:
+      const alerts =
+        result.length !== 0
+          ? result.alerts.map((item) => {
+              return {
+                devName: result.dev_name,
+                alInv: item.al_inv,
+                alAlert: item.al_alerts,
+              };
+            })
+          : [];
+      return {
+        ...state,
+        isLoadingGeneration: false,
+        alerts,
+      };
+
+    case generation.GET_GENERATION_ALERTS_FAILURE:
+      return {
+        ...state,
+        isLoadingGeneration: false,
+        alerts: [],
       };
 
     default:

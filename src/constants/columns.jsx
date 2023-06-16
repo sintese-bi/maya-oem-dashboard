@@ -1,6 +1,7 @@
 import { listBrand } from "src/utils/list-brand";
 import { Link as LinkRouter } from "react-router-dom";
-import { Avatar, Link, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Link, Stack, Typography } from "@mui/material";
+import { ExitToApp } from "@mui/icons-material";
 
 export const columnsDevices = [
   {
@@ -40,6 +41,7 @@ export const columnsDevices = [
               state={{
                 devUuidState: dataTable.rowData[0],
                 blUuidState: dataTable.rowData[1],
+                useNameState: dataTable.rowData[2]
               }}
               underline="hover"
             >
@@ -96,6 +98,32 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customBodyRender: (name, dataTable) => {
+      
+        return (
+          <Stack direction="row" alignItems="center" gap={1}>
+            <Typography variant="body1">{name}</Typography>
+
+            {/* {name !== 0 ? (
+              <Button
+                component={LinkRouter}
+                to={{
+                  pathname: `/dashboard/alerts/${dataTable.rowData[2]}`,
+                }}
+                state={{
+                  devUuidState: dataTable.rowData[0],
+                  blUuidState: dataTable.rowData[1],
+                  useNameState: dataTable.rowData[2]
+                }}
+                variant="outlined"
+                startIcon={<ExitToApp />}
+              >
+                Visualizar
+              </Button>
+            ) : null} */}
+          </Stack>
+        );
+      },
     },
   },
   {

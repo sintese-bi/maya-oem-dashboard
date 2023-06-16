@@ -23,6 +23,7 @@ import MUIDataTable from "mui-datatables";
 
 //ASSETS
 import { listBrand } from "src/utils/list-brand";
+import { columnsDevices } from "src/constants/columns";
 
 export default function Devices() {
   // PROPS DE CONTROLLER
@@ -34,91 +35,7 @@ export default function Devices() {
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
   const { isLoading, data } = useSelector((state) => state.users);
-
-  const columns = [
-    {
-      name: "uuid",
-      label: "ID do Dispositivos/usuário",
-      options: {
-        display: false,
-        viewColumns: false,
-        filter: false,
-      },
-    },
-    {
-      name: "blUuid",
-      label: "ID do marca",
-      options: {
-        display: false,
-        viewColumns: false,
-        filter: false,
-      },
-    },
-    {
-      name: "brand",
-      label: "Nome da marca",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (name, dataTable) => {
-          const brandImg = listBrand.filter(
-            (brand) => brand.params === name
-          )[0];
-          return (
-            <Stack direction="row" alignItems="center" gap={1}>
-              <Avatar src={brandImg?.media} />
-              <Link
-                component={LinkRouter}
-                to={{
-                  pathname: `/dashboard/generation/${name}`,
-                }}
-                state={{
-                  devUuidState: dataTable.rowData[0],
-                  blUuidState: dataTable.rowData[1],
-                }}
-                underline="hover"
-              >
-                <Typography variant="body1">{name}</Typography>
-              </Link>
-            </Stack>
-          );
-        },
-      },
-    },
-    {
-      name: "name",
-      label: "Dispositivos/usuário",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "generationReal",
-      label: "Geração real",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "temperature",
-      label: "Temperatura",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "alert",
-      label: "Quantidade de alertas",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-  ];
-
+  
   const options = {
     filter: true,
     rowsPerPage: 10,
@@ -131,6 +48,8 @@ export default function Devices() {
   useEffect(() => {
     dispatch(getUserBrands(uuid));
   }, [uuid]);
+
+  console.log("data ", data)
 
   if (isLoading) {
     return (
@@ -158,7 +77,7 @@ export default function Devices() {
               <MUIDataTable
                 title={"Listagem de marcas"}
                 data={data}
-                columns={columns}
+                columns={columnsDevices}
                 options={options}
               />
             </Grid>

@@ -170,9 +170,10 @@ export const getUserBrands = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_USER_BRANDS_REQUEST });
 
   api
-    .get(`/userBrands/${uuid}`, configRequest())
+    .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log("data ", data)
       dispatch({
         type: users.GET_USER_BRANDS_SUCCESS,
         result: data,

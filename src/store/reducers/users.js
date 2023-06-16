@@ -164,32 +164,55 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_USER_BRANDS_SUCCESS:
-      const dataResult = brand_login.map((item) => {
-        const res = item.devices.map((dev) => {
-          return {
-            brand: dev.dev_brand,
-            blUuid: item.bl_uuid,
-            name: dev.dev_name,
-            uuid: dev.dev_uuid,
-            generationReal:
-              dev.generation.length !== 0
-                ? dev.generation[0].gen_real + "Kwh"
-                : "-",
-            temperature:
-              dev.temperature.length !== 0
-                ? dev.temperature[0].temp_temperature
-                : "-",
-            alert: dev.alerts.length,
-          };
-        });
+      const dataResult = brand_login
+        .map((item) => {
+          const res = item.devices.map((dev) => {
+            let sumRealWeek = 0;
+            let sumRealMonth = 0;
 
-        return res;
-      });
+            dev.generation.forEach((item) => {
+              if (
+                moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
+                moment(item.gen_date) <= moment()
+              ) {
+                sumRealWeek += item.gen_real;
+              }
+            });
+            dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
+
+            const generationRealDay = dev.generation.filter(
+              (item) => item.gen_date === moment().format("YYYY-MM-DD")
+            );
+
+            return {
+              brand: dev.dev_brand,
+              blUuid: item.bl_uuid,
+              name: dev.dev_name,
+              uuid: dev.dev_uuid,
+              generationRealDay:
+                generationRealDay.length !== 0
+                  ? generationRealDay[0].gen_real
+                  : 0,
+              generationRealWeek: sumRealWeek.toFixed(2),
+              generationRealMonth: sumRealMonth.toFixed(2),
+              generationEstimated:
+                dev.generation.length !== 0
+                  ? dev.generation[0].gen_estimated
+                  : 0,
+              alert: dev.alerts.length,
+              staName: dev?.status ? dev?.status.sta_name : "Não informado!",
+              staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
+            };
+          });
+
+          return res;
+        })
+        .flat();
 
       return {
         ...state,
         isLoading: false,
-        data: dataResult ? dataResult.flat() : [],
+        data: dataResult,
       };
 
     case users.GET_USER_BRANDS_FAILURE:

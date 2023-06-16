@@ -19,7 +19,7 @@ import {
 import { theme } from "src/theme";
 
 // QUERIES
-import { getGeneration } from "src/store/actions/generation";
+import { getAlerts } from "src/store/actions/generation";
 
 // COMPONENTS
 import Tabs from "../../components/shared/Tabs";
@@ -30,14 +30,14 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const Alerts = () => {
   const location = useLocation();
-  const { blUuidState } = location.state || {};
+  const { devUuidState } = location.state || {};
   const dispatch = useDispatch();
 
   const { isLoadingGeneration, alerts } = useSelector((state) => state.generation);
 
   useEffect(() => {
-    dispatch(getGeneration({ blUuidState }));
-  }, [blUuidState]);
+    dispatch(getAlerts(devUuidState));
+  }, [devUuidState]);
 
   return (
     <Box
@@ -84,12 +84,12 @@ const Alerts = () => {
                           },
                         }}
                       >
-                        <TableCell>{item.dev_name}</TableCell>
+                        <TableCell>{item.devName}</TableCell>
                         <TableCell component="th" scope="row">
-                          {item.alerts[0].al_inv}
+                          {item.alInv}
                         </TableCell>
                         <TableCell component="th" scope="row">
-                          {item.alerts[0].al_alerts}
+                          {item.alAlert}
                         </TableCell>
                       </TableRow>
                     ))
