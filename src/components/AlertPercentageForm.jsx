@@ -7,15 +7,17 @@ import * as Yup from "yup";
 import { getUserCookie } from "src/services/session";
 
 // LIBS DE ESTILOS
-import { SaveAs } from "@mui/icons-material";
+import { Info, SaveAs } from "@mui/icons-material";
 import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   MenuItem,
   TextField,
+  Tooltip
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
@@ -31,6 +33,15 @@ export default function AlertPercentageForm() {
   const { isLoadingAlertFrequency, percentage, frequencyName } = useSelector(
     (state) => state.users
   );
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popper' : undefined;
 
   const {
     register,
@@ -73,39 +84,58 @@ export default function AlertPercentageForm() {
         mx: 2,
       }}
     >
-      <TextField
-        sx={{ width: 200 }}
-        label="Limite mínimo"
-        type="number"
-        {...register("percentage")}
-        error={!!errors.percentage}
-        helperText={errors.percentage?.message}
-        variant="outlined"
-        disabled={isLoadingAlertFrequency}
-      />
 
-      <Controller
-        sx={{ width: 200 }}
-        control={control}
-        name="frequencyName"
-        render={({ field }) => (
-          <TextField
-            {...field}
-            sx={{ width: 200 }}
-            label="Frequência de alertas"
-            error={!!errors.frequencyName}
-            helperText={errors.frequencyName?.message}
-            value={watch('frequencyName') || ''}
-            select
-            variant="outlined"
-            disabled={isLoadingAlertFrequency}
-          >
-            <MenuItem value="day">Dia</MenuItem>
-            <MenuItem value="week">Semanal</MenuItem>
-            <MenuItem value="month">Mês</MenuItem>
-          </TextField>
-        )}
-      />
+
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="percentual mínimo de geração da usina. Caso sua usina produza menos que (input %)
+          na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.">
+          <IconButton>
+            <Info />
+          </IconButton>
+        </Tooltip>
+        <TextField
+          sx={{ width: 200 }}
+          label="Limite mínimo"
+          type="number"
+          {...register("percentage")}
+          error={!!errors.percentage}
+          helperText={errors.percentage?.message}
+          variant="standard"
+          disabled={isLoadingAlertFrequency}
+        />
+      </Box>
+
+
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="define a frequência de alertas diário, semanal ou mensal.">
+          <IconButton>
+            <Info />
+          </IconButton>
+        </Tooltip>
+        <Controller
+          sx={{ width: 200 }}
+          control={control}
+          name="frequencyName"
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ width: 200 }}
+              label="Frequência de alertas"
+              error={!!errors.frequencyName}
+              helperText={errors.frequencyName?.message}
+              value={watch('frequencyName') || ''}
+              select
+              variant="standard"
+              disabled={isLoadingAlertFrequency}
+            >
+              <MenuItem value="day">Dia</MenuItem>
+              <MenuItem value="week">Semanal</MenuItem>
+              <MenuItem value="month">Mês</MenuItem>
+            </TextField>
+          )}
+        />
+      </Box>
+
 
       {!isLoadingAlertFrequency ? (
         <Button

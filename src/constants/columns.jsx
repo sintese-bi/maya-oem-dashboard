@@ -76,14 +76,6 @@ export const columnsDevices = [
     },
   },
   {
-    name: "generationRealWeek",
-    label: "Geração real semana",
-    options: {
-      filter: true,
-      sort: true,
-    },
-  },
-  {
     name: "generationEstimatedlWeek",
     label: "Geração Estimada semana",
     options: {
@@ -92,8 +84,8 @@ export const columnsDevices = [
     },
   },
   {
-    name: "generationRealMonth",
-    label: "Geração real mês",
+    name: "generationRealWeek",
+    label: "Geração real semana",
     options: {
       filter: true,
       sort: true,
@@ -102,6 +94,14 @@ export const columnsDevices = [
   {
     name: "generationEstimatedMonth",
     label: "Geração Estimada mês",
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+  {
+    name: "generationRealMonth",
+    label: "Geração real mês",
     options: {
       filter: true,
       sort: true,

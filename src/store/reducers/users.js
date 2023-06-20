@@ -279,33 +279,37 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
+      const daysPassed = moment().date();
+
       const dataDevices = brand_login
         .map((item) => {
           const res = item.devices.map((dev) => {
+            const generationEstimatedDay = dev.generation.length !== 0
+            ? dev.generation[0].gen_estimated
+            : 0
+
             let sumRealWeek = 0;
-            let sumEstimatedlWeek = 0;
+            let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassed);
 
-            let sumRealMonth = 0;
-            let sumEstimatedMonth = 0;
-
+            let sumRealMonth =   0;
+            let sumEstimatedMonth =  generationEstimatedDay  * daysPassed;
+           
+            
             dev.generation.forEach((item) => {
               if (
                 moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
                 moment(item.gen_date) <= moment()
               ) {
                 sumRealWeek += item.gen_real;
-                sumEstimatedlWeek += item.gen_estimated
               }
             });
             dev.generation.forEach((item) => {
               sumRealMonth += item.gen_real
-              sumEstimatedMonth += item.gen_estimated
             });
 
             const generationRealDay = dev.generation.filter(
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
             );
-
 
             const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
               const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
@@ -324,10 +328,7 @@ export default function userReducer(state = initialState, action) {
                   : 0,
               generationRealWeek: sumRealWeek.toFixed(2),
               generationRealMonth: sumRealMonth.toFixed(2),
-              generationEstimatedDay:
-                dev.generation.length !== 0
-                  ? dev.generation[0].gen_estimated
-                  : 0,
+              generationEstimatedDay: generationEstimatedDay ?generationEstimatedDay : 0,
               generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2),
               generationEstimatedMonth: sumEstimatedMonth.toFixed(2),
               alert: alerts.length,
@@ -343,7 +344,7 @@ export default function userReducer(state = initialState, action) {
       const brands = [...new Set(dataDevices.map((item) => item.brand))];
 
       const generationBelowEstimated = dataDevices.filter(
-        (item) => item.generationRealDay < item.generationEstimated
+        (item) => item.generationRealWeek < item.generationEstimatedlWeek
       );
       const alerts = dataDevices.filter((item) => item.alert !== 0);
 
