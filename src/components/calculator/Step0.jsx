@@ -146,7 +146,7 @@ const Form0 = ({ onNextStep }) => {
       }}
     >
       <Grid container spacing={2}>
-        <img src="Maya.png" alt="Descrição da imagem" />
+      <img src="Maya.png" alt="Descrição da imagem" />
         <Grid item xs={12}>
           <Typography fontWeight="bold" variant="h5" align="center">
             Formulário Cadastral
