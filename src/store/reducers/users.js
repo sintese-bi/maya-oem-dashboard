@@ -283,7 +283,10 @@ export default function userReducer(state = initialState, action) {
         .map((item) => {
           const res = item.devices.map((dev) => {
             let sumRealWeek = 0;
+            let sumEstimatedlWeek = 0;
+
             let sumRealMonth = 0;
+            let sumEstimatedMonth = 0;
 
             dev.generation.forEach((item) => {
               if (
@@ -291,9 +294,13 @@ export default function userReducer(state = initialState, action) {
                 moment(item.gen_date) <= moment()
               ) {
                 sumRealWeek += item.gen_real;
+                sumEstimatedlWeek += item.gen_estimated
               }
             });
-            dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
+            dev.generation.forEach((item) => {
+              sumRealMonth += item.gen_real
+              sumEstimatedMonth += item.gen_estimated
+            });
 
             const generationRealDay = dev.generation.filter(
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
@@ -310,10 +317,12 @@ export default function userReducer(state = initialState, action) {
                   : 0,
               generationRealWeek: sumRealWeek.toFixed(2),
               generationRealMonth: sumRealMonth.toFixed(2),
-              generationEstimated:
+              generationEstimatedDay:
                 dev.generation.length !== 0
                   ? dev.generation[0].gen_estimated
                   : 0,
+              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2),
+              generationEstimatedMonth: sumEstimatedMonth.toFixed(2),
               alert: dev.alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
