@@ -11,7 +11,7 @@ const Form0 = ({ onNextStep }) => {
   const [valorEstimado, setValorEstimado] = useState(null);
   const [potenciaModulos, setPotenciaModulos] = useState("");
   const [numeroModulos, setNumeroModulos] = useState("");
-
+  const [estimada, setEstimada] = useState(null);
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
@@ -62,6 +62,7 @@ const Form0 = ({ onNextStep }) => {
         radiacao * potenciaModulos * numeroModulos * dias * eficienciaModulos;
       const valorEstimadoFormatado = estimada.toFixed(2);
       setValorEstimado(valorEstimadoFormatado);
+      setEstimada(estimada);
     }
   };
 
@@ -74,6 +75,9 @@ const Form0 = ({ onNextStep }) => {
         valorEstimado,
         potenciaModulos,
         numeroModulos,
+        clientGenWMaya: estimada,
+        EffValue: estimada*(0.3)
+        
       })
     );
   };
@@ -86,6 +90,9 @@ const Form0 = ({ onNextStep }) => {
         clientFirstName: nome,
         clientCity: cidade,
         clientModNum: numeroModulos,
+        clientGenWMaya: estimada.toFixed(2),
+        clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+        EffValue: (estimada*(0.3)).toFixed(2)
       });
       console.log("Dados enviados para a API:", response.data);
       // Realize qualquer ação adicional após o envio dos dados para a API
@@ -146,7 +153,7 @@ const Form0 = ({ onNextStep }) => {
       }}
     >
       <Grid container spacing={2}>
-      <img src="Maya.png" alt="Descrição da imagem" />
+        <img src="Maya.png" alt="Descrição da imagem" />
         <Grid item xs={12}>
           <Typography fontWeight="bold" variant="h5" align="center">
             Formulário Cadastral
@@ -208,7 +215,6 @@ const Form0 = ({ onNextStep }) => {
             Próximo
           </Button>
         </Grid>
-        
       </Grid>
     </Container>
   );
