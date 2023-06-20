@@ -49,8 +49,6 @@ export default function Devices() {
     dispatch(getUserBrands(uuid));
   }, [uuid]);
 
-  console.log("data ", data)
-
   if (isLoading) {
     return (
       <Backdrop

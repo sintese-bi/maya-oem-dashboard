@@ -14,8 +14,6 @@ const Tabs = () => {
   const location = useLocation();
   const { devUuidState, blUuidState, useNameState } = location.state || {};
 
-  console.log("location.state ", location.state)
-
   const DASHBOARD_TABS = [
     {
       label: "Geração",

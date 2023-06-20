@@ -306,6 +306,13 @@ export default function userReducer(state = initialState, action) {
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
             );
 
+
+            const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
+              const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
+              const today = moment().format('YYYY-MM-DD');
+              return alertDate === today;
+            }) : []
+
             return {
               brand: dev.dev_brand,
               blUuid: item.bl_uuid,
@@ -323,7 +330,7 @@ export default function userReducer(state = initialState, action) {
                   : 0,
               generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2),
               generationEstimatedMonth: sumEstimatedMonth.toFixed(2),
-              alert: dev.alerts.length,
+              alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
             };
