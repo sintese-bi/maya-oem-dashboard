@@ -1,6 +1,6 @@
 // IMPORTS
-import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,14 +9,14 @@ import { getUserCookie } from "src/services/session";
 // LIBS DE ESTILOS
 import { SaveAs } from "@mui/icons-material";
 import {
+  Box,
+  Button,
+  CircularProgress,
   MenuItem,
   TextField,
-  Button,
-  Box,
-  CircularProgress,
 } from "@mui/material";
-import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 import { useEffect } from "react";
+import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
@@ -53,7 +53,6 @@ export default function AlertPercentageForm() {
   }, [useUuid]);
 
   useEffect(() => {
-    console.log("percentage, frequencyName ", percentage, frequencyName)
     if (percentage && frequencyName) {
       setValue("percentage", percentage);
       setValue("frequencyName", frequencyName);
