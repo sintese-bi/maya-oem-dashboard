@@ -1,38 +1,35 @@
 // IMPORTS
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import moment from "moment-timezone";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 // LIBS DE ESTILOS
 import {
-  Alert,
   Backdrop,
   Box,
   CircularProgress,
-  Collapse,
   Container,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   MenuItem,
   NativeSelect,
   Select,
-  TextField,
+  TextField
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 // QUERIES
-import { getGeneration } from "src/store/actions/generation";
 import { getDevices } from "src/store/actions/devices";
+import { getGeneration } from "src/store/actions/generation";
 
 // COMPONENTS
+import { BigNumber } from "../../components/BigNumber";
 import { ChartsGeneration } from "../../components/Charts";
 import { DeviceDetail } from "../../components/DeviceDetail";
-import { BigNumber } from "../../components/BigNumber";
 import { LoadingSkeletonBigNumbers } from "../../components/Loading";
 import Tabs from "../../components/shared/Tabs";
 
@@ -59,9 +56,6 @@ const Generation = () => {
   const [deviceInfo, setDeviceInfo] = useState([]);
   const [date, setDate] = useState(moment().format());
   const [optionFilter, setOptionFilter] = useState("month");
-  const [openAlert, setOpenAlert] = useState(true);
-
-  // const { alert } = generation || {};
 
   // SELECT DE USÚARIOS
   function handleSelectDevices(useUuid) {
@@ -117,7 +111,6 @@ const Generation = () => {
       </Backdrop>
     );
   }
-  console.log("deviceInfo ", deviceInfo)
 
   return (
     <Box
@@ -128,31 +121,6 @@ const Generation = () => {
       }}
     >
       <Container maxWidth={false}>
-        {/* {alert ? (
-          <Box sx={{ width: "100%", mb: 3 }}>
-            <Collapse in={openAlert}>
-              <Alert
-                severity={alert?.type}
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setOpenAlert(false);
-                    }}
-                  >
-                    <Close fontSize="inherit" />
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >
-                {alert?.msg}
-              </Alert>
-            </Collapse>
-          </Box>
-        ) : null} */}
-
         {/* LISTA DE USUARIO  */}
         <Box
           sx={{

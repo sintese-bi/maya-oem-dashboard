@@ -324,13 +324,13 @@ export default function userReducer(state = initialState, action) {
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real
-                  : 0,
-              generationRealWeek: sumRealWeek.toFixed(2),
-              generationRealMonth: sumRealMonth.toFixed(2),
-              generationEstimatedDay: generationEstimatedDay ?generationEstimatedDay : 0,
-              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2),
-              generationEstimatedMonth: sumEstimatedMonth.toFixed(2),
+                  ? generationRealDay[0].gen_real  + "Kwh"
+                  : 0  + "Kwh",
+              generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
+              generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
+              generationEstimatedDay: generationEstimatedDay ?generationEstimatedDay  + "Kwh": 0 + "Kwh",
+              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
+              generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
               alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",

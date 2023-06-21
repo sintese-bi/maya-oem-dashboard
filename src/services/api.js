@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getUserCookie } from "./session";
 
-console.log("--- ", `${process.env.REACT_APP_BASE_URL}v1`)
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}/v1`,
 });
