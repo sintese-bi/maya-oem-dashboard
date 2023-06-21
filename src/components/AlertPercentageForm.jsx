@@ -17,7 +17,7 @@ import {
   TextField,
   Tooltip
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
@@ -33,15 +33,6 @@ export default function AlertPercentageForm() {
   const { isLoadingAlertFrequency, percentage, frequencyName } = useSelector(
     (state) => state.users
   );
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
 
   const {
     register,
@@ -85,10 +76,8 @@ export default function AlertPercentageForm() {
       }}
     >
 
-
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="percentual mínimo de geração da usina. Caso sua usina produza menos que (input %)
-          na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.">
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch("percentage")} %) na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}>
           <IconButton>
             <Info />
           </IconButton>
@@ -107,7 +96,7 @@ export default function AlertPercentageForm() {
 
 
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="define a frequência de alertas diário, semanal ou mensal.">
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="Define a frequência de alertas diário, semanal ou mensal.">
           <IconButton>
             <Info />
           </IconButton>

@@ -134,7 +134,7 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Geração real abaixo da estimada (semanal)"
+          title="Geração abaixo da estimada"
           value={
             generationBelowEstimated.length !== 0
               ? generationBelowEstimated.length
@@ -173,7 +173,7 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Alertas"
+          title="Plantas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
           type={3}
