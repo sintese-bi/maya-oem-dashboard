@@ -12,6 +12,8 @@ const Form0 = ({ onNextStep }) => {
   const [potenciaModulos, setPotenciaModulos] = useState("");
   const [numeroModulos, setNumeroModulos] = useState("");
   const [estimada, setEstimada] = useState(null);
+  const [documentoLink, setDocumentoLink] = useState("");
+
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
@@ -76,26 +78,38 @@ const Form0 = ({ onNextStep }) => {
         potenciaModulos,
         numeroModulos,
         clientGenWMaya: estimada,
-        EffValue: estimada*(0.3)
-        
+        EffValue: estimada * 0.3,
       })
     );
   };
 
   const enviarDadosParaAPI = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/v1/pandadoc", {
-        clientPot: potenciaModulos,
-        clientEstimated: valorEstimado,
-        clientFirstName: nome,
-        clientCity: cidade,
-        clientModNum: numeroModulos,
-        clientGenWMaya: estimada.toFixed(2),
-        clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
-        EffValue: (estimada*(0.3)).toFixed(2)
-      });
-      console.log("Dados enviados para a API:", response.data);
-      // Realize qualquer ação adicional após o envio dos dados para a API
+      const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
+
+      const response = await axios.post(
+        "http://localhost:8080/v1/pandadoc",
+        {
+          clientPot: potenciaModulos,
+          clientEstimated: valorEstimado,
+          clientFirstName: nome,
+          clientCity: cidade,
+          clientModNum: numeroModulos,
+          clientGenWMaya: estimada.toFixed(2),
+          clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+          EffValue: (estimada * 0.3).toFixed(2),
+        },
+        {
+          headers: {
+            Authorization: `API-Key ${apiKey}`,
+            accept: "application/json",
+            "content-type": "application/json",
+          },
+        }
+      );
+
+      setDocumentoLink(response.data.recipients[0].shared_link);
+      console.log("Dados enviados para a API:", response);
     } catch (error) {
       console.log(error);
     }
@@ -121,9 +135,8 @@ const Form0 = ({ onNextStep }) => {
           numeroModulos,
         });
         armazenarValorEstimado();
-        fetchRadiacao(); // Buscar radiação apenas quando o botão "Próximo" for clicado
-        enviarDadosParaAPI(); // Enviar dados para a API
-        onNextStep();
+        fetchRadiacao();
+        enviarDadosParaAPI();
       })
       .catch((err) => {
         const validationErrors = {};
@@ -134,13 +147,17 @@ const Form0 = ({ onNextStep }) => {
       });
   };
 
+  const handleNext2 = () => {
+    onNextStep();
+  };
+
   useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
 
   useEffect(() => {
     fetchRadiacao();
-  }, [cidade]); // Atualizar a radiação quando a cidade for alterada
+  }, [cidade]);
 
   return (
     <Container
@@ -209,11 +226,29 @@ const Form0 = ({ onNextStep }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleNext}
+            onClick={handleNext2}
             fullWidth
           >
             Próximo
           </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleNext}
+            fullWidth
+          >
+            Gerar Documento
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            Link do Documento:{" "}
+            <a href={documentoLink} target="_blank" rel="noopener noreferrer">
+              {documentoLink}
+            </a>
+          </Typography>
         </Grid>
       </Grid>
     </Container>
