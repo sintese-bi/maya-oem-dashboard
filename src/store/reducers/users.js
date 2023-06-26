@@ -279,12 +279,22 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
+      const daysPassed = moment().date();
+
       const dataDevices = brand_login
         .map((item) => {
           const res = item.devices.map((dev) => {
-            let sumRealWeek = 0;
-            let sumRealMonth = 0;
+            const generationEstimatedDay = dev.generation.length !== 0
+            ? dev.generation[0].gen_estimated
+            : 0
 
+            let sumRealWeek = 0;
+            let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassed);
+
+            let sumRealMonth =   0;
+            let sumEstimatedMonth =  generationEstimatedDay  * daysPassed;
+           
+            
             dev.generation.forEach((item) => {
               if (
                 moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
@@ -293,11 +303,19 @@ export default function userReducer(state = initialState, action) {
                 sumRealWeek += item.gen_real;
               }
             });
-            dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
+            dev.generation.forEach((item) => {
+              sumRealMonth += item.gen_real
+            });
 
             const generationRealDay = dev.generation.filter(
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
             );
+
+            const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
+              const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
+              const today = moment().format('YYYY-MM-DD');
+              return alertDate === today;
+            }) : []
 
             return {
               brand: dev.dev_brand,
@@ -306,15 +324,14 @@ export default function userReducer(state = initialState, action) {
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real
-                  : 0,
-              generationRealWeek: sumRealWeek.toFixed(2),
-              generationRealMonth: sumRealMonth.toFixed(2),
-              generationEstimated:
-                dev.generation.length !== 0
-                  ? dev.generation[0].gen_estimated
-                  : 0,
-              alert: dev.alerts.length,
+                  ? generationRealDay[0].gen_real  + "Kwh"
+                  : 0  + "Kwh",
+              generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
+              generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
+              generationEstimatedDay: generationEstimatedDay ?generationEstimatedDay  + "Kwh": 0 + "Kwh",
+              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
+              generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
+              alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
             };
@@ -327,7 +344,7 @@ export default function userReducer(state = initialState, action) {
       const brands = [...new Set(dataDevices.map((item) => item.brand))];
 
       const generationBelowEstimated = dataDevices.filter(
-        (item) => item.generationRealDay < item.generationEstimated
+        (item) => item.generationRealWeek < item.generationEstimatedlWeek
       );
       const alerts = dataDevices.filter((item) => item.alert !== 0);
 

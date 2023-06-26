@@ -1,22 +1,24 @@
 // IMPORTS
-import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { getUserCookie } from "src/services/session";
 
 // LIBS DE ESTILOS
-import { SaveAs } from "@mui/icons-material";
+import { Info, SaveAs } from "@mui/icons-material";
 import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
   MenuItem,
   TextField,
-  Button,
-  Box,
-  CircularProgress,
+  Tooltip
 } from "@mui/material";
-import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 import { useEffect } from "react";
+import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
@@ -53,7 +55,6 @@ export default function AlertPercentageForm() {
   }, [useUuid]);
 
   useEffect(() => {
-    console.log("percentage, frequencyName ", percentage, frequencyName)
     if (percentage && frequencyName) {
       setValue("percentage", percentage);
       setValue("frequencyName", frequencyName);
@@ -74,39 +75,56 @@ export default function AlertPercentageForm() {
         mx: 2,
       }}
     >
-      <TextField
-        sx={{ width: 200 }}
-        label="Limite mínimo"
-        type="number"
-        {...register("percentage")}
-        error={!!errors.percentage}
-        helperText={errors.percentage?.message}
-        variant="outlined"
-        disabled={isLoadingAlertFrequency}
-      />
 
-      <Controller
-        sx={{ width: 200 }}
-        control={control}
-        name="frequencyName"
-        render={({ field }) => (
-          <TextField
-            {...field}
-            sx={{ width: 200 }}
-            label="Frequência de alertas"
-            error={!!errors.frequencyName}
-            helperText={errors.frequencyName?.message}
-            value={watch('frequencyName') || ''}
-            select
-            variant="outlined"
-            disabled={isLoadingAlertFrequency}
-          >
-            <MenuItem value="day">Dia</MenuItem>
-            <MenuItem value="week">Semanal</MenuItem>
-            <MenuItem value="month">Mês</MenuItem>
-          </TextField>
-        )}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch("percentage")} %) na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}>
+          <IconButton>
+            <Info />
+          </IconButton>
+        </Tooltip>
+        <TextField
+          sx={{ width: 200 }}
+          label="Limite mínimo"
+          type="number"
+          {...register("percentage")}
+          error={!!errors.percentage}
+          helperText={errors.percentage?.message}
+          variant="standard"
+          disabled={isLoadingAlertFrequency}
+        />
+      </Box>
+
+
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="Define a frequência de alertas diário, semanal ou mensal.">
+          <IconButton>
+            <Info />
+          </IconButton>
+        </Tooltip>
+        <Controller
+          sx={{ width: 200 }}
+          control={control}
+          name="frequencyName"
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={{ width: 200 }}
+              label="Frequência de alertas"
+              error={!!errors.frequencyName}
+              helperText={errors.frequencyName?.message}
+              value={watch('frequencyName') || ''}
+              select
+              variant="standard"
+              disabled={isLoadingAlertFrequency}
+            >
+              <MenuItem value="day">Dia</MenuItem>
+              <MenuItem value="week">Semanal</MenuItem>
+              <MenuItem value="month">Mês</MenuItem>
+            </TextField>
+          )}
+        />
+      </Box>
+
 
       {!isLoadingAlertFrequency ? (
         <Button

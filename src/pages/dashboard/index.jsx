@@ -1,14 +1,13 @@
 // IMPORTS
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 // QUERYS
-import { getUserCookie } from "src/services/session";
-import { getDashboard } from "src/store/actions/users";
 import {
   columnsDevices,
 } from "src/constants/columns";
+import { getUserCookie } from "src/services/session";
+import { getDashboard } from "src/store/actions/users";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -18,8 +17,8 @@ import {
   Container,
   Grid,
 } from "@mui/material";
-import { BigNumberDashboard } from "src/components/BigNumber";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
+import { BigNumberDashboard } from "src/components/BigNumber";
 
 // ASSETS
 import {
@@ -174,7 +173,7 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Alertas"
+          title="Plantas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
           type={3}

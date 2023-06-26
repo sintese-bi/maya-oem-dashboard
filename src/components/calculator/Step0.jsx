@@ -9,31 +9,48 @@ const Form0 = ({ onNextStep }) => {
   const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
+  const [potenciaModulos, setPotenciaModulos] = useState("");
+  const [numeroModulos, setNumeroModulos] = useState("");
+  const [estimada, setEstimada] = useState(null);
+  const [documentoLink, setDocumentoLink] = useState("");
 
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
+    potenciaModulos: yup
+      .number()
+      .required("Campo obrigatório")
+      .positive("O valor deve ser positivo"),
+    numeroModulos: yup
+      .number()
+      .required("Campo obrigatório")
+      .positive("O valor deve ser positivo"),
   });
 
   useEffect(() => {
     const storedData = localStorage.getItem("form0Data");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
-      setNome(parsedData.nome || ""); // Define um valor padrão vazio se for undefined
-      setCidade(parsedData.cidade || ""); // Define um valor padrão vazio se for undefined
+      setNome(parsedData.nome || "");
+      setCidade(parsedData.cidade || "");
+      setValorEstimado(parsedData.valorEstimado || null);
+      setPotenciaModulos(parsedData.potenciaModulos || "");
+      setNumeroModulos(parsedData.numeroModulos || "");
     }
   }, []);
 
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidade)}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
+          cidade
+        )}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
         setRadiacao(data.ic_yearly);
       } else {
-        setRadiacao(0); // Define um valor padrão caso a propriedade não exista
+        setRadiacao(0);
       }
     } catch (error) {
       console.log(error);
@@ -41,15 +58,62 @@ const Form0 = ({ onNextStep }) => {
   };
 
   const calcularValorEstimado = () => {
-    if (radiacao) {
-      const potenciaModulos = 5; 
-      const numeroModulos = 10; 
-      const eficienciaModulos = 0.8; 
-      const dias = 30; 
+    if (radiacao !== null && potenciaModulos !== "" && numeroModulos !== "") {
+      const eficienciaModulos = 0.8;
+      const dias = 30;
 
       const estimada =
         radiacao * potenciaModulos * numeroModulos * dias * eficienciaModulos;
-      setValorEstimado(estimada);
+      const valorEstimadoFormatado = estimada.toFixed(2);
+      setValorEstimado(valorEstimadoFormatado);
+      setEstimada(estimada);
+    }
+  };
+
+  const armazenarValorEstimado = () => {
+    localStorage.setItem(
+      "form0Data",
+      JSON.stringify({
+        nome,
+        cidade,
+        valorEstimado,
+        potenciaModulos,
+        numeroModulos,
+        clientGenWMaya: estimada,
+        EffValue: estimada * 0.3,
+      })
+    );
+  };
+
+  const enviarDadosParaAPI = async () => {
+    try {
+      const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        {
+          clientPot: potenciaModulos,
+          clientEstimated: valorEstimado,
+          clientFirstName: nome,
+          clientCity: cidade,
+          clientModNum: numeroModulos,
+          clientGenWMaya: estimada.toFixed(2),
+          clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+          EffValue: (estimada * 0.3).toFixed(2),
+        },
+        {
+          headers: {
+            Authorization: `API-Key ${apiKey}`,
+            accept: "application/json",
+            "content-type": "application/json",
+          },
+        }
+      );
+
+      setDocumentoLink(response.data.recipients[0].shared_link);
+      console.log("Dados enviados para a API:", response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -59,6 +123,8 @@ const Form0 = ({ onNextStep }) => {
         {
           nome,
           cidade,
+          potenciaModulos,
+          numeroModulos,
         },
         { abortEarly: false }
       )
@@ -66,13 +132,13 @@ const Form0 = ({ onNextStep }) => {
         console.log("Dados do formulário:", {
           nome,
           cidade,
+          valorEstimado,
+          potenciaModulos,
+          numeroModulos,
         });
-        localStorage.setItem(
-          "form0Data",
-          JSON.stringify({ nome, cidade })
-        );
-        fetchRadiacao(); // Chamada da API após a validação
-        onNextStep();
+        armazenarValorEstimado();
+        fetchRadiacao();
+        enviarDadosParaAPI();
       })
       .catch((err) => {
         const validationErrors = {};
@@ -83,16 +149,30 @@ const Form0 = ({ onNextStep }) => {
       });
   };
 
+  const handleNext2 = () => {
+    onNextStep();
+  };
+
   useEffect(() => {
-    calcularValorEstimado(); // Recalcular o valor estimado sempre que a radiação for atualizada
-  }, [radiacao]);
+    calcularValorEstimado();
+  }, [radiacao, potenciaModulos, numeroModulos]);
+
+  useEffect(() => {
+    fetchRadiacao();
+  }, [cidade]);
 
   return (
-    <Container maxWidth="sm">
-      <Grid item sx={{ marginRight: "10px" }}>
-        <img src="Maya.png" alt="Descrição da imagem" />
-      </Grid>
+    <Container
+      maxWidth="sm"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
       <Grid container spacing={2}>
+        <img src="Maya.png" alt="Descrição da imagem" />
         <Grid item xs={12}>
           <Typography fontWeight="bold" variant="h5" align="center">
             Formulário Cadastral
@@ -121,22 +201,57 @@ const Form0 = ({ onNextStep }) => {
           />
         </Grid>
         <Grid item xs={12}>
+          <TextField
+            label="Potência dos módulos(KWP)"
+            type="number"
+            value={potenciaModulos}
+            onChange={(event) => setPotenciaModulos(event.target.value)}
+            fullWidth
+            margin="normal"
+            error={!!errors.potenciaModulos}
+            helperText={errors.potenciaModulos}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Número de módulos"
+            type="number"
+            value={numeroModulos}
+            onChange={(event) => setNumeroModulos(event.target.value)}
+            fullWidth
+            margin="normal"
+            error={!!errors.numeroModulos}
+            helperText={errors.numeroModulos}
+          />
+        </Grid>
+        <Grid item xs={12}>
           <Button
             variant="contained"
             color="primary"
-            onClick={handleNext}
+            onClick={handleNext2}
             fullWidth
           >
             Próximo
           </Button>
         </Grid>
-        {valorEstimado && (
-          <Grid item xs={12}>
-            <Typography variant="h6" align="center">
-              Valor estimado: R$ {valorEstimado}
-            </Typography>
-          </Grid>
-        )}
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleNext}
+            fullWidth
+          >
+            Gerar Documento
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            Link do Documento:{" "}
+            <a href={documentoLink} target="_blank" rel="noopener noreferrer">
+              {documentoLink}
+            </a>
+          </Typography>
+        </Grid>
       </Grid>
     </Container>
   );

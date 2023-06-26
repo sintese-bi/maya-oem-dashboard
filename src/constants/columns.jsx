@@ -1,7 +1,6 @@
-import { listBrand } from "src/utils/list-brand";
+import { Avatar, Link, Stack, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
-import { Avatar, Button, Link, Stack, Typography } from "@mui/material";
-import { ExitToApp } from "@mui/icons-material";
+import { listBrand } from "src/utils/list-brand";
 
 export const columnsDevices = [
   {
@@ -61,8 +60,8 @@ export const columnsDevices = [
     },
   },
   {
-    name: "generationEstimated",
-    label: "Geração Estimada",
+    name: "generationEstimatedDay",
+    label: "Geração Estimada dia",
     options: {
       filter: true,
       sort: true,
@@ -77,8 +76,24 @@ export const columnsDevices = [
     },
   },
   {
+    name: "generationEstimatedlWeek",
+    label: "Geração Estimada semana",
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+  {
     name: "generationRealWeek",
     label: "Geração real semana",
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+  {
+    name: "generationEstimatedMonth",
+    label: "Geração Estimada mês",
     options: {
       filter: true,
       sort: true,
