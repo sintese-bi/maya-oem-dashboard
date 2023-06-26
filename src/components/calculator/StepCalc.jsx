@@ -745,7 +745,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
             />
           </Grid>
         </div>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Button
             className="buttonSearch"
             onClick={handleSubmit(onSubmit)}
@@ -755,7 +755,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           >
             Confirmar
           </Button>
-        </Grid>
+        </Grid> */}
         <Grid item xs={8}>
           {responseData && (
             <div>
@@ -797,16 +797,35 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           )}
         </Grid>
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            className="buttonSearch"
-            onClick={() => {
-              handlePrevious();
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              maxWidth: "300px",
             }}
-            variant="contained"
-            color="primary"
           >
-            Voltar
-          </Button>
+            <Button
+              className="buttonSearch"
+              onClick={handleSubmit(onSubmit)}
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ flexGrow: 1 }}
+            >
+              Confirmar
+            </Button>
+            <Button
+              className="buttonSearch"
+              onClick={() => {
+                handlePrevious();
+              }}
+              variant="contained"
+              color="primary"
+              style={{ flexGrow: 1 }}
+            >
+              Voltar
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </Box>
