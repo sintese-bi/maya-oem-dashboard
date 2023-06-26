@@ -42,7 +42,7 @@ const Form0 = ({ onNextStep }) => {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
+        `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
           cidade
         )}`
       );
@@ -90,7 +90,7 @@ const Form0 = ({ onNextStep }) => {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `https://app.mayaoem.com.br/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
