@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 // LIBS DE ESTILOS ----------------------------------------
 import {
@@ -32,6 +33,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { listBrand } from 'src/utils/list-brand';
 
 export default function Register() {
+	const { iregister, handleSubmit } = useForm();
 	const theme = createTheme();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -47,7 +49,6 @@ export default function Register() {
 	const brands = listBrand.map((item) => {
 		return { params: item.params, title: item.title, url: item.url };
 	});
-
 	const [requestForm, setRequestForm] = useState({
 		use_password: '',
 		confirmPassword: '',
@@ -57,72 +58,22 @@ export default function Register() {
 		cnh_rg: '',
 		proof: '',
 	});
-
-	// ESTADOS DE VALIDAÇÃO DO FORMULARIO
-	const [validatePassword, setValidatePassword] = useState('');
-	const [validateConfirmPassword, setValidateConfirmPassword] = useState('');
-	const [validateInverterNumbers, setValidateInverterNumbers] = useState('');
-	const [validateBrand, setValidateBrand] = useState('');
-	const [validateBrandLogin, setValidateBrandLogin] = useState([]);
-	const [validateBrandPassword, setValidateBrandPassword] = useState([]);
-
 	// SUBEMETER DADOS PARA A ACTION
-	const handleSubmit = async (event) => {
+	const oldhandleSubmit = async (event) => {
 		event.preventDefault();
 
 		// LIBERANDO ACESSO PARA SUBMETER OS DADOS
-		if (
-			!validatePassword &&
-			!validateConfirmPassword &&
-			!validateInverterNumbers &&
-			validateBrandLogin.length === 0 &&
-			validateBrandPassword.length === 0
-		) {
-			dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid })); // ACTION DE CHECK LOGIN DAS BRAND
-		}
+		// 	if (
+		// 		!validatePassword &&
+		// 		!validateConfirmPassword &&
+		// 		!validateInverterNumbers &&
+		// 		validateBrandLogin.length === 0 &&
+		// 		validateBrandPassword.length === 0
+		// 	) {
+		// 		dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid })); // ACTION DE CHECK LOGIN DAS BRAND
+		// 	}
 	};
-
-	// VALIDAÇÃO FORMULARIO
-	const handleValidate = () => {
-		//  VALIDAÇÃO DO CAMPO DE SENHA -------------------------
-		if (!requestForm.use_password) {
-			setValidatePassword('⚠ O campos de SENHA é obrigatório!');
-		} else if (requestForm.use_password.length < 4 || requestForm.use_password.length > 8) {
-			setValidatePassword('⚠ O campos de SENHA deve ser entre 4 a 8 digitos!');
-		} else {
-			setValidatePassword('');
-		}
-		// VALIDAÇÃO DO CAMPO DE CONFIRMAÇÃO DE SENHA ------------
-		if (!requestForm.confirmPassword) {
-			setValidateConfirmPassword('⚠ O campos de CONFRIMAÇÃO DE SENHA é obrigatório!');
-		} else if (requestForm.use_password !== requestForm.confirmPassword) {
-			setValidateConfirmPassword('⚠ A senha e a confirmação precisam ser iguais!');
-		} else {
-			setValidateConfirmPassword('');
-		}
-		// VALIDAÇÃO DO MUTI SELECT ------------------------------
-		if (requestForm.brand_login.length === 0) {
-			setValidateBrand('⚠ O campos de MARCA DO INVERSOR é obrigatório!');
-		} else {
-			setValidateInverterNumbers('');
-		}
-		// VALIDAÇÃO DOS CAMPOS DE LOGIN & SENHA ---------------------
-		requestForm.brand_login.forEach((bl, blIndex) => {
-			if (!bl.bl_login) {
-				validateBrandLogin[blIndex] = '⚠ O campos de LOGIN é obrigatório!';
-				setValidateBrandLogin(validateBrandLogin);
-			} else {
-				setValidateBrandLogin([]);
-			}
-			if (!bl.bl_password) {
-				validateBrandPassword[blIndex] = '⚠ O campos de SENHA é obrigatório!';
-				setValidateBrandPassword(validateBrandPassword);
-			} else {
-				setValidateBrandPassword([]);
-			}
-		});
-	};
-
+	const onSubmit = () => {};
 	// SETAR VALORES DO OBJETO brand_login
 	const handleSetBrandLogin = (e, index) => {
 		const { name } = e.target;
@@ -149,31 +100,27 @@ export default function Register() {
 
 	// CONTROLE DO SELECT
 	const handleSelect = (item, evt) => {
-		setBrand(item);
-
-		if (evt.action === 'insert') {
-			requestForm.brand_login[item.length - 1] = {
-				bl_name: evt.dataItem.params,
-				bl_login: '',
-				bl_password: '',
-				bl_url: evt.dataItem.url,
-				use_uuid: useUuid,
-			};
-		} else {
-			const position = requestForm.brand_login.findIndex(
-				(bl) => bl.bl_name === evt.dataItem.params
-			);
-			delete requestForm.brand_login[position];
-			delete validateBrandLogin[position];
-			delete validateBrandPassword[position];
-		}
-
-		setValidateBrandLogin(validateBrandLogin);
-		setValidateBrandPassword(validateBrandPassword);
-
-		setRequestForm(requestForm);
-
-		setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
+		// 	setBrand(item);
+		// 	if (evt.action === 'insert') {
+		// 		requestForm.brand_login[item.length - 1] = {
+		// 			bl_name: evt.dataItem.params,
+		// 			bl_login: '',
+		// 			bl_password: '',
+		// 			bl_url: evt.dataItem.url,
+		// 			use_uuid: useUuid,
+		// 		};
+		// 	} else {
+		// 		const position = requestForm.brand_login.findIndex(
+		// 			(bl) => bl.bl_name === evt.dataItem.params
+		// 		);
+		// 		delete requestForm.brand_login[position];
+		// 		delete validateBrandLogin[position];
+		// 		delete validateBrandPassword[position];
+		// 	}
+		// 	setValidateBrandLogin(validateBrandLogin);
+		// 	setValidateBrandPassword(validateBrandPassword);
+		// 	setRequestForm(requestForm);
+		// 	setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
 	};
 
 	// ----------------------------------------
@@ -283,10 +230,12 @@ export default function Register() {
 						flexDirection={'column'}
 						marginX={'26px'}
 						height={'854px'}
-						style={{ overflow: 'auto' }}>
+						style={{ overflow: 'auto' }}
+						justifyContent={'space-around'}>
 						<Typography
 							component="h1"
-							variant="h5">
+							variant="h5"
+							color={theme.palette.info.main}>
 							Registro para acesso ao Dashboard
 						</Typography>
 						{/* CARREGANDO REQUISIÇÃO DE SHOW */}
@@ -300,7 +249,7 @@ export default function Register() {
 							<Box
 								component="form"
 								noValidate
-								onSubmit={handleSubmit}
+								onSubmit={handleSubmit(onSubmit)}
 								sx={{ mt: 3, p: 3 }}>
 								<Grid
 									container
@@ -311,7 +260,8 @@ export default function Register() {
 										<Divider variant="middle">
 											<Typography
 												component="p"
-												variant="p">
+												variant="p"
+												color={theme.palette.info.main}>
 												Dados Pessoais
 											</Typography>
 										</Divider>
@@ -335,27 +285,35 @@ export default function Register() {
 										name="use_password"
 										helpText="Crie sua senha de acesso ao Dashboard"
 										label="Senha"
-										error={validatePassword}
 										fieldProps={{
 											required: true,
 											type: 'password',
 											onChange: (evt) => {
 												handleSetForm(evt);
-												setValidatePassword('');
 											},
 										}}
 									/>
 									<FormField
 										name="confirmPassword"
 										label="Confirmação de senha"
-										error={validateConfirmPassword}
 										fieldProps={{
 											required: true,
 											type: 'password',
 											onChange: (evt) => {
 												handleSetForm(evt);
-												setValidateConfirmPassword('');
 											},
+										}}
+									/>
+
+									<FormField
+										name="proof"
+										helpText="Envie um comprovante de endereço atualizado para a validação do registro."
+										label="Comprovante Endereço"
+										fieldProps={{
+											type: 'file',
+											multiple: true,
+											required: true,
+											onChange: handleDocument,
 										}}
 									/>
 
@@ -370,17 +328,6 @@ export default function Register() {
 											onChange: handleDocument,
 										}}
 									/>
-									<FormField
-										name="proof"
-										helpText="Envie um comprovante de endereço atualizado para a validação do registro."
-										label="Comprovante Endereço"
-										fieldProps={{
-											type: 'file',
-											multiple: true,
-											required: true,
-											onChange: handleDocument,
-										}}
-									/>
 
 									<Grid
 										item
@@ -388,7 +335,8 @@ export default function Register() {
 										<Divider variant="middle">
 											<Typography
 												component="p"
-												variant="p">
+												variant="p"
+												color={theme.palette.info.main}>
 												Informações Técnicas
 											</Typography>
 										</Divider>
@@ -398,7 +346,6 @@ export default function Register() {
 										name="proof"
 										helpText="Insira no local abaixo as marcas de inversores que você possui."
 										label="Selecione a(s) marca(s) do(s) inversor(es)"
-										error={validateBrand}
 										fieldProps={{
 											type: 'select',
 											dataKey: 'params',
@@ -408,7 +355,6 @@ export default function Register() {
 											name: 'brand',
 											onChange: (item, evt) => {
 												handleSelect(item, evt);
-												setValidateBrand('');
 											},
 										}}
 										fullWidth
@@ -451,23 +397,19 @@ export default function Register() {
 														<FormField
 															name={'bl_login'}
 															label="Login"
-															error={validateBrandLogin[index]}
 															fieldProps={{
 																onChange: (evt) => {
 																	handleSetBrandLogin(evt, index);
-																	setValidateBrandLogin([]);
 																},
 															}}
 														/>
 														<FormField
 															name={'bl_password'}
 															label="Senha"
-															error={validateBrandPassword[index]}
 															fieldProps={{
 																type: 'password',
 																onChange: (evt) => {
 																	handleSetBrandLogin(evt, index);
-																	setValidateBrandPassword([]);
 																},
 															}}
 														/>
@@ -502,14 +444,17 @@ export default function Register() {
 									)}
 								</Grid>
 
-								<Box sx={{ m: 1, position: 'relative' }}>
+								<Box
+									sx={{ m: 1, position: 'relative' }}
+									justifyContent={'center'}
+									display={'flex'}>
 									<Button
 										type="submit"
-										fullWidth
 										variant="contained"
-										sx={{ mt: 1 }}
+										sx={{ mt: 1, px: 5, fontSize: '1rem', fontWeight: '800' }}
 										disabled={loadingRegister}
-										onClick={handleValidate}>
+										// onClick={handleValidate}
+									>
 										Confirmar
 									</Button>
 								</Box>
