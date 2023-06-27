@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 // LIBS DE ESTILOS ----------------------------------------
 import {
@@ -49,30 +50,57 @@ export default function Register() {
 	const brands = listBrand.map((item) => {
 		return { params: item.params, title: item.title, url: item.url };
 	});
+
+	// const brandsSchema = yup.object().shape({
+	// 	login: yup.string().required('O login é obrigatório'),
+	// 	password: yup.min(2, 'A senha deve ter pelo menos 2 caracteres').required('Senha obrigatória'),
+	// });
+
+	// const userValidationSchema = yup.object().shape({
+	// 	name: yup.string(),
+	// 	email: yup.string().email(),
+	// 	password: yup
+	// 		.string()
+	// 		.trim()
+	// 		.required('Senha obrigatória')
+	// 		.min(6, 'A senha deve ter pelo menos 6 caracteres'),
+	// 	confirmPassword: yup
+	// 		.string()
+	// 		.trim()
+	// 		.required('Confirmação de senha obrigatória')
+	// 		.oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
+	// 	cnh_rg: yup.mixed().required('É necessário adicionar o comprovante para validação'),
+	// 	address_proof: yup.mixed().required('É necessário adicionar documentos para validação'),
+	// 	brands: yup.array().of(brandsSchema).min(1, 'Selecionar a marca dos inversores é obrigatório.'),
+	// });
+
 	const [requestForm, setRequestForm] = useState({
 		use_password: '',
 		confirmPassword: '',
-		use_wifi: false,
-		use_inverter_numbers: null,
 		brand_login: [],
 		cnh_rg: '',
 		proof: '',
 	});
-	// SUBEMETER DADOS PARA A ACTION
-	const oldhandleSubmit = async (event) => {
-		event.preventDefault();
 
-		// LIBERANDO ACESSO PARA SUBMETER OS DADOS
-		// 	if (
-		// 		!validatePassword &&
-		// 		!validateConfirmPassword &&
-		// 		!validateInverterNumbers &&
-		// 		validateBrandLogin.length === 0 &&
-		// 		validateBrandPassword.length === 0
-		// 	) {
-		// 		dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid })); // ACTION DE CHECK LOGIN DAS BRAND
-		// 	}
-	};
+	// SUBEMETER DADOS PARA A ACTION
+	// const oldhandleSubmit = async (event) => {
+	// 	event.preventDefault();
+
+	// 	//	LIBERANDO ACESSO PARA SUBMETER OS DADOS
+	// 	// 		if (
+	// 	// 			!validatePassword &&
+	// 	// 			!validateConfirmPassword &&
+	// 	// 			!validateInverterNumbers &&
+	// 	// 			validateBrandLogin.length === 0 &&
+	// 	// 			validateBrandPassword.length === 0
+	// 	// 		) {
+	// 	// 			dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid })); // ACTION DE CHECK LOGIN DAS BRAND
+
+	// 	try {
+	// 		await userValidationSchema.validate(requestForm, { abortEarly: false });
+	// 		dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid }));
+	// 	} catch (error) {}
+	// };
 	const onSubmit = () => {};
 	// SETAR VALORES DO OBJETO brand_login
 	const handleSetBrandLogin = (e, index) => {
@@ -100,27 +128,27 @@ export default function Register() {
 
 	// CONTROLE DO SELECT
 	const handleSelect = (item, evt) => {
-		// 	setBrand(item);
-		// 	if (evt.action === 'insert') {
-		// 		requestForm.brand_login[item.length - 1] = {
-		// 			bl_name: evt.dataItem.params,
-		// 			bl_login: '',
-		// 			bl_password: '',
-		// 			bl_url: evt.dataItem.url,
-		// 			use_uuid: useUuid,
-		// 		};
-		// 	} else {
-		// 		const position = requestForm.brand_login.findIndex(
-		// 			(bl) => bl.bl_name === evt.dataItem.params
-		// 		);
-		// 		delete requestForm.brand_login[position];
-		// 		delete validateBrandLogin[position];
-		// 		delete validateBrandPassword[position];
-		// 	}
-		// 	setValidateBrandLogin(validateBrandLogin);
-		// 	setValidateBrandPassword(validateBrandPassword);
-		// 	setRequestForm(requestForm);
-		// 	setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
+		// setBrand(item);
+		// if (evt.action === 'insert') {
+		// 	requestForm.brand_login[item.length - 1] = {
+		// 		bl_name: evt.dataItem.params,
+		// 		bl_login: '',
+		// 		bl_password: '',
+		// 		bl_url: evt.dataItem.url,
+		// 		use_uuid: useUuid,
+		// 	};
+		// } else {
+		// 	const position = requestForm.brand_login.findIndex(
+		// 		(bl) => bl.bl_name === evt.dataItem.params
+		// 	);
+		// 	delete requestForm.brand_login[position];
+		// 	delete validateBrandLogin[position];
+		// 	delete validateBrandPassword[position];
+		// }
+		// setValidateBrandLogin(validateBrandLogin);
+		// setValidateBrandPassword(validateBrandPassword);
+		// setRequestForm(requestForm);
+		// setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
 	};
 
 	// ----------------------------------------
@@ -342,7 +370,7 @@ export default function Register() {
 										</Divider>
 									</Grid>
 
-									<FormField
+									{/* <FormField
 										name="proof"
 										helpText="Insira no local abaixo as marcas de inversores que você possui."
 										label="Selecione a(s) marca(s) do(s) inversor(es)"
@@ -358,6 +386,14 @@ export default function Register() {
 											},
 										}}
 										fullWidth
+									/> */}
+
+									<FormField
+										name="teste"
+										fieldProps={{
+											type: 'multiselect',
+											data: brands,
+										}}
 									/>
 
 									{brand.length !== 0 && (
@@ -374,49 +410,49 @@ export default function Register() {
 												</Divider>
 											</Grid>
 
-											<SwipeableViews
+											{/* <SwipeableViews
 												index={activeStep}
 												onChangeIndex={handleStepChange}
-												enableMouseEvents>
-												{brand.map((item, index) => (
+												enableMouseEvents> */}
+											{brand.map((item, index) => (
+												<Grid
+													container
+													spacing={2}
+													key={index}>
 													<Grid
-														container
-														spacing={2}
-														key={index}>
-														<Grid
-															item
-															xs={12}
-															sx={{ mt: 3 }}>
-															<Typography
-																component="b"
-																variant="b">
-																{item.title}
-															</Typography>
-														</Grid>
-
-														<FormField
-															name={'bl_login'}
-															label="Login"
-															fieldProps={{
-																onChange: (evt) => {
-																	handleSetBrandLogin(evt, index);
-																},
-															}}
-														/>
-														<FormField
-															name={'bl_password'}
-															label="Senha"
-															fieldProps={{
-																type: 'password',
-																onChange: (evt) => {
-																	handleSetBrandLogin(evt, index);
-																},
-															}}
-														/>
+														item
+														xs={12}
+														sx={{ mt: 3 }}>
+														<Typography
+															component="b"
+															variant="b">
+															{item.title}
+														</Typography>
 													</Grid>
-												))}
-											</SwipeableViews>
 
+													<FormField
+														name={'bl_login'}
+														label="Login"
+														fieldProps={{
+															onChange: (evt) => {
+																handleSetBrandLogin(evt, index);
+															},
+														}}
+													/>
+													<FormField
+														name={'bl_password'}
+														label="Senha"
+														fieldProps={{
+															type: 'password',
+															onChange: (evt) => {
+																handleSetBrandLogin(evt, index);
+															},
+														}}
+													/>
+												</Grid>
+											))}
+
+											{/* </SwipeableViews>
 											<MobileStepper
 												steps={maxSteps}
 												position="static"
@@ -439,13 +475,12 @@ export default function Register() {
 														Voltar
 													</Button>
 												}
-											/>
+											/> */}
 										</Box>
 									)}
 								</Grid>
-
 								<Box
-									sx={{ m: 1, position: 'relative' }}
+									sx={{ m: 1 }}
 									justifyContent={'center'}
 									display={'flex'}>
 									<Button
