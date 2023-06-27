@@ -58,12 +58,11 @@ const Form0 = ({ onNextStep }) => {
   };
 
   const calcularValorEstimado = () => {
-    if (radiacao !== null && potenciaModulos !== "" && numeroModulos !== "") {
+    if (radiacao !== null && potenciaModulos !== "") {
       const eficienciaModulos = 0.8;
       const dias = 30;
 
-      const estimada =
-        radiacao * potenciaModulos * numeroModulos * dias * eficienciaModulos;
+      const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
       const valorEstimadoFormatado = estimada.toFixed(2);
       setValorEstimado(valorEstimadoFormatado);
       setEstimada(estimada);
