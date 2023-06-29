@@ -20,7 +20,7 @@ const Form0 = ({ onNextStep }) => {
     potenciaModulos: yup
       .number()
       .required("Campo obrigatório")
-      .positive("O valor deve ser positivo"),
+      .positive("O valor deve ser positivo"), 
     numeroModulos: yup
       .number()
       .required("Campo obrigatório")
@@ -42,9 +42,7 @@ const Form0 = ({ onNextStep }) => {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
-          cidade
-        )}`
+        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -89,7 +87,7 @@ const Form0 = ({ onNextStep }) => {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `http://localhost:8080/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
