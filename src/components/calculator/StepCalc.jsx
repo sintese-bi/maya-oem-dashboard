@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import * as yup from "yup";
 import axios from "axios";
 
 import {
@@ -16,15 +16,15 @@ import { useForm } from "react-hook-form";
 
 import InputMask from "react-input-mask";
 
-function MaskedTextField(props) {
-  const { mask, placeholder, ...rest } = props;
+// function MaskedTextField(props) {
+//   const { mask, placeholder, ...rest } = props;
 
-  return (
-    <InputMask mask={mask} placeholder={placeholder} {...rest}>
-      {(inputProps) => <TextField {...inputProps} />}
-    </InputMask>
-  );
-}
+//   return (
+//     <InputMask mask={mask} placeholder={placeholder} {...rest}>
+//       {(inputProps) => <TextField {...inputProps} />}
+//     </InputMask>
+//   );
+// }
 
 export default function StepTypeOfEntitie({ onPreviousStep }) {
   const {
@@ -44,6 +44,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const handlePrevious = () => {
     onPreviousStep();
   };
+  const [showSecondButton, setShowSecondButton] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       if (input === "") {
@@ -82,12 +84,11 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
     // Remove letras e vírgulas do valor do campo
     event.target.value = event.target.value.replace(/[^0-9.]/g, "");
   };
+ 
   //Use state  do CEP
   const [cepInput, setCepInput] = useState("");
 
-  const handleCepInputChange = (event) => {
-    setCepInput(event.target.value);
-  };
+
   //Construindo o "usestate" do tipo de plano
   const [selectedPlan, setSelectedPlan] = useState("");
   const handlePlanChange = (event) => {
@@ -103,6 +104,176 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const modChange = (event) => {
     setmodQuant(event.target.value);
   };
+  //Inserção
+  const [nome, setNome] = useState("");
+  const [cidade, setCidade] = useState("");
+  // const [errors, setErrors] = useState({});
+  const [radiacao, setRadiacao] = useState(null);
+  const [valorEstimado, setValorEstimado] = useState(null);
+  const [potenciaModulos, setPotenciaModulos] = useState("");
+  const [numeroModulos, setNumeroModulos] = useState("");
+  const [estimada, setEstimada] = useState(null);
+  const [documentoLink, setDocumentoLink] = useState("");
+
+  const validationSchema = yup.object().shape({
+    nome: yup.string().required("Campo obrigatório"),
+    cidade: yup.string().required("Campo obrigatório"),
+    potenciaModulos: yup
+      .number()
+      .required("Campo obrigatório")
+      .positive("O valor deve ser positivo"),
+    numeroModulos: yup
+      .number()
+      .required("Campo obrigatório")
+      .positive("O valor deve ser positivo"),
+  });
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("form0Data");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setNome(parsedData.nome || "");
+      setCidade(parsedData.cidade || "");
+      setValorEstimado(parsedData.valorEstimado || null);
+      setPotenciaModulos(parsedData.potenciaModulos || "");
+      setNumeroModulos(parsedData.numeroModulos || "");
+    }
+  }, []);
+
+  const fetchRadiacao = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
+      );
+      const data = response.data;
+      if (data && data.ic_yearly) {
+        setRadiacao(data.ic_yearly);
+      } else {
+        setRadiacao(0);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const calcularValorEstimado = () => {
+    if (radiacao !== null && potenciaModulos !== "") {
+      const eficienciaModulos = 0.8;
+      const dias = 30;
+
+      const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
+      const valorEstimadoFormatado = estimada.toFixed(2);
+      setValorEstimado(valorEstimadoFormatado);
+      setEstimada(estimada);
+    }
+  };
+
+  const armazenarValorEstimado = () => {
+    localStorage.setItem(
+      "form0Data",
+      JSON.stringify({
+        nome,
+        cidade,
+        valorEstimado,
+        potenciaModulos,
+        numeroModulos,
+        clientGenWMaya: estimada,
+        EffValue: estimada * 0.3,
+      })
+    );
+  };
+
+  const enviarDadosParaAPI = async (apiResponse,segPlanGigaValue) => {
+    try {
+      const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleDateString();
+      let clientKilo = "NA";
+      let clientMega = "NA";
+      let clientGiga = "NA";
+
+      if (segPlanGigaValue === "KILOWATT") {
+        clientKilo = apiResponse.month;
+      } else if (segPlanGigaValue === "MEGAWATT") {
+        clientMega = apiResponse.month;
+      } else if (segPlanGigaValue === "GIGAWATT") {
+        clientGiga = apiResponse.month;
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        {
+          clientPot: potenciaModulos,
+          clientEstimated: valorEstimado,
+          clientFirstName: nome,
+          clientCity: cidade,
+          clientModNum: numeroModulos,
+          clientGenWMaya: estimada.toFixed(2),
+          clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+          EffValue: (estimada * 0.3).toFixed(2),
+          clientData: formattedDate,
+          clientKilo: clientKilo,
+          clientMega: clientMega,
+          clientGiga: clientGiga,
+        },
+        {
+          headers: {
+            Authorization: `API-Key ${apiKey}`,
+            accept: "application/json",
+            "content-type": "application/json",
+          },
+        }
+      );
+
+      setDocumentoLink(response.data.recipients[0].shared_link);
+      // console.log("Dados enviados para a API:", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleNext = () => {
+    validationSchema
+      .validate(
+        {
+          nome,
+          cidade,
+          potenciaModulos,
+          numeroModulos,
+        },
+        { abortEarly: false }
+      )
+      .then(() => {
+        console.log("Dados do formulário:", {
+          nome,
+          cidade,
+          valorEstimado,
+          potenciaModulos,
+          numeroModulos,
+        });
+        armazenarValorEstimado();
+        fetchRadiacao();
+      })
+      .catch((err) => {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+        // setErrors(validationErrors);
+      });
+  };
+
+  // const handleNext2 = () => {
+  //   onNextStep();
+  // };
+
+  useEffect(() => {
+    calcularValorEstimado();
+  }, [radiacao, potenciaModulos, numeroModulos]);
+
+  useEffect(() => {
+    fetchRadiacao();
+  }, [cidade]);
+
   const onSubmit = (data) => {
     const formData = {
       tbl_ref: {
@@ -150,10 +321,10 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         capex_seg_giga: [parseFloat(data.capex_seg_giga[0]) / 100],
       },
 
-      user_pot: parseFloat(data.user_pot),
-      user_check: data.user_check,
-      user_nModulos: parseFloat(data.user_nModulos),
-      user_potModulo: parseFloat(data.user_potModulo),
+      user_pot: parseFloat(data.potenciaModulos),
+      user_check: "n",
+      user_nModulos: parseFloat(data.numeroModulos),
+      user_potModulo: 0,
       user_height: parseFloat(selectedHeight),
       user_gasPrice: parseFloat(data.user_gasPrice),
       user_assina: String(selectedPlan),
@@ -175,13 +346,15 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
 
     const json = JSON.stringify(formData);
     console.log(json);
-
+    const segPlanGigaValue = String(selectedPlan);
     axios
       .post("https://calc.mayaoem.com.br/api/v2/cal-mrkp/", formData)
       .then((response) => {
         // Manipule a resposta da API conforme necessário
         console.log(response.data);
+        let apiResponse = response.data;
         setResponseData(response.data);
+        enviarDadosParaAPI(apiResponse,segPlanGigaValue);
       })
       .catch((error) => {
         // Manipule erros na solicitação
@@ -202,6 +375,15 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
     >
       <Grid item sx={{ marginRight: "10px" }}>
         <img src="Maya.png" alt="Descrição da imagem" />
+      </Grid>
+      <Grid
+        item
+        container
+        alignItems="center"
+        justifyContent="center"
+        style={{ fontSize: "35px", fontWeight: "bold" }} // Ajuste o tamanho da fonte conforme necessário
+      >
+        Proposta e Calculadora de Orçamento
       </Grid>
       <Grid
         container
@@ -521,6 +703,53 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       </Grid>
       <Grid container spacing={2}>
         <Grid item xs={6}>
+          <div
+            style={{ display: "flex", flexDirection: "column", width: "200px" }}
+          >
+            <TextField
+              label="Nome do cliente"
+              value={nome}
+              onChange={(event) => setNome(event.target.value)}
+              fullWidth={false}
+              margin="normal"
+              error={!!errors.nome}
+              helperText={errors.nome}
+            />
+            <TextField
+              label="Cidade"
+              value={cidade}
+              onChange={(event) => setCidade(event.target.value)}
+              fullWidth={false}
+              margin="normal"
+              error={!!errors.cidade}
+              helperText={errors.cidade}
+              required
+            />
+            <>
+              <TextField
+                label="Potência da Usina(em kWp)"
+                type="number"
+                value={potenciaModulos}
+                {...register("potenciaModulos", { pattern: /^[0-9,.]*$/i })}
+                onChange={(event) => setPotenciaModulos(event.target.value)}
+                fullWidth
+                margin="normal"
+                error={!!errors.potenciaModulos}
+                helperText={errors.potenciaModulos}
+              />
+            </>
+            <TextField
+              label="Número de módulos"
+              type="number"
+              value={numeroModulos}
+              {...register("numeroModulos", { pattern: /^[0-9,.]*$/i })}
+              onChange={(event) => setNumeroModulos(event.target.value)}
+              fullWidth
+              margin="normal"
+              error={!!errors.numeroModulos}
+              helperText={errors.numeroModulos}
+            />
+          </div>
           <Typography
             fontWeight="bold"
             color="#1A1A2E"
@@ -551,76 +780,22 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
               Por favor, selecione um plano.
             </Typography>
           )}
-        </Grid>
-
-        <Grid item xs={6}>
           <Typography
             fontWeight="bold"
             color="#1A1A2E"
             variant="subtitle2"
             sx={{ fontSize: "20px" }}
           >
-            O cliente sabe a quantidade de módulos e a respectiva potência
-            desses módulos?
+            <strong>CEP da Usina do Cliente</strong>
           </Typography>
-          <RadioGroup
-            value={modQuant}
-            onChange={modChange}
-            sx={{ flexDirection: "row" }}
-          >
-            <FormControlLabel
-              value="y"
-              control={
-                <Radio {...register("user_check", { required: true })} />
-              }
-              label="Sim"
-            />
-            <FormControlLabel
-              value="n"
-              control={<Radio {...register("user_check")} />}
-              label="Não"
-            />
-          </RadioGroup>
-          {modQuant === "" && (
-            <Typography variant="subtitle2" color="error">
-              Por favor, selecione "Sim" ou "Não".
-            </Typography>
-          )}
-          <>
-            <TextField
-              defaultValue="0"
-              size="small"
-              sx={{ width: "170px", marginBottom: "10px" }}
-              {...register("user_nModulos", { pattern: /^[0-9,.]*$/i })}
-              fullWidth
-              label="Número de Módulos"
-              required
-              disabled={watch("user_check") === "n"}
-            />
-            <TextField
-              defaultValue="0"
-              size="small"
-              sx={{ width: "170px", marginBottom: "10px" }}
-              {...register("user_potModulo", { pattern: /^[0-9,.]*$/i })}
-              fullWidth
-              label="Potência dos módulos (em kWp)"
-              required
-              disabled={watch("user_check") === "n"}
-            />
-          </>
-
-          <>
-            <TextField
-              defaultValue="0"
-              size="small"
-              sx={{ width: "170px" }}
-              {...register("user_pot", { pattern: /^[0-9,.]*$/i })}
-              fullWidth
-              label="Potência da Usina (em kWp)"
-              required
-              disabled={watch("user_check") === "y"}
-            />
-          </>
+          <TextField
+            variant="outlined"
+            label="Digite seu CEP"
+            {...register("cep")}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            required
+          />
         </Grid>
 
         <Grid item xs={6}>
@@ -674,24 +849,6 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
             />
           </Grid>
         </div>
-        <Grid item xs={6}>
-          <Typography
-            fontWeight="bold"
-            color="#1A1A2E"
-            variant="subtitle2"
-            sx={{ fontSize: "20px" }}
-          >
-            <strong>CEP da Usina do Cliente</strong>
-          </Typography>
-          <TextField
-            variant="outlined"
-            label="Digite seu CEP"
-            {...register("cep")}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            required
-          />
-        </Grid>
 
         <div
           style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
@@ -804,17 +961,31 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
               maxWidth: "300px",
             }}
           >
-            <Button
-              className="buttonSearch"
-              onClick={handleSubmit(onSubmit)}
-              type="submit"
-              variant="contained"
-              color="primary"
-              style={{ flexGrow: 1 }}
-            >
-              Confirmar
-            </Button>
-            <Button
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                onClick={handleNext}
+                fullWidth
+              >
+                Valor do Plano e Geração do Documento
+              </Button>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Link do Documento:{" "}
+                <a
+                  href={documentoLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {documentoLink}
+                </a>
+              </Typography>
+            </Grid>
+            {/* <Button
               className="buttonSearch"
               onClick={() => {
                 handlePrevious();
@@ -824,7 +995,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
               style={{ flexGrow: 1 }}
             >
               Voltar
-            </Button>
+            </Button> */}
           </div>
         </Grid>
       </Grid>
