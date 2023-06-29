@@ -15,8 +15,6 @@ import {
 	ListItemText,
 	TextField,
 	Tooltip,
-	Checkbox,
-	Autocomplete,
 } from '@mui/material';
 import { theme } from 'src/theme';
 
@@ -44,7 +42,6 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 	const handlePasswordVisibility = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 	};
-	const displayLoginInfos = () => {};
 	const renderInput = () => {
 		if (fieldProps.type === 'select') {
 			return (
@@ -103,41 +100,6 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 						</List>
 					) : null}
 				</>
-			);
-		}
-
-		if (fieldProps.type === 'multiselect') {
-			return (
-				<Box
-					height="inherit"
-					width="inherit">
-					<Autocomplete
-						multiple
-						id="checkboxes-tags"
-						options={fieldProps.data}
-						disableCloseOnSelect
-						getOptionLabel={(option) => option.title}
-						renderOption={(props, option, { selected }) => (
-							<li {...props}>
-								<Checkbox
-									icon={icon}
-									checkedIcon={checkedIcon}
-									style={{ marginRight: 8 }}
-									checked={selected}
-								/>
-								{option.title}
-							</li>
-						)}
-						style={{ width: '30rem', height: '2.8125rem' }}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								label="Selecione a(s) marca(s) do(s) inversor(es)"
-								placeholder="Marca"
-							/>
-						)}
-					/>
-				</Box>
 			);
 		}
 

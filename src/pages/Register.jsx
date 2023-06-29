@@ -45,34 +45,37 @@ export default function Register() {
 
 	const useUuid = 'a7ed2d10-4340-43df-824d-63ca16979114';
 	const [brand, setBrand] = useState([]);
-
+	const [validateBrand, setValidateBrand] = useState('');
 	// LISTAGEM DAS BRAND PARA O MULTI SELECT
 	const brands = listBrand.map((item) => {
 		return { params: item.params, title: item.title, url: item.url };
 	});
 
-	// const brandsSchema = yup.object().shape({
-	// 	login: yup.string().required('O login é obrigatório'),
-	// 	password: yup.min(2, 'A senha deve ter pelo menos 2 caracteres').required('Senha obrigatória'),
-	// });
+	const brandsSchema = yup.object().shape({
+		login: yup.string().required('O login é obrigatório'),
+		password: yup
+			.string()
+			.min(2, 'A senha deve ter pelo menos 2 caracteres')
+			.required('Senha obrigatória'),
+	});
 
-	// const userValidationSchema = yup.object().shape({
-	// 	name: yup.string(),
-	// 	email: yup.string().email(),
-	// 	password: yup
-	// 		.string()
-	// 		.trim()
-	// 		.required('Senha obrigatória')
-	// 		.min(6, 'A senha deve ter pelo menos 6 caracteres'),
-	// 	confirmPassword: yup
-	// 		.string()
-	// 		.trim()
-	// 		.required('Confirmação de senha obrigatória')
-	// 		.oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
-	// 	cnh_rg: yup.mixed().required('É necessário adicionar o comprovante para validação'),
-	// 	address_proof: yup.mixed().required('É necessário adicionar documentos para validação'),
-	// 	brands: yup.array().of(brandsSchema).min(1, 'Selecionar a marca dos inversores é obrigatório.'),
-	// });
+	const userValidationSchema = yup.object().shape({
+		name: yup.string(),
+		email: yup.string().email(),
+		password: yup
+			.string()
+			.trim()
+			.required('Senha obrigatória')
+			.min(6, 'A senha deve ter pelo menos 6 caracteres'),
+		confirmPassword: yup
+			.string()
+			.trim()
+			.required('Confirmação de senha obrigatória')
+			.oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
+		cnh_rg: yup.mixed().required('É necessário adicionar o comprovante para validação'),
+		address_proof: yup.mixed().required('É necessário adicionar documentos para validação'),
+		brands: yup.array().of(brandsSchema).min(1, 'Selecionar a marca dos inversores é obrigatório.'),
+	});
 
 	const [requestForm, setRequestForm] = useState({
 		use_password: '',
@@ -128,27 +131,24 @@ export default function Register() {
 
 	// CONTROLE DO SELECT
 	const handleSelect = (item, evt) => {
-		// setBrand(item);
-		// if (evt.action === 'insert') {
-		// 	requestForm.brand_login[item.length - 1] = {
-		// 		bl_name: evt.dataItem.params,
-		// 		bl_login: '',
-		// 		bl_password: '',
-		// 		bl_url: evt.dataItem.url,
-		// 		use_uuid: useUuid,
-		// 	};
-		// } else {
-		// 	const position = requestForm.brand_login.findIndex(
-		// 		(bl) => bl.bl_name === evt.dataItem.params
-		// 	);
-		// 	delete requestForm.brand_login[position];
-		// 	delete validateBrandLogin[position];
-		// 	delete validateBrandPassword[position];
-		// }
-		// setValidateBrandLogin(validateBrandLogin);
-		// setValidateBrandPassword(validateBrandPassword);
-		// setRequestForm(requestForm);
-		// setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
+		setBrand(item);
+		if (evt.action === 'insert') {
+			requestForm.brand_login[item.length - 1] = {
+				bl_name: evt.dataItem.params,
+				bl_login: '',
+				bl_password: '',
+				bl_url: evt.dataItem.url,
+				use_uuid: useUuid,
+			};
+		} else {
+			const position = requestForm.brand_login.findIndex(
+				(bl) => bl.bl_name === evt.dataItem.params
+			);
+			delete requestForm.brand_login[position];
+		}
+
+		setRequestForm(requestForm);
+		setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
 	};
 
 	// ----------------------------------------
@@ -370,7 +370,7 @@ export default function Register() {
 										</Divider>
 									</Grid>
 
-									{/* <FormField
+									<FormField
 										name="proof"
 										helpText="Insira no local abaixo as marcas de inversores que você possui."
 										label="Selecione a(s) marca(s) do(s) inversor(es)"
@@ -383,99 +383,100 @@ export default function Register() {
 											name: 'brand',
 											onChange: (item, evt) => {
 												handleSelect(item, evt);
+												setValidateBrand('');
 											},
 										}}
 										fullWidth
-									/> */}
-
-									<FormField
-										name="teste"
-										fieldProps={{
-											type: 'multiselect',
-											data: brands,
-										}}
 									/>
 
 									{brand.length !== 0 && (
 										<Box sx={{ p: 3 }}>
 											<Grid
 												item
-												xs={12}>
-												<Divider variant="middle">
-													<Typography
-														component="p"
-														variant="p">
-														Informe o login e senha das marcas
-													</Typography>
-												</Divider>
-											</Grid>
+												xs={12}></Grid>
 
-											{/* <SwipeableViews
-												index={activeStep}
-												onChangeIndex={handleStepChange}
-												enableMouseEvents> */}
-											{brand.map((item, index) => (
-												<Grid
-													container
-													spacing={2}
-													key={index}>
+											{brand.length !== 0 && (
+												<Box sx={{ p: 3 }}>
 													<Grid
 														item
-														xs={12}
-														sx={{ mt: 3 }}>
-														<Typography
-															component="b"
-															variant="b">
-															{item.title}
-														</Typography>
+														xs={12}>
+														<Divider variant="middle">
+															<Typography
+																component="p"
+																variant="p">
+																Informe o login e senha das marcas
+															</Typography>
+														</Divider>
 													</Grid>
 
-													<FormField
-														name={'bl_login'}
-														label="Login"
-														fieldProps={{
-															onChange: (evt) => {
-																handleSetBrandLogin(evt, index);
-															},
-														}}
-													/>
-													<FormField
-														name={'bl_password'}
-														label="Senha"
-														fieldProps={{
-															type: 'password',
-															onChange: (evt) => {
-																handleSetBrandLogin(evt, index);
-															},
-														}}
-													/>
-												</Grid>
-											))}
+													<SwipeableViews
+														index={activeStep}
+														onChangeIndex={handleStepChange}
+														enableMouseEvents>
+														{brand.map((item, index) => (
+															<Grid
+																container
+																spacing={2}
+																key={index}>
+																<Grid
+																	item
+																	xs={12}
+																	sx={{ mt: 3 }}>
+																	<Typography
+																		component="b"
+																		variant="b">
+																		{item.title}
+																	</Typography>
+																</Grid>
 
-											{/* </SwipeableViews>
-											<MobileStepper
-												steps={maxSteps}
-												position="static"
-												activeStep={activeStep}
-												nextButton={
-													<Button
-														size="small"
-														onClick={handleNext}
-														disabled={activeStep === maxSteps - 1}>
-														Próximo
-														<KeyboardArrowRight />
-													</Button>
-												}
-												backButton={
-													<Button
-														size="small"
-														onClick={handleBack}
-														disabled={activeStep === 0}>
-														<KeyboardArrowLeft />
-														Voltar
-													</Button>
-												}
-											/> */}
+																<FormField
+																	name={'bl_login'}
+																	label="Login"
+																	fieldProps={{
+																		onChange: (evt) => {
+																			handleSetBrandLogin(evt, index);
+																		},
+																	}}
+																/>
+																<FormField
+																	name={'bl_password'}
+																	label="Senha"
+																	fieldProps={{
+																		type: 'password',
+																		onChange: (evt) => {
+																			handleSetBrandLogin(evt, index);
+																		},
+																	}}
+																/>
+															</Grid>
+														))}
+													</SwipeableViews>
+
+													<MobileStepper
+														steps={maxSteps}
+														position="static"
+														activeStep={activeStep}
+														nextButton={
+															<Button
+																size="small"
+																onClick={handleNext}
+																disabled={activeStep === maxSteps - 1}>
+																Próximo
+																<KeyboardArrowRight />
+															</Button>
+														}
+														backButton={
+															<Button
+																size="small"
+																onClick={handleBack}
+																disabled={activeStep === 0}>
+																<KeyboardArrowLeft />
+																Voltar
+															</Button>
+														}
+													/>
+												</Box>
+											)}
 										</Box>
 									)}
 								</Grid>
