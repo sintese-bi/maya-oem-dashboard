@@ -47,10 +47,15 @@ export default function Register() {
 	const useUuid = 'a7ed2d10-4340-43df-824d-63ca16979114';
 	const [brand, setBrand] = useState([]);
 	const [selectedBrands, setSelectedBrands] = useState([]);
-	const [validateBrand, setValidateBrand] = useState('');
 	// LISTAGEM DAS BRAND PARA O MULTI SELECT
 	const brands = listBrand.map((item) => {
-		return { params: item.params, title: item.title, url: item.url };
+		return {
+			params: item.params,
+			title: item.title,
+			url: item.url,
+			label: item.title,
+			value: item.params,
+		};
 	});
 
 	const brandsSchema = yup.object().shape({

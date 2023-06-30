@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 // LIBS DE ESTILOS
 import {
@@ -14,7 +16,6 @@ import {
 	ListItemText,
 	TextField,
 	Tooltip,
-	Autocomplete,
 } from '@mui/material';
 import { theme } from 'src/theme';
 
@@ -29,6 +30,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth }) => {
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isSearchable, setIsSearchable] = useState(true);
+	const animatedComponentsMultiselect = makeAnimated();
 
 	const handleDocumentChange = (evt) => {
 		const { files } = evt.currentTarget;
@@ -40,36 +43,30 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 		setIsPasswordVisible(!isPasswordVisible);
 	};
 
-	const handleBrandChange = (event, newValue) => {
-		if (!fieldProps.selectedBrands.some((e) => e === newValue)) {
-			console.log(fieldProps.selectedBrands.some((e) => e.title === newValue.title));
-			fieldProps.setSelectedBrands(...fieldProps.selectedBrands, newValue);
-		} else {
-			fieldProps.setSelectedBrands(
-				fieldProps.selectedBrands.filter((item) => item.title !== newValue.title)
-			);
-		}
-		console.log(fieldProps.selectedBrands);
-	};
+	// const handleBrandChange = (event, newValue) => {
+	// 	if (!fieldProps.selectedBrands.some((e) => e === newValue)) {
+	// 		console.log(fieldProps.selectedBrands.some((e) => e.title === newValue.title));
+	// 		fieldProps.setSelectedBrands(...fieldProps.selectedBrands, newValue);
+	// 	} else {
+	// 		fieldProps.setSelectedBrands(
+	// 			fieldProps.selectedBrands.filter((item) => item.title !== newValue.title)
+	// 		);
+	// 	}
+	// 	console.log(fieldProps.selectedBrands);
+	// };
 
 	const renderInput = () => {
 		if (fieldProps.type === 'select') {
 			return (
-				<Autocomplete
-					multiple
-					filterSelectedOptions
-					id="tags-outlined"
+				<Select
 					options={fieldProps.data}
-					onChange={handleBrandChange}
-					getOptionLabel={(option) => option.title}
-					style={{ width: 500 }}
-					renderInput={(params) => (
-						<TextField
-							{...params}
-							label="Marca"
-							placeholder="Marca"
-						/>
-					)}
+					isSearchable={isSearchable}
+					components={animatedComponentsMultiselect}
+					onChange={(item) => console.log(item)}
+					closeMenuOnSelect={false}
+					className="basic-multi-select"
+					classNamePrefix="select"
+					isMulti
 				/>
 			);
 		}
