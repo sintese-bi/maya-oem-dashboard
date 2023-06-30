@@ -36,6 +36,7 @@ import { listBrand } from 'src/utils/list-brand';
 export default function Register() {
 	const { iregister, handleSubmit } = useForm();
 	const theme = createTheme();
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ export default function Register() {
 
 	const useUuid = 'a7ed2d10-4340-43df-824d-63ca16979114';
 	const [brand, setBrand] = useState([]);
+	const [selectedBrands, setSelectedBrands] = useState([]);
 	const [validateBrand, setValidateBrand] = useState('');
 	// LISTAGEM DAS BRAND PARA O MULTI SELECT
 	const brands = listBrand.map((item) => {
@@ -357,6 +359,18 @@ export default function Register() {
 										}}
 									/>
 
+									<FormField
+										name="foto_pessoal"
+										label="Foto"
+										helpText="Envie uma foto de rosto para a validação do registro."
+										fieldProps={{
+											type: 'file',
+											multiple: true,
+											required: true,
+											onChange: handleDocument,
+										}}
+									/>
+
 									<Grid
 										item
 										xs={12}>
@@ -380,11 +394,8 @@ export default function Register() {
 											textField: 'title',
 											labelid: 'brand',
 											data: brands,
-											name: 'brand',
-											onChange: (item, evt) => {
-												handleSelect(item, evt);
-												setValidateBrand('');
-											},
+											setSelectedBrands: setSelectedBrands,
+											selectedBrands: selectedBrands,
 										}}
 										fullWidth
 									/>

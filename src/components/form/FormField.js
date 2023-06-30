@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Multiselect } from 'react-widgets';
 
 // LIBS DE ESTILOS
 import {
@@ -15,6 +14,7 @@ import {
 	ListItemText,
 	TextField,
 	Tooltip,
+	Autocomplete,
 } from '@mui/material';
 import { theme } from 'src/theme';
 
@@ -25,14 +25,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth }) => {
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-	const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 	const handleDocumentChange = (evt) => {
 		const { files } = evt.currentTarget;
 		setSelectedFiles(Array.from(files).map((file) => file.name));
@@ -42,13 +39,37 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 	const handlePasswordVisibility = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 	};
+
+	const handleBrandChange = (event, newValue) => {
+		if (!fieldProps.selectedBrands.some((e) => e === newValue)) {
+			console.log(fieldProps.selectedBrands.some((e) => e.title === newValue.title));
+			fieldProps.setSelectedBrands(...fieldProps.selectedBrands, newValue);
+		} else {
+			fieldProps.setSelectedBrands(
+				fieldProps.selectedBrands.filter((item) => item.title !== newValue.title)
+			);
+		}
+		console.log(fieldProps.selectedBrands);
+	};
+
 	const renderInput = () => {
 		if (fieldProps.type === 'select') {
 			return (
-				<Multiselect
-					error={!!error}
-					style={{ borderColor: theme.palette.error.main }}
-					{...fieldProps}
+				<Autocomplete
+					multiple
+					filterSelectedOptions
+					id="tags-outlined"
+					options={fieldProps.data}
+					onChange={handleBrandChange}
+					getOptionLabel={(option) => option.title}
+					style={{ width: 500 }}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label="Marca"
+							placeholder="Marca"
+						/>
+					)}
 				/>
 			);
 		}
@@ -69,10 +90,10 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 								backgroundColor: '#F5F5F5',
 							},
 						}}>
-						{name === 'cnh_rg' ? (
-							<CameraAltIcon fontSize="inherit" />
-						) : (
+						{name === 'proof' ? (
 							<NoteAddIcon fontSize="inherit" />
+						) : (
+							<CameraAltIcon fontSize="inherit" />
 						)}
 
 						<input
