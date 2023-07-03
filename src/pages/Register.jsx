@@ -137,24 +137,16 @@ export default function Register() {
 	};
 
 	// CONTROLE DO SELECT
-	const handleSelect = (item, evt) => {
-		setBrand(item);
-		if (evt.action === 'insert') {
-			requestForm.brand_login[item.length - 1] = {
-				bl_name: evt.dataItem.params,
-				bl_login: '',
-				bl_password: '',
-				bl_url: evt.dataItem.url,
-				use_uuid: useUuid,
-			};
-		} else {
-			const position = requestForm.brand_login.findIndex(
-				(bl) => bl.bl_name === evt.dataItem.params
-			);
-			delete requestForm.brand_login[position];
-		}
-
-		setRequestForm(requestForm);
+	const handleSelect = (brandsArray) => {
+		const brandsForLogin = brandsArray.map((item) => ({
+			bl_title: item.title,
+			bl_name: item.params,
+			bl_login: '',
+			bl_password: '',
+			bl_url: item.url,
+		}));
+		setRequestForm((prevForm) => ({ ...prevForm, brand_login: brandsForLogin }));
+		console.log(requestForm, 'log do request form');
 		setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
 	};
 
@@ -399,100 +391,93 @@ export default function Register() {
 											textField: 'title',
 											labelid: 'brand',
 											data: brands,
+											handleSelect: handleSelect,
 											setSelectedBrands: setSelectedBrands,
-											selectedBrands: selectedBrands,
 										}}
 										fullWidth
 									/>
 
-									{brand.length !== 0 && (
-										<Box sx={{ p: 3 }}>
+									{selectedBrands.length !== 0 && (
+										<Box sx={{ mx: 2 }}>
 											<Grid
 												item
-												xs={12}></Grid>
+												xs={12}>
+												<Divider variant="middle">
+													<Typography
+														component="p"
+														variant="p"
+														color={theme.palette.info.main}>
+														Informe o login e senha das marcas
+													</Typography>
+												</Divider>
+											</Grid>
 
-											{brand.length !== 0 && (
-												<Box sx={{ p: 3 }}>
+											<SwipeableViews
+												index={activeStep}
+												onChangeIndex={handleStepChange}
+												enableMouseEvents>
+												{selectedBrands.map((item, index) => (
 													<Grid
-														item
-														xs={12}>
-														<Divider variant="middle">
+														container
+														spacing={2}
+														sx={{ width: '100%' }}
+														key={index}>
+														<Grid
+															item
+															xs={12}
+															sx={{ mt: 3 }}>
 															<Typography
-																component="p"
-																variant="p">
-																Informe o login e senha das marcas
+																component="b"
+																variant="b">
+																{item.title}
 															</Typography>
-														</Divider>
+														</Grid>
+														<FormField
+															name={'bl_login'}
+															label="Login"
+															fieldProps={{
+																onChange: (evt) => {
+																	handleSetBrandLogin(evt, index);
+																},
+															}}
+														/>
+														<FormField
+															name={'bl_password'}
+															label="Senha"
+															fieldProps={{
+																type: 'password',
+																onChange: (evt) => {
+																	handleSetBrandLogin(evt, index);
+																},
+															}}
+														/>
 													</Grid>
+												))}
+											</SwipeableViews>
 
-													<SwipeableViews
-														index={activeStep}
-														onChangeIndex={handleStepChange}
-														enableMouseEvents>
-														{brand.map((item, index) => (
-															<Grid
-																container
-																spacing={2}
-																key={index}>
-																<Grid
-																	item
-																	xs={12}
-																	sx={{ mt: 3 }}>
-																	<Typography
-																		component="b"
-																		variant="b">
-																		{item.title}
-																	</Typography>
-																</Grid>
-
-																<FormField
-																	name={'bl_login'}
-																	label="Login"
-																	fieldProps={{
-																		onChange: (evt) => {
-																			handleSetBrandLogin(evt, index);
-																		},
-																	}}
-																/>
-																<FormField
-																	name={'bl_password'}
-																	label="Senha"
-																	fieldProps={{
-																		type: 'password',
-																		onChange: (evt) => {
-																			handleSetBrandLogin(evt, index);
-																		},
-																	}}
-																/>
-															</Grid>
-														))}
-													</SwipeableViews>
-
-													<MobileStepper
-														steps={maxSteps}
-														position="static"
-														activeStep={activeStep}
-														nextButton={
-															<Button
-																size="small"
-																onClick={handleNext}
-																disabled={activeStep === maxSteps - 1}>
-																Próximo
-																<KeyboardArrowRight />
-															</Button>
-														}
-														backButton={
-															<Button
-																size="small"
-																onClick={handleBack}
-																disabled={activeStep === 0}>
-																<KeyboardArrowLeft />
-																Voltar
-															</Button>
-														}
-													/>
-												</Box>
-											)}
+											<MobileStepper
+												steps={maxSteps}
+												position="static"
+												activeStep={activeStep}
+												nextButton={
+													<Button
+														size="small"
+														onClick={handleNext}
+														disabled={activeStep === maxSteps - 1}>
+														Próximo
+														<KeyboardArrowRight />
+													</Button>
+												}
+												backButton={
+													<Button
+														size="small"
+														onClick={handleBack}
+														disabled={activeStep === 0}>
+														<KeyboardArrowLeft />
+														Voltar
+													</Button>
+												}
+											/>
 										</Box>
 									)}
 								</Grid>

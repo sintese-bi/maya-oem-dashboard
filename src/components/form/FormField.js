@@ -43,18 +43,6 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 		setIsPasswordVisible(!isPasswordVisible);
 	};
 
-	// const handleBrandChange = (event, newValue) => {
-	// 	if (!fieldProps.selectedBrands.some((e) => e === newValue)) {
-	// 		console.log(fieldProps.selectedBrands.some((e) => e.title === newValue.title));
-	// 		fieldProps.setSelectedBrands(...fieldProps.selectedBrands, newValue);
-	// 	} else {
-	// 		fieldProps.setSelectedBrands(
-	// 			fieldProps.selectedBrands.filter((item) => item.title !== newValue.title)
-	// 		);
-	// 	}
-	// 	console.log(fieldProps.selectedBrands);
-	// };
-
 	const renderInput = () => {
 		if (fieldProps.type === 'select') {
 			return (
@@ -62,7 +50,11 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 					options={fieldProps.data}
 					isSearchable={isSearchable}
 					components={animatedComponentsMultiselect}
-					onChange={(item) => console.log(item)}
+					onChange={(item) => {
+						fieldProps.handleSelect(item);
+						fieldProps.setSelectedBrands(item);
+						console.log(item, 'log do select');
+					}}
 					closeMenuOnSelect={false}
 					className="basic-multi-select"
 					classNamePrefix="select"
