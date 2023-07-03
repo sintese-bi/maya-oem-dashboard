@@ -181,7 +181,7 @@ export default function userReducer(state = initialState, action) {
             dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
 
             const generationRealDay = dev.generation.filter(
-              (item) => item.gen_date === moment().format("YYYY-MM-DD")
+              (item) => item.gen_date === moment().subtract(1, 'day').format('YYYY-MM-DD')
             );
 
             return {

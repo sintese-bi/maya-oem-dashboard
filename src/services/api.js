@@ -2,7 +2,7 @@ import axios from "axios";
 import { getUserCookie } from "./session";
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/v1`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
 });
 
 export const configRequest = () => {
@@ -19,7 +19,7 @@ export const axiosBaseQuery = async ({ url, method, data, params }) => {
   try {
     const result = await axios({
       ...configRequest(),
-      url: `${process.env.REACT_APP_BASE_URL}/v1` + url,
+      url: `${process.env.REACT_APP_BASE_URL}` + url,
       method,
       data,
       params,

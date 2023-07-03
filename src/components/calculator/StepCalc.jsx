@@ -84,10 +84,9 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
     // Remove letras e vírgulas do valor do campo
     event.target.value = event.target.value.replace(/[^0-9.]/g, "");
   };
- 
+
   //Use state  do CEP
   const [cepInput, setCepInput] = useState("");
-
 
   //Construindo o "usestate" do tipo de plano
   const [selectedPlan, setSelectedPlan] = useState("");
@@ -143,7 +142,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
+        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -183,7 +182,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
     );
   };
 
-  const enviarDadosParaAPI = async (apiResponse,segPlanGigaValue) => {
+  const enviarDadosParaAPI = async (apiResponse, segPlanGigaValue) => {
     try {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
       const currentDate = new Date();
@@ -191,7 +190,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       let clientKilo = "NA";
       let clientMega = "NA";
       let clientGiga = "NA";
-
+      let clientPercentage = 30;
       if (segPlanGigaValue === "KILOWATT") {
         clientKilo = apiResponse.month;
       } else if (segPlanGigaValue === "MEGAWATT") {
@@ -200,7 +199,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `http://localhost:8080/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -214,6 +213,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           clientKilo: clientKilo,
           clientMega: clientMega,
           clientGiga: clientGiga,
+          clientPercentage: clientPercentage,
         },
         {
           headers: {
@@ -354,7 +354,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         console.log(response.data);
         let apiResponse = response.data;
         setResponseData(response.data);
-        enviarDadosParaAPI(apiResponse,segPlanGigaValue);
+        enviarDadosParaAPI(apiResponse, segPlanGigaValue);
       })
       .catch((error) => {
         // Manipule erros na solicitação
