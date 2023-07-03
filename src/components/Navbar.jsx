@@ -45,13 +45,13 @@ export const DashboardNavbar = () => {
       disabled: profileLevel === "admin" ? true : false,
       active: location.pathname === "/dashboard/users" ? true : false,
     },
-    {
-      label: "Marcas",
-      to: "/dashboard/devices",
-      icon: <BrandingWatermark fontSize="small" />,
-      disabled: true,
-      active: location.pathname === "/dashboard/devices" ? true : false,
-    },
+    // {
+    //   label: "Marcas",
+    //   to: "/dashboard/devices",
+    //   icon: <BrandingWatermark fontSize="small" />,
+    //   disabled: true,
+    //   active: location.pathname === "/dashboard/devices" ? true : false,
+    // },
   ];
 
   function handleLogOut() {

@@ -26,7 +26,7 @@ export default function App() {
 
         <Route element={<PrivateRoute />}>
           <Route index  element={<Dashboard />} />
-          <Route index path="devices" element={<Devices />} />
+          {/* <Route index path="devices" element={<Devices />} /> */}
           <Route path="generation/:brand" element={<Generation />} />
           <Route path="investment/:brand" element={<Investment />} />
           <Route path="alerts/:brand" element={<Alerts />} />
