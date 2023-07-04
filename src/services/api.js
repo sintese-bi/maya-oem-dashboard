@@ -2,7 +2,7 @@ import axios from "axios";
 import { getUserCookie } from "./session";
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  baseURL: `https://app.mayaoem.com.br/v1`,
 });
 
 export const configRequest = () => {
@@ -19,7 +19,7 @@ export const axiosBaseQuery = async ({ url, method, data, params }) => {
   try {
     const result = await axios({
       ...configRequest(),
-      url: `${process.env.REACT_APP_BASE_URL}` + url,
+      url: `https://app.mayaoem.com.br/v1` + url,
       method,
       data,
       params,
