@@ -22,9 +22,29 @@ import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
-  percentage: Yup.string().required("Campo é obrigatório."),
+  percentage: Yup.number()
+    .when("frequencyName", {
+      is: "day",
+      then: Yup.number()
+        .typeError("Insira um número")
+        .min(0, "O valor mínimo é 0")
+        .max(20, "O valor máximo é 20")
+        .nullable()
+        .transform((value, originalValue) =>
+          originalValue === "" ? null : value
+        ),
+      otherwise: Yup.number()
+        .min(20, "O valor mínimo é 20")
+        .max(80, "O valor máximo é 80")
+        .nullable()
+        .transform((value, originalValue) =>
+          originalValue === "" ? null : value
+        ),
+    })
+    .nullable(),
   frequencyName: Yup.string().required("Campo é obrigatório."),
 });
+
 
 export default function AlertPercentageForm() {
   const dispatch = useDispatch();
@@ -75,7 +95,6 @@ export default function AlertPercentageForm() {
         mx: 2,
       }}
     >
-
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
         <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch("percentage")} %) na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}>
           <IconButton>
@@ -91,9 +110,9 @@ export default function AlertPercentageForm() {
           helperText={errors.percentage?.message}
           variant="standard"
           disabled={isLoadingAlertFrequency}
+          inputProps={{ min: 0, max: 80 }} // Adjusted the max value to 80
         />
       </Box>
-
 
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
         <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="Define a frequência de alertas diário, semanal ou mensal.">
@@ -124,7 +143,6 @@ export default function AlertPercentageForm() {
           )}
         />
       </Box>
-
 
       {!isLoadingAlertFrequency ? (
         <Button
