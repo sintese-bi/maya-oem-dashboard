@@ -8,7 +8,7 @@ export const getGeneration = (params) => (dispatch) => {
   dispatch({ type: generation.GET_GENERATION_REQUEST });
 
   const {blUuid, devUuid, date, type} = params
-  
+  console.log(params)
   api
     .get(`/generationandtemperature?blUuid=${blUuid}&date=${date}&devUuid=${devUuid}&type=${type}`, configRequest())
     .then((res) => {

@@ -16,7 +16,7 @@ import {
   MenuItem,
   NativeSelect,
   Select,
-  TextField
+  TextField,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -75,16 +75,7 @@ const Generation = () => {
   }, [devices, devUuidState]);
 
   useEffect(() => {
-    if (devUuidState) {
-      dispatch(
-        getGeneration({
-          date,
-          blUuid: blUuidState,
-          devUuid: devUuidState,
-          type: optionFilter,
-        })
-      );
-    } else if (devices.length !== 0) {
+    if (devices.length !== 0) {
       dispatch(
         getGeneration({
           date,
@@ -93,9 +84,19 @@ const Generation = () => {
           type: optionFilter,
         })
       );
+    } else if (devUuidState) {
+      dispatch(
+        getGeneration({
+          date,
+          blUuid: blUuidState,
+          devUuid: devUuidState,
+          type: optionFilter,
+        })
+      );
+      
     }
   }, [date, blUuidState, devUuidState, deviceInfo, optionFilter]);
-
+  console.log(deviceInfo);
   useEffect(() => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
