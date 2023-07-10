@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useForm, Controller } from 'react-hook-form';
 
 // LIBS DE ESTILOS
 import {
@@ -32,7 +33,7 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [isSearchable, setIsSearchable] = useState(true);
 	const animatedComponentsMultiselect = makeAnimated();
-
+	const { control, register } = useForm();
 	const handleDocumentChange = (evt) => {
 		const { files } = evt.currentTarget;
 		setSelectedFiles(Array.from(files).map((file) => file.name));
@@ -115,14 +116,23 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 
 		return (
 			<Box sx={{ position: 'relative' }}>
-				<TextField
-					error={!!error}
-					fullWidth
+				<Controller
 					name={name}
-					{...fieldProps}
-					type={
-						fieldProps.type === 'password' && isPasswordVisible ? 'text' : fieldProps.type || 'text'
-					}
+					control={control}
+					render={({ field }) => (
+						<TextField
+							error={!!error}
+							fullWidth
+							name={name}
+							{...fieldProps}
+							{...field}
+							type={
+								fieldProps.type === 'password' && isPasswordVisible
+									? 'text'
+									: fieldProps.type || 'text'
+							}
+						/>
+					)}
 				/>
 
 				{fieldProps.type === 'password' && name !== 'confirmPassword' ? (

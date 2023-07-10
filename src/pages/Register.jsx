@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // LIBS DE ESTILOS ----------------------------------------
@@ -16,12 +17,18 @@ import {
 	CircularProgress,
 	MobileStepper,
 	CardMedia,
+	TextField,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	IconButton,
+	FormLabel,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SwipeableViews from 'react-swipeable-views';
-
-// COMPONENTS
-import { FormField } from 'src/components/form/FormField';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 // ACTIONS ----------------------------------------
 import { checkBrnad, show } from '../store/actions/users';
@@ -29,24 +36,31 @@ import { checkBrnad, show } from '../store/actions/users';
 // ASSETS ----------------------------------------
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // HELP's, UTILS & VARIAVEIS ---------------------
 import { listBrand } from 'src/utils/list-brand';
 
 export default function Register() {
-	const { iregister, handleSubmit } = useForm();
-	const theme = createTheme();
-
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const theme = createTheme();
 
-	const { useEmail, useName, loadingShow, loadingRegister, register } = useSelector(
-		(state) => state.users
-	);
+	const { useEmail, useName, loadingShow, loadingRegister } = useSelector((state) => state.users);
 
 	const useUuid = 'a7ed2d10-4340-43df-824d-63ca16979114';
 	const [brand, setBrand] = useState([]);
 	const [selectedBrands, setSelectedBrands] = useState([]);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isSearchable, setIsSearchable] = useState(true);
+	const [password, setPassword] = useState('');
+	const animatedComponentsMultiselect = makeAnimated();
+
 	// LISTAGEM DAS BRAND PARA O MULTI SELECT
 	const brands = listBrand.map((item) => {
 		return {
@@ -58,6 +72,7 @@ export default function Register() {
 		};
 	});
 
+	// VALIDATIONS SCHEMAS
 	const brandsSchema = yup.object().shape({
 		login: yup.string().required('O login é obrigatório'),
 		password: yup
@@ -81,16 +96,16 @@ export default function Register() {
 			.oneOf([yup.ref('password'), null], 'As senhas devem ser iguais'),
 		cnh_rg: yup.mixed().required('É necessário adicionar o comprovante para validação'),
 		address_proof: yup.mixed().required('É necessário adicionar documentos para validação'),
+		photo: yup.mixed().required('É necessário adicionar uma foto para validação'),
 		brands: yup.array().of(brandsSchema).min(1, 'Selecionar a marca dos inversores é obrigatório.'),
 	});
 
-	const [requestForm, setRequestForm] = useState({
-		use_password: '',
-		confirmPassword: '',
-		brand_login: [],
-		cnh_rg: '',
-		proof: '',
-	});
+	const {
+		handleSubmit,
+		control,
+		formState: { errors },
+		register,
+	} = useForm({ resolver: yupResolver(userValidationSchema) });
 
 	// SUBEMETER DADOS PARA A ACTION
 	// const oldhandleSubmit = async (event) => {
@@ -111,30 +126,32 @@ export default function Register() {
 	// 		dispatch(checkBrnad({ ...requestForm, use_uuid: useUuid }));
 	// 	} catch (error) {}
 	// };
-	const onSubmit = () => {};
-	// SETAR VALORES DO OBJETO brand_login
-	const handleSetBrandLogin = (e, index) => {
-		const { name } = e.target;
-		const { value } = e.target;
-
-		requestForm.brand_login[index][name] = value;
-		setRequestForm(requestForm);
+	const onSubmit = (data) => {
+		console.log(data);
 	};
+	// SETAR VALORES DO OBJETO brand_login
+	// const handleSetBrandLogin = (e, index) => {
+	// 	const { name } = e.target;
+	// 	const { value } = e.target;
+
+	// 	requestForm.brand_login[index][name] = value;
+	// 	setRequestForm(requestForm);
+	// };
 
 	// SETAR VALORES DOs INPUTS
-	const handleSetForm = (e) => {
-		const { name, value } = e.target;
+	// const handleSetForm = (e) => {
+	// 	const { name, value } = e.target;
 
-		requestForm[name] = value;
-		setRequestForm(requestForm);
-	};
+	// 	requestForm[name] = value;
+	// 	setRequestForm(requestForm);
+	// };
 
-	const handleDocument = (evt) => {
-		const { name, files } = evt.target;
+	// const handleDocument = (evt) => {
+	// 	const { name, files } = evt.target;
 
-		requestForm[name] = files[0];
-		setRequestForm(requestForm);
-	};
+	// 	requestForm[name] = files[0];
+	// 	setRequestForm(requestForm);
+	// };
 
 	// CONTROLE DO SELECT
 	const handleSelect = (brandsArray) => {
@@ -145,8 +162,8 @@ export default function Register() {
 			bl_password: '',
 			bl_url: item.url,
 		}));
-		setRequestForm((prevForm) => ({ ...prevForm, brand_login: brandsForLogin }));
-		console.log(requestForm, 'log do request form');
+		// setRequestForm((prevForm) => ({ ...prevForm, brand_login: brandsForLogin }));
+		// console.log(requestForm, 'log do request form');
 		setActiveStep(0); // VOLTANDO PARA O PRIMEIRO SLIDE
 	};
 
@@ -154,12 +171,32 @@ export default function Register() {
 	// useEffect's
 
 	useEffect(() => {
-		if (register) navigate('/');
-	}, [register, navigate]);
-
-	useEffect(() => {
 		if (useUuid) dispatch(show(useUuid)); // BUSCAR email e nome do USUARIO
 	}, [useUuid, dispatch]);
+
+	// VISIBILIDADE DA SENHA
+
+	const handlePasswordVisibility = () => {
+		setIsPasswordVisible(!isPasswordVisible);
+	};
+
+	const handlePasswordChange = (event) => {
+		setPassword(event.target.value);
+	};
+
+	// DOCUMENTOS
+	const [selectedFiles, setSelectedFiles] = useState([]);
+	const handleFileChange = (files) => {
+		setSelectedFiles(Array.from(files).map((file) => file.name));
+	};
+
+	const handleRemoveFile = (index) => {
+		setSelectedFiles((prevFiles) => {
+			const newFiles = [...prevFiles];
+			newFiles.splice(index, 1);
+			return newFiles;
+		});
+	};
 
 	// ----------------------------------------
 	// CONTROLE DO SETP DOS INPUTS DE LOPGIN DAS BRANDS
@@ -176,6 +213,7 @@ export default function Register() {
 
 	const handleStepChange = (step) => {
 		setActiveStep(step);
+		console.log(step, 'step change');
 	};
 
 	return (
@@ -275,12 +313,15 @@ export default function Register() {
 						) : (
 							<Box
 								component="form"
-								noValidate
-								onSubmit={handleSubmit(onSubmit)}
-								sx={{ mt: 3, p: 3 }}>
-								<Grid
-									container
-									spacing={2}>
+								onSubmit={handleSubmit(onSubmit)}>
+								<Box
+									sx={{
+										display: 'flex',
+										justifyContent: 'center',
+										gap: 2,
+										mb: 2,
+										flexWrap: 'wrap',
+									}}>
 									<Grid
 										item
 										xs={12}>
@@ -293,79 +334,308 @@ export default function Register() {
 											</Typography>
 										</Divider>
 									</Grid>
-									<FormField
+									<Controller
 										name="name"
-										label="Nome completo"
-										fieldProps={{ defaultValue: useName, disabled: true }}
+										control={control}
+										render={({ field }) => (
+											<TextField
+												id="name-outlined-disable"
+												{...register('name')}
+												label="Nome completo"
+												{...field}
+												type="text"
+												sx={{ width: '15.6875rem' }}
+												disabled
+												defaultValue={useName}
+											/>
+										)}
 									/>
-									<FormField
+
+									{/* <FormField
+											name="name"
+											label="Nome completo"
+											fieldProps={{ defaultValue: useName, disabled: true }}
+										/> */}
+									<Controller
 										name="email"
-										label="E-mail"
-										fieldProps={{
-											defaultValue: useEmail,
-											type: 'email',
-											disabled: true,
-										}}
+										control={control}
+										render={({ field }) => (
+											<TextField
+												id="email-outlined-disable"
+												label="E-mail"
+												{...register('email')}
+												{...field}
+												type="email"
+												disabled
+												defaultValue={useEmail}
+												sx={{ width: '15.6875rem' }}
+											/>
+										)}
 									/>
+									{/* <FormField
+											name="email"
+											label="E-mail"
+											fieldProps={{
+												defaultValue: useEmail,
+												type: 'email',
+												disabled: true,
+											}}
+										/> */}
+									<Controller
+										name="password"
+										control={control}
+										render={({ field }) => (
+											<Box position={'relative'}>
+												<TextField
+													id="senha-outlined"
+													type={isPasswordVisible ? 'text' : 'password'}
+													label="Senha"
+													{...register('password')}
+													{...field}
+													sx={{ width: '15.6875rem' }}
+												/>
 
-									<FormField
-										name="use_password"
-										helpText="Crie sua senha de acesso ao Dashboard"
-										label="Senha"
-										fieldProps={{
-											required: true,
-											type: 'password',
-											onChange: (evt) => {
-												handleSetForm(evt);
-											},
-										}}
+												<IconButton
+													type="button"
+													sx={{ position: 'absolute', top: 8, right: 8 }}
+													aria-label="Alterar visibilidade"
+													onClick={handlePasswordVisibility}>
+													{isPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+												</IconButton>
+											</Box>
+										)}
 									/>
-									<FormField
+									{/* <FormField
+											name="use_password"
+											helpText="Crie sua senha de acesso ao Dashboard"
+											label="Senha"
+											fieldProps={{
+												required: true,
+												type: 'password',
+											}}
+										/> */}
+									{/* <FormField
+											name="confirmPassword"
+											label="Confirmação de senha"
+											fieldProps={{
+												required: true,
+												type: 'password',
+											}}
+										/> */}
+									<Controller
 										name="confirmPassword"
-										label="Confirmação de senha"
-										fieldProps={{
-											required: true,
-											type: 'password',
-											onChange: (evt) => {
-												handleSetForm(evt);
-											},
-										}}
+										control={control}
+										render={({ field }) => (
+											<TextField
+												id="confirmacaoSenha-outlined"
+												type="password"
+												label="Confirmação de Senha"
+												{...register('confirmPassword')}
+												{...field}
+												sx={{ width: '15.6875rem' }}
+											/>
+										)}
 									/>
-
-									<FormField
-										name="proof"
-										helpText="Envie um comprovante de endereço atualizado para a validação do registro."
-										label="Comprovante Endereço"
-										fieldProps={{
-											type: 'file',
-											multiple: true,
-											required: true,
-											onChange: handleDocument,
-										}}
+									<Controller
+										name="address_proof"
+										control={control}
+										defaultValue={[]}
+										render={({ field }) => (
+											<Box
+												sx={{
+													display: 'flex',
+													flexDirection: 'column',
+													gap: 0.5,
+													width: '15.6875rem',
+												}}>
+												<FormLabel> Comprovante de Residência </FormLabel>
+												<Button
+													variant="contained"
+													component="label"
+													size="large"
+													sx={{
+														fontSize: 50,
+														backgroundColor: '#FFFFFF',
+														color: '#C8C5C5',
+														'&:hover': {
+															backgroundColor: '#F5F5F5',
+														},
+													}}>
+													<input
+														type="file"
+														style={{ display: 'none' }}
+														{...field}
+														{...register('address_proof')}
+														multiple
+													/>
+													<NoteAddIcon fontSize="50" />
+												</Button>
+												{selectedFiles.length ? (
+													<List
+														dense
+														sx={{ mt: 1, p: 0 }}>
+														{selectedFiles.map((file, index) => (
+															<ListItem
+																sx={{ px: 0 }}
+																key={index}>
+																<ListItemIcon sx={{ minWidth: 'auto' }}>
+																	<AttachFileIcon fontSize="small" />
+																</ListItemIcon>
+																<ListItemText primary={file} />
+																<IconButton
+																	edge="end"
+																	onClick={() => handleRemoveFile(index)}>
+																	<DeleteIcon />
+																</IconButton>
+															</ListItem>
+														))}
+													</List>
+												) : null}
+											</Box>
+										)}
 									/>
-
-									<FormField
+									{/* <FormField
+											name="proof"
+											helpText="Envie um comprovante de endereço atualizado para a validação do registro."
+											label="Comprovante Endereço"
+											fieldProps={{
+												type: 'file',
+												multiple: true,
+												required: true,
+											}}
+										/> */}
+									<Controller
 										name="cnh_rg"
-										label="CNH / RG"
-										helpText="Envie uma foto de sua CNH ou Carteira de Identidade para a validação do registro."
-										fieldProps={{
-											type: 'file',
-											multiple: true,
-											required: true,
-											onChange: handleDocument,
-										}}
+										control={control}
+										defaultValue={[]}
+										render={({ field }) => (
+											<Box
+												sx={{
+													display: 'flex',
+													flexDirection: 'column',
+													gap: 0.5,
+													width: '15.6875rem',
+												}}>
+												<FormLabel> CNH/RG </FormLabel>
+												<Button
+													variant="contained"
+													component="label"
+													fullWidth
+													size="large"
+													sx={{
+														fontSize: 50,
+														backgroundColor: '#FFFFFF',
+														color: '#C8C5C5',
+														'&:hover': {
+															backgroundColor: '#F5F5F5',
+														},
+													}}>
+													<input
+														type="file"
+														{...register('cnh_rg')}
+														{...field}
+														style={{ display: 'none' }}
+														multiple
+													/>
+													<CameraAltIcon fontSize="50" />
+												</Button>
+												{selectedFiles.length ? (
+													<List
+														dense
+														sx={{ mt: 1, p: 0 }}>
+														{selectedFiles.map((file, index) => (
+															<ListItem
+																sx={{ px: 0 }}
+																key={index}>
+																<ListItemIcon sx={{ minWidth: 'auto' }}>
+																	<AttachFileIcon fontSize="small" />
+																</ListItemIcon>
+																<ListItemText primary={file} />
+																<IconButton
+																	edge="end"
+																	onClick={() => handleRemoveFile(index)}>
+																	<DeleteIcon />
+																</IconButton>
+															</ListItem>
+														))}
+													</List>
+												) : null}
+											</Box>
+										)}
 									/>
-
-									<FormField
-										name="foto_pessoal"
-										label="Foto"
-										helpText="Envie uma foto de rosto para a validação do registro."
-										fieldProps={{
-											type: 'file',
-											multiple: true,
-											required: true,
-											onChange: handleDocument,
-										}}
+									{/* <FormField
+											name="cnh_rg"
+											label="CNH / RG"
+											helpText="Envie uma foto de sua CNH ou Carteira de Identidade para a validação do registro."
+											fieldProps={{
+												type: 'file',
+												multiple: true,
+												required: true,
+											}}
+										/> */}
+									{/* <FormField
+											name="foto_pessoal"
+											label="Foto"
+											helpText="Envie uma foto de rosto para a validação do registro."
+											fieldProps={{
+												type: 'file',
+												multiple: true,
+												required: true,
+											}}
+										/> */}
+									<Controller
+										name="photo"
+										control={control}
+										defaultValue={[]}
+										render={({ field }) => (
+											<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+												<FormLabel> Foto </FormLabel>
+												<Button
+													variant="contained"
+													component="label"
+													fullWidth
+													size="large"
+													sx={{
+														fontSize: 50,
+														backgroundColor: '#FFFFFF',
+														color: '#C8C5C5',
+														'&:hover': {
+															backgroundColor: '#F5F5F5',
+														},
+														width: '15.6875rem',
+													}}>
+													<input
+														type="file"
+														style={{ display: 'none' }}
+														{...register('photo')}
+														{...field}
+														multiple
+													/>
+													<CameraAltIcon fontSize="50" />
+												</Button>
+												{selectedFiles.length ? (
+													<List
+														dense
+														sx={{ mt: 1, p: 0 }}>
+														{selectedFiles.map((file, index) => (
+															<ListItem
+																sx={{ px: 0 }}
+																key={index}>
+																<ListItemIcon sx={{ minWidth: 'auto' }}>
+																	<AttachFileIcon fontSize="small" />
+																</ListItemIcon>
+																<ListItemText primary={file} />
+																<IconButton
+																	edge="end"
+																	onClick={() => handleRemoveFile(index)}>
+																	<DeleteIcon />
+																</IconButton>
+															</ListItem>
+														))}
+													</List>
+												) : null}
+											</Box>
+										)}
 									/>
 
 									<Grid
@@ -381,7 +651,7 @@ export default function Register() {
 										</Divider>
 									</Grid>
 
-									<FormField
+									{/* <FormField
 										name="proof"
 										helpText="Insira no local abaixo as marcas de inversores que você possui."
 										label="Selecione a(s) marca(s) do(s) inversor(es)"
@@ -395,6 +665,36 @@ export default function Register() {
 											setSelectedBrands: setSelectedBrands,
 										}}
 										fullWidth
+									/> */}
+
+									<Controller
+										name="brands"
+										control={control}
+										render={({ field }) => (
+											<Select
+												{...field}
+												{...register('brands')}
+												options={brands}
+												isSearchable={isSearchable}
+												components={animatedComponentsMultiselect}
+												onChange={(item) => {
+													handleSelect(item);
+													setSelectedBrands(item);
+													console.log(item, 'log do select');
+												}}
+												closeMenuOnSelect={false}
+												className="basic-multi-select"
+												classNamePrefix="select"
+												isMulti
+												styles={{
+													control: (baseStyles, state) => ({
+														...baseStyles,
+														width: '32rem',
+														height: '3.62rem',
+													}),
+												}}
+											/>
+										)}
 									/>
 
 									{selectedBrands.length !== 0 && (
@@ -419,37 +719,56 @@ export default function Register() {
 												{selectedBrands.map((item, index) => (
 													<Grid
 														container
-														spacing={2}
-														sx={{ width: '100%' }}
+														gap={2}
+														sx={{ width: '100%', marginLeft: '0' }}
 														key={index}>
 														<Grid
 															item
-															xs={12}
-															sx={{ mt: 3 }}>
+															xs={12}>
 															<Typography
 																component="b"
 																variant="b">
 																{item.title}
 															</Typography>
 														</Grid>
-														<FormField
+														{/* <FormField
 															name={'bl_login'}
 															label="Login"
-															fieldProps={{
-																onChange: (evt) => {
-																	handleSetBrandLogin(evt, index);
-																},
-															}}
+														/> */}
+														<Controller
+															name="bl_login"
+															control={control}
+															render={({ field }) => (
+																<TextField
+																	id="name-outlined-disable"
+																	name="bl_login"
+																	label="login"
+																	{...field}
+																	sx={{ width: '15.4875rem' }}
+																	type="text"
+																/>
+															)}
 														/>
-														<FormField
+														{/* <FormField
 															name={'bl_password'}
 															label="Senha"
 															fieldProps={{
 																type: 'password',
-																onChange: (evt) => {
-																	handleSetBrandLogin(evt, index);
-																},
 															}}
+														/> */}
+														<Controller
+															name="bl_password"
+															control={control}
+															render={({ field }) => (
+																<TextField
+																	id="bl_password-outlined"
+																	name="bl_password"
+																	type="password"
+																	label="Senha"
+																	sx={{ width: '15.6875rem' }}
+																	{...field}
+																/>
+															)}
 														/>
 													</Grid>
 												))}
@@ -480,7 +799,7 @@ export default function Register() {
 											/>
 										</Box>
 									)}
-								</Grid>
+								</Box>
 								<Box
 									sx={{ m: 1 }}
 									justifyContent={'center'}
@@ -488,10 +807,7 @@ export default function Register() {
 									<Button
 										type="submit"
 										variant="contained"
-										sx={{ mt: 1, px: 5, fontSize: '1rem', fontWeight: '800' }}
-										disabled={loadingRegister}
-										// onClick={handleValidate}
-									>
+										sx={{ mt: 1, px: 5, fontSize: '1rem', fontWeight: '800' }}>
 										Confirmar
 									</Button>
 								</Box>
