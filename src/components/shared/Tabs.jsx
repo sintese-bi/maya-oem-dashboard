@@ -25,11 +25,11 @@ const Tabs = () => {
       path: "alerts",
       IconComponent: WarningIcon,
     },
-    {
-      label: "Investimento",
-      path: "investment",
-      IconComponent: PaidIcon,
-    },
+    // {
+    //   label: "Investimento",
+    //   path: "investment",
+    //   IconComponent: PaidIcon,
+    // },
   ];
 
   return (
