@@ -42,13 +42,9 @@ const Form0 = ({ onNextStep }) => {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-<<<<<<< HEAD
         `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
           cidade
         )}`
-=======
-        `http://localhost:8080/v1/irrcoef/${encodeURIComponent(cidade)}`
->>>>>>> 0b160b88ad5c4f36314a3e9de0590616ff0dae6b
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -93,11 +89,7 @@ const Form0 = ({ onNextStep }) => {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
 
       const response = await axios.post(
-<<<<<<< HEAD
         `https://app.mayaoem.com.br/v1/pandadoc`,
-=======
-        `http://localhost:8080/v1/pandadoc`,
->>>>>>> 0b160b88ad5c4f36314a3e9de0590616ff0dae6b
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
