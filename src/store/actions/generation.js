@@ -7,10 +7,10 @@ import toast from "react-hot-toast";
 export const getGeneration = (params) => (dispatch) => {
   dispatch({ type: generation.GET_GENERATION_REQUEST });
 
-  const {blUuid, devUuid, date, type} = params
+  const {blUuid, devUuid, startDate,endDate, type} = params
   console.log(params)
   api
-    .get(`/generationandtemperature?blUuid=${blUuid}&date=${date}&devUuid=${devUuid}&type=${type}`, configRequest())
+    .get(`/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=${type}`, configRequest())
     .then((res) => {
       const { data } = res;
       dispatch({

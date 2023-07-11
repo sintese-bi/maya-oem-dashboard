@@ -1,4 +1,3 @@
-// IMPORTS
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,13 +53,26 @@ const Generation = () => {
 
   // ESTADOS DE CONTROLLER
   const [deviceInfo, setDeviceInfo] = useState([]);
-  const [date, setDate] = useState(moment().format());
+  const [startDate, setStartDate] = useState(
+    moment().startOf("month").format("YYYY-MM-DD")
+  );
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [optionFilter, setOptionFilter] = useState("month");
 
   // SELECT DE USÚARIOS
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
     setDeviceInfo(datInfo[0]);
+
+    dispatch(
+      getGeneration({
+        startDate,
+        endDate,
+        blUuid: blUuidState,
+        devUuid: useUuid,
+        type: optionFilter,
+      })
+    );
   }
 
   // ----- useEffect DAS ACTIONS ----- //
@@ -78,7 +90,8 @@ const Generation = () => {
     if (devices.length !== 0) {
       dispatch(
         getGeneration({
-          date,
+          startDate,
+          endDate,
           blUuid: blUuidState,
           devUuid: deviceInfo.dev_uuid,
           type: optionFilter,
@@ -87,16 +100,16 @@ const Generation = () => {
     } else if (devUuidState) {
       dispatch(
         getGeneration({
-          date,
+          startDate,
+          endDate,
           blUuid: blUuidState,
           devUuid: devUuidState,
           type: optionFilter,
         })
       );
-      
     }
-  }, [date, blUuidState, devUuidState, deviceInfo, optionFilter]);
-  console.log(deviceInfo);
+  }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
+
   useEffect(() => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
@@ -154,19 +167,27 @@ const Generation = () => {
 
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                openTo="year"
-                label="Data de geração"
-                value={date}
-                views={["year", "month"]}
-                maxDate={moment()}
-                minDate={moment("2023-01-01").toDate()}
-                onChange={(date) => setDate(moment(date._d).format())}
-                // onMonthChange={handleFilterGeneration}
+                label="Data Inicial"
+                value={startDate}
+                onChange={(startDate) =>
+                  setStartDate(
+                    startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+                  )
+                }
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <DatePicker
+                label="Data Final"
+                value={endDate}
+                onChange={(endDate) =>
+                  setEndDate(
+                    endDate ? moment(endDate).format("YYYY-MM-DD") : ""
+                  )
+                }
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-
-            <FormControl sx={{ ml: 1, width: 100 }}>
+            {/* <FormControl sx={{ ml: 1, width: 100 }}>
               <InputLabel>Período</InputLabel>
               <Select
                 label="Período"
@@ -177,7 +198,7 @@ const Generation = () => {
                 <MenuItem value="month">Mês</MenuItem>
                 <MenuItem value="year">Ano</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Box>
           <Tabs />
         </Box>
@@ -262,7 +283,8 @@ const Generation = () => {
         {/* GRAFICO DE GERAÇÃO */}
         <Box sx={{ mt: 3 }}>
           <ChartsGeneration
-            date={date}
+            startDate={startDate}
+            // endDate={endDate}
             optionFilter={optionFilter}
             generation={generation}
             isLoading={isLoadingGeneration}

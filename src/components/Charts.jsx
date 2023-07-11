@@ -55,7 +55,7 @@ const TABS = {
 
 // GRAFICO DE GERAÇÃO EM (Kwh) vs PERCENTAGEM
 export const ChartsGeneration = (props) => {
-  const { date, generation, isLoading, optionFilter } = props;
+  const { startDate, endDate, generation, isLoading, optionFilter } = props;
 
   const theme = useTheme();
 
@@ -63,6 +63,14 @@ export const ChartsGeneration = (props) => {
   const [valueTabs, setValueTabs] = useState(0);
 
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
+
+  // Obter número total de dias entre as datas de início e fim
+  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
+
+  // Gerar rótulos de dia para o gráfico
+  const labels = Array.from({ length: totalDays }, (_, index) =>
+    moment(startDate).add(index, 'days').format('D')
+  );
 
   // PROPS PARA O GRAFICO
   const dataKwh = {
@@ -117,7 +125,7 @@ export const ChartsGeneration = (props) => {
         type: "line",
       },
     ],
-    labels: generation.label,
+    labels: labels,
   };
 
   const dataPercentage = {
@@ -133,7 +141,7 @@ export const ChartsGeneration = (props) => {
         maxBarThickness: 10,
       },
     ],
-    labels: generation.label,
+    labels: labels,
   };
 
   const options = {
@@ -194,6 +202,13 @@ export const ChartsGeneration = (props) => {
     },
   };
 
+  const startMonth = moment(startDate)
+    .format("MMMM")
+    .replace(/^\w/, (c) => c.toUpperCase());
+  const endMonth = moment(endDate)
+    .format("MMMM")
+    .replace(/^\w/, (c) => c.toUpperCase());
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -233,10 +248,9 @@ export const ChartsGeneration = (props) => {
                 }}
               >
                 <Typography color="textPrimary" variant="h5">
-                  Produção do {optionFilter === "month" ? "mês" : "ano"} de{" "}
-                  {moment(date).format(
-                    optionFilter === "month" ? "MMMM" : "YYYY"
-                  )}
+                  {startMonth === endMonth
+                    ? `Produção do mês de ${startMonth}`
+                    : `Produção entre os meses de ${startMonth} e ${endMonth}`}
                 </Typography>
               </Box>
             }
