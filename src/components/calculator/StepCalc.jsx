@@ -142,9 +142,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
-          cidade
-        )}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -267,7 +265,12 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   // const handleNext2 = () => {
   //   onNextStep();
   // };
-
+  useEffect(() => {
+    setNome("");
+    setCidade("");
+    setPotenciaModulos(""); // Limpa o estado da potência dos módulos
+    setNumeroModulos(""); // Limpa o estado do número de módulos
+  }, []);
   useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
