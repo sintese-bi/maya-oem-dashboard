@@ -14,6 +14,8 @@ import Alerts from "./pages/dashboard/alerts";
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
 import StepForms from "./components/calculator";
+import StepForms1 from "./components/calculator/index3";
+import StepForms2 from "./components/calculator/index2";
 
 export default function App() {
   return (
@@ -21,11 +23,13 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/calculator" element={<StepForms />} />
+      <Route path="/calculator" element={<StepForms />}/>
+      <Route path="/calculator/client" element={<StepForms1/>} />
+      <Route path="/calculator/admin" element={<StepForms2 />} />
+      
       <Route path="dashboard" element={<LayoutDashboard />}>
-
         <Route element={<PrivateRoute />}>
-          <Route index  element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
           {/* <Route index path="devices" element={<Devices />} /> */}
           <Route path="generation/:brand" element={<Generation />} />
           <Route path="investment/:brand" element={<Investment />} />

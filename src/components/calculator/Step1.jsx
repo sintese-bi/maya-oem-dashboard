@@ -1,117 +1,48 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Container,
-} from "@mui/material";
+import React from "react";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-export default function Form1({ onNextStep, onPreviousStep }) {
-  const [selectedPlan, setSelectedPlan] = useState("");
-  const [additionalInputs, setAdditionalInputs] = useState([]);
-
-  const handlePlanChange = (event) => {
-    setSelectedPlan(event.target.value);
-    if (event.target.value === "MEGAWATT") {
-      setAdditionalInputs([
-        { label: "Nome Completo", key: "fullName" },
-        { label: "CPF", key: "cpf" },
-        { label: "RG", key: "rg" },
-        { label: "Endereço da Instalação", key: "installationAddress" },
-        { label: "CEP do Endereço Residencial", key: "residentialAddressZipCode" },
-      ]);
-    } else if (event.target.value === "GIGAWATT") {
-      setAdditionalInputs([
-        { label: "Razão Social", key: "companyName" },
-        { label: "CNPJ", key: "cnpj" },
-        { label: "Nome Completo do Responsável Legal", key: "legalResponsibleFullName" },
-        { label: "CPF do Responsável Legal", key: "legalResponsibleCpf" },
-        { label: "RG do Responsável Legal", key: "legalResponsibleRg" },
-        { label: "Endereço da Instalação", key: "installationAddress" },
-        { label: "CEP do Endereço Residencial", key: "residentialAddressZipCode" },
-      ]);
-    }
-  };
-
-  const handlePrevious = () => {
-    onPreviousStep();
-  };
-
-  const handleNext = () => {
-    if (selectedPlan === "") {
-      return;
-    }
-    onNextStep();
-  };
-
-  const renderAdditionalInputs = () => {
-    return additionalInputs.map((input) => (
-      <Grid item xs={12} key={input.key}>
-        <TextField label={input.label} fullWidth />
-      </Grid>
-    ));
-  };
-
+function HomePage() {
   return (
-    <Container maxWidth="sm">
-      <Grid item sx={{ marginRight: "10px" }}>
-        <img src="Maya.png" alt="Descrição da imagem" />
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography
-            fontWeight="bold"
-            color="#1A1A2E"
-            variant="subtitle2"
-            sx={{ fontSize: "20px", textAlign: "center" }}
-          >
-            Tipo de Contrato
-          </Typography>
-          <RadioGroup value={selectedPlan} onChange={handlePlanChange}>
-            <FormControlLabel
-              value="MEGAWATT"
-              control={<Radio />}
-              label="Contrato para Pessoa Física"
-            />
-            <FormControlLabel
-              value="GIGAWATT"
-              control={<Radio />}
-              label="Contrato para Pessoa Jurídica"
-            />
-          </RadioGroup>
-          {selectedPlan === "" && (
-            <Typography variant="subtitle2" color="error">
-              Por favor, selecione uma opção.
-            </Typography>
-          )}
-        </Grid>
-        {renderAdditionalInputs()}
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNext}
-            fullWidth
-          >
-            Próximo
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handlePrevious}
-            fullWidth
-          >
-            Anterior
-          </Button>
-        </Grid>
-      </Grid>
-    </Container>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        minHeight: "100vh",
+        paddingTop: "80px",
+      }}
+    >
+      <img
+        src="./Maya.png"
+        alt="Descrição da imagem"
+        style={{ maxWidth: "100%" }}
+      />
+      <h1 style={{ textAlign: "center", marginTop: "20px" }}>
+        Calculadora de orçamento e Gerador de Proposta
+      </h1>
+      <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
+        <Button
+          component={Link}
+          to="/calculator/admin"
+          variant="contained"
+          color="primary"
+          style={{ fontSize: "18px" }}
+        >
+          Administrador
+        </Button>
+        <Button
+          component={Link}
+          to="/calculator/client"
+          variant="contained"
+          color="primary"
+          style={{ fontSize: "18px" }}
+        >
+          Cliente
+        </Button>
+      </div>
+    </div>
   );
 }
+
+export default HomePage;

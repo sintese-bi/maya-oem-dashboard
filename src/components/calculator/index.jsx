@@ -1,8 +1,9 @@
 import React from "react";
-import StepTypeOfEntitie from "./StepCalc";
+
+import HomePage from "./Step1";
 
 export default function StepForms() {
   return (
-    <StepTypeOfEntitie />
+    <HomePage />
   );
 }
