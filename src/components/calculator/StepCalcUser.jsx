@@ -26,7 +26,7 @@ import InputMask from "react-input-mask";
 //   );
 // }
 
-export default function StepTypeOfEntitie({ onPreviousStep }) {
+export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const {
     register,
     handleSubmit,
@@ -379,7 +379,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       }}
     >
       {/* <Grid item sx={{ marginRight: "10px" }}>
-        <img src="./Maya.png" alt="Descrição da imagem" />
+        <img src="Maya.png" alt="Descrição da imagem" />
       </Grid> */}
       <Grid
         item
@@ -832,7 +832,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           )}
         </Grid>
         <div
-          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+          style={{ display: "flex", flexWrap: "nowrap"}}
         >
           <Grid item xs={6}>
             <Typography
@@ -856,7 +856,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         </div>
 
         <div
-          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+          style={{ display: "flex", flexWrap: "nowrap" }}
         >
           <Grid item xs={6}>
             <Typography
@@ -885,7 +885,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           </Grid>
         </div>
         <div
-          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+          style={{ display: "flex", flexWrap: "nowrap" }}
         >
           <Grid item xs={6} justifyContent="flex-end">
             <Typography
