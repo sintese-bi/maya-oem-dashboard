@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
-
+import { CircularProgress } from "@mui/material";
 import {
   Box,
   Button,
@@ -41,6 +41,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const user_check = watch("user_check");
   const [message, setMessage] = useState("");
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handlePrevious = () => {
     onPreviousStep();
   };
@@ -48,7 +49,8 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (input.length === 8) { // Verifica se o CEP está completo (8 dígitos)
+      if (input.length === 8) {
+        // Verifica se o CEP está completo (8 dígitos)
         try {
           const response = await axios.get(
             `https://viacep.com.br/ws/${input}/json`
@@ -64,10 +66,9 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         }
       }
     };
-  
+
     fetchData();
   }, [input]); // Mantém "input" como dependência
-  
 
   // const handleButtonClick = () => {
   //   if (input === "") {
@@ -112,7 +113,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const [numeroModulos, setNumeroModulos] = useState("");
   const [estimada, setEstimada] = useState(null);
   const [documentoLink, setDocumentoLink] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
@@ -184,6 +185,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   };
 
   const enviarDadosParaAPI = async (apiResponse, segPlanGigaValue) => {
+    setIsLoading(true);
     try {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
       const currentDate = new Date();
@@ -229,6 +231,8 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       // console.log("Dados enviados para a API:", response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // Set isLoading back to false after the API call completes
     }
   };
 
@@ -970,32 +974,26 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography
-                variant="body1"
-                sx={{ fontWeight: "bold", color: "blue" }}
-              >
-                Link do Documento:{" "}
-                <a
-                  href={documentoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none", color: "inherit" }}
+              {isLoading ? ( // Show loading indicator if isLoading is true
+                <CircularProgress />
+              ) : (
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", color: "blue" }}
                 >
-                  {documentoLink}
-                </a>
-              </Typography>
+                  Link do Documento:{" "}
+                  <a
+                    href={documentoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {documentoLink}
+                  </a>
+                </Typography>
+              )}
             </Grid>
-            {/* <Button
-              className="buttonSearch"
-              onClick={() => {
-                handlePrevious();
-              }}
-              variant="contained"
-              color="primary"
-              style={{ flexGrow: 1 }}
-            >
-              Voltar
-            </Button> */}
+            {/* ... */}
           </div>
         </Grid>
       </Grid>
