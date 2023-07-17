@@ -142,7 +142,9 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
+          cidade
+        )}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -208,7 +210,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toFixed(2),
           clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
-          EffValue: (estimada * 0.3).toFixed(2),
+          EffValue: (estimada * 0.3),
           clientData: formattedDate,
           clientKilo: clientKilo,
           clientMega: clientMega,
@@ -974,22 +976,27 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
                 onClick={handleNext}
                 fullWidth
               >
-                Valor do Plano e Geração do Documento
+                Gerar
               </Button>
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant="body1">
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: "bold", color: "blue" }}
+              >
                 Link do Documento:{" "}
                 <a
                   href={documentoLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {documentoLink}
                 </a>
               </Typography>
             </Grid>
+
             {/* <Button
               className="buttonSearch"
               onClick={() => {
