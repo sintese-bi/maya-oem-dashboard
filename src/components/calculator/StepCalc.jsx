@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
-
+import { CircularProgress } from "@mui/material";
 import {
   Box,
   Button,
@@ -41,6 +41,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const user_check = watch("user_check");
   const [message, setMessage] = useState("");
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handlePrevious = () => {
     onPreviousStep();
   };
@@ -48,7 +49,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (input.length === 8) { // Verifica se o CEP está completo (8 dígitos)
+      if (input.length === 8) {
+        // Verifica se o CEP está completo (8 dígitos)
         try {
           const response = await axios.get(
             `https://viacep.com.br/ws/${input}/json`
@@ -64,7 +66,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         }
       }
     };
-  
+
     fetchData();
   }, [input]); // Mantém "input" como dependência
 
@@ -140,9 +142,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
-          cidade
-        )}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -183,6 +183,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   };
 
   const enviarDadosParaAPI = async (apiResponse, segPlanGigaValue) => {
+    setIsLoading(true);
     try {
       const apiKey = "597c4ce7e2bce349973d60f3a1c440c38975d956";
       const currentDate = new Date();
@@ -199,7 +200,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `https://app.mayaoem.com.br/v1/pandadoc`,
+        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -228,6 +229,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       // console.log("Dados enviados para a API:", response);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -979,33 +982,26 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography
-                variant="body1"
-                sx={{ fontWeight: "bold", color: "blue" }}
-              >
-                Link do Documento:{" "}
-                <a
-                  href={documentoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none", color: "inherit" }}
+              {isLoading ? ( // Show loading indicator if isLoading is true
+                <CircularProgress />
+              ) : (
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", color: "blue" }}
                 >
-                  {documentoLink}
-                </a>
-              </Typography>
+                  Link do Documento:{" "}
+                  <a
+                    href={documentoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {documentoLink}
+                  </a>
+                </Typography>
+              )}
             </Grid>
-
-            {/* <Button
-              className="buttonSearch"
-              onClick={() => {
-                handlePrevious();
-              }}
-              variant="contained"
-              color="primary"
-              style={{ flexGrow: 1 }}
-            >
-              Voltar
-            </Button> */}
+            {/* ... */}
           </div>
         </Grid>
       </Grid>
