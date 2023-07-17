@@ -48,27 +48,25 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (input === "") {
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          `https://viacep.com.br/ws/${input}/json`
-        );
-        setUserAddress(response.data);
-        if (response.data && response.data.cep) {
-          setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
-        } else {
-          setMessage("CEP não encontrado");
+      if (input.length === 8) { // Verifica se o CEP está completo (8 dígitos)
+        try {
+          const response = await axios.get(
+            `https://viacep.com.br/ws/${input}/json`
+          );
+          setUserAddress(response.data);
+          if (response.data && response.data.cep) {
+            setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
+          } else {
+            setMessage("CEP não encontrado");
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     };
-
+  
     fetchData();
-  }, [input]);
+  }, [input]); // Mantém "input" como dependência
 
   // const handleButtonClick = () => {
   //   if (input === "") {
@@ -142,7 +140,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
+        `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
           cidade
         )}`
       );
@@ -201,7 +199,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `https://app.mayaoem.com.br/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -277,9 +275,9 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
 
-  useEffect(() => {
-    fetchRadiacao();
-  }, [cidade]);
+  // useEffect(() => {
+  //   fetchRadiacao();
+  // }, [cidade]);
 
   const onSubmit = (data) => {
     const formData = {
