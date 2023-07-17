@@ -210,7 +210,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toFixed(2),
           clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
-          EffValue: (estimada * 0.3),
+          EffValue: (estimada * 0.3).toFixed(0),
           clientData: formattedDate,
           clientKilo: clientKilo,
           clientMega: clientMega,
