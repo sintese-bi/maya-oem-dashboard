@@ -48,27 +48,26 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (input === "") {
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          `https://viacep.com.br/ws/${input}/json`
-        );
-        setUserAddress(response.data);
-        if (response.data && response.data.cep) {
-          setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
-        } else {
-          setMessage("CEP não encontrado");
+      if (input.length === 8) { // Verifica se o CEP está completo (8 dígitos)
+        try {
+          const response = await axios.get(
+            `https://viacep.com.br/ws/${input}/json`
+          );
+          setUserAddress(response.data);
+          if (response.data && response.data.cep) {
+            setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
+          } else {
+            setMessage("CEP não encontrado");
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     };
-
+  
     fetchData();
-  }, [input]);
+  }, [input]); // Mantém "input" como dependência
+  
 
   // const handleButtonClick = () => {
   //   if (input === "") {
@@ -113,7 +112,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const [numeroModulos, setNumeroModulos] = useState("");
   const [estimada, setEstimada] = useState(null);
   const [documentoLink, setDocumentoLink] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
@@ -277,9 +276,9 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
 
-  useEffect(() => {
-    fetchRadiacao();
-  }, [cidade]);
+  // useEffect(() => {
+  //   fetchRadiacao();
+  // }, [cidade]);
 
   const onSubmit = (data) => {
     const formData = {
