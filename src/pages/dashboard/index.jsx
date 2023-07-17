@@ -134,7 +134,7 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Geração abaixo da estimada"
+          title="Semanal abaixo da estimada"
           value={
             generationBelowEstimated.length !== 0
               ? generationBelowEstimated.length
