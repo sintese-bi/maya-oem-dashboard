@@ -210,7 +210,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toFixed(2),
           clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
-          EffValue: (estimada * 0.3).toFixed(2),
+          EffValue: (estimada * 0.3),
           clientData: formattedDate,
           clientKilo: clientKilo,
           clientMega: clientMega,
@@ -966,17 +966,21 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
                 onClick={handleNext}
                 fullWidth
               >
-                Valor do Plano e Geração do Documento
+                Gerar
               </Button>
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant="body1">
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: "bold", color: "blue" }}
+              >
                 Link do Documento:{" "}
                 <a
                   href={documentoLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {documentoLink}
                 </a>
