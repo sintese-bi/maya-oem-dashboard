@@ -15,7 +15,7 @@ import {
   IconButton,
   MenuItem,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { useEffect } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
@@ -44,7 +44,6 @@ const validateSchema = Yup.object().shape({
     .nullable(),
   frequencyName: Yup.string().required("Campo é obrigatório."),
 });
-
 
 export default function AlertPercentageForm() {
   const dispatch = useDispatch();
@@ -95,27 +94,38 @@ export default function AlertPercentageForm() {
         mx: 2,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch("percentage")} %) na semana lhe enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}>
+      <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Tooltip
+          sx={{ color: "action.active", mr: 1, my: 0.5 }}
+          title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
+            "percentage"
+          )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
+        >
           <IconButton>
             <Info />
           </IconButton>
         </Tooltip>
         <TextField
           sx={{ width: 200 }}
-          label="Limite mínimo"
+          label="Limite Mínimo (%)"
           type="number"
           {...register("percentage")}
           error={!!errors.percentage}
           helperText={errors.percentage?.message}
           variant="standard"
           disabled={isLoadingAlertFrequency}
-          inputProps={{ min: 0, max: 80 }} // Adjusted the max value to 80
+          inputProps={{ min: 0, max: 80 }}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Tooltip sx={{ color: 'action.active', mr: 1, my: 0.5 }} title="Define a frequência de alertas diário, semanal ou mensal.">
+      <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Tooltip
+          sx={{ color: "action.active", mr: 1, my: 0.5 }}
+          title="Define a frequência de alertas diário, semanal ou mensal."
+        >
           <IconButton>
             <Info />
           </IconButton>
@@ -131,7 +141,7 @@ export default function AlertPercentageForm() {
               label="Frequência de alertas"
               error={!!errors.frequencyName}
               helperText={errors.frequencyName?.message}
-              value={watch('frequencyName') || ''}
+              value={watch("frequencyName") || ""}
               select
               variant="standard"
               disabled={isLoadingAlertFrequency}
