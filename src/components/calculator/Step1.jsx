@@ -19,7 +19,7 @@ function HomePage() {
         style={{ maxWidth: "100%" }}
       />
       <h1 style={{ textAlign: "center", marginTop: "20px" }}>
-        Calculadora de orçamento e Gerador de Proposta
+        Calculadora de Orçamento e Gerador de Proposta
       </h1>
       <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
         <Button
