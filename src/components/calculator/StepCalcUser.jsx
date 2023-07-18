@@ -142,7 +142,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
+        `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
           cidade
         )}`
       );
@@ -202,7 +202,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `https://app.mayaoem.com.br/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -256,7 +256,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           numeroModulos,
         });
         armazenarValorEstimado();
-        fetchRadiacao();
+        // fetchRadiacao();
       })
       .catch((err) => {
         const validationErrors = {};
@@ -267,9 +267,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       });
   };
 
-  // const handleNext2 = () => {
-  //   onNextStep();
-  // };
+
   useEffect(() => {
     setNome("");
     setCidade("");
@@ -277,13 +275,13 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
     setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
   useEffect(() => {
+    fetchRadiacao();
+  }, [cidade]);
+  useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
 
-  // useEffect(() => {
-  //   fetchRadiacao();
-  // }, [cidade]);
-
+  
   const onSubmit = (data) => {
     const formData = {
       tbl_ref: {
@@ -353,7 +351,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         siafi: userAddress.siafi,
       },
     };
-
+    console.log(radiacao)
     const json = JSON.stringify(formData);
     console.log(json);
     const segPlanGigaValue = String(selectedPlan);
