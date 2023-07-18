@@ -142,7 +142,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `https://app.mayaoem.com.br/v1/irrcoef/${encodeURIComponent(
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
           cidade
         )}`
       );
@@ -202,7 +202,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `https://app.mayaoem.com.br/v1/pandadoc`,
+        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
