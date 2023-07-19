@@ -143,7 +143,7 @@ export const DeviceDetail = (props) => {
                   </ListItemAvatar>
                   <TextField
                     sx={{ width: 200 }}
-                    label="Potência de Inversor (kWp)"
+                    label="Potência do Sistema (kWp)"
                     type="number"
                     {...register("inverterPower")}
                     error={!!errors.inverterPower}
