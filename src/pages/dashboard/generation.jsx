@@ -1,9 +1,8 @@
+
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-
-// LIBS DE ESTILOS
 import {
   Backdrop,
   Box,
@@ -20,46 +19,38 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
-// QUERIES
-import { getDevices } from "src/store/actions/devices";
-import { getGeneration } from "src/store/actions/generation";
-
-// COMPONENTS
-import { BigNumber } from "../../components/BigNumber";
-import { ChartsGeneration } from "../../components/Charts";
-import { DeviceDetail } from "../../components/DeviceDetail";
-import { LoadingSkeletonBigNumbers } from "../../components/Loading";
-import Tabs from "../../components/shared/Tabs";
-
-// ASSETS
 import {
   Bolt,
   ElectricBolt,
   OfflineBolt,
   Thermostat,
 } from "@mui/icons-material";
+import { getDevices } from "src/store/actions/devices";
+import { getGeneration } from "src/store/actions/generation";
+import { BigNumber } from "../../components/BigNumber";
+import { ChartsGeneration } from "../../components/Charts";
+import { DeviceDetail } from "../../components/DeviceDetail";
+import { LoadingSkeletonBigNumbers } from "../../components/Loading";
+import Tabs from "../../components/shared/Tabs";
 
 const Generation = () => {
-  // PROPS DE CONTROLLER E ESTILIZAÇÃO
   const location = useLocation();
   const { blUuidState, devUuidState } = location.state || {};
-
+  const [selectedDevUuid, setSelectedDevUuid] = useState(null);
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
   );
   const { isLoadingDevices, devices } = useSelector((state) => state.devices);
 
-  // ESTADOS DE CONTROLLER
   const [deviceInfo, setDeviceInfo] = useState([]);
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [optionFilter, setOptionFilter] = useState("month");
+  
 
-  // SELECT DE USÚARIOS
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
     setDeviceInfo(datInfo[0]);
@@ -73,9 +64,9 @@ const Generation = () => {
         type: optionFilter,
       })
     );
+    setSelectedDevUuid(useUuid);
   }
 
-  // ----- useEffect DAS ACTIONS ----- //
   useEffect(() => {
     if (devices.length !== 0) {
       if (devUuidState) {
@@ -114,7 +105,8 @@ const Generation = () => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
-  // SCREEN LOADING
+  
+
   if (isLoadingDevices) {
     return (
       <Backdrop
@@ -135,7 +127,6 @@ const Generation = () => {
       }}
     >
       <Container maxWidth={false}>
-        {/* LISTA DE USUARIO  */}
         <Box
           sx={{
             alignItems: "center",
@@ -187,23 +178,10 @@ const Generation = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-            {/* <FormControl sx={{ ml: 1, width: 100 }}>
-              <InputLabel>Período</InputLabel>
-              <Select
-                label="Período"
-                id="period"
-                value={optionFilter}
-                onChange={(evt) => setOptionFilter(evt.target.value)}
-              >
-                <MenuItem value="month">Mês</MenuItem>
-                <MenuItem value="year">Ano</MenuItem>
-              </Select>
-            </FormControl> */}
           </Box>
           <Tabs />
         </Box>
 
-        {/* DETALHES DE DADOS DO USUARIO  */}
         <Box sx={{ mt: 3 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
@@ -211,10 +189,10 @@ const Generation = () => {
             address={deviceInfo.dev_address}
             contactNumber={deviceInfo.dev_contract_name}
             kwp={deviceInfo.dev_capacity}
+            devUuid={selectedDevUuid}
           />
         </Box>
 
-        {/* BIG NUMBERS DE GERAÇÃO    */}
         <Box sx={{ mt: 3 }}>
           <Grid container spacing={3}>
             <Grid item sm={12} lg={3}>
@@ -229,6 +207,7 @@ const Generation = () => {
                       : "-"
                   }`}
                   icon={<Bolt />}
+                  
                 />
               )}
             </Grid>
@@ -280,11 +259,9 @@ const Generation = () => {
           </Grid>
         </Box>
 
-        {/* GRAFICO DE GERAÇÃO */}
         <Box sx={{ mt: 3 }}>
           <ChartsGeneration
             startDate={startDate}
-            // endDate={endDate}
             optionFilter={optionFilter}
             generation={generation}
             isLoading={isLoadingGeneration}
