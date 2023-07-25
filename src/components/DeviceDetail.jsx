@@ -66,7 +66,7 @@ export const DeviceDetail = (props) => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/v1/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
         {
           params: {
             potSistema: values.inverterPower,
