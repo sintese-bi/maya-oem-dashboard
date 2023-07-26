@@ -1,4 +1,3 @@
-
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,13 +42,12 @@ const Generation = () => {
   );
   const { isLoadingDevices, devices } = useSelector((state) => state.devices);
 
-  const [deviceInfo, setDeviceInfo] = useState([]);
+  const [deviceInfo, setDeviceInfo] = useState({});
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [optionFilter, setOptionFilter] = useState("month");
-  
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
@@ -105,8 +103,6 @@ const Generation = () => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
-  
-
   if (isLoadingDevices) {
     return (
       <Backdrop
@@ -142,10 +138,9 @@ const Generation = () => {
               <NativeSelect
                 label="Lista de Usuários"
                 id="dev_name"
-                value={deviceInfo?.dev_uuid}
+                value={deviceInfo?.dev_uuid || ""}
                 onChange={(evt) => handleSelectDevices(evt.target.value)}
                 input={<Select />}
-                defaultValue={deviceInfo?.dev_uuid}
               >
                 {devices &&
                   devices.map((dev, index) => (
@@ -207,7 +202,6 @@ const Generation = () => {
                       : "-"
                   }`}
                   icon={<Bolt />}
-                  
                 />
               )}
             </Grid>
