@@ -50,6 +50,7 @@ const Generation = () => {
   const [optionFilter, setOptionFilter] = useState("month");
 
   function handleSelectDevices(useUuid) {
+    
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
     setDeviceInfo(datInfo[0]);
 
