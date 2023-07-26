@@ -4,19 +4,32 @@ import api, { configRequest } from "../../services/api";
 
 import toast from "react-hot-toast";
 
-export const getGeneration = (params) => (dispatch) => {
+export const getGeneration = (params) => async (dispatch) => {
   dispatch({ type: generation.GET_GENERATION_REQUEST });
 
-  const {blUuid, devUuid, startDate,endDate, type} = params
-  console.log(params)
+  const { blUuid, startDate, endDate, type } = params;
+  let { devUuid } = params;
+
+  // Loop while para aguardar até que o devUuid esteja definido
+  while (!devUuid) {
+    // Aguardar 500 milissegundos antes de verificar novamente
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Obter novamente o valor de devUuid após o atraso
+    devUuid = params.devUuid;
+  }
+  console.log(params);
+  // Caso o devUuid esteja definido, continuar com a chamada à API
   api
-    .get(`/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=${type}`, configRequest())
+    .get(
+      `/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=${type}`,
+      configRequest()
+    )
     .then((res) => {
       const { data } = res;
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,
-
         args: { type: params.type, date: params.date },
       });
     })
@@ -40,7 +53,7 @@ export const getAlerts = (devUuid) => (dispatch) => {
       const { data } = res;
       dispatch({
         type: generation.GET_GENERATION_ALERTS_SUCCESS,
-        result: data.length !== 0 ? data[0]:[],
+        result: data.length !== 0 ? data[0] : [],
       });
     })
     .catch((error) => {
