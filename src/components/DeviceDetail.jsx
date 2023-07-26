@@ -71,6 +71,7 @@ export const DeviceDetail = (props) => {
           params: {
             potSistema: values.inverterPower,
             devUuid: devUuid,
+            name: values.name,
           },
         }
       );
