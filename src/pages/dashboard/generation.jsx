@@ -180,10 +180,10 @@ const Generation = () => {
         <Box sx={{ mt: 3 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
-            name={deviceInfo.dev_name}
-            address={deviceInfo.dev_address}
-            contactNumber={deviceInfo.dev_contract_name}
-            kwp={deviceInfo.dev_capacity}
+            name={deviceInfo?.dev_name || ""}
+            address={deviceInfo?.dev_address || ""}
+            contactNumber={deviceInfo?.dev_contract_name || ""}
+            kwp={deviceInfo?.dev_capacity || ""}
             devUuid={selectedDevUuid}
           />
         </Box>
