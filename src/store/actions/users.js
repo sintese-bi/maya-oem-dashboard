@@ -22,7 +22,7 @@ export const auth = (params) => (dispatch) => {
         const { data } = res;
         const { message, token, result } = data;
         const { profile_level, use_name, use_uuid } = result;
-
+        console.log('auth-data', data);
         setUserCookie({
           token,
           profileLevel: profile_level.pl_cod,
@@ -149,6 +149,7 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
+      console.log('getUsers-data', data);
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -173,7 +174,7 @@ export const getUserBrands = (uuid) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log("data ", data)
+      console.log("getUserBrands-data", data)
       dispatch({
         type: users.GET_USER_BRANDS_SUCCESS,
         result: data,
@@ -198,7 +199,7 @@ export const patchAlertFrequency = (params) => (dispatch) => {
     .patch("/alertFrequency", params)
     .then((res) => {
       const { data } = res;
-
+      console.log("patchAlertFrequency-data", data)
       toast.success(data.message, {
         duration: 5000,
       });
@@ -227,9 +228,7 @@ export const alertFrequency = (uuid) => (dispatch) => {
     .get(`/alertFrequency/${uuid}`)
     .then((res) => {
       const { data } = res;
-
-      console.log("data ", data)
-   
+      console.log("alertFrequency-data", data)
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
         result: data
@@ -255,6 +254,7 @@ export const getDashboard = (uuid) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log('getDashboard-data', data);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
         result: data,

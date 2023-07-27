@@ -1,6 +1,8 @@
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ClientReport } from "src/reports/ClientReport";
 import { useLocation } from "react-router-dom";
 
 // LIBS DE ESTILOS
@@ -16,6 +18,7 @@ import {
   NativeSelect,
   Select,
   TextField,
+  Button
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -38,6 +41,7 @@ import {
   ElectricBolt,
   OfflineBolt,
   Thermostat,
+  DownloadForOffline
 } from "@mui/icons-material";
 
 const Generation = () => {
@@ -145,7 +149,10 @@ const Generation = () => {
             mt: 3,
           }}
         >
-          <Box>
+          <Box sx={{
+            display: "flex",
+            alignItems: "center"
+          }}>
             <FormControl sx={{ mr: 1, width: 200 }}>
               <InputLabel>Lista de Usuários</InputLabel>
               <NativeSelect
@@ -187,6 +194,15 @@ const Generation = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+            <Button
+              startIcon={<DownloadForOffline fontSize="small" />}
+              variant="contained"
+              sx={{ color: "primary", variant: "contained", ml: 1 }}
+            >
+              <PDFDownloadLink document={<ClientReport />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
+                {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}
+              </PDFDownloadLink>
+            </Button>
             {/* <FormControl sx={{ ml: 1, width: 100 }}>
               <InputLabel>Período</InputLabel>
               <Select

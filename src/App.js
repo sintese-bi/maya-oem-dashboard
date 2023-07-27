@@ -23,10 +23,10 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/calculator" element={<StepForms />}/>
-      <Route path="/calculator/client" element={<StepForms1/>} />
+      <Route path="/calculator" element={<StepForms />} />
+      <Route path="/calculator/client" element={<StepForms1 />} />
       <Route path="/calculator/admin" element={<StepForms2 />} />
-      
+
       <Route path="dashboard" element={<LayoutDashboard />}>
         <Route element={<PrivateRoute />}>
           <Route index element={<Dashboard />} />

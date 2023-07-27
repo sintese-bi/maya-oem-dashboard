@@ -13,6 +13,7 @@ export const getGeneration = (params) => (dispatch) => {
     .get(`/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=${type}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,

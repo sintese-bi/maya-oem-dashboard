@@ -61,21 +61,28 @@ export default function Dashboard() {
   };
 
   function handleChangeColumns(type) {
+    console.log(dataDevices);
     setType(type)
     switch (type) {
       case 1:
         setData(dataDevices);
         break;
       case 2:
-        setData(generationBelowEstimated);
+        setData(brands.map((data) => {
+          let brandItem = {brand: data}
+          return brandItem
+        }));
         break;
       case 3:
-        setData(alerts);
+        setData(generationBelowEstimated);
         break;
       case 4:
-        setData(offline);
+        setData(alerts);
         break;
       case 5:
+        setData(offline);
+        break;
+      case 6:
         setData(online);
         break;
       default:
@@ -93,6 +100,10 @@ export default function Dashboard() {
       setColumns(columnsDevices);
     }
   }, [dataDevices]);
+
+  useEffect(() => {
+    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
+  }, [type])
 
   if (isLoading) {
     return (
@@ -128,8 +139,8 @@ export default function Dashboard() {
           title="Marcas"
           value={brands.length !== 0 ? brands.length : 0}
           icon={<BrandingWatermark />}
-          btn={true}
-          activeBtn={false}
+          type={2}
+          activeBtn={type === 2 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -141,8 +152,8 @@ export default function Dashboard() {
               : 0
           }
           icon={<AlignVerticalTop />}
-          type={2}
-          activeBtn={type === 2 ? true : false }
+          type={3}
+          activeBtn={type === 3 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>
@@ -158,8 +169,8 @@ export default function Dashboard() {
           title="Offline"
           value={offline.length !== 0 ? offline.length : 0}
           icon={<ThumbDownOffAlt />}
-          type={4}
-          activeBtn={type === 4 ? true : false }
+          type={5}
+          activeBtn={type === 5 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -167,8 +178,8 @@ export default function Dashboard() {
           title="Online"
           value={online.length !== 0 ? online.length : 0}
           icon={<ThumbUpOffAlt />}
-          type={5}
-          activeBtn={type === 5 ? true : false }
+          type={6}
+          activeBtn={type === 6 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -176,8 +187,8 @@ export default function Dashboard() {
           title="Plantas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
-          type={3}
-          activeBtn={type === 3 ? true : false }
+          type={4}
+          activeBtn={type === 4 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>
