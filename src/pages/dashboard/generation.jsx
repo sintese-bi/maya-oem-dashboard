@@ -47,7 +47,9 @@ import {
 const Generation = () => {
   // PROPS DE CONTROLLER E ESTILIZAÇÃO
   const location = useLocation();
-  const { blUuidState, devUuidState } = location.state || {};
+  const { blUuidState, devUuidState, useNameState } = location.state || {};
+
+  console.log(blUuidState, devUuidState, useNameState)
 
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
@@ -199,7 +201,7 @@ const Generation = () => {
               variant="contained"
               sx={{ color: "primary", variant: "contained", ml: 1 }}
             >
-              <PDFDownloadLink document={<ClientReport />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
+              <PDFDownloadLink document={<ClientReport devUuid={devUuidState} />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
                 {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}
               </PDFDownloadLink>
             </Button>

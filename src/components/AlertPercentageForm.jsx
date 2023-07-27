@@ -49,11 +49,6 @@ const validateSchema = Yup.object().shape({
 });
 
 export default function AlertPercentageForm() {
-  const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
-  const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
-  const [percent, setPercent] = useState(0)
-  const [potence, setPotence] = useState(1000)
-
   const dispatch = useDispatch();
 
   const { useUuid } = getUserCookie();
@@ -87,27 +82,6 @@ export default function AlertPercentageForm() {
       setValue("frequencyName", frequencyName);
     }
   }, [percentage, frequencyName]);
-
-  useEffect(() => {
-    let generationRealNumberValue = dataDevices.map((data) => {
-      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
-      return generationRealValue;
-    })
-    setGenerationRealTotalValue(generationRealNumberValue.reduce((total, element) => total + element, 0).toFixed())
-
-    let generationEstimatedNumberValue = dataDevices.map((data) => {
-      let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
-      return generationEstimatedValue;
-    })
-    setGenerationEstimatedTotalValue(generationEstimatedNumberValue.reduce((total, element) => total + element, 0).toFixed())
-
-    let percentResult = (generationRealTotalValue/generationEstimatedTotalValue)*100
-    setPercent(percentResult.toFixed())
-
-    console.log(generationRealTotalValue, generationEstimatedTotalValue);
-  }, [dataDevices])
-
-
 
   return (
     <Box

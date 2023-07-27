@@ -219,11 +219,13 @@ import {
     },
   });
   
-  export const ClientReport = () => (
+  export const ClientReport = ({devUuid}) => (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.main}>
-          <Text>Relatório cliente</Text>
+         <View style={styles.saveWorldCards}>
+            <Text>{devUuid}</Text>
+         </View>
         </View>
       </Page>
     </Document>
