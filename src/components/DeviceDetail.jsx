@@ -5,6 +5,8 @@ import { getUserCookie } from "src/services/session";
 import * as Yup from "yup";
 import citiesData from "src/services/municipios";
 import axios from "axios";
+import React from "react";
+
 import Autocomplete from "@mui/material/Autocomplete";
 // COMPONETS
 
@@ -212,106 +214,95 @@ export const DeviceDetail = (props) => {
   if (loadingDevices) return <LoadingAccordion />;
 
   return (
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography sx={{ m: 1 }} variant="h4">
-          Informações do usuário
-        </Typography>
-      </AccordionSummary>
+    <React.Fragment>
+      <Typography sx={{ m: 1 }} variant="h4">
+        Informações do usuário
+      </Typography>
 
-      <AccordionDetails>
-        {profileLevel === "admin" ? (
-          <Box
-            component="div"
-            sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}
+      {profileLevel === "admin" ? (
+        <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            onClick={() => setEditInputs(!editInputs)}
+            variant="outlined"
+            startIcon={<Edit />}
           >
-            <Button
-              onClick={() => setEditInputs(!editInputs)}
-              variant="outlined"
-              startIcon={<Edit />}
-            >
-              Editar
-            </Button>
-          </Box>
-        ) : null}
+            Editar
+          </Button>
+        </Box>
+      ) : null}
 
-        {!editInputs ? (
-          <Grid container>
-            <Grid item xs>
-              <List
-                sx={{
-                  width: "90%",
-                  bgcolor: "background.paper",
-                }}
-              >
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <NumbersIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary="Nº de Contrato"
-                    primary={name ? name : "Não informado!"}
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <BusinessIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary="Endereço de Instalação"
-                    primary={address ? address : "Não informado!"}
-                  />
-                </ListItem>
-              </List>
-            </Grid>
-            <Divider orientation="vertical" flexItem />
-            <Grid item xs sx={{ m: 1 }}>
-              <List
-                sx={{
-                  width: "100%",
-                  maxWidth: 360,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <AccountCircleIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary="Nome"
-                    primary={contactNumber ? contactNumber : "Não informado!"}
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <BoltIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    secondary="Potência do Sistema (kWp)"
-                    primary={kwp ? kwp : "Não informado!"}
-                  />
-                </ListItem>
-              </List>
-            </Grid>
+      {!editInputs ? (
+        <Grid container>
+          <Grid item xs>
+            <List
+              sx={{
+                width: "90%",
+                bgcolor: "background.paper",
+              }}
+            >
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <NumbersIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  secondary="Nº de Contrato"
+                  primary={name ? name : "Não informado!"}
+                />
+              </ListItem>
+              <Divider variant="inset" component="li" />
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <BusinessIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  secondary="Endereço de Instalação"
+                  primary={address ? address : "Não informado!"}
+                />
+              </ListItem>
+            </List>
           </Grid>
-        ) : (
-          <InputsDevices />
-        )}
-      </AccordionDetails>
+          <Divider orientation="vertical" flexItem />
+          <Grid item xs sx={{ m: 1 }}>
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: 360,
+                bgcolor: "background.paper",
+              }}
+            >
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <AccountCircleIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  secondary="Nome"
+                  primary={contactNumber ? contactNumber : "Não informado!"}
+                />
+              </ListItem>
+              <Divider variant="inset" component="li" />
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <BoltIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  secondary="Potência do Sistema (kWp)"
+                  primary={kwp ? kwp : "Não informado!"}
+                />
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
+      ) : (
+        <InputsDevices />
+      )}
 
       {/* Caixa de mensagem "Salvo!" */}
       {isSaved && (
@@ -332,7 +323,7 @@ export const DeviceDetail = (props) => {
           Salvo!
         </Box>
       )}
-    </Accordion>
+    </React.Fragment>
   );
 };
-export default DeviceDetail
+export default DeviceDetail;
