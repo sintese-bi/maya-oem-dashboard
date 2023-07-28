@@ -1,225 +1,114 @@
+import { getUserCookie } from "../services/session";
+import { useState, useEffect } from "react";
 import {
   Page,
   Text,
   View,
   Document,
   StyleSheet,
+  PDFViewer,
   Svg,
   Polygon,
   Image,
+  Font,
 } from "@react-pdf/renderer";
-import {useState, useEffect} from 'react'
+
 const styles = StyleSheet.create({
-    pdfViewer: {
-      height: "85vh",
-      width: "500px",
-    },
-    page: {
-      backgroundColor: "#E4E4E4",
-    },
-    main: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-    },
-    datesAndApresentation: {
-      paddingLeft: "20px",
-    },
-    creationDate: {
-      color: "#009C77",
-      fontSize: "16px",
-      marginTop: "26px",
-    },
-    filteredDate: {
-      width: "150px",
-      color: "#009C77",
-      fontSize: "12px",
-      marginBottom: "6px",
-    },
-    clientName: {
-      fontSize: "22px",
-      marginTop: "20px",
-      marginBottom: "40px",
-    },
-    economyCard: {
-      width: "260px",
-      padding: 16,
-      backgroundColor: "#009C77",
-      borderRadius: "10px",
-    },
-    economyCardFirstMoney: {
-      marginTop: "10px",
-      marginBottom: "20px",
-      fontSize: "26px",
-      color: "lightgreen",
-    },
-    economyCardSecondMoney: {
-      marginTop: "6px",
-      color: "lightgreen",
-    },
-    economyCardText: {
-      color: "white",
-      fontSize: "12px",
-    },
-    saveWorldCards: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      width: "260px",
-      padding: "12px",
-      backgroundColor: "white",
-      borderRadius: "10px",
-      marginBottom: "8px",
-    },
-    saveWorldCardsImgs: {
-      marginRight: "10px",
-      height: "70px",
-      width: "70px",
-    },
-    saveWorldCardsNumbers: {
-      fontSize: "26px",
-      marginBottom: "8px",
-    },
-    yourContributionToWorld: {
-      marginVertical: "20px",
-      marginLeft: "12px",
-      fontSize: "12px",
-    },
-    congrats: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-around",
-      paddingVertical: "8px",
-      paddingHorizontal: "22px",
-      backgroundColor: "white",
-      marginTop: "4px",
-      width: "90%",
-      borderRadius: "10px",
-    },
-    congratsMainText: {
-      fontWeight: "ultrabold",
-      fontSize: "20px",
-      color: "#009C77",
-    },
-    congratsSecondText: {
-      fontSize: "12px",
-    },
-    mayaLogo: {
-      display: "flex",
-      justifyContent: "center",
-      position: "absolute",
-      right: "-24px",
-      height: "86px",
-      width: "260px",
-      backgroundColor: "white",
-      borderTopLeftRadius: "50px",
-      borderBottomLeftRadius: "50px",
-      marginTop: "20px",
-    },
-    mayaLogoPng: {
-      marginLeft: "40px",
-      height: "60%",
-      width: "60%",
-    },
-    production: {
-      display: "flex",
-      alignItems: "center",
-      backgroundColor: "white",
-      paddingVertical: "20px",
-    },
-    productionElement: {
-      width: "100%",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      marginVertical: "2px",
-    },
-    productionElementDate: {
-      fontSize: "10px",
-      fontWeight: "light",
-    },
-    productionElementGraph: {
-      fontSize: "8px",
-      fontWeight: "light",
-    },
-    productionElementProductionAmount: {
-      fontSize: "8px",
-    },
-    productionElementProductionAmountFirstNumber: {
-      color: "#009C77",
-    },
-    productionElementProductionAmountSecondNumber: {
-      color: "#E6AF32",
-    },
-    productionElementGraphResults: {
-      width: "190px",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    productionkWh: {
-      width: "80%",
-      marginVertical: "20px",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      fontSize: "8px",
-    },
-    productionkWhItem: {
-      display: "flex",
-      flexDirection: "row",
-    },
-    productionkWhItemText: {
-      marginLeft: "6px",
-    },
-  
-    productionCard: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      width: "260px",
-      padding: "12px",
-      backgroundColor: "white",
-      borderRadius: "10px",
-      marginTop: "140px",
-    },
-    productionCardText: {
-      width: "150px",
-      fontSize: "12px",
-      marginBottom: "6px",
-    },
-    productionCardNumber: {
-      fontSize: "26px",
-      color: "#E6AF32",
-    },
-    madeBy: {
-      marginVertical: "20px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-evenly",
-      width: "40%",
-      flexDirection: "row",
-    },
-    pdfEndImg: {
-      height: "20px",
-      width: "100px",
-    },
-    foot: {
-      width: "100%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    light: {
-      height: "10px",
-      width: "10px",
-    },
+  pdfViewer: {
+    height: "85vh",
+    width: "500px",
+  },
+  page: {
+    backgroundColor: "#E4E4E4",
+  },
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: 'center',
+    justifyContent: "center",
+    padding: '8px'
+  },
+  header: {
+    right: '-24px',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: '20px'
+  },
+  generationDateText: {
+    fontSize: '6px',
+    opacity: 0.8,
+    marginBottom: '4px'
+  },
+  generationDateValue: {
+    fontSize: '8px',
+    fontWeight: 'ultrabold',
+    marginBottom: '14px'
+  },
+  logo: {
+    padding: '20px',
+    backgroundColor: 'white',
+    borderTopLeftRadius: '50px',
+    borderBottomLeftRadius: '50px',
+  },
+  cardsRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-evenly',
+    marginVertical: '8px'
+  },
+  card: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: 'space-between',
+    width: "180px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    padding: '20px',
+  },
+  cardLabel: {
+    fontSize: "6px",
+    fontWeight: "ultrabold",
+    opacity: 0.8,
+    marginBottom: '8px'
+  },
+  cardNumber: {
+    fontSize: "16px",
+    fontWeight: "ultrabold",
+  },
+  icon: {
+    width: '36px',
+    height: '36px',
+    borderRadius: '50px',
+  },
+  madeBy: {
+    marginTop: "100px",
+    display: "flex",
+    flexDirection: 'column',
+    alignItems: "center",
+    justifyContent: 'center',
+    width: "50%",
+  },
+  light: {
+    height: "10px",
+    width: "10px",
+  },
+  pdfEndImg: {
+    height: "14px",
+    width: "80px",
+  },
+  madeByText: {
+    fontSize: '8px',
+    marginBottom: '8px'
+  }
 });
 
 export const AdministratorReport = ({dataDevices}) => {
+   const { useName } = getUserCookie()
    const date = new Date()
    const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
    const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
@@ -247,33 +136,72 @@ export const AdministratorReport = ({dataDevices}) => {
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.main}>
-          <View style={styles.saveWorldCards}>
-            <Text>
+    <Page size="A5" style={styles.page}>
+      <View style={styles.main}>
+        <View style={styles.header}>
+          <View style={styles.generationDate}>
+            <Text style={styles.generationDateText}>Data de geração</Text>
+            <Text style={styles.generationDateValue}>
              {date.getDate() < 10 ? '0' : ''}{date.getDate()}/
              {(date.getMonth() + 1) < 10 ? '0' : ''}{date.getMonth() + 1}/
              {date.getFullYear()}
             </Text>
+            <Text style={{fontSize: '18px'}}>{useName}</Text>
           </View>
-          <View style={styles.saveWorldCards}>
-           <Text>{dataDevices.length} plantas</Text>
-          </View>
-          <View style={styles.saveWorldCards}>
-            <Text>{generationRealTotalValue} Kwh</Text>
-          </View>
-	        <View style={styles.saveWorldCards}>
-            <Text>{generationEstimatedTotalValue} Kwh</Text>
-          </View>
-	        <View style={styles.saveWorldCards}>
-            <Text>{percent} %</Text>
-          </View>
-          <View style={styles.saveWorldCards}>
-            <Text>{potence} potência</Text>
+          <View style={styles.logo}>
+            <Image style={{width: '140px', height: '60px'}} src="https://ucarecdn.com/0eb9df1d-e0d6-440f-96a7-a4037dffb862/"></Image>
           </View>
         </View>
-      </Page>
-    </Document>
-  );
-}
-  
+        <View style={styles.cardsRow}>
+          <View style={styles.card}>
+            <View>
+              <Text style={styles.cardLabel}>DISPOSITIVOS/PLANTAS</Text>
+              <Text style={styles.cardNumber}>{dataDevices.length}</Text>
+            </View>     
+            <Image style={styles.icon} src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/"></Image>
+          </View>
+          <View style={styles.card}>
+            <View>
+              <Text style={styles.cardLabel}>POTÊNCIA TOTAL</Text>
+              <Text style={styles.cardNumber}>{potence} Kwp</Text>
+            </View>
+             <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>             
+          </View>
+        </View>
+        <View style={styles.cardsRow}>
+          <View style={styles.card}>
+          <View>
+            <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
+            <Text style={styles.cardNumber}>{generationRealTotalValue} Kwh</Text>
+          </View>
+          <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
+        </View>
+        <View style={styles.card}>
+          <View>
+            <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
+            <Text style={styles.cardNumber}>{generationEstimatedTotalValue} Kwh</Text>
+          </View>
+          <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
+        </View>
+        </View>
+        <View style={styles.cardsRow}>
+          <View style={styles.card}>
+          <View>
+            <Text style={styles.cardLabel}>PERCENTUAL</Text>
+            <Text style={styles.cardNumber}>{percent} %</Text>
+          </View>
+          <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>
+        </View>
+        </View>
+        <View style={styles.madeBy}>
+          <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A</Text>
+          <Image
+            style={{width: '60px', height: '10px'}}
+            src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
+          ></Image>
+        </View>
+      </View>
+    </Page>
+  </Document>
+  )
+};

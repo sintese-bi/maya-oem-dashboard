@@ -27,7 +27,7 @@ export const getGeneration = (params) => async (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
-      console.log(data)
+      console.log('getGeneration:', data)
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,

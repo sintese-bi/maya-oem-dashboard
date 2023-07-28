@@ -38,7 +38,7 @@ import Tabs from "../../components/shared/Tabs";
 
 const Generation = () => {
   const location = useLocation();
-  const { blUuidState, devUuidState } = location.state || {};
+  const { blUuidState, devUuidState, useNameState } = location.state || {};
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
@@ -181,6 +181,16 @@ const Generation = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+
+            <Button
+             startIcon={<DownloadForOffline fontSize="small" />}
+             variant="contained"
+             sx={{ color: "primary", ml: 1, variant: "contained"}}
+            >
+              <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState} />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
+               {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}
+              </PDFDownloadLink>
+            </Button>
           </Box>
           <Tabs />
         </Box>
