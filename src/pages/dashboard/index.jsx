@@ -1,6 +1,8 @@
 // IMPORTS
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {PDFDownloadLink} from '@react-pdf/renderer'
+import { AdministratorReport } from "src/reports/AdministratorReport";
 
 // QUERYS
 import {
@@ -16,6 +18,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  Button,
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { BigNumberDashboard } from "src/components/BigNumber";
@@ -28,6 +31,7 @@ import {
   ThumbDownOffAlt,
   ThumbUpOffAlt,
   Warning,
+  DownloadForOffline,
 } from "@mui/icons-material";
 import MUIDataTable from "mui-datatables";
 
@@ -118,7 +122,20 @@ export default function Dashboard() {
 
   return (
     <>
-      <AlertPercentageForm />
+      <Box sx={{
+        my: 3,
+        ml: 3
+      }}>
+        <Button
+          startIcon={<DownloadForOffline fontSize="small" />}
+          variant="contained"
+          sx={{ color: "primary", variant: "contained" }}
+        >
+          <PDFDownloadLink document={<AdministratorReport dataDevices={dataDevices} />} fileName="relatório-integrador.pdf" style={{color: 'white', textDecoration: 'none'}}>
+            {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório Integrador")}
+          </PDFDownloadLink>
+        </Button>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -192,6 +209,8 @@ export default function Dashboard() {
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>
+
+      <AlertPercentageForm />
 
       {data.length !== 0 ? (
         <Box

@@ -186,6 +186,7 @@ const Generation = () => {
              startIcon={<DownloadForOffline fontSize="small" />}
              variant="contained"
              sx={{ color: "primary", ml: 1, variant: "contained"}}
+             onClick={() => {console.log(generation)}}
             >
               <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState} />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
                {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}

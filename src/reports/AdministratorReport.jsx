@@ -1,5 +1,6 @@
 import { getUserCookie } from "../services/session";
 import { useState, useEffect } from "react";
+import { numbers } from '../helpers/utils'
 import {
   Page,
   Text,
@@ -116,23 +117,25 @@ export const AdministratorReport = ({dataDevices}) => {
    const [potence, setPotence] = useState(1000)
 
    useEffect(() => {
-    let generationRealNumberValue = dataDevices.map((data) => {
+    let generationRealMonth = dataDevices.map((data) => {
       let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
       return generationRealValue;
     })
-    setGenerationRealTotalValue(generationRealNumberValue.reduce((total, element) => total + element, 0).toFixed())
+    let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed()
+    setGenerationRealTotalValue(numbers(generationRealMonthTotal))
 
-    let generationEstimatedNumberValue = dataDevices.map((data) => {
+    let generationEstimatedMonth = dataDevices.map((data) => {
       let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
       return generationEstimatedValue;
     })
-    setGenerationEstimatedTotalValue(generationEstimatedNumberValue.reduce((total, element) => total + element, 0).toFixed())
-  }, [dataDevices])
+    let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed()
+    setGenerationEstimatedTotalValue(numbers(generationEstimatedMonthTotal))
+    
 
-   useEffect(() => {
-      let percentResult = (generationRealTotalValue/generationEstimatedTotalValue)*100
-      setPercent(percentResult.toFixed())
-   }, [generationRealTotalValue, generationEstimatedTotalValue])
+    let percentResult = (generationRealMonthTotal/generationEstimatedMonthTotal)*100
+    setPercent(percentResult.toFixed())
+
+  }, [dataDevices])
 
   return (
     <Document>
@@ -196,7 +199,7 @@ export const AdministratorReport = ({dataDevices}) => {
         <View style={styles.madeBy}>
           <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A</Text>
           <Image
-            style={{width: '60px', height: '10px'}}
+            style={{width: '60px', height: '24px'}}
             src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
           ></Image>
         </View>
