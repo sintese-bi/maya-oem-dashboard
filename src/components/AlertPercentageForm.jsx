@@ -10,7 +10,7 @@ import { AdministratorReport } from "src/reports/AdministratorReport";
 import { getUserCookie } from "src/services/session";
 
 // LIBS DE ESTILOS
-import { Info, SaveAs, DownloadForOffline } from "@mui/icons-material";
+import { Info, SaveAs, DownloadForOffline, Lock } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -19,6 +19,14 @@ import {
   MenuItem,
   TextField,
   Tooltip,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+  Divider,
+  Typography
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
@@ -49,6 +57,7 @@ const validateSchema = Yup.object().shape({
 });
 
 export default function AlertPercentageForm() {
+  const [freePlan, setFreePlan] = useState(true)
   const dispatch = useDispatch();
 
   const { useUuid } = getUserCookie();
@@ -77,9 +86,15 @@ export default function AlertPercentageForm() {
   }, [useUuid]);
 
   useEffect(() => {
+    console.log(percentage, frequencyName)
     if (percentage && frequencyName) {
-      setValue("percentage", percentage);
-      setValue("frequencyName", frequencyName);
+      if(!freePlan){
+        setValue("percentage", percentage);
+        setValue("frequencyName", frequencyName);
+      } else {
+        setValue("percentage", 80);
+        setValue("frequencyName", 'month')
+      }
     }
   }, [percentage, frequencyName]);
 
@@ -91,34 +106,37 @@ export default function AlertPercentageForm() {
       sx={{
         alignItems: "center",
         display: "flex",
+        flexDirection: 'column',
         justifyContent: "space-between",
-        gap: 3,
-        my: 3,
+        gap: 4,
+        my: 5,
         mx: 2,
       }}
     >
-      <Button
-          startIcon={<DownloadForOffline fontSize="small" />}
-          variant="contained"
-          sx={{ color: "primary", variant: "contained" }}
+      <Typography sx={{ mt: 3, fontWeight: 'bold', fontSize: '20px'}}>
+        Definição de frequência dos alertas
+      </Typography>
+      <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'center', gap: 2, my: 1, mx: 2}}>
+        <List 
+          sx={{
+            width: "24%",
+            bgcolor: "background.paper",
+          }}
         >
-          <PDFDownloadLink document={<AdministratorReport dataDevices={dataDevices} />} fileName="relatório-administrador.pdf" style={{color: 'white', textDecoration: 'none'}}>
-            {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório Administrador")}
-          </PDFDownloadLink>
-      </Button>
-      <Box sx={{display: "flex", gap: 3, my: 3, mx: 2,}}>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <Tooltip
-            sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
-              "percentage"
-            )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
-          >
-            <IconButton>
-              <Info />
-            </IconButton>
-          </Tooltip>
-          <TextField
+          <ListItem>
+            <ListItemAvatar>
+              <Tooltip
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
+                "percentage"
+              )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
+              >
+                <Avatar>
+                  <Info  />
+                </Avatar>
+              </Tooltip>
+            </ListItemAvatar>
+            <TextField
             sx={{ width: 200 }}
             label="Limite Mínimo (%)"
             type="number"
@@ -126,24 +144,26 @@ export default function AlertPercentageForm() {
             error={!!errors.percentage}
             helperText={errors.percentage?.message}
             variant="standard"
-            disabled={isLoadingAlertFrequency}
+            disabled={freePlan}
             inputProps={{ min: 0, max: 80 }}
             InputLabelProps={{
               shrink: true,
             }}
           />
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <Tooltip
-            sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            title="Define a frequência de alertas diário, semanal ou mensal."
-          >
-            <IconButton>
-              <Info />
-            </IconButton>
-          </Tooltip>
-          <Controller
+          </ListItem>
+          <Divider variant="inset" component="li" />
+          <ListItem>
+            <ListItemAvatar>
+              <Tooltip
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              title="Define a frequência de alertas diário, semanal ou mensal."
+              >
+                <Avatar>
+                  <Info />
+                </Avatar>
+              </Tooltip>
+            </ListItemAvatar>
+            <Controller
             sx={{ width: 200 }}
             control={control}
             name="frequencyName"
@@ -156,16 +176,18 @@ export default function AlertPercentageForm() {
                 helperText={errors.frequencyName?.message}
                 value={watch("frequencyName") || ""}
                 select
+                defaultValue="month"
                 variant="standard"
                 disabled={isLoadingAlertFrequency}
               >
-                <MenuItem value="day">Dia</MenuItem>
-                <MenuItem value="week">Semanal</MenuItem>
-                <MenuItem value="month">Mês</MenuItem>
+                <MenuItem value="day" disabled={freePlan} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {freePlan ? (<Lock />) : ''}</MenuItem>
+                <MenuItem value="week" disabled={freePlan} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {freePlan ? (<Lock />) : ''}</MenuItem>
+                <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
               </TextField>
             )}
-          />
-        </Box>
+            />
+          </ListItem>
+        </List>
         {!isLoadingAlertFrequency ? (
         <Button
           startIcon={<SaveAs fontSize="small" />}
@@ -178,7 +200,7 @@ export default function AlertPercentageForm() {
       ) : (
         <CircularProgress color="success" />
       )}
-      </Box>
+      </Grid>
     </Box>
   );
 }

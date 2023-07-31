@@ -1,5 +1,6 @@
 import { getUserCookie } from "../services/session";
 import { useState, useEffect } from "react";
+import {numbers} from '../helpers/utils'
 import {
   Page,
   Text,
@@ -115,15 +116,17 @@ export const ClientReport = ({generation, brand}) => {
     const { useName } = getUserCookie()
     const date = new Date()
     const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0)
+    const [realGenerationTotal, setRealGenerationTotal] = useState(0)
     const [percent, setPercent] = useState(0);
     const [lowLevel, setLowLevel] = useState(true)
 
     useEffect(() => {
-      setEstimatedGenerationTotal(generation.estimatedGeneration?.reduce((total, element) => total + element, 0).toFixed())
+      setEstimatedGenerationTotal(generation?.estimatedGenerationTotal?.toFixed());
+      setRealGenerationTotal(numbers(Number(generation.realGenerationTotal).toFixed()));
     }, [generation])
 
     useEffect(() => {
-      let percentValue = (generation.realGenerationTotal/estimatedGenerationTotal)*100
+      let percentValue = (Number(generation.realGenerationTotal)/estimatedGenerationTotal)*100
       setPercent(percentValue.toFixed())
       generation.realGenerationTotal < estimatedGenerationTotal ? setLowLevel(true) : setLowLevel(false)
     }, [estimatedGenerationTotal])
@@ -164,7 +167,7 @@ export const ClientReport = ({generation, brand}) => {
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-             <Text style={styles.cardNumber}>{generation.realGenerationTotal} Kwh</Text>
+             <Text style={styles.cardNumber}>{realGenerationTotal} Kwh</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
           </View>
@@ -250,7 +253,7 @@ export const ClientReport = ({generation, brand}) => {
         <View style={styles.madeBy}>
           <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
           <Image
-            style={{width: '60px', height: '10px'}}
+            style={{width: '60px', height: '24px'}}
             src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
           ></Image>
         </View>
