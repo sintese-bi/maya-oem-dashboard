@@ -24,17 +24,17 @@ export const usersApi = createApi({
       query: (uuid) => ({ url: `/userBrands/${uuid}`, method: "get" }),
       transformResponse: (data) => {
         const { brand_login } = data;
-        
+
         const result = brand_login.map((item) => {
           const res = item.devices.map(dev => {
             return {
               brand: dev.dev_brand,
-              blUuid: item.bl_uuid,   
-              name: dev.dev_name, 
-              uuid: dev.dev_uuid, 
-              generationReal: dev.generation.length !== 0 ? dev.generation[0].gen_real + "Kwh" : '-', 
-              temperature: dev.temperature.length !== 0 ? dev.temperature[0].temp_temperature : '-', 
-              alert: dev.alerts.length, 
+              blUuid: item.bl_uuid,
+              name: dev.dev_name,
+              uuid: dev.dev_uuid,
+              generationReal: dev.generation.length !== 0 ? dev.generation[0].gen_real + "Kwh" : '-',
+              temperature: dev.temperature.length !== 0 ? dev.temperature[0].temp_temperature : '-',
+              alert: dev.alerts.length,
             }
           })
 

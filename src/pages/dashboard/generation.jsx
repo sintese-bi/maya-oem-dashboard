@@ -1,6 +1,8 @@
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ClientReport } from "src/reports/ClientReport";
 import { useLocation } from "react-router-dom";
 import {
   Backdrop,
@@ -14,6 +16,7 @@ import {
   NativeSelect,
   Select,
   TextField,
+  Button
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -23,6 +26,7 @@ import {
   ElectricBolt,
   OfflineBolt,
   Thermostat,
+  DownloadForOffline
 } from "@mui/icons-material";
 import { getDevices } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
@@ -34,7 +38,7 @@ import Tabs from "../../components/shared/Tabs";
 
 const Generation = () => {
   const location = useLocation();
-  const { blUuidState, devUuidState } = location.state || {};
+  const { blUuidState, devUuidState, useNameState } = location.state || {};
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
@@ -133,7 +137,10 @@ const Generation = () => {
             mt: 3,
           }}
         >
-          <Box>
+          <Box sx={{
+            display: "flex",
+            alignItems: "center"
+          }}>
             <FormControl sx={{ mr: 1, width: 200 }}>
               <InputLabel>Lista de Usuários</InputLabel>
               <NativeSelect
@@ -174,6 +181,16 @@ const Generation = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+
+            <Button
+             startIcon={<DownloadForOffline fontSize="small" />}
+             variant="contained"
+             sx={{ color: "primary", ml: 1, variant: "contained"}}
+            >
+              <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState} />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
+               {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}
+              </PDFDownloadLink>
+            </Button>
           </Box>
           <Tabs />
         </Box>
