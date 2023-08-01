@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import citiesData from "src/services/municipios";
 import {
   Box,
   Button,
@@ -106,6 +107,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   //Inserção
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
   // const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
@@ -117,6 +119,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
+    estado: yup.string().required("Campo obrigatório"),
     potenciaModulos: yup
       .number()
       .required("Campo obrigatório")
@@ -133,6 +136,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       const parsedData = JSON.parse(storedData);
       setNome(parsedData.nome || "");
       setCidade(parsedData.cidade || "");
+      setEstado(parsedData.cidade || "");
       setValorEstimado(parsedData.valorEstimado || null);
       setPotenciaModulos(parsedData.potenciaModulos || "");
       setNumeroModulos(parsedData.numeroModulos || "");
@@ -140,9 +144,12 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   }, []);
 
   const fetchRadiacao = async () => {
+    
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
+        `http://localhost:8080/v1/irrcoef_2/${encodeURIComponent(
+          estado
+        )}/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -200,7 +207,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `http://localhost:8080/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -254,7 +261,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           numeroModulos,
         });
         armazenarValorEstimado();
-        // fetchRadiacao();
+        // console.log(cidade, estado);
+        // fetchRadiacao(cidade, estado);
       })
       .catch((err) => {
         const validationErrors = {};
@@ -265,21 +273,20 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       });
   };
 
- 
   useEffect(() => {
     setNome("");
     setCidade("");
+    setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
     setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
   useEffect(() => {
+    
     fetchRadiacao();
-  }, [cidade]);
+  },[cidade]);
   useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
-
-  
 
   const onSubmit = (data) => {
     const formData = {
@@ -368,7 +375,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         console.error(error);
       });
   };
-
+  console.log(cidade,estado)
   return (
     <Box
       component="form"
@@ -730,6 +737,16 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
               margin="normal"
               error={!!errors.cidade}
               helperText={errors.cidade}
+              required
+            />
+            <TextField
+              label="Estado"
+              value={estado}
+              onChange={(event) => setEstado(event.target.value)}
+              fullWidth={false}
+              margin="normal"
+              error={!!errors.estado}
+              helperText={errors.estado}
               required
             />
             <>
