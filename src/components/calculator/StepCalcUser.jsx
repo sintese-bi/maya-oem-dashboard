@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
+import estadosBrasileiros from "src/services/estados";
+import { Autocomplete } from "@mui/material";
+
+import citiesData from "src/services/municipios";
 import { CircularProgress } from "@mui/material";
 import {
   Box,
@@ -106,6 +110,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   //Inserção
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
   // const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
@@ -113,10 +118,11 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const [numeroModulos, setNumeroModulos] = useState("");
   const [estimada, setEstimada] = useState(null);
   const [documentoLink, setDocumentoLink] = useState("");
-
+  const [valorDoKwh, setValorDoKwh] = useState("");
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
+    estado: yup.string().required("Campo obrigatório"),
     potenciaModulos: yup
       .number()
       .required("Campo obrigatório")
@@ -133,6 +139,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       const parsedData = JSON.parse(storedData);
       setNome(parsedData.nome || "");
       setCidade(parsedData.cidade || "");
+      setEstado(parsedData.estado || "");
       setValorEstimado(parsedData.valorEstimado || null);
       setPotenciaModulos(parsedData.potenciaModulos || "");
       setNumeroModulos(parsedData.numeroModulos || "");
@@ -142,9 +149,9 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(
-          cidade
-        )}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef_2/${encodeURIComponent(
+          estado
+        )}/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -158,14 +165,16 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   };
 
   const calcularValorEstimado = () => {
-    if (radiacao !== null && potenciaModulos !== "") {
+    if (radiacao !== null && potenciaModulos !== "" && valorDoKwh !== "") {
       const eficienciaModulos = 0.8;
       const dias = 30;
 
       const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
-      const valorEstimadoFormatado = estimada.toFixed(2);
+      const valorEstimadoFormatado = estimada.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+      });
       setValorEstimado(valorEstimadoFormatado);
-      setEstimada(estimada);
+      setEstimada(estimada * valorDoKwh);
     }
   };
 
@@ -177,6 +186,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         cidade,
         valorEstimado,
         potenciaModulos,
+        valorDoKwh,
         numeroModulos,
         clientGenWMaya: estimada,
         EffValue: estimada * 0.3,
@@ -209,13 +219,23 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           clientFirstName: nome,
           clientCity: cidade,
           clientModNum: numeroModulos,
-          clientGenWMaya: estimada.toFixed(2),
-          clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+          clientGenWMaya: estimada.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientGenWOMaya: (estimada - estimada * 0.3).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
           EffValue: (estimada * 0.3).toFixed(0),
           clientData: formattedDate,
-          clientKilo: clientKilo,
-          clientMega: clientMega,
-          clientGiga: clientGiga,
+          clientKilo: clientKilo.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientMega: clientMega.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientGiga: clientGiga.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
           clientPercentage: clientPercentage,
         },
         {
@@ -243,6 +263,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           nome,
           cidade,
           potenciaModulos,
+          valorDoKwh,
           numeroModulos,
         },
         { abortEarly: false }
@@ -253,6 +274,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           cidade,
           valorEstimado,
           potenciaModulos,
+          valorDoKwh,
           numeroModulos,
         });
         armazenarValorEstimado();
@@ -266,22 +288,28 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         // setErrors(validationErrors);
       });
   };
-
-
+  const uniqueCities = [...new Set(citiesData.map((city) => city.ic_city))];
   useEffect(() => {
     setNome("");
     setCidade("");
+    setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
-    setNumeroModulos(""); // Limpa o estado do número de módulos
+    setNumeroModulos("");
+    setValorDoKwh(""); // Limpa o estado do número de módulos
   }, []);
+  const handleCityChange = (event, newCidade) => {
+    setCidade(newCidade);
+  };
   useEffect(() => {
-    fetchRadiacao();
-  }, [cidade]);
+    // Verificar se cidade e estado não estão vazios antes de fazer a requisição
+    if (cidade && estado) {
+      fetchRadiacao();
+    }
+  }, [cidade, estado]);
   useEffect(() => {
     calcularValorEstimado();
-  }, [radiacao, potenciaModulos, numeroModulos]);
+  }, [radiacao, potenciaModulos, numeroModulos, valorDoKwh]);
 
-  
   const onSubmit = (data) => {
     const formData = {
       tbl_ref: {
@@ -336,6 +364,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       user_height: parseFloat(selectedHeight),
       user_gasPrice: parseFloat(data.user_gasPrice),
       user_assina: String(selectedPlan),
+      user_valorDoKwh: parseFloat(valorDoKwh),
       user_cons: parseFloat(data.user_cons),
       comis: parseFloat(data.comis / 100),
       user_address: {
@@ -351,7 +380,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         siafi: userAddress.siafi,
       },
     };
-    console.log(radiacao)
+    console.log(radiacao);
     const json = JSON.stringify(formData);
     console.log(json);
     const segPlanGigaValue = String(selectedPlan);
@@ -733,7 +762,29 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField
+            <Autocomplete
+              freeSolo
+              options={uniqueCities}
+              value={cidade}
+              onChange={handleCityChange}
+              renderInput={(params) => (
+                <TextField {...params} label="Cidade" margin="normal" />
+              )}
+            />
+            <Autocomplete
+              freeSolo
+              options={estadosBrasileiros}
+              value={estado}
+              onChange={(event, newEstado) => setEstado(newEstado)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Estado"
+                  margin="normal"
+                />
+              )}
+            />
+            {/* <TextField
               label="Cidade"
               value={cidade}
               onChange={(event) => setCidade(event.target.value)}
@@ -743,6 +794,16 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
               helperText={errors.cidade}
               required
             />
+            <TextField
+              label="Estado"
+              value={estado}
+              onChange={(event) => setEstado(event.target.value)}
+              fullWidth={false}
+              margin="normal"
+              error={!!errors.estado}
+              helperText={errors.estado}
+              required
+            /> */}
             <>
               <TextField
                 label="Potência da Usina(em kWp)"
@@ -897,6 +958,26 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
             label="Valor(%)"
             type="number"
             required
+          />
+          <Typography
+            sx={{ fontSize: "20px" }}
+            fontWeight="bold"
+            variant="subtitle2"
+          >
+            Valor do kWh
+          </Typography>
+          <TextField
+            sx={{ width: "150px" }}
+            size="small"
+            label="Valor do kWh(R$)"
+            variant="outlined"
+            // fullWidth
+            {...register("valorDoKwh")}
+            onChange={(e) => setValorDoKwh(e.target.value)}
+            value={valorDoKwh}
+            // defaultValue="0.8"
+            error={!!errors.valorDoKwh}
+            helperText={errors.valorDoKwh?.message}
           />
         </Grid>
 
