@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import estadosBrasileiros from "src/services/estados";
+import { Autocomplete } from "@mui/material";
+
+import citiesData from "src/services/municipios";
 import {
   Box,
   Button,
@@ -45,7 +49,6 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const handlePrevious = () => {
     onPreviousStep();
   };
-  const [showSecondButton, setShowSecondButton] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,6 +109,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   //Inserção
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
   // const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
@@ -117,6 +121,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
+    estado: yup.string().required("Campo obrigatório"),
     potenciaModulos: yup
       .number()
       .required("Campo obrigatório")
@@ -133,6 +138,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       const parsedData = JSON.parse(storedData);
       setNome(parsedData.nome || "");
       setCidade(parsedData.cidade || "");
+      setEstado(parsedData.estado || "");
       setValorEstimado(parsedData.valorEstimado || null);
       setPotenciaModulos(parsedData.potenciaModulos || "");
       setNumeroModulos(parsedData.numeroModulos || "");
@@ -142,7 +148,9 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${encodeURIComponent(cidade)}`
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef_2/${encodeURIComponent(
+          estado
+        )}/${encodeURIComponent(cidade)}`
       );
       const data = response.data;
       if (data && data.ic_yearly) {
@@ -160,8 +168,12 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       const eficienciaModulos = 0.8;
       const dias = 30;
 
-      const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
-      const valorEstimadoFormatado = estimada.toFixed(2);
+      const estimada =
+        radiacao * potenciaModulos * dias * eficienciaModulos * 0.92;
+      const valorEstimadoFormatado = (estimada / 0.92).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+      });
+
       setValorEstimado(valorEstimadoFormatado);
       setEstimada(estimada);
     }
@@ -207,13 +219,23 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           clientFirstName: nome,
           clientCity: cidade,
           clientModNum: numeroModulos,
-          clientGenWMaya: estimada.toFixed(2),
-          clientGenWOMaya: (estimada - estimada * 0.3).toFixed(2),
+          clientGenWMaya: estimada.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientGenWOMaya: (estimada - estimada * 0.3).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
           EffValue: (estimada * 0.3).toFixed(0),
           clientData: formattedDate,
-          clientKilo: clientKilo,
-          clientMega: clientMega,
-          clientGiga: clientGiga,
+          clientKilo: clientKilo.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientMega: clientMega.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
+          clientGiga: clientGiga.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+          }),
           clientPercentage: clientPercentage,
         },
         {
@@ -254,7 +276,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           numeroModulos,
         });
         armazenarValorEstimado();
-        // fetchRadiacao();
+        // console.log(cidade, estado);
+        // fetchRadiacao(cidade, estado);
       })
       .catch((err) => {
         const validationErrors = {};
@@ -264,22 +287,27 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         // setErrors(validationErrors);
       });
   };
+  const uniqueCities = [...new Set(citiesData.map((city) => city.ic_city))];
 
- 
   useEffect(() => {
     setNome("");
     setCidade("");
+    setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
     setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
+  const handleCityChange = (event, newCidade) => {
+    setCidade(newCidade);
+  };
   useEffect(() => {
-    fetchRadiacao();
-  }, [cidade]);
+    // Verificar se cidade e estado não estão vazios antes de fazer a requisição
+    if (cidade && estado) {
+      fetchRadiacao();
+    }
+  }, [cidade, estado]);
   useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos]);
-
-  
 
   const onSubmit = (data) => {
     const formData = {
@@ -722,16 +750,29 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField
-              label="Cidade"
+            <Autocomplete
+              freeSolo
+              options={uniqueCities}
               value={cidade}
-              onChange={(event) => setCidade(event.target.value)}
-              fullWidth={false}
-              margin="normal"
-              error={!!errors.cidade}
-              helperText={errors.cidade}
-              required
+              onChange={handleCityChange}
+              renderInput={(params) => (
+                <TextField {...params} label="Cidade" margin="normal" />
+              )}
             />
+            <Autocomplete
+              freeSolo
+              options={estadosBrasileiros}
+              value={estado}
+              onChange={(event, newEstado) => setEstado(newEstado)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Estado"
+                  margin="normal"
+                />
+              )}
+            />
+
             <>
               <TextField
                 label="Potência da Usina(em kWp)"
