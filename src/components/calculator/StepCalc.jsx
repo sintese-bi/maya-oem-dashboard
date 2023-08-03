@@ -169,8 +169,8 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       const dias = 30;
 
       const estimada =
-        radiacao * potenciaModulos * dias * eficienciaModulos * 0.92;
-      const valorEstimadoFormatado = (estimada / 0.92).toLocaleString("pt-BR", {
+        radiacao * potenciaModulos * dias * eficienciaModulos * 0.96;
+      const valorEstimadoFormatado = (estimada / 0.96).toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
       });
 
