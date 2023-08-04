@@ -20,16 +20,6 @@ import { useForm } from "react-hook-form";
 
 import InputMask from "react-input-mask";
 
-// function MaskedTextField(props) {
-//   const { mask, placeholder, ...rest } = props;
-
-//   return (
-//     <InputMask mask={mask} placeholder={placeholder} {...rest}>
-//       {(inputProps) => <TextField {...inputProps} />}
-//     </InputMask>
-//   );
-// }
-
 export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const {
     register,
@@ -73,15 +63,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
 
     fetchData();
   }, [input]); // Mantém "input" como dependência
-
-  // const handleButtonClick = () => {
-  //   if (input === "") {
-  //     alert("Preencha o campo de CEP");
-  //     return;
-  //   }
-
-  //   // Não é mais necessário realizar a chamada aqui, pois será tratada pelo useEffect
-  // };
 
   //Com esse event consigo impedir a inserção de letras para quantas entradas quiser
   const handleInputChange = (event) => {
@@ -189,6 +170,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         valorDoKwh,
         numeroModulos,
         clientGenWMaya: estimada,
+        clientGenWOMaya: estimada * 0.7,
         EffValue: estimada * 0.3,
       })
     );
@@ -222,7 +204,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           clientGenWMaya: estimada.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
           }),
-          clientGenWOMaya: (estimada - estimada * 0.3).toLocaleString("pt-BR", {
+          clientGenWOMaya: (estimada * 0.7).toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
           }),
           EffValue: (estimada * 0.3).toFixed(0),
@@ -777,11 +759,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
               value={estado}
               onChange={(event, newEstado) => setEstado(newEstado)}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Estado"
-                  margin="normal"
-                />
+                <TextField {...params} label="Estado" margin="normal" />
               )}
             />
             {/* <TextField
