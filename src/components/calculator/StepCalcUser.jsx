@@ -20,16 +20,6 @@ import { useForm } from "react-hook-form";
 
 import InputMask from "react-input-mask";
 
-// function MaskedTextField(props) {
-//   const { mask, placeholder, ...rest } = props;
-
-//   return (
-//     <InputMask mask={mask} placeholder={placeholder} {...rest}>
-//       {(inputProps) => <TextField {...inputProps} />}
-//     </InputMask>
-//   );
-// }
-
 export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const {
     register,
@@ -73,15 +63,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
 
     fetchData();
   }, [input]); // Mantém "input" como dependência
-
-  // const handleButtonClick = () => {
-  //   if (input === "") {
-  //     alert("Preencha o campo de CEP");
-  //     return;
-  //   }
-
-  //   // Não é mais necessário realizar a chamada aqui, pois será tratada pelo useEffect
-  // };
 
   //Com esse event consigo impedir a inserção de letras para quantas entradas quiser
   const handleInputChange = (event) => {
@@ -149,7 +130,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef_2/${encodeURIComponent(
+        `http://localhost:8080/v1/irrcoef_2/${encodeURIComponent(
           estado
         )}/${encodeURIComponent(cidade)}`
       );
@@ -189,6 +170,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         valorDoKwh,
         numeroModulos,
         clientGenWMaya: estimada,
+        clientGenWOMaya: estimada * 0.7,
         EffValue: estimada * 0.3,
       })
     );
@@ -212,7 +194,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `http://localhost:8080/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
@@ -222,7 +204,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           clientGenWMaya: estimada.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
           }),
-          clientGenWOMaya: (estimada - estimada * 0.3).toLocaleString("pt-BR", {
+          clientGenWOMaya: (estimada * 0.7).toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
           }),
           EffValue: (estimada * 0.3).toFixed(0),
@@ -777,11 +759,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
               value={estado}
               onChange={(event, newEstado) => setEstado(newEstado)}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Estado"
-                  margin="normal"
-                />
+                <TextField {...params} label="Estado" margin="normal" />
               )}
             />
             {/* <TextField
