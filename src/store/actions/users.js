@@ -1,4 +1,4 @@
-import { users } from "../typesActions/types";
+import { users, capacities } from "../typesActions/types";
 import { setUserCookie } from "../../services/session";
 
 import api, { configRequest } from "../../services/api";
@@ -20,6 +20,7 @@ export const auth = (params) => (dispatch) => {
       .post("/login", params)
       .then((res) => {
         const { data } = res;
+        console.log(data)
         const { message, token, result } = data;
         const { profile_level, use_name, use_uuid } = result;
         console.log('auth-data', data);
@@ -183,7 +184,6 @@ export const getUserBrands = (uuid) => (dispatch) => {
     .catch((error) => {
       const { response: err } = error;
       const message = err && err.data ? err.data.message : "Erro desconhecido";
-
       toast.error(message, {
         duration: 5000,
       });
@@ -254,7 +254,7 @@ export const getDashboard = (uuid) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log('getDashboard-data', data);
+      //console.log('getDashboard-data', data);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
         result: data,
@@ -269,3 +269,27 @@ export const getDashboard = (uuid) => (dispatch) => {
       dispatch({ type: users.GET_DASHBOARD_FAILURE, message });
     });
 };
+
+export const getCapacities = (blUuids) => (dispatch) => {
+  dispatch({type: capacities.GET_CAPACITY_REQUEST})
+  blUuids.map((data) => {
+    api
+   .get(`/report/${data}`)
+   .then((res) => {
+    const {data} = res;
+    console.log('getCapacities', data)
+    dispatch({
+      type: capacities.GET_CAPACITY_SUCCESS,
+      result: data
+    })
+   })
+   .catch((error) => {
+     const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+   })
+  })
+}

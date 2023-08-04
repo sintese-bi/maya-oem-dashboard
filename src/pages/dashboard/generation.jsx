@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
 import { useLocation } from "react-router-dom";
+import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 import {
   Backdrop,
   Box,
@@ -28,7 +29,7 @@ import {
   Thermostat,
   DownloadForOffline
 } from "@mui/icons-material";
-import { getDevices } from "src/store/actions/devices";
+import { getDevices, getCapacities } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
 import { BigNumber } from "../../components/BigNumber";
 import { ChartsGeneration } from "../../components/Charts";
@@ -44,7 +45,8 @@ const Generation = () => {
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
   );
-  const { isLoadingDevices, devices } = useSelector((state) => state.devices);
+  const { isLoadingDevices, devices, capacity } = useSelector((state) => state.devices);
+  const { useCodePagarMe } = useSelector((state) => state.users);
 
   const [deviceInfo, setDeviceInfo] = useState({});
   const [startDate, setStartDate] = useState(
@@ -71,6 +73,10 @@ const Generation = () => {
   }
 
   useEffect(() => {
+    console.log(capacity)
+  }, [capacity])
+
+  useEffect(() => {
     if (devices.length !== 0) {
       if (devUuidState) {
         handleSelectDevices(devUuidState);
@@ -91,6 +97,7 @@ const Generation = () => {
           type: optionFilter,
         })
       );
+      dispatch(getCapacities(deviceInfo.dev_uuid))
     } else if (devUuidState) {
       dispatch(
         getGeneration({
@@ -101,6 +108,7 @@ const Generation = () => {
           type: optionFilter,
         })
       );
+      dispatch(getCapacities(devUuidState))
     }
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
@@ -182,16 +190,20 @@ const Generation = () => {
               />
             </LocalizationProvider>
 
-            <Button
-             startIcon={<DownloadForOffline fontSize="small" />}
-             variant="contained"
-             sx={{ color: "primary", ml: 1, variant: "contained"}}
-             onClick={() => {console.log(generation)}}
-            >
-              <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState} />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
-               {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório cliente")}
-              </PDFDownloadLink>
-            </Button>
+            <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+              <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
+                <Button
+                  startIcon={<DownloadForOffline fontSize="small" />}
+                  variant="contained"
+                  sx={{ color: "primary", ml: 1, variant: "contained"}}
+                  disabled={useCodePagarMe ? false : true}
+                >
+                  <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState}  />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
+                    {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório" : "Relatório cliente") : "Relatório indisponível")}
+                  </PDFDownloadLink>
+                </Button>
+              </Box>
+            </ToolTipNoAccess>
           </Box>
           <Tabs />
         </Box>

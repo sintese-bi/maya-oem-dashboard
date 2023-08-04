@@ -1,11 +1,13 @@
 // IMPORTS
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ChartsDashboard } from '../components/Charts';
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {PDFDownloadLink} from '@react-pdf/renderer'
+import {PDFDownloadLink} from '@react-pdf/renderer';
 import * as Yup from "yup";
 
 import { AdministratorReport } from "src/reports/AdministratorReport";
+import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 
 import { getUserCookie } from "src/services/session";
 
@@ -61,7 +63,7 @@ export default function AlertPercentageForm() {
   const dispatch = useDispatch();
 
   const { useUuid } = getUserCookie();
-  const { isLoadingAlertFrequency, percentage, frequencyName, dataDevices } = useSelector(
+  const { isLoadingAlertFrequency, percentage, frequencyName, dataDevices, useCodePagarMe } = useSelector(
     (state) => state.users
   );
 
@@ -86,9 +88,8 @@ export default function AlertPercentageForm() {
   }, [useUuid]);
 
   useEffect(() => {
-    console.log(percentage, frequencyName)
     if (percentage && frequencyName) {
-      if(!freePlan){
+      if(useCodePagarMe){
         setValue("percentage", percentage);
         setValue("frequencyName", frequencyName);
       } else {
@@ -106,20 +107,22 @@ export default function AlertPercentageForm() {
       sx={{
         alignItems: "center",
         display: "flex",
-        flexDirection: 'column',
-        justifyContent: "space-between",
-        gap: 4,
-        my: 5,
+        justifyContent: 'space-evenly',
+        gap: 2,
+        my: 6,
         mx: 2,
       }}
     >
-      <Typography sx={{ mt: 3, fontWeight: 'bold', fontSize: '20px'}}>
-        Definição de frequência dos alertas
-      </Typography>
+      <Box sx={{
+        display:'flex', flexDirection: 'column', alignItems:'center', 
+      }} >
+        <Typography sx={{ my: 3, fontWeight: 'bold', fontSize: '20px'}}>
+          Definição de frequência dos alertas
+        </Typography>
       <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'center', gap: 2, my: 1, mx: 2}}>
         <List 
           sx={{
-            width: "24%",
+            width: "72%",
             bgcolor: "background.paper",
           }}
         >
@@ -136,20 +139,25 @@ export default function AlertPercentageForm() {
                 </Avatar>
               </Tooltip>
             </ListItemAvatar>
-            <TextField
-            sx={{ width: 200 }}
-            label="Limite Mínimo (%)"
-            type="number"
-            {...register("percentage")}
-            error={!!errors.percentage}
-            helperText={errors.percentage?.message}
-            variant="standard"
-            disabled={freePlan}
-            inputProps={{ min: 0, max: 80 }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+            <ToolTipNoAccess
+              useCodePagarMe={useCodePagarMe}
+            >
+                <TextField
+                  sx={{ width: 200 }}
+                  label="Limite Mínimo (%)"
+                  type="number"
+                  {...register("percentage")}
+                  error={!!errors.percentage}
+                  helperText={errors.percentage?.message}
+                  variant="standard"
+                  disabled={!useCodePagarMe}
+                  inputProps={{ min: 0, max: 80 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+            </ToolTipNoAccess>
+            
           </ListItem>
           <Divider variant="inset" component="li" />
           <ListItem>
@@ -180,8 +188,12 @@ export default function AlertPercentageForm() {
                 variant="standard"
                 disabled={isLoadingAlertFrequency}
               >
-                <MenuItem value="day" disabled={freePlan} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {freePlan ? (<Lock />) : ''}</MenuItem>
-                <MenuItem value="week" disabled={freePlan} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {freePlan ? (<Lock />) : ''}</MenuItem>
+              <ToolTipNoAccess
+                useCodePagarMe={useCodePagarMe}
+              >
+                <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
+                <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
+              </ToolTipNoAccess>
                 <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
               </TextField>
             )}
@@ -201,6 +213,10 @@ export default function AlertPercentageForm() {
         <CircularProgress color="success" />
       )}
       </Grid>
+      </Box>
+      <Box sx={{m: 4, width: '30%'}}>
+        <ChartsDashboard dataDevices={dataDevices} />
+      </Box>
     </Box>
   );
 }
