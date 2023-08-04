@@ -55,11 +55,3 @@ Este projecto encontra-se licenciado nos termos do **MIT** licença.
 
 <br />
 <p align="right">(<a href="#readme-top">Voltar ao top</a>)</p>
-
-
-"eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
