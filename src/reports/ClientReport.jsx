@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ClientReport = ({generation, brand}) => {
+export const ClientReport = ({generation, brand, capacity}) => {
     const { useName } = getUserCookie()
     const date = new Date()
     const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0)
@@ -160,7 +160,7 @@ export const ClientReport = ({generation, brand}) => {
           <View style={styles.card}>
             <View>
               <Text style={styles.cardLabel}>POTÊNCIA</Text>
-              <Text style={styles.cardNumber}>1000 Kwp</Text>
+              <Text style={styles.cardNumber}>{capacity} Kwp</Text>
             </View>
              <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>             
           </View>

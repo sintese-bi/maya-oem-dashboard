@@ -4,6 +4,8 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import ApSystems from '../assets/img/logo/apsystems.ico';
 import Aurora from '../assets/img/logo/aurora.ico';
 import Canadian from '../assets/img/logo/canadian.ico';
+import Renovigi from '../assets/img/logo/renovigi.ico';
+import Weg from '../assets/img/logo/weg.ico';
 import Foxess from '../assets/img/logo/foxess.ico';
 import Fronius from '../assets/img/logo/fronius.ico';
 import Fusion from '../assets/img/logo/fusion.ico';
@@ -42,6 +44,24 @@ const listBrand = [
     media: Canadian,
     params: 'canadian',
     url: 'https://monitoring.csisolar.com/login',
+    description: 'Evidentemente, a expansão dos mercados mundiais exige a precisão e a definição das condições inegavelmente apropriadas.'
+  },
+  {
+    href: 'generation/renovigi',
+    icon: (<AssessmentIcon fontSize="small" />),
+    title: 'Renovigi',
+    media: Renovigi,
+    params: 'renovigi',
+    url: 'https://www.renovigi.solar/cus/renovigi/index_po.html?1690209459489',
+    description: 'Evidentemente, a expansão dos mercados mundiais exige a precisão e a definição das condições inegavelmente apropriadas.'
+  },
+  {
+    href: 'generation/weg',
+    icon: (<AssessmentIcon fontSize="small" />),
+    title: 'Weg',
+    media: Weg,
+    params: 'weg',
+    url: 'https://iot.weg.net/#/portal/main',
     description: 'Evidentemente, a expansão dos mercados mundiais exige a precisão e a definição das condições inegavelmente apropriadas.'
   },
   {

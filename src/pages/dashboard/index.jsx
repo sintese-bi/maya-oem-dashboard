@@ -1,15 +1,18 @@
 // IMPORTS
+import api, { configRequest } from "../../services/api";
+import { reportAdminRules } from '../../reports/reportsService/reportAdminstrator'
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {PDFDownloadLink} from '@react-pdf/renderer'
 import { AdministratorReport } from "src/reports/AdministratorReport";
+import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 
 // QUERYS
 import {
   columnsDevices,
 } from "src/constants/columns";
 import { getUserCookie } from "src/services/session";
-import { getDashboard } from "src/store/actions/users";
+import { getDashboard, getCapacities } from "src/store/actions/users";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -19,6 +22,7 @@ import {
   Container,
   Grid,
   Button,
+  Typography,
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { BigNumberDashboard } from "src/components/BigNumber";
@@ -44,11 +48,14 @@ export default function Dashboard() {
   const {
     isLoading,
     brands,
+    blUuids,
     dataDevices,
     generationBelowEstimated,
     alerts,
     offline,
     online,
+    capacity,
+    useCodePagarMe
   } = useSelector((state) => state.users);
 
   const [data, setData] = useState([]);
@@ -99,11 +106,19 @@ export default function Dashboard() {
   }, [useUuid]);
 
   useEffect(() => {
+    dispatch(getCapacities(blUuids))
+  }, [blUuids])
+
+  useEffect(() => {
     if (dataDevices.length !== 0) {
       setData(dataDevices);
       setColumns(columnsDevices);
     }
   }, [dataDevices]);
+
+  useEffect(() => {
+    console.log(capacity)
+  }, [capacity])
 
   useEffect(() => {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
@@ -126,15 +141,20 @@ export default function Dashboard() {
         my: 3,
         ml: 3
       }}>
-        <Button
-          startIcon={<DownloadForOffline fontSize="small" />}
-          variant="contained"
-          sx={{ color: "primary", variant: "contained" }}
-        >
-          <PDFDownloadLink document={<AdministratorReport dataDevices={dataDevices} />} fileName="relatório-integrador.pdf" style={{color: 'white', textDecoration: 'none'}}>
-            {({ blob, url, loading, error }) => (loading ? "Carregando relatório" : "Relatório Integrador")}
-          </PDFDownloadLink>
-        </Button>
+        <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+          <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
+            <Button
+              startIcon={<DownloadForOffline fontSize="small" />}
+              variant="contained"
+              sx={{ color: "primary", variant: "contained" }}
+              disabled={useCodePagarMe ? false : true}
+            >
+              <PDFDownloadLink document={<AdministratorReport dataDevices={dataDevices} capacity={ capacity } />} fileName="relatório-integrador.pdf" style={{color: 'white', textDecoration: 'none'}}>
+                {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório" : "Relatório Integrador") : "Relatório indisponível")}
+              </PDFDownloadLink>
+            </Button>
+          </Box>
+        </ToolTipNoAccess>
       </Box>
       <Box
         sx={{

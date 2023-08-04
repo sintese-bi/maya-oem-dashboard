@@ -1,4 +1,4 @@
-import { users } from "../typesActions/types";
+import { users, capacities } from "../typesActions/types";
 
 import moment from "moment-timezone";
 
@@ -15,9 +15,11 @@ const initialState = {
   profileLevel: [],
   useEmail: "",
   useName: "",
+  useCodePagarMe: "",
   resultBrandCheck: [],
   data: [],
   brands: [],
+  blUuids: [],
   dataDevices: [],
   generationBelowEstimated: [],
   alerts: [],
@@ -25,6 +27,7 @@ const initialState = {
   online: [],
   percentage: [],
   frequencyName: [],
+  capacity: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -89,12 +92,13 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_SHOW_SUCCESS:
-      const { use_email, use_name } = payload;
+      const { use_email, use_name, use_code_pagar_me } = payload;
       return {
         ...state,
         loadingShow: false,
         useEmail: use_email,
         useName: use_name,
+        useCodePagarMe: use_code_pagar_me
       };
 
     case users.GET_SHOW_FAILURE:
@@ -342,6 +346,7 @@ export default function userReducer(state = initialState, action) {
         .flat();
 
       const brands = [...new Set(dataDevices.map((item) => item.brand))];
+      const blUuids = [...new Set(dataDevices.map((item) => item.blUuid))]
 
       const generationBelowEstimated = dataDevices.filter(
         (item) => item.generationRealWeek < item.generationEstimatedlWeek
@@ -355,6 +360,7 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         brands,
+        blUuids,
         dataDevices,
         generationBelowEstimated,
         alerts,
@@ -373,6 +379,23 @@ export default function userReducer(state = initialState, action) {
         offline: [],
         online: [],
       };
+
+    case capacities.GET_CAPACITY_REQUEST:
+      return {
+        ...state,
+        capacity: []
+      }
+
+    case capacities.GET_CAPACITY_SUCCESS:
+      return {
+        ...state,
+        capacity: [...capacity, result]
+      }
+    case capacities.GET_CAPACITY_FAILURE:
+      return {
+        ...state,
+        capacity: []
+      }
 
     default:
       return state;

@@ -1,6 +1,7 @@
 // IMPORTS
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
+import { numbers } from '../helpers/utils'
 
 // LIBS DE ESTILOS
 import { Bar, Chart } from "react-chartjs-2";
@@ -53,6 +54,113 @@ const TABS = {
   GENERATION_PERCENTAGE: 1,
 };
 
+export const ChartsDashboard = (props) => {
+
+
+  const canvas = useRef(null);
+  const { dataDevices } = props
+  const theme = useTheme();
+
+  const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: 'top',
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  const labels = ['Geração Real x Geração Estimada'];
+
+  const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
+  const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
+  const [valueTabs, setValueTabs] = useState(0);
+
+  useEffect(() => {
+    let generationRealMonth = dataDevices.map((data) => {
+      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
+      return generationRealValue;
+    })
+    let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed()
+    setGenerationRealTotalValue(generationRealMonthTotal)
+
+    let generationEstimatedMonth = dataDevices.map((data) => {
+      let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
+      return generationEstimatedValue;
+    })
+    let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed()
+    setGenerationEstimatedTotalValue(generationEstimatedMonthTotal)
+    
+  }, [dataDevices])
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        barThickness: 82,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: "Geral Estimada",
+        maxBarThickness: 76,
+        label: 'Geração Real',
+        data: [generationRealTotalValue, 0],
+        backgroundColor: "#5048E5",
+      },
+      {
+        barThickness: 82,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        maxBarThickness: 76,
+        label: 'Geração Estimada',
+        data: [generationEstimatedTotalValue, 0],
+        backgroundColor: '#14B8A6',
+      },
+    ],
+  };
+
+
+  return (
+    <Box sx={{
+        height: 320,
+        position: "relative",
+      }}
+    >
+        <Typography color="textPrimary" sx={{my: 3, fontWeight: 'bold', fontSize: '20px'}}>
+            Relação da geração real e geração estimada 
+        </Typography>
+        <Bar options={options} data={data} />
+    </Box>
+  )
+  
+}
+
 // GRAFICO DE GERAÇÃO EM (Kwh) vs PERCENTAGEM
 export const ChartsGeneration = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter } = props;
@@ -71,7 +179,7 @@ export const ChartsGeneration = (props) => {
   const labels = Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
   );
-
+  
   // PROPS PARA O GRAFICO
   const dataKwh = {
     datasets: [

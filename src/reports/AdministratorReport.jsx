@@ -108,9 +108,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export const AdministratorReport = ({dataDevices}) => {
+export const AdministratorReport = ({dataDevices, capacity}) => {
    const { useName } = getUserCookie()
    const date = new Date()
+   const [capacityTotalValue, setCapacityTotalValue] = useState(0)
    const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
    const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
    const [percent, setPercent] = useState(0)
