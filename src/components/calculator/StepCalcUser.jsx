@@ -130,7 +130,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/v1/irrcoef_2/${encodeURIComponent(
+        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef_2/${encodeURIComponent(
           estado
         )}/${encodeURIComponent(cidade)}`
       );
@@ -194,7 +194,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `http://localhost:8080/v1/pandadoc`,
+        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado,
