@@ -1,7 +1,8 @@
-import { devices, capacitiesDevice } from "../typesActions/types";
+import { devices } from "../typesActions/types";
 
 const initialState = {
   isLoadingDevices: false,
+  isLoadingCapacity: false,
   devices: [],
   capacity: [],
 };
@@ -32,20 +33,24 @@ export default function userReducer(state = initialState, action) {
         devices: [],
       };
 
-    case capacitiesDevice.GET_CAPACITY_DEVICE_REQUEST:
+    case devices.GET_CAPACITY_DEVICE_REQUEST:
       return {
         ...state,
+        isLoadingCapacity: true,
         capacity: []
       }
 
-    case capacitiesDevice.GET_CAPACITY_DEVICE_SUCCESS:
+    case devices.GET_CAPACITY_DEVICE_SUCCESS:
       return {
         ...state,
-        capacity: [...capacity, result]
+        isLoadingCapacity: false,
+        capacity: result
       }
-    case capacitiesDevice.GET_CAPACITY_DEVICE_FAILURE:
+      
+    case devices.GET_CAPACITY_DEVICE_FAILURE:
       return {
         ...state,
+        isLoadingCapacity: false,
         capacity: []
       }
 

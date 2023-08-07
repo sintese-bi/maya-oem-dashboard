@@ -1,4 +1,4 @@
-import { users, capacities } from "../typesActions/types";
+import { users } from "../typesActions/types";
 import { setUserCookie } from "../../services/session";
 
 import api, { configRequest } from "../../services/api";
@@ -271,25 +271,30 @@ export const getDashboard = (uuid) => (dispatch) => {
 };
 
 export const getCapacities = (blUuids) => (dispatch) => {
-  dispatch({type: capacities.GET_CAPACITY_REQUEST})
-  blUuids.map((data) => {
+  let capacities = []
+  dispatch({type: users.GET_CAPACITY_REQUEST})
+
+  blUuids?.map((data) => {
     api
    .get(`/report/${data}`)
    .then((res) => {
     const {data} = res;
-    console.log('getCapacities', data)
-    dispatch({
-      type: capacities.GET_CAPACITY_SUCCESS,
-      result: data
-    })
+    capacities.push(data.sumOfDevCapacities)
    })
    .catch((error) => {
-     const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
-
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido - user-capacity";
       toast.error(message, {
         duration: 5000,
       });
-   })
+      dispatch({
+       type: users.GET_CAPACITY_FAILURE, message
+      })
+    })
+  })
+
+  dispatch({
+      type: users.GET_CAPACITY_SUCCESS,
+      result: capacities
   })
 }

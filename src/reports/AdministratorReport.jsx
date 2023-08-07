@@ -1,6 +1,4 @@
-import { getUserCookie } from "../services/session";
-import { useState, useEffect } from "react";
-import { numbers } from '../helpers/utils'
+import { reportAdministrator } from './reportsRules/reportAdministratorRule'
 import {
   Page,
   Text,
@@ -66,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: 'space-between',
-    width: "180px",
+    width: "186px",
     backgroundColor: "white",
     borderRadius: "10px",
     padding: '20px',
@@ -78,7 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: '8px'
   },
   cardNumber: {
-    fontSize: "16px",
+    fontSize: "14px",
     fontWeight: "ultrabold",
   },
   icon: {
@@ -108,36 +106,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export const AdministratorReport = ({dataDevices, capacity}) => {
-   const { useName } = getUserCookie()
-   const date = new Date()
-   const [capacityTotalValue, setCapacityTotalValue] = useState(0)
-   const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
-   const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
-   const [percent, setPercent] = useState(0)
-   const [potence, setPotence] = useState(1000)
-
-   useEffect(() => {
-    let generationRealMonth = dataDevices.map((data) => {
-      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
-      return generationRealValue;
-    })
-    let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed()
-    setGenerationRealTotalValue(numbers(generationRealMonthTotal))
-
-    let generationEstimatedMonth = dataDevices.map((data) => {
-      let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
-      return generationEstimatedValue;
-    })
-    let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed()
-    setGenerationEstimatedTotalValue(numbers(generationEstimatedMonthTotal))
-    
-
-    let percentResult = (generationRealMonthTotal/generationEstimatedMonthTotal)*100
-    setPercent(percentResult.toFixed())
-
-  }, [dataDevices])
-
+export const AdministratorReport = () => {
   return (
     <Document>
     <Page size="A5" style={styles.page}>
@@ -146,11 +115,11 @@ export const AdministratorReport = ({dataDevices, capacity}) => {
           <View style={styles.generationDate}>
             <Text style={styles.generationDateText}>Data de geração</Text>
             <Text style={styles.generationDateValue}>
-             {date.getDate() < 10 ? '0' : ''}{date.getDate()}/
-             {(date.getMonth() + 1) < 10 ? '0' : ''}{date.getMonth() + 1}/
-             {date.getFullYear()}
+             {reportAdministrator.date.getDate() < 10 ? '0' : ''}{reportAdministrator.date.getDate()}/
+             {(reportAdministrator.date.getMonth() + 1) < 10 ? '0' : ''}{reportAdministrator.date.getMonth() + 1}/
+             {reportAdministrator.date.getFullYear()}
             </Text>
-            <Text style={{fontSize: '18px'}}>{useName}</Text>
+            <Text style={{fontSize: '18px'}}>{reportAdministrator.useName}</Text>
           </View>
           <View style={styles.logo}>
             <Image style={{width: '140px', height: '60px'}} src="https://ucarecdn.com/0eb9df1d-e0d6-440f-96a7-a4037dffb862/"></Image>
@@ -160,14 +129,14 @@ export const AdministratorReport = ({dataDevices, capacity}) => {
           <View style={styles.card}>
             <View>
               <Text style={styles.cardLabel}>DISPOSITIVOS/PLANTAS</Text>
-              <Text style={styles.cardNumber}>{dataDevices.length}</Text>
+              <Text style={styles.cardNumber}>{reportAdministrator.devicesLength}</Text>
             </View>     
             <Image style={styles.icon} src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/"></Image>
           </View>
           <View style={styles.card}>
             <View>
               <Text style={styles.cardLabel}>POTÊNCIA TOTAL</Text>
-              <Text style={styles.cardNumber}>{potence} Kwp</Text>
+              <Text style={styles.cardNumber}>{reportAdministrator.capacityTotalValue} Kwp</Text>
             </View>
              <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>             
           </View>
@@ -176,14 +145,14 @@ export const AdministratorReport = ({dataDevices, capacity}) => {
           <View style={styles.card}>
           <View>
             <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-            <Text style={styles.cardNumber}>{generationRealTotalValue} Kwh</Text>
+            <Text style={styles.cardNumber}>{reportAdministrator.generationRealTotalValue} Kwh</Text>
           </View>
           <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
         </View>
         <View style={styles.card}>
           <View>
             <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-            <Text style={styles.cardNumber}>{generationEstimatedTotalValue} Kwh</Text>
+            <Text style={styles.cardNumber}>{reportAdministrator.generationEstimatedTotalValue} Kwh</Text>
           </View>
           <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
         </View>
@@ -192,7 +161,7 @@ export const AdministratorReport = ({dataDevices, capacity}) => {
           <View style={styles.card}>
           <View>
             <Text style={styles.cardLabel}>PERCENTUAL</Text>
-            <Text style={styles.cardNumber}>{percent} %</Text>
+            <Text style={styles.cardNumber}>{reportAdministrator.percent} %</Text>
           </View>
           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>
         </View>

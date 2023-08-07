@@ -1,10 +1,10 @@
 // IMPORTS
 import api, { configRequest } from "../../services/api";
-import { reportAdminRules } from '../../reports/reportsService/reportAdminstrator'
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {PDFDownloadLink} from '@react-pdf/renderer'
 import { AdministratorReport } from "src/reports/AdministratorReport";
+import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 
 // QUERYS
@@ -62,6 +62,8 @@ export default function Dashboard() {
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
 
+  const [isLoadingReport, setIsLoadingReport] = useState(true)
+
   const options = {
     filter: true,
     rowsPerPage: 10,
@@ -101,6 +103,10 @@ export default function Dashboard() {
     }
   }
 
+  function handleReportGeneration(){
+    reportAdministratorRule(capacity, dataDevices, setIsLoadingReport)
+  }
+
   useEffect(() => {
     dispatch(getDashboard(useUuid));
   }, [useUuid]);
@@ -115,10 +121,6 @@ export default function Dashboard() {
       setColumns(columnsDevices);
     }
   }, [dataDevices]);
-
-  useEffect(() => {
-    console.log(capacity)
-  }, [capacity])
 
   useEffect(() => {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
@@ -148,10 +150,22 @@ export default function Dashboard() {
               variant="contained"
               sx={{ color: "primary", variant: "contained" }}
               disabled={useCodePagarMe ? false : true}
+              onClick={() => handleReportGeneration()}
             >
-              <PDFDownloadLink document={<AdministratorReport dataDevices={dataDevices} capacity={ capacity } />} fileName="relatório-integrador.pdf" style={{color: 'white', textDecoration: 'none'}}>
-                {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório" : "Relatório Integrador") : "Relatório indisponível")}
-              </PDFDownloadLink>
+              {
+                isLoadingReport ? (
+                  'Preparar relatório'
+                ) : 
+                (
+                  <PDFDownloadLink 
+                    document={<AdministratorReport />} 
+                    fileName="relatório-integrador.pdf"
+                    style={{color: 'white', textDecoration: 'none'}}
+                  >
+                    {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório..." : "Relatório Integrador") : "Relatório indisponível")}
+                  </PDFDownloadLink>
+                )
+              }
             </Button>
           </Box>
         </ToolTipNoAccess>

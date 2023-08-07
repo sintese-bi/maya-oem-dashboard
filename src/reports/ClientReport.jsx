@@ -1,6 +1,4 @@
-import { getUserCookie } from "../services/session";
-import { useState, useEffect } from "react";
-import {numbers} from '../helpers/utils'
+import { reportClient } from './reportsRules/reportClientRule'
 import {
   Page,
   Text,
@@ -112,38 +110,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ClientReport = ({generation, brand, capacity}) => {
-    const { useName } = getUserCookie()
-    const date = new Date()
-    const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0)
-    const [realGenerationTotal, setRealGenerationTotal] = useState(0)
-    const [percent, setPercent] = useState(0);
-    const [lowLevel, setLowLevel] = useState(true)
-
-    useEffect(() => {
-      setEstimatedGenerationTotal(generation?.estimatedGenerationTotal?.toFixed());
-      setRealGenerationTotal(numbers(Number(generation.realGenerationTotal).toFixed()));
-    }, [generation])
-
-    useEffect(() => {
-      let percentValue = (Number(generation.realGenerationTotal)/estimatedGenerationTotal)*100
-      setPercent(percentValue.toFixed())
-      generation.realGenerationTotal < estimatedGenerationTotal ? setLowLevel(true) : setLowLevel(false)
-    }, [estimatedGenerationTotal])
-
+export const ClientReport = () => {
   return (
     <Document>
     <Page size="A4" style={styles.page}>
-      <View style={styles.main}>
+        <View style={styles.main}>
         <View style={styles.header}>
           <View style={styles.generationDate}>
             <Text style={styles.generationDateText}>Data de geração</Text>
             <Text style={styles.generationDateValue}>
-             {date.getDate() < 10 ? '0' : ''}{date.getDate()}/
-             {(date.getMonth() + 1) < 10 ? '0' : ''}{date.getMonth() + 1}/
-             {date.getFullYear()}
+             {reportClient.date.getDate() < 10 ? '0' : ''}{reportClient.date.getDate()}/
+             {(reportClient.date.getMonth() + 1) < 10 ? '0' : ''}{reportClient.date.getMonth() + 1}/
+             {reportClient.date.getFullYear()}
             </Text>
-            <Text style={{fontSize: '18px'}}>{useName}</Text>
+            <Text style={{fontSize: '18px'}}>{reportClient.useName}</Text>
           </View>
           <View style={styles.logo}>
             <Image style={{width: '160px', height: '62px'}} src="https://ucarecdn.com/0eb9df1d-e0d6-440f-96a7-a4037dffb862/"></Image>
@@ -153,21 +133,21 @@ export const ClientReport = ({generation, brand, capacity}) => {
           <View style={styles.card}>
             <View>
               <Text style={styles.cardLabel}>MARCA</Text>
-              <Text style={styles.cardText}>{brand}</Text>
+              <Text style={styles.cardText}>{reportClient.brand}</Text>
             </View>     
             <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>
           </View>
           <View style={styles.card}>
             <View>
               <Text style={styles.cardLabel}>POTÊNCIA</Text>
-              <Text style={styles.cardNumber}>{capacity} Kwp</Text>
+              <Text style={styles.cardNumber}>{reportClient.capacity} Kwp</Text>
             </View>
              <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>             
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-             <Text style={styles.cardNumber}>{realGenerationTotal} Kwh</Text>
+             <Text style={styles.cardNumber}>{reportClient.realGenerationTotal} Kwh</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
           </View>
@@ -176,21 +156,21 @@ export const ClientReport = ({generation, brand, capacity}) => {
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-             <Text style={styles.cardNumber}>{estimatedGenerationTotal} Kwh</Text>
+             <Text style={styles.cardNumber}>{reportClient.estimatedGenerationTotal} Kwh</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
           </View>
           <View style={styles.card}>
            <View>
             <Text style={styles.cardLabel}>PERCENTUAL</Text>
-            <Text style={styles.cardNumber}>{percent} %</Text>
+            <Text style={styles.cardNumber}>{reportClient.percent} %</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-             <Text style={styles.cardText}>{lowLevel ? 'O valor real está abaixo do estimado' : 'O valor real está acima do valor estimadoo'}</Text>
+             <Text style={styles.cardText}>{reportClient.lowLevel ? 'O valor real está abaixo do estimado' : 'O valor real está acima do valor estimadoo'}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
