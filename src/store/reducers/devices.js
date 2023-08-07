@@ -20,10 +20,11 @@ export default function userReducer(state = initialState, action) {
       };
 
     case devices.GET_DEVICES_SUCCESS:
-      console.log("result ", result)
+      console.log("result-devices", result)
       return {
+        ...state,
         isLoadingDevices: false,
-        devices: [...devices, result],
+        devices: result,
       };
 
     case devices.GET_DEVICES_FAILURE:

@@ -36,7 +36,7 @@ export const getGeneration = (params) => async (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getGeneration";
 
       toast.error(message, {
         duration: 5000,
