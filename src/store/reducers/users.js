@@ -1,4 +1,4 @@
-import { users, capacities } from "../typesActions/types";
+import { users } from "../typesActions/types";
 
 import moment from "moment-timezone";
 
@@ -10,6 +10,7 @@ const initialState = {
   loadingShow: false,
   loadingUser: false,
   isLoadingAlertFrequency: false,
+  isLoadingCapacity: false,
   authData: [],
   brandListUser: [],
   profileLevel: [],
@@ -275,6 +276,7 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoading: true,
         brands: [],
+        blUuids: [],
         dataDevices: [],
         generationBelowEstimated: [],
         alerts: [],
@@ -373,6 +375,7 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         brands: [],
+        blUuids: [],
         dataDevices: [],
         generationBelowEstimated: [],
         alerts: [],
@@ -380,21 +383,25 @@ export default function userReducer(state = initialState, action) {
         online: [],
       };
 
-    case capacities.GET_CAPACITY_REQUEST:
+    case users.GET_CAPACITY_REQUEST:
       return {
         ...state,
-        capacity: []
+        isLoadingCapacity: true,
+        capacity: [],
       }
 
-    case capacities.GET_CAPACITY_SUCCESS:
+    case users.GET_CAPACITY_SUCCESS:
       return {
         ...state,
-        capacity: [...capacity, result]
+        isLoadingCapacity: false,
+        capacity: result
       }
-    case capacities.GET_CAPACITY_FAILURE:
+
+    case users.GET_CAPACITY_FAILURE:
       return {
         ...state,
-        capacity: []
+        isLoadingCapacity: false,
+        capacity: [],
       }
 
     default:

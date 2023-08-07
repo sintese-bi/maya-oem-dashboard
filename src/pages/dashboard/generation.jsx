@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
+import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
 import { useLocation } from "react-router-dom";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 import {
@@ -17,7 +18,8 @@ import {
   NativeSelect,
   Select,
   TextField,
-  Button
+  Button,
+  Typography
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -55,8 +57,10 @@ const Generation = () => {
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [optionFilter, setOptionFilter] = useState("month");
 
-  function handleSelectDevices(useUuid) {
-    
+  const [isLoadingReport, setIsLoadingReport] = useState(true)
+
+
+  function handleSelectDevices(useUuid) { 
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
     setDeviceInfo(datInfo[0]);
 
@@ -72,9 +76,9 @@ const Generation = () => {
     setSelectedDevUuid(useUuid);
   }
 
-  useEffect(() => {
-    console.log(capacity)
-  }, [capacity])
+  function handleReportGeneration(){
+    reportClientRule(generation, useNameState, capacity, setIsLoadingReport)
+  }
 
   useEffect(() => {
     if (devices.length !== 0) {
@@ -88,6 +92,7 @@ const Generation = () => {
 
   useEffect(() => {
     if (devices.length !== 0) {
+      dispatch(getCapacities(deviceInfo.dev_uuid))
       dispatch(
         getGeneration({
           startDate,
@@ -97,8 +102,8 @@ const Generation = () => {
           type: optionFilter,
         })
       );
-      dispatch(getCapacities(deviceInfo.dev_uuid))
     } else if (devUuidState) {
+      dispatch(getCapacities(devUuidState))
       dispatch(
         getGeneration({
           startDate,
@@ -108,7 +113,6 @@ const Generation = () => {
           type: optionFilter,
         })
       );
-      dispatch(getCapacities(devUuidState))
     }
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
@@ -197,10 +201,21 @@ const Generation = () => {
                   variant="contained"
                   sx={{ color: "primary", ml: 1, variant: "contained"}}
                   disabled={useCodePagarMe ? false : true}
+                  onClick={() => handleReportGeneration()}
                 >
-                  <PDFDownloadLink document={<ClientReport generation={generation} brand={useNameState}  />} fileName="relatório-cliente.pdf" style={{color: 'white', textDecoration: 'none'}}>
-                    {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório" : "Relatório cliente") : "Relatório indisponível")}
-                  </PDFDownloadLink>
+                  {
+                    isLoadingReport ? (
+                      'Preparar relatório'
+                    ) : (
+                    
+                      <PDFDownloadLink 
+                        document={<ClientReport />}
+                        fileName="relatório-cliente.pdf"
+                        style={{color: 'white', textDecoration: 'none'}}>
+                        {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório..." : "Relatório cliente") : "Relatório indisponível")}
+                      </PDFDownloadLink>
+                    )
+                  }
                 </Button>
               </Box>
             </ToolTipNoAccess>
