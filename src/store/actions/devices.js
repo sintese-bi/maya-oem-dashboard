@@ -10,7 +10,7 @@ export const getDevices = (blUuid) => (dispatch) => {
     .get(`/devices/${blUuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-
+      console.log('getDevices', data)
       dispatch({
         type: devices.GET_DEVICES_SUCCESS,
         result: data,
@@ -18,7 +18,7 @@ export const getDevices = (blUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getDevices";
 
       toast.error(message, {
         duration: 5000,
