@@ -23,7 +23,7 @@ import { auth } from "../store/actions/users";
 
 // ASSETS
 import BackgroundLogin from "../assets/img/illustrations/background-login.svg";
-import Logo from "../assets/img/logo/maya-energy-logo.png";
+import Logo from "../assets/img/logo/logo-watch.svg";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
@@ -50,16 +50,16 @@ export default function Login() {
 
   async function onSubmit(values) {
     const { email, password } = values;
-  
+
     try {
       const { profileLevel, status } = await dispatch(
         auth({ use_email: email, use_password: password })
       );
-  
+
       if (status === 200) {
         navigate("/dashboard");
       } else {
-        
+
       }
     } catch (error) {
       // Verificando erros
@@ -74,8 +74,9 @@ export default function Login() {
     return (
       <Typography
         style={{
-          position: "fixed",
-          bottom: 0,
+          width: '100%',
+          marginTop: '18rem',
+          display: 'block',
         }}
         variant="body2"
         color="text.secondary"
@@ -126,7 +127,9 @@ export default function Login() {
               alt="Maya Energy"
               src={Logo}
               style={{
-                maxWidth: "80%",
+                maxWidth: "50%",
+                marginBottom: "8rem",
+                marginTop: "4rem"
               }}
             />
             <FormProvider {...methods}>
@@ -158,7 +161,8 @@ export default function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2, height: '56px', backgroundColor: '#33B297', fontSize: '16px', ":hover": { backgroundColor: '#129D95' } }}
+
                 >
                   Entrar
                 </Button>
@@ -178,10 +182,10 @@ export default function Login() {
                     </Link>
                   </Grid>
                 </Grid>
-                <Copyright sx={{ m: 5 }} />
               </Box>
             </FormProvider>
           </Box>
+          <Copyright />
         </Grid>
       </Grid>
     </ThemeProvider>
