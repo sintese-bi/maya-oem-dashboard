@@ -54,48 +54,89 @@ const TABS = {
   GENERATION_PERCENTAGE: 1,
 };
 
-export const ChartsDashboard = (props) => {
-
-
-  const canvas = useRef(null);
+export const ChartsDashboardHorizontal = (props) => {
   const { dataDevices } = props
-  const theme = useTheme();
+  const [topDevices, setTopDevices] = useState([])
+
+  useEffect(() => {
+    let realAndEstimatedDivision = dataDevices.map((data) => {
+       let real = Number(data.generationRealMonth.replace(/\Kwh/g, '')).toFixed();
+       let estimated = Number(data.generationEstimatedMonth.replace(/\Kwh/g, '')).toFixed();
+       let divisionPercentage = ((real/estimated)*100).toFixed();
+       let finalResult = {divisionPercentage: divisionPercentage, name: data.name}
+       return finalResult;
+    })
+    realAndEstimatedDivision.sort((a, b) => b.divisionPercentage - a.divisionPercentage);
+    setTopDevices(realAndEstimatedDivision.slice(0, 5))
+  }, [dataDevices])
+  
+  useEffect(() => {
+    console.log(topDevices)
+  }, [topDevices])
+
+  const data = {
+    labels: topDevices.map((data) => data.name),
+    datasets: [
+      {
+        barThickness: 22,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: "Geral Estimada",
+        maxBarThickness: 16,
+        label: 'Geração Real',
+        data: topDevices.map((data) => data.divisionPercentage),
+        backgroundColor: "#5048E5",
+      },
+    ],
+  };
 
   const options = {
+    indexAxis: 'y',
     animation: true,
     cornerRadius: 20,
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
-    legend: 'top',
-    yAxes: [
-      {
-        ticks: {
-          fontColor: theme.palette.text.secondary,
-          beginAtZero: true,
-          min: 0,
-        },
-      },
-    ],
-    tooltips: {
-      backgroundColor: theme.palette.background.paper,
-      bodyFontColor: theme.palette.text.secondary,
-      borderColor: theme.palette.divider,
-      borderWidth: 1,
-      enabled: true,
-      footerFontColor: theme.palette.text.secondary,
-      intersect: false,
-      mode: "index",
-      titleFontColor: theme.palette.text.primary,
+    indexAxis: 'y' ,
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right' ,
     },
-    scales: {
-      y: {
-        grid: {
-          display: false,
-        },
-      },
+    title: {
+      display: true,
+      text: '%',
+      size: "26px"
     },
+  },
   };
+
+  return (
+     <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: "space-between",
+        alignItems: 'center',
+        mt: 8,
+        width: '100%'
+      }}
+    >
+        <Card sx={{display: 'flex', justifyContent: "space-between", height: 420, flexDirection:'column', bgcolor: "background.paper", width: '80%', px: 3, pb: 6, pt: 4}}>
+          <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
+            Melhor Desempenho Percentual 
+          </Typography>
+          <Box sx={{height: 300}} >
+            <Chart type="bar" options={options} data={data}/>
+          </Box>
+        </Card>
+    </Box>
+  )
+}
+
+export const ChartsDashboard = (props) => {
+  const canvas = useRef(null);
+  const { dataDevices } = props
+  const theme = useTheme();
 
   const labels = ['Geração Real x Geração Estimada'];
 
@@ -121,7 +162,7 @@ export const ChartsDashboard = (props) => {
   }, [dataDevices])
 
   const data = {
-    labels,
+    labels: [''],
     datasets: [
       {
         barThickness: 82,
@@ -145,18 +186,59 @@ export const ChartsDashboard = (props) => {
     ],
   };
 
+const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins:{
+      legend: {
+        position: 'top'
+      }
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+  };
 
   return (
-    <Box sx={{
-        height: 320,
-        position: "relative",
+    <Card sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: "space-between",
+        alignItems: 'center',
+        bgcolor: "background.paper",
+        px: 6,
+        pb: 2,
+        pt: 4,
+        height: 420,
       }}
     >
-        <Typography color="textPrimary" sx={{my: 3, fontWeight: 'bold', fontSize: '20px'}}>
-            Relação da geração real e geração estimada 
+        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
+            Desempenho Consolidado 
         </Typography>
-        <Bar options={options} data={data} />
-    </Box>
+        <Box sx={{height: 300, width: 500}} >
+          <Chart type="bar" options={options} data={data}/>
+        </Box>
+    </Card>
   )
   
 }

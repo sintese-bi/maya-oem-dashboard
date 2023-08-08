@@ -1,11 +1,13 @@
 // IMPORTS
 import api, { configRequest } from "../../services/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {PDFDownloadLink} from '@react-pdf/renderer'
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+
+import {ChartsDashboardHorizontal} from 'src/components/Charts'
 
 // QUERYS
 import {
@@ -41,7 +43,8 @@ import MUIDataTable from "mui-datatables";
 
 export default function Dashboard() {
   // PROPS DE CONTROLLER
-  const { useUuid } = getUserCookie();
+  const { useUuid, useName } = getUserCookie();
+  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
 
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
@@ -55,9 +58,10 @@ export default function Dashboard() {
     offline,
     online,
     capacity,
-    useCodePagarMe
+    //useCodePagarMe
   } = useSelector((state) => state.users);
 
+  const tableRef = useRef(null)
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
@@ -123,6 +127,7 @@ export default function Dashboard() {
   }, [dataDevices]);
 
   useEffect(() => {
+    tableRef?.current?.scrollIntoView()
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
   }, [type])
 
@@ -244,6 +249,8 @@ export default function Dashboard() {
         />
       </Box>
 
+      <ChartsDashboardHorizontal dataDevices={dataDevices} />
+
       <AlertPercentageForm />
 
       {data.length !== 0 ? (
@@ -254,7 +261,7 @@ export default function Dashboard() {
             py: 4,
           }}
         >
-          <Container maxWidth={false}>
+          <Container maxWidth={false} ref={tableRef}>
             <Box>
               <Grid container spacing={3}>
                 <Grid item xs={12}>

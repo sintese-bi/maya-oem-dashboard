@@ -286,7 +286,7 @@ export default function userReducer(state = initialState, action) {
 
     case users.GET_DASHBOARD_SUCCESS:
       const daysPassed = moment().date();
-
+      console.log(brand_login)
       const dataDevices = brand_login
         .map((item) => {
           const res = item.devices.map((dev) => {
