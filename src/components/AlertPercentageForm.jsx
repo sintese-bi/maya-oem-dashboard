@@ -15,6 +15,7 @@ import { getUserCookie } from "src/services/session";
 import { Info, SaveAs, DownloadForOffline, Lock } from "@mui/icons-material";
 import {
   Box,
+  Card,
   Button,
   CircularProgress,
   IconButton,
@@ -62,8 +63,16 @@ export default function AlertPercentageForm() {
   const [freePlan, setFreePlan] = useState(true)
   const dispatch = useDispatch();
 
-  const { useUuid } = getUserCookie();
-  const { isLoadingAlertFrequency, percentage, frequencyName, dataDevices, useCodePagarMe } = useSelector(
+  const { useUuid, useName } = getUserCookie();
+  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+
+  const { 
+    isLoadingAlertFrequency, 
+    percentage, 
+    frequencyName, 
+    dataDevices, 
+    //useCodePagarMe 
+  } = useSelector(
     (state) => state.users
   );
 
@@ -113,35 +122,50 @@ export default function AlertPercentageForm() {
         mx: 2,
       }}
     >
-      <Box sx={{
-        display:'flex', flexDirection: 'column', alignItems:'center', 
+      <Card sx={{
+        display:'flex', 
+        flexDirection: 'column', 
+        alignItems:'center', 
+        bgcolor: 'background.paper',
+        px: 6,
+        pb: 2,
+        pt: 4,
       }} >
-        <Typography sx={{ my: 3, fontWeight: 'bold', fontSize: '20px'}}>
-          Definição de frequência dos alertas
-        </Typography>
-      <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'center', gap: 2, my: 1, mx: 2}}>
-        <List 
-          sx={{
-            width: "72%",
-            bgcolor: "background.paper",
-          }}
-        >
-          <ListItem>
-            <ListItemAvatar>
-              <Tooltip
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
-                "percentage"
-              )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
+        <Box sx={{display: 'flex', justifyContent: 'space-around', gap: 2}}>
+          <Typography sx={{ fontWeight: 'bold', fontSize: '20px'}}>
+            Definição de frequência dos alertas
+          </Typography>
+          <Tooltip
+            sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            title="O Software envia automaticamente alertas de produção para seu email. Selecione aqui a frequência de alertas."
+          >
+            <Info />
+          </Tooltip>
+        </Box>
+        <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'center', gap: 1, my: 1}}>
+          <List 
+            sx={{
+              width: "72%",
+              bgcolor: "background.paper",
+              pr: 2,
+            }}
+          >
+            <ListItem>
+              <ListItemAvatar>
+                <Tooltip
+                sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
+                  "percentage"
+                )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
+                >
+                  <Avatar>
+                    <Info  />
+                  </Avatar>
+                </Tooltip>
+              </ListItemAvatar>
+              <ToolTipNoAccess
+                useCodePagarMe={useCodePagarMe}
               >
-                <Avatar>
-                  <Info  />
-                </Avatar>
-              </Tooltip>
-            </ListItemAvatar>
-            <ToolTipNoAccess
-              useCodePagarMe={useCodePagarMe}
-            >
                 <TextField
                   sx={{ width: 200 }}
                   label="Limite Mínimo (%)"
@@ -156,65 +180,64 @@ export default function AlertPercentageForm() {
                     shrink: true,
                   }}
                 />
-            </ToolTipNoAccess>
-            
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem>
-            <ListItemAvatar>
-              <Tooltip
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              title="Define a frequência de alertas diário, semanal ou mensal."
-              >
-                <Avatar>
-                  <Info />
-                </Avatar>
-              </Tooltip>
-            </ListItemAvatar>
-            <Controller
-            sx={{ width: 200 }}
-            control={control}
-            name="frequencyName"
-            render={({ field }) => (
-              <TextField
-                {...field}
+              </ToolTipNoAccess>         
+            </ListItem>
+            <Divider variant="inset" component="li" />
+            <ListItem>
+              <ListItemAvatar>
+                <Tooltip
+                sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                title="Define a frequência de alertas diário, semanal ou mensal."
+                >
+                  <Avatar>
+                    <Info />
+                  </Avatar>
+                </Tooltip>
+              </ListItemAvatar>
+              <Controller
                 sx={{ width: 200 }}
-                label="Frequência de alertas"
-                error={!!errors.frequencyName}
-                helperText={errors.frequencyName?.message}
-                value={watch("frequencyName") || ""}
-                select
-                defaultValue="month"
-                variant="standard"
-                disabled={isLoadingAlertFrequency}
-              >
-              <ToolTipNoAccess
-                useCodePagarMe={useCodePagarMe}
-              >
-                <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
-                <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
-              </ToolTipNoAccess>
-                <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
-              </TextField>
-            )}
-            />
-          </ListItem>
-        </List>
-        {!isLoadingAlertFrequency ? (
-        <Button
-          startIcon={<SaveAs fontSize="small" />}
-          type="submit"
-          variant="contained"
-          sx={{ color: "primary", variant: "contained" }}
-        >
-          Salvar
-        </Button>
-      ) : (
-        <CircularProgress color="success" />
-      )}
-      </Grid>
-      </Box>
-      <Box sx={{m: 4, width: '30%'}}>
+                control={control}
+                name="frequencyName"
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={{ width: 200 }}
+                    label="Frequência de alertas"
+                    error={!!errors.frequencyName}
+                    helperText={errors.frequencyName?.message}
+                    value={watch("frequencyName") || ""}
+                    select
+                    defaultValue="month"
+                    variant="standard"
+                    disabled={isLoadingAlertFrequency}
+                  >
+                    <ToolTipNoAccess
+                      useCodePagarMe={useCodePagarMe}
+                    >
+                      <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
+                      <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
+                    </ToolTipNoAccess>
+                    <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
+                  </TextField>
+                )}
+              />
+            </ListItem>
+          </List>
+          {!isLoadingAlertFrequency ? (
+            <Button
+              startIcon={<SaveAs fontSize="small" />}
+              type="submit"
+              variant="contained"
+              sx={{ color: "primary", variant: "contained" }}
+            >
+              Salvar
+            </Button>
+            ) : (
+            <CircularProgress color="success" />
+          )}
+        </Grid>
+      </Card>
+      <Box sx={{display: 'flex', justifyContent:'center'}}>
         <ChartsDashboard dataDevices={dataDevices} />
       </Box>
     </Box>

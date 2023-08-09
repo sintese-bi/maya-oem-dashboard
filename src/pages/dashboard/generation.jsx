@@ -6,6 +6,7 @@ import { ClientReport } from "src/reports/ClientReport";
 import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
 import { useLocation } from "react-router-dom";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+import { getUserCookie } from "src/services/session";
 import {
   Backdrop,
   Box,
@@ -48,7 +49,12 @@ const Generation = () => {
     (state) => state.generation
   );
   const { isLoadingDevices, devices, capacity } = useSelector((state) => state.devices);
-  const { useCodePagarMe } = useSelector((state) => state.users);
+
+  //const { useCodePagarMe } = useSelector((state) => state.users);
+
+  const { useName } = getUserCookie();
+  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+
 
   const [deviceInfo, setDeviceInfo] = useState({});
   const [startDate, setStartDate] = useState(
