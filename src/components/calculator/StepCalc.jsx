@@ -130,7 +130,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef_2/${encodeURIComponent(
+        `http://localhost:8080/v1/irrcoef_2/${encodeURIComponent(
           estado
         )}/${encodeURIComponent(cidade)}`
       );
@@ -196,19 +196,22 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         clientGiga = apiResponse.month;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
+        `http://localhost:8080/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientFirstName: nome,
           clientCity: cidade,
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientGenWOMaya: (estimada * 0.7).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           EffValue: (estimada * 0.3).toLocaleString("pt-BR", {
@@ -217,12 +220,15 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           }),
           clientData: formattedDate,
           clientKilo: clientKilo.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximunFractionDigits: 2,
           }),
           clientMega: clientMega.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientGiga: clientGiga.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientPercentage: clientPercentage,
