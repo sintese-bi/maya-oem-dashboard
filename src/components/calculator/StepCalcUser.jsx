@@ -152,7 +152,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
 
       const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
       const valorEstimadoFormatado = estimada.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       });
       setValorEstimado(valorEstimadoFormatado);
       setEstimada(estimada * valorDoKwh);
@@ -197,26 +197,37 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         `${process.env.REACT_APP_BASE_URL}/v1/pandadoc`,
         {
           clientPot: potenciaModulos,
-          clientEstimated: valorEstimado,
+          clientEstimated: valorEstimado.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
           clientFirstName: nome,
           clientCity: cidade,
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           }),
           clientGenWOMaya: (estimada * 0.7).toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           }),
-          EffValue: (estimada * 0.3).toFixed(0),
+          EffValue: (estimada * 0.3).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
           clientData: formattedDate,
           clientKilo: clientKilo.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
+            maximunFractionDigits: 2,
           }),
           clientMega: clientMega.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           }),
           clientGiga: clientGiga.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           }),
           clientPercentage: clientPercentage,
         },
