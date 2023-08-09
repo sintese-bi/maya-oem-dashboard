@@ -154,7 +154,7 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
       const estimada =
         radiacao * potenciaModulos * dias * eficienciaModulos * 0.96;
       const valorEstimadoFormatado = (estimada / 0.96).toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       });
 
       setValorEstimado(valorEstimadoFormatado);
