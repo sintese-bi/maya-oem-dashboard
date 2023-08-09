@@ -200,15 +200,18 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
         {
           clientPot: potenciaModulos,
           clientEstimated: valorEstimado.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientFirstName: nome,
           clientCity: cidade,
           clientModNum: numeroModulos,
           clientGenWMaya: estimada.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientGenWOMaya: (estimada * 0.7).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           EffValue: (estimada * 0.3).toLocaleString("pt-BR", {
@@ -217,12 +220,15 @@ export default function StepTypeOfEntitie({ onPreviousStep }) {
           }),
           clientData: formattedDate,
           clientKilo: clientKilo.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximunFractionDigits: 2,
           }),
           clientMega: clientMega.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientGiga: clientGiga.toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),
           clientPercentage: clientPercentage,
