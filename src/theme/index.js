@@ -204,6 +204,9 @@ export const theme = createTheme({
 	shape: {
 		borderRadius: 8,
 	},
+	zIndex: {
+		drawer: 1200,
+	},
 	shadows: [
 		'none',
 		'0px 1px 1px rgba(100, 116, 139, 0.06), 0px 1px 2px rgba(100, 116, 139, 0.1)',
