@@ -33,6 +33,7 @@ const validateSchema = Yup.object().shape({
   password: Yup.string().required("Senha completo é obrigatório."),
 });
 
+// COMPONENTE DA PÁGINA
 export default function Login() {
   const theme = createTheme();
   const dispatch = useDispatch();
