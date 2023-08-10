@@ -5,7 +5,7 @@ import { listBrand } from "src/utils/list-brand";
 export const BrandsContext = createContext({});
 
 export const BrandsContextProvider = ({ children }) => {
-  // FORMATA BRAND CONFORME O ARRY
+  // FORMATA BRAND CONFORME O ARRAY
 
   const [brands, setBrands] = useState([]);
   const handlesBrands = (chi) => {

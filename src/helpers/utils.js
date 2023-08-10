@@ -296,9 +296,10 @@ export const selectPropsStyle = () => {
   }
 };
 
+// FORMATA UMA STRING PARA UM VALOR MONETÁRIO SEPARANDO OS MILHARES POR VIRGULA
 export const numbers = (value) => {
   let number = value;
-  if(number.length > 6 && number.length < 10){
+  if (number.length > 6 && number.length < 10) {
     let numberToArray = number.split('');
     numberToArray.splice(-3, 1, ',')
     numberToArray.splice(-6, 0, '.')

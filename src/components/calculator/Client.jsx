@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 import estadosBrasileiros from "src/services/estados";
 import { Autocomplete } from "@mui/material";
 
 import citiesData from "src/services/municipios";
-import { CircularProgress } from "@mui/material";
 import {
   Box,
   Button,
@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 
 import InputMask from "react-input-mask";
 
-export default function StepTypeOfEntitie2({ onPreviousStep }) {
+function ClientCalculator({ onPreviousStep }) {
   const {
     register,
     handleSubmit,
@@ -39,7 +39,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const handlePrevious = () => {
     onPreviousStep();
   };
-  const [showSecondButton, setShowSecondButton] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,7 +98,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   const [numeroModulos, setNumeroModulos] = useState("");
   const [estimada, setEstimada] = useState(null);
   const [documentoLink, setDocumentoLink] = useState("");
-  const [valorDoKwh, setValorDoKwh] = useState("");
+
   const validationSchema = yup.object().shape({
     nome: yup.string().required("Campo obrigatório"),
     cidade: yup.string().required("Campo obrigatório"),
@@ -126,7 +125,8 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       setNumeroModulos(parsedData.numeroModulos || "");
     }
   }, []);
-
+  //${process.env.REACT_APP_BASE_URL}
+  //http://localhost:8080
   const fetchRadiacao = async () => {
     try {
       const response = await axios.get(
@@ -134,6 +134,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           estado
         )}/${encodeURIComponent(cidade)}`
       );
+
       const data = response.data;
       if (data && data.ic_yearly) {
         setRadiacao(data.ic_yearly);
@@ -146,16 +147,18 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   };
 
   const calcularValorEstimado = () => {
-    if (radiacao !== null && potenciaModulos !== "" && valorDoKwh !== "") {
+    if (radiacao !== null && potenciaModulos !== "") {
       const eficienciaModulos = 0.8;
       const dias = 30;
 
-      const estimada = radiacao * potenciaModulos * dias * eficienciaModulos;
-      const valorEstimadoFormatado = estimada.toLocaleString("pt-BR", {
+      const estimada =
+        radiacao * potenciaModulos * dias * eficienciaModulos * 0.96;
+      const valorEstimadoFormatado = (estimada / 0.96).toLocaleString("pt-BR", {
         maximumFractionDigits: 2,
       });
+
       setValorEstimado(valorEstimadoFormatado);
-      setEstimada(estimada * valorDoKwh);
+      setEstimada(estimada);
     }
   };
 
@@ -167,7 +170,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         cidade,
         valorEstimado,
         potenciaModulos,
-        valorDoKwh,
         numeroModulos,
         clientGenWMaya: estimada,
         clientGenWOMaya: estimada * 0.7,
@@ -231,6 +233,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           }),
           clientPercentage: clientPercentage,
         },
+
         {
           headers: {
             Authorization: `API-Key ${apiKey}`,
@@ -245,7 +248,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false); // Set isLoading back to false after the API call completes
+      setIsLoading(false);
     }
   };
 
@@ -256,7 +259,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           nome,
           cidade,
           potenciaModulos,
-          valorDoKwh,
           numeroModulos,
         },
         { abortEarly: false }
@@ -267,11 +269,12 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
           cidade,
           valorEstimado,
           potenciaModulos,
-          valorDoKwh,
           numeroModulos,
         });
+
         armazenarValorEstimado();
-        // fetchRadiacao();
+        // console.log(cidade, estado);
+        // fetchRadiacao(cidade, estado);
       })
       .catch((err) => {
         const validationErrors = {};
@@ -282,13 +285,13 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       });
   };
   const uniqueCities = [...new Set(citiesData.map((city) => city.ic_city))];
+
   useEffect(() => {
     setNome("");
     setCidade("");
     setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
-    setNumeroModulos("");
-    setValorDoKwh(""); // Limpa o estado do número de módulos
+    setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
   const handleCityChange = (event, newCidade) => {
     setCidade(newCidade);
@@ -301,7 +304,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
   }, [cidade, estado]);
   useEffect(() => {
     calcularValorEstimado();
-  }, [radiacao, potenciaModulos, numeroModulos, valorDoKwh]);
+  }, [radiacao, potenciaModulos, numeroModulos]);
 
   const onSubmit = (data) => {
     const formData = {
@@ -357,7 +360,6 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       user_height: parseFloat(selectedHeight),
       user_gasPrice: parseFloat(data.user_gasPrice),
       user_assina: String(selectedPlan),
-      user_valorDoKwh: parseFloat(valorDoKwh),
       user_cons: parseFloat(data.user_cons),
       comis: parseFloat(data.comis / 100),
       user_address: {
@@ -373,7 +375,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         siafi: userAddress.siafi,
       },
     };
-    console.log(radiacao);
+
     const json = JSON.stringify(formData);
     console.log(json);
     const segPlanGigaValue = String(selectedPlan);
@@ -404,7 +406,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
       }}
     >
       {/* <Grid item sx={{ marginRight: "10px" }}>
-        <img src="Maya.png" alt="Descrição da imagem" />
+        <img src="./Maya.png" alt="Descrição da imagem" />
       </Grid> */}
       <Grid
         item
@@ -420,7 +422,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
         spacing={2}
         justifyContent="center"
         alignItems="center"
-        style={{ overflowX: "auto" }}
+        style={{ overflowX: "auto", display: "none" }}
       >
         <Grid item xs={12}>
           <Typography
@@ -433,314 +435,304 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
             {/* Premissas e Memória de Cálculo */}
           </Typography>
 
-          <Grid container justifyContent="center">
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                KWP
-              </Typography>
-              <TextField
-                {...register("kwp[0]")}
-                defaultValue="20"
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("kwp[1]")}
-                defaultValue="50"
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("kwp[2]")}
-                defaultValue="112.5"
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("kwp[3]")}
-                defaultValue="5000"
-                onInput={handleInputChange}
-              />
-            </Grid>
+              KWP
+            </Typography>
+            <TextField
+              {...register("kwp[0]")}
+              defaultValue="20"
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("kwp[1]")}
+              defaultValue="50"
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("kwp[2]")}
+              defaultValue="112.5"
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("kwp[3]")}
+              defaultValue="5000"
+              onInput={handleInputChange}
+            />
+          </Grid>
 
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                O&M (%)
-              </Typography>
-              <TextField
-                {...register("oEm[0]")}
-                defaultValue="2.5"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("oEm[1]")}
-                defaultValue="2"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("oEm[2]")}
-                defaultValue="2"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("oEm[3]")}
-                defaultValue="2"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+              O&M (%)
+            </Typography>
+            <TextField
+              {...register("oEm[0]")}
+              defaultValue="2.5"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("oEm[1]")}
+              defaultValue="2"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("oEm[2]")}
+              defaultValue="2"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("oEm[3]")}
+              defaultValue="2"
+              required
+              onInput={handleInputChange}
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Preço p/ kWp
-              </Typography>
-              <TextField
-                {...register("pricekwp[0]")}
-                defaultValue="4600"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("pricekwp[1]")}
-                defaultValue="4400"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("pricekwp[2]")}
-                defaultValue="4000"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("pricekwp[3]")}
-                defaultValue="3500"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+              Preço p/ kWp
+            </Typography>
+            <TextField
+              {...register("pricekwp[0]")}
+              defaultValue="4600"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("pricekwp[1]")}
+              defaultValue="4400"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("pricekwp[2]")}
+              defaultValue="4000"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("pricekwp[3]")}
+              defaultValue="3500"
+              required
+              onInput={handleInputChange}
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Altura(m)
-              </Typography>
-              <TextField
-                {...register("height[0]")}
-                defaultValue="0"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("height[1]")}
-                defaultValue="1"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("height[2]")}
-                defaultValue="2"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("height[3]")}
-                defaultValue="3"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+              Altura(m)
+            </Typography>
+            <TextField
+              {...register("height[0]")}
+              defaultValue="0"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("height[1]")}
+              defaultValue="1"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("height[2]")}
+              defaultValue="2"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("height[3]")}
+              defaultValue="3"
+              required
+              onInput={handleInputChange}
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Spread(%)
-              </Typography>
-              <TextField
-                {...register("spreadHeight[0]")}
-                defaultValue="0"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("spreadHeight[1]")}
-                defaultValue="10"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("spreadHeight[2]")}
-                defaultValue="15"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("spreadHeight[3]")}
-                defaultValue="0"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "120px", flexShrink: 0 }}
+              Spread(%)
+            </Typography>
+            <TextField
+              {...register("spreadHeight[0]")}
+              defaultValue="0"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("spreadHeight[1]")}
+              defaultValue="10"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("spreadHeight[2]")}
+              defaultValue="15"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("spreadHeight[3]")}
+              defaultValue="0"
+              required
+              onInput={handleInputChange}
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "120px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Assinatura(Plan)
-              </Typography>
-              <TextField
-                {...register("user_plan[0]")}
-                defaultValue="KILOWATT"
-                required
-              />
-              <TextField
-                {...register("user_plan[1]")}
-                defaultValue="MEGAWATT"
-                required
-              />
-              <TextField
-                {...register("user_plan[2]")}
-                defaultValue="GIGAWATT"
-                required
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "130px", flexShrink: 0 }}
+              Assinatura(Plan)
+            </Typography>
+            <TextField
+              {...register("user_plan[0]")}
+              defaultValue="KILOWATT"
+              required
+            />
+            <TextField
+              {...register("user_plan[1]")}
+              defaultValue="MEGAWATT"
+              required
+            />
+            <TextField
+              {...register("user_plan[2]")}
+              defaultValue="GIGAWATT"
+              required
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "130px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Desconto(%)
-              </Typography>
-              <TextField
-                {...register("ass_desc_kilowatt[0]")}
-                defaultValue="20"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("ass_desc_kilowatt[1]")}
-                defaultValue="0"
-                required
-                onInput={handleInputChange}
-              />
-              <TextField
-                {...register("ass_desc_kilowatt[2]")}
-                defaultValue="0"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "150px", flexShrink: 0 }}
+              Desconto(%)
+            </Typography>
+            <TextField
+              {...register("ass_desc_kilowatt[0]")}
+              defaultValue="20"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("ass_desc_kilowatt[1]")}
+              defaultValue="0"
+              required
+              onInput={handleInputChange}
+            />
+            <TextField
+              {...register("ass_desc_kilowatt[2]")}
+              defaultValue="0"
+              required
+              onInput={handleInputChange}
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "150px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Assinatura(Seguro)
-              </Typography>
-              <TextField
-                {...register("seg_plan_giga[0]")}
-                defaultValue="GIGAWATT"
-                required
-              />
-            </Grid>
-
-            <Grid
-              container
-              direction="column"
-              sx={{ width: "130px", flexShrink: 0 }}
+              Assinatura(Seguro)
+            </Typography>
+            <TextField
+              {...register("seg_plan_giga[0]")}
+              defaultValue="GIGAWATT"
+              required
+            />
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "130px", flexShrink: 0 }}
+          >
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              align="center"
+              sx={{ fontSize: "15px" }}
             >
-              <Typography
-                fontWeight="bold"
-                color="#1A1A2E"
-                variant="subtitle2"
-                align="center"
-                sx={{ fontSize: "15px" }}
-              >
-                Seguro/CAPEX(%)
-              </Typography>
-              <TextField
-                {...register("capex_seg_giga[0]")}
-                defaultValue="1"
-                required
-                onInput={handleInputChange}
-              />
-            </Grid>
+              Seguro/CAPEX(%)
+            </Typography>
+            <TextField
+              {...register("capex_seg_giga[0]")}
+              defaultValue="1"
+              required
+              onInput={handleInputChange}
+            />
           </Grid>
         </Grid>
       </Grid>
-
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <div
@@ -773,26 +765,7 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
                 <TextField {...params} label="Estado" margin="normal" />
               )}
             />
-            {/* <TextField
-              label="Cidade"
-              value={cidade}
-              onChange={(event) => setCidade(event.target.value)}
-              fullWidth={false}
-              margin="normal"
-              error={!!errors.cidade}
-              helperText={errors.cidade}
-              required
-            />
-            <TextField
-              label="Estado"
-              value={estado}
-              onChange={(event) => setEstado(event.target.value)}
-              fullWidth={false}
-              margin="normal"
-              error={!!errors.estado}
-              helperText={errors.estado}
-              required
-            /> */}
+
             <>
               <TextField
                 label="Potência da Usina(em kWp)"
@@ -893,83 +866,83 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
               Por favor, selecione uma altura.
             </Typography>
           )}
-
-          <Typography
-            sx={{ fontSize: "20px" }}
-            fontWeight="bold"
-            variant="subtitle2"
-          >
-            Valor médio da gasolina
-          </Typography>
-          <TextField
-            size="small"
-            defaultValue="5.5"
-            sx={{ width: "150px" }}
-            {...register("user_gasPrice")}
-            fullWidth
-            label="Preço (R$)"
-            type="number"
-            required
-          />
-
-          <Typography
-            fontWeight="bold"
-            color="#1A1A2E"
-            variant="subtitle2"
-            sx={{ fontSize: "20px" }}
-          >
-            Precificação variável
-          </Typography>
-          <TextField
-            size="small"
-            sx={{ width: "150px" }}
-            {...register("user_cons")}
-            fullWidth
-            defaultValue="12"
-            label="Consumo Médio Veículo (km/l)"
-            type="number"
-            required
-          />
-
-          <Typography
-            sx={{ fontSize: "20px" }}
-            fontWeight="bold"
-            variant="subtitle2"
-          >
-            Comissão
-          </Typography>
-          <TextField
-            size="small"
-            defaultValue="8"
-            sx={{ width: "150px" }}
-            {...register("comis")}
-            fullWidth
-            label="Valor(%)"
-            type="number"
-            required
-          />
-          <Typography
-            sx={{ fontSize: "20px" }}
-            fontWeight="bold"
-            variant="subtitle2"
-          >
-            Valor do kWh
-          </Typography>
-          <TextField
-            sx={{ width: "150px" }}
-            size="small"
-            label="Valor do kWh(R$)"
-            variant="outlined"
-            // fullWidth
-            {...register("valorDoKwh")}
-            onChange={(e) => setValorDoKwh(e.target.value)}
-            value={valorDoKwh}
-            // defaultValue="0.8"
-            error={!!errors.valorDoKwh}
-            helperText={errors.valorDoKwh?.message}
-          />
         </Grid>
+        <div
+          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+        >
+          <Grid item xs={6}>
+            <Typography
+              sx={{ fontSize: "20px" }}
+              fontWeight="bold"
+              variant="subtitle2"
+            >
+              Valor médio da gasolina
+            </Typography>
+            <TextField
+              size="small"
+              defaultValue="5.5"
+              sx={{ width: "50%" }}
+              {...register("user_gasPrice")}
+              fullWidth
+              label="Preço (R$)"
+              type="number"
+              required
+            />
+          </Grid>
+        </div>
 
+        <div
+          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+        >
+          <Grid item xs={6}>
+            <Typography
+              fontWeight="bold"
+              color="#1A1A2E"
+              variant="subtitle2"
+              sx={{ fontSize: "20px" }}
+            >
+              Precificação variável
+            </Typography>
+
+            <TextField
+              size="small"
+              sx={{ width: "150px" }}
+              {...register("user_cons")}
+              fullWidth
+              defaultValue="12"
+              label="Consumo Médio Veículo (km/l)"
+              type="number"
+              // inputProps={{
+              //   step: "0.01",
+              //   inputMode: "numeric",
+              // }}
+              required
+            />
+          </Grid>
+        </div>
+        <div
+          style={{ display: "flex", flexWrap: "nowrap", visibility: "hidden" }}
+        >
+          <Grid item xs={6} justifyContent="flex-end">
+            <Typography
+              sx={{ fontSize: "20px" }}
+              fontWeight="bold"
+              variant="subtitle2"
+            >
+              Comissão
+            </Typography>
+            <TextField
+              size="small"
+              defaultValue="8"
+              sx={{ width: "120px" }}
+              {...register("comis")}
+              fullWidth
+              label="Valor(%)"
+              type="number"
+              required
+            />
+          </Grid>
+        </div>
         {/* <Grid item xs={12}>
           <Button
             className="buttonSearch"
@@ -1068,3 +1041,5 @@ export default function StepTypeOfEntitie2({ onPreviousStep }) {
     </Box>
   );
 }
+
+export { ClientCalculator }
