@@ -31,3 +31,4 @@
    * **reducers** | Recebem e tratam as informações para que sejam ou não enviadas à Store.
    * **services** | Contém funções de conexão e autenticação.
    * **utils** | Trechos de código reutilizaveis.
+   * **reports** | Arquivos de criação dos PDF's

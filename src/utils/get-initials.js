@@ -1,3 +1,4 @@
+// EXTRAI AS INICIAIS EM MAIÚSCULAS DAS DUAS PRIMEIRAS PALAVRAS DE UMA STRING 
 export const getInitials = (name = '') => name
   .replace(/\s+/, ' ')
   .split(' ')

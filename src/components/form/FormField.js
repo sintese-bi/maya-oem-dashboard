@@ -34,15 +34,19 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 	const [isSearchable, setIsSearchable] = useState(true);
 	const animatedComponentsMultiselect = makeAnimated();
 	const { control, register } = useForm();
+
+	// TRATA O EVENTO DE MUDANÇA DO INPUT TYPE='FILE' E ATUALIZA O ESTADO
 	const handleDocumentChange = (evt) => {
 		const { files } = evt.currentTarget;
 		setSelectedFiles(Array.from(files).map((file) => file.name));
 		fieldProps.onChange(evt);
 	};
 
+	// ALTERA A VISIBILIDADE DO CAMPO DE SENHA
 	const handlePasswordVisibility = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 	};
+
 
 	const renderInput = () => {
 		if (fieldProps.type === 'select') {
@@ -114,6 +118,7 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 			);
 		}
 
+		// RETORNA UM INPUT TEXT POR PADRÃO
 		return (
 			<Box sx={{ position: 'relative' }}>
 				<Controller
@@ -135,6 +140,7 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 					)}
 				/>
 
+				{/* RENDERIZA UM ICONE LATERAL SE FOR O CAMPO DE NOVA SENHA */}
 				{fieldProps.type === 'password' && name !== 'confirmPassword' ? (
 					<IconButton
 						type="button"

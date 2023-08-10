@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 
+//LAYOUTS
 import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
+// PAGINAS
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/dashboard";
@@ -13,9 +15,7 @@ import Alerts from "./pages/dashboard/alerts";
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
-import StepForms from "./components/calculator";
-import StepForms1 from "./components/calculator/index3";
-import StepForms2 from "./components/calculator/index2";
+import { HomePage, AdminCalculator, ClientCalculator } from "./components/calculator";
 
 export default function App() {
   return (
@@ -23,9 +23,9 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/calculator" element={<StepForms />} />
-      <Route path="/calculator/client" element={<StepForms1 />} />
-      <Route path="/calculator/admin" element={<StepForms2 />} />
+      <Route path="/calculator" element={<HomePage />} />
+      <Route path="/calculator/client" element={<ClientCalculator />} />
+      <Route path="/calculator/admin" element={<AdminCalculator />} />
 
       <Route path="dashboard" element={<LayoutDashboard />}>
         <Route element={<PrivateRoute />}>

@@ -92,7 +92,7 @@ export const registerUser = (params) => (dispatch) => {
     });
 };
 
-// REGISTRAR DADOS DO USUARIO
+// RETORNA DADOS DO USUARIO
 export const show = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_SHOW_REQUEST });
   api
@@ -142,7 +142,7 @@ export const checkBrnad = (params) => (dispatch) => {
   //   });
 };
 
-// LISTAGEM DE USUARIO
+// LISTAGEM DE USUARIOS
 export const getUsers = () => (dispatch) => {
   dispatch({ type: users.GET_USERS_REQUEST });
 
@@ -167,7 +167,7 @@ export const getUsers = () => (dispatch) => {
     });
 };
 
-// LISTAGEM DE USUARIO E SUAR BRAND
+// LISTAGEM DE USUARIOS E SUAS BRANDS
 export const getUserBrands = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_USER_BRANDS_REQUEST });
 
@@ -246,7 +246,7 @@ export const alertFrequency = (uuid) => (dispatch) => {
     });
 };
 
-// LISTAGEM DE USUARIO E SUAR BRAND
+// RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
 
