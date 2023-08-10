@@ -145,6 +145,8 @@ export default function Dashboard() {
   return (
     <>
       <Box sx={{
+        display: 'flex',
+        justifyContent: 'end',
         my: 3,
         ml: 3
       }}>

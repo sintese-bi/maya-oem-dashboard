@@ -81,9 +81,8 @@ export const ChartsDashboardHorizontal = (props) => {
         barThickness: 22,
         borderRadius: 2,
         categoryPercentage: 0.5,
-        label: "Geral Estimada",
         maxBarThickness: 16,
-        label: 'Geração Real',
+        label: 'Porcentagem',
         data: topDevices.map((data) => data.divisionPercentage),
         backgroundColor: "#5048E5",
       },
@@ -104,8 +103,8 @@ export const ChartsDashboardHorizontal = (props) => {
         position: 'right' ,
     },
     title: {
-      display: true,
-      text: '%',
+      display: false,
+      text: '',
       size: "26px"
     },
   },
@@ -121,9 +120,9 @@ export const ChartsDashboardHorizontal = (props) => {
         width: '100%'
       }}
     >
-        <Card sx={{display: 'flex', justifyContent: "space-between", height: 420, flexDirection:'column', bgcolor: "background.paper", width: '80%', px: 3, pb: 6, pt: 4}}>
+        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", width: '80%', px: 3, pb: 6, pt: 4}}>
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
-            Melhor Desempenho Percentual 
+            Plantas com melhores performance no último mês.
           </Typography>
           <Box sx={{height: 300}} >
             <Chart type="bar" options={options} data={data}/>
@@ -217,6 +216,18 @@ const options = {
       mode: "index",
       titleFontColor: theme.palette.text.primary,
     },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "kWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
   };
 
   return (
@@ -233,7 +244,7 @@ const options = {
       }}
     >
         <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
-            Desempenho Consolidado 
+            Resumo da geração real vs estimada
         </Typography>
         <Box sx={{height: 300, width: 500}} >
           <Chart type="bar" options={options} data={data}/>

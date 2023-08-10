@@ -2,11 +2,12 @@
 import { Outlet } from "react-router-dom";
 
 // LIBS DE ESTILOS
-import { Box } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // COMPONENTS
 import { DashboardNavbar } from "../components/Navbar";
+import { Side } from "../components/Side";
 
 // STYLE
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
@@ -14,13 +15,14 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   flex: "1 1 auto",
   maxWidth: "100%",
   paddingTop: 64,
+  marginLeft: '15%'
 }));
 
 const LayoutDashboard = () => {
   return (
     <>
       <DashboardNavbar />
-
+      <Side />
       <DashboardLayoutRoot>
         <Box
           sx={{

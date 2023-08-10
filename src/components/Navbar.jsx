@@ -131,9 +131,11 @@ export const DashboardNavbar = () => {
       </DashboardSidebar> */}
 
       <AppBar
+        position="fixed" 
         sx={{
           backgroundColor: theme.palette.background.paper,
           boxShadow: theme.shadows[3],
+          zIndex: theme.zIndex.drawer + 1
         }}
       >
         <Toolbar
