@@ -211,12 +211,24 @@ export default function AlertPercentageForm() {
                     variant="standard"
                     disabled={isLoadingAlertFrequency}
                   >
-                    <ToolTipNoAccess
-                      useCodePagarMe={useCodePagarMe}
-                    >
-                      <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
-                      <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? (<Lock />) : ''}</MenuItem>
-                    </ToolTipNoAccess>
+                    <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? 
+                      (
+                        <ToolTipNoAccess
+                          useCodePagarMe={useCodePagarMe}
+                        >
+                          <Lock />
+                        </ToolTipNoAccess>
+                      ) : ''}
+                    </MenuItem>
+                    <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? 
+                      (
+                        <ToolTipNoAccess
+                          useCodePagarMe={useCodePagarMe}
+                        >
+                          <Lock />
+                        </ToolTipNoAccess>
+                      ) : ''}
+                    </MenuItem>
                     <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
                   </TextField>
                 )}

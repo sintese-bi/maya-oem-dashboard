@@ -1,9 +1,9 @@
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
-
+import {useState}from 'react'
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
 // COMPONENTS
-import { Drawer, Box, Button, Toolbar, Typography, Divider, List, ListItem, ListItemText,ListItemButton, ListItemIcon } from "@mui/material";
+import { Drawer, Box, Button, Toolbar, Typography, Modal, Divider, List, ListItem, ListItemText,ListItemButton, ListItemIcon } from "@mui/material";
 import { theme } from "src/theme";
 import {
   AccountCircle,
@@ -15,7 +15,8 @@ import {
   DownloadForOffline,
   CheckCircle,
   AddCircle,
-  Error
+  Error,
+  Info
 } from "@mui/icons-material";
 
 export const Side = () => {
@@ -24,13 +25,17 @@ export const Side = () => {
 	 			label: "Assinar Plano",
       	icon: <CheckCircle fontSize="small" />,
       	disabled: true,
-      	color: "success.main"
 	 },
 	 {
 	 			label: "Criar nova planta",
       	icon: <AddCircle fontSize="small" />,
       	disabled: true,
-      	color: "primary.main"
+	 },
+	 {
+	 			label: "Frequência de alertas",
+      	icon: <Info fontSize="small" />,
+      	disabled: true,
+
 	 },
 	]
 
@@ -39,7 +44,7 @@ export const Side = () => {
 			label: "Cancelar Plano",
      	icon: <Error fontSize="small" />,
      	disabled: true,
-     	color: "error.dark"
+     	color: "error"
 		}
 	]
 
@@ -49,7 +54,6 @@ export const Side = () => {
 	 	sx={{
           	backgroundColor: theme.palette.background.paper,
           	boxShadow: theme.shadows[3],
-          	flexShrink: 0,
 	 	}}
 	 > 
 	 	<Toolbar />
@@ -61,7 +65,6 @@ export const Side = () => {
 	 						<Button
               	startIcon={data?.icon}
               	variant="contained"
-              	sx={{ color: "primary" }}
             	>
             		{data?.label}
             	</Button>
@@ -77,8 +80,8 @@ export const Side = () => {
 	 					<ListItem key={data?.label} >
 	 						<Button
               	startIcon={data?.icon}
-              	variant="contained"
-              	sx={{ color: "primary" }}
+              	variant="outlined"
+              	color={data?.color}
             	>
             		{data?.label}
             	</Button>
@@ -89,5 +92,6 @@ export const Side = () => {
 	 		</Box>
 	 	</Box>
 	 </Drawer>
+
 	)
 }

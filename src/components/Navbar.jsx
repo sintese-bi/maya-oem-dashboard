@@ -16,6 +16,8 @@ import {
   Dashboard,
   ExitToApp,
   House,
+  ContentPaste,
+  Warning
 } from "@mui/icons-material";
 
 export const DashboardNavbar = () => {
@@ -39,12 +41,33 @@ export const DashboardNavbar = () => {
       active: location.pathname === "/dashboard" ? true : false,
     },
     {
-      label: "Usuários",
+      label: "Clientes",
       to: "/dashboard/users",
       icon: <AccountCircle fontSize="small" />,
       disabled: profileLevel === "admin" ? true : false,
       active: location.pathname === "/dashboard/users" ? true : false,
     },
+    {
+      label: "Relatórios",
+      to: "/dashboard",
+      icon: <ContentPaste fontSize="small" />,
+      disabled: profileLevel === "admin" ? true : false,
+      //active: location.pathname === "/dashboard/users" ? true : false,
+    },
+    {
+      label: "Alertas",
+      to: "/dashboard",
+      icon: <Warning fontSize="small" />,
+      disabled: profileLevel === "admin" ? true : false,
+      //active: location.pathname === "/dashboard/users" ? true : false,
+    },
+    {
+      label: "Plantas",
+      to: "/dashboard",
+      icon: <AccountCircle fontSize="small" />,
+      disabled: profileLevel === "admin" ? true : false,
+      //active: location.pathname === "/dashboard/users" ? true : false,
+    }
     // {
     //   label: "Marcas",
     //   to: "/dashboard/devices",

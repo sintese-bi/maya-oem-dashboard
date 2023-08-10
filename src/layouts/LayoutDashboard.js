@@ -15,7 +15,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   flex: "1 1 auto",
   maxWidth: "100%",
   paddingTop: 64,
-  marginLeft: '15%'
+  paddingLeft: '16%' 
 }));
 
 const LayoutDashboard = () => {
@@ -27,6 +27,7 @@ const LayoutDashboard = () => {
         <Box
           sx={{
             display: "flex",
+            justifyContent: 'space-between',
             flex: "1 1 auto",
             flexDirection: "column",
             width: "100%",
