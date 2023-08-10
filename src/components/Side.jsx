@@ -2,6 +2,8 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import {useState}from 'react'
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
+import AlertPercentageForm from "src/components/AlertPercentageForm";
+
 // COMPONENTS
 import { Drawer, Box, Button, Toolbar, Typography, Modal, Divider, List, ListItem, ListItemText,ListItemButton, ListItemIcon } from "@mui/material";
 import { theme } from "src/theme";
@@ -31,12 +33,6 @@ export const Side = () => {
       	icon: <AddCircle fontSize="small" />,
       	disabled: true,
 	 },
-	 {
-	 			label: "Frequência de alertas",
-      	icon: <Info fontSize="small" />,
-      	disabled: true,
-
-	 },
 	]
 
 	const secondItems = [
@@ -47,6 +43,12 @@ export const Side = () => {
      	color: "error"
 		}
 	]
+
+	const [open, setOpen] = useState(false)
+
+	function handleModalState(){
+		setOpen(!open)
+	}
 
 	return(
 	 <Drawer
@@ -71,6 +73,15 @@ export const Side = () => {
 	 					</ListItem>
 	 				))
 	 			}
+	 			<ListItem >
+	 					<Button
+              startIcon={<Info fontSize="small" />}
+              variant="contained"
+              onClick={handleModalState}
+            >
+            	Frequência de alertas
+           </Button>
+	 			</ListItem>
 	 		</List>
 	 		<Box>
 	 			<Divider />
@@ -91,6 +102,15 @@ export const Side = () => {
 	 			</List>
 	 		</Box>
 	 	</Box>
+	 	<Modal
+  		open={open}
+  		onClose={handleModalState}
+  		aria-labelledby="modal-modal-title"
+  		aria-describedby="modal-modal-description"
+  		sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+		>
+  		<AlertPercentageForm />
+		</Modal>
 	 </Drawer>
 
 	)

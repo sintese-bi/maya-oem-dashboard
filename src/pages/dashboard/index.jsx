@@ -8,6 +8,7 @@ import { reportAdministratorRule } from "src/reports/reportsRules/reportAdminist
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 
 import {ChartsDashboardHorizontal} from 'src/components/Charts'
+import {ChartsDashboard} from 'src/components/Charts'
 
 // QUERYS
 import {
@@ -251,9 +252,10 @@ export default function Dashboard() {
         />
       </Box>
 
-      <ChartsDashboardHorizontal dataDevices={dataDevices} />
-
-      <AlertPercentageForm />
+      <Box sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', mt: 10}}>
+        <ChartsDashboardHorizontal dataDevices={dataDevices} />
+        <ChartsDashboard dataDevices={dataDevices} />
+      </Box>
 
       {data.length !== 0 ? (
         <Box

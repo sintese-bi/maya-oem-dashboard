@@ -114,12 +114,7 @@ export default function AlertPercentageForm() {
       noValidate
       onSubmit={handleSubmit(onSubmit)}
       sx={{
-        alignItems: "center",
-        display: "flex",
-        justifyContent: 'space-evenly',
-        gap: 2,
-        my: 6,
-        mx: 2,
+        bgcolor: 'red'
       }}
     >
       <Card sx={{
@@ -199,38 +194,27 @@ export default function AlertPercentageForm() {
                 control={control}
                 name="frequencyName"
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    sx={{ width: 200 }}
-                    label="Frequência de alertas"
-                    error={!!errors.frequencyName}
-                    helperText={errors.frequencyName?.message}
-                    value={watch("frequencyName") || ""}
-                    select
-                    defaultValue="month"
-                    variant="standard"
-                    disabled={isLoadingAlertFrequency}
+                  <ToolTipNoAccess
+                    useCodePagarMe={useCodePagarMe}
                   >
-                    <MenuItem value="day" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Dia {!useCodePagarMe ? 
-                      (
-                        <ToolTipNoAccess
-                          useCodePagarMe={useCodePagarMe}
-                        >
-                          <Lock />
-                        </ToolTipNoAccess>
-                      ) : ''}
-                    </MenuItem>
-                    <MenuItem value="week" disabled={!useCodePagarMe} sx={{display: 'flex', justifyContent:'space-between'}}>Semanal {!useCodePagarMe ? 
-                      (
-                        <ToolTipNoAccess
-                          useCodePagarMe={useCodePagarMe}
-                        >
-                          <Lock />
-                        </ToolTipNoAccess>
-                      ) : ''}
-                    </MenuItem>
-                    <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
-                  </TextField>
+                    <TextField
+                      {...field}
+                      sx={{ width: 200 }}
+                      label="Frequência de alertas"
+                      error={!!errors.frequencyName}
+                      helperText={errors.frequencyName?.message}
+                      value={watch("frequencyName") || ""}
+                      select
+                      defaultValue="month"
+                      variant="standard"
+                      disabled={isLoadingAlertFrequency == false && useCodePagarMe != false ? false : true }
+                    >
+                      <MenuItem value="day"  sx={{display: 'flex', justifyContent:'space-between'}}>Dia</MenuItem>
+                      <MenuItem value="week"  sx={{display: 'flex', justifyContent:'space-between'}}>Semanal</MenuItem>
+                      <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
+                    </TextField>
+                  </ToolTipNoAccess>
+                  
                 )}
               />
             </ListItem>
@@ -249,9 +233,6 @@ export default function AlertPercentageForm() {
           )}
         </Grid>
       </Card>
-      <Box sx={{display: 'flex', justifyContent:'center'}}>
-        <ChartsDashboard dataDevices={dataDevices} />
-      </Box>
     </Box>
   );
 }
