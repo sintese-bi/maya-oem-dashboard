@@ -22,7 +22,6 @@ export default function userReducer(state = initialState, action) {
     case devices.GET_DEVICES_SUCCESS:
       console.log("result-devices", result)
       return {
-        ...state,
         isLoadingDevices: false,
         devices: result,
       };

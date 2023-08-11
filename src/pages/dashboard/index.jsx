@@ -252,10 +252,15 @@ export default function Dashboard() {
         />
       </Box>
 
-      <Box sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', mt: 10}}>
-        <ChartsDashboardHorizontal dataDevices={dataDevices} />
-        <ChartsDashboard dataDevices={dataDevices} />
-      </Box>
+      {/* 
+        Gráfico horizontal/Gráfico vertical
+
+        <Box sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', mt: 10}}>
+          <ChartsDashboardHorizontal dataDevices={dataDevices} />
+          <ChartsDashboard dataDevices={dataDevices} />
+        </Box>
+        
+      */}
 
       {data.length !== 0 ? (
         <Box

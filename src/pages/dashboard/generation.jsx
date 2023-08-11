@@ -98,18 +98,18 @@ const Generation = () => {
 
   useEffect(() => {
     if (devices.length !== 0) {
-      dispatch(getCapacities(deviceInfo.dev_uuid))
+      //dispatch(getCapacities(deviceInfo.dev_uuid))
       dispatch(
         getGeneration({
           startDate,
           endDate,
           blUuid: blUuidState,
-          devUuid: deviceInfo.dev_uuid,
+          devUuid: deviceInfo?.dev_uuid,
           type: optionFilter,
         })
       );
     } else if (devUuidState) {
-      dispatch(getCapacities(devUuidState))
+      //dispatch(getCapacities(devUuidState))
       dispatch(
         getGeneration({
           startDate,
