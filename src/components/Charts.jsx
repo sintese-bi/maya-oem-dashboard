@@ -100,7 +100,7 @@ export const ChartsDashboardHorizontal = (props) => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'right' ,
+        position: 'top' ,
     },
     title: {
       display: false,
@@ -116,15 +116,13 @@ export const ChartsDashboardHorizontal = (props) => {
         flexDirection: 'column',
         justifyContent: "space-between",
         alignItems: 'center',
-        mt: 8,
-        width: '100%'
       }}
     >
-        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", width: '80%', px: 3, pb: 6, pt: 4}}>
+        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
             Plantas com melhores performance no último mês.
           </Typography>
-          <Box sx={{height: 300}} >
+          <Box sx={{height: 300, width: 662}} >
             <Chart type="bar" options={options} data={data}/>
           </Box>
         </Card>
@@ -237,7 +235,7 @@ const options = {
         justifyContent: "space-between",
         alignItems: 'center',
         bgcolor: "background.paper",
-        px: 6,
+        px: 2,
         pb: 2,
         pt: 4,
         height: 420,
@@ -246,7 +244,7 @@ const options = {
         <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
             Resumo da geração real vs estimada
         </Typography>
-        <Box sx={{height: 300, width: 500}} >
+        <Box sx={{height: 300, width: 300}} >
           <Chart type="bar" options={options} data={data}/>
         </Box>
     </Card>
