@@ -113,9 +113,6 @@ export default function AlertPercentageForm() {
       component="form"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      sx={{
-        bgcolor: 'red'
-      }}
     >
       <Card sx={{
         display:'flex', 

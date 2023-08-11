@@ -1,9 +1,12 @@
 // IMPORTS
+import {  useState  } from 'react'
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+
+import { RecoveryPassword } from 'src/components/recoveryPassword';
 
 // LIBS DE ESTILOS
 import {
@@ -15,6 +18,7 @@ import {
   Box,
   Grid,
   Typography,
+  Modal
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -35,6 +39,8 @@ const validateSchema = Yup.object().shape({
 
 // COMPONENTE DA PÁGINA
 export default function Login() {
+  const [open, setOpen] = useState(false)
+
   const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,6 +102,10 @@ export default function Login() {
         {"."}
       </Typography>
     );
+  }
+
+  function handleModalState(){
+    setOpen(!open)
   }
 
   return (
@@ -169,7 +179,7 @@ export default function Login() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link sx={{cursor: 'pointer'}} onClick={handleModalState} variant="body2">
                       Esqueceu a senha?
                     </Link>
                   </Grid>
@@ -189,6 +199,15 @@ export default function Login() {
           <Copyright />
         </Grid>
       </Grid>
+      <Modal
+        open={open}
+        onClose={handleModalState}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+      >
+        <RecoveryPassword />
+      </Modal>
     </ThemeProvider>
   );
 }

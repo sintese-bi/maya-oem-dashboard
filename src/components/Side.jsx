@@ -44,7 +44,7 @@ export const Side = () => {
 		}
 	]
 
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(true)
 
 	function handleModalState(){
 		setOpen(!open)

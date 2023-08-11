@@ -179,21 +179,21 @@ export const ClientReport = () => {
         <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>LOCALIZAÇÃO</Text>
-             <Text style={styles.cardText}>Rua xxxx, nº362, Bairro Albuquerque</Text>
+             <Text style={styles.cardText}>{reportClient.address}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>PORTAL</Text>
-             <Text style={styles.cardText}>xxxxxxx</Text>
+             <Text style={styles.cardText}>{reportClient.portal}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>Status</Text>
-             <Text style={styles.cardText}>Online</Text>
+             <Text style={styles.cardText}>{reportClient.state}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
@@ -202,21 +202,21 @@ export const ClientReport = () => {
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>EMAIL</Text>
-             <Text style={styles.cardText}>email@gmail.com</Text>
+             <Text style={styles.cardText}>{reportClient.email}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>CELULAR</Text>
-             <Text style={styles.cardText}>(xx) x xxxx-xxxx</Text>
+             <Text style={styles.cardText}>{reportClient.phone}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
           <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>NOME DE REF. DO CONTRATO</Text>
-             <Text style={styles.cardText}>Felix Albuquerque</Text>
+             <Text style={styles.cardText}>{reportClient.contracterName}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View> 
@@ -225,7 +225,7 @@ export const ClientReport = () => {
            <View style={styles.card}>
            <View>
              <Text style={styles.cardLabel}>Nº DE CONTRATO</Text>
-             <Text style={styles.cardText}>1232930120</Text>
+             <Text style={styles.cardText}>{reportClient.contractNumber}</Text>
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>

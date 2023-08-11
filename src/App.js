@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-//LAYOUTS
+//LAYOUTS 
 import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
@@ -12,6 +12,7 @@ import Devices from "./pages/dashboard/devices";
 import Generation from "./pages/dashboard/generation";
 import Investment from "./pages/dashboard/investment";
 import Alerts from "./pages/dashboard/alerts";
+import AlertDevices from 'src/components/AlertDevices'
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="generation/:brand" element={<Generation />} />
           <Route path="investment/:brand" element={<Investment />} />
           <Route path="alerts/:brand" element={<Alerts />} />
+          <Route path="alertDevices" element={<AlertDevices />} />
         </Route>
 
         <Route element={<PrivateAdminRoute />}>

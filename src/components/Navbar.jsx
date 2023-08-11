@@ -48,18 +48,11 @@ export const DashboardNavbar = () => {
       active: location.pathname === "/dashboard/users" ? true : false,
     },
     {
-      label: "Relatórios",
-      to: "/dashboard",
-      icon: <ContentPaste fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
-      //active: location.pathname === "/dashboard/users" ? true : false,
-    },
-    {
       label: "Alertas",
-      to: "/dashboard",
+      to: "/dashboard/alertDevices",
       icon: <Warning fontSize="small" />,
       disabled: profileLevel === "admin" ? true : false,
-      //active: location.pathname === "/dashboard/users" ? true : false,
+      active: location.pathname === "/dashboard/alertDevices" ? true : false,
     },
     {
       label: "Plantas",
