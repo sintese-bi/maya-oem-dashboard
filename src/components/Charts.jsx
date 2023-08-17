@@ -76,14 +76,13 @@ export const ChartsLinear = () => {
     datasets: [
       {
         label: 'Dataset 1',
-        data: [20,30,40,50],
+        data: [20,168,40,180],
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
       {
         label: 'Dataset 2',
-        data: [160, 160],
-        borderRadius: "#14B8A6",
+        data: [160, 160, 160, 160],
         backgroundColor: "#14B8A6",
       }
     ]
@@ -99,7 +98,7 @@ export const ChartsLinear = () => {
     >
         <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
-            Plantas com melhores performance no último mês.
+            Teste Plantas
           </Typography>
           <Box sx={{height: 300, width: 662}} >
             <Line type="bar" options={options} data={data}/>
