@@ -3,6 +3,8 @@ import {useState}from 'react'
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
 import AlertPercentageForm from "src/components/AlertPercentageForm";
+import { PaymentWarn } from "src/components/PaymentWarn";
+import { CreateDevice } from "src/components/CreateDevice";
 
 // COMPONENTS
 import { Drawer, Box, Button, Toolbar, Typography, Modal, Divider, List, ListItem, ListItemText,ListItemButton, ListItemIcon } from "@mui/material";
@@ -22,31 +24,48 @@ import {
 } from "@mui/icons-material";
 
 export const Side = () => {
+	const [action, setAction] = useState("alertFrequency")
+	const [welcome, setWelcome] = useState(true)
+	const [open, setOpen] = useState(true)
+
+	const { useUuid, useName } = getUserCookie();
+  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+
+  const topItems = [
+  	{
+  		label: "Usuário",
+  		icon: <Info  fontSize="small" />,
+  		action: 'userAccount'
+  	}
+  ]
+
 	const mainItems = [
-	 {
-	 			label: "Assinar Plano",
-      	icon: <CheckCircle fontSize="small" />,
-      	disabled: true,
-	 },
 	 {
 	 			label: "Criar nova planta",
       	icon: <AddCircle fontSize="small" />,
       	disabled: true,
+      	action: 'createDevice'
+	 },
+	 {
+	 			label: "Configurar alertas",
+      	icon: <Info fontSize="small" />,
+      	disabled: true,
+      	action: 'alertFrequency'
 	 },
 	]
 
-	const secondItems = [
+	const bottomItems = [
 		{
-			label: "Cancelar Plano",
-     	icon: <Error fontSize="small" />,
-     	disabled: true,
-     	color: "error"
+			label: "Assinar Plano",
+      icon: <CheckCircle fontSize="small" />,
+      disabled: true,
+      action: 'assignPlan'
 		}
 	]
 
-	const [open, setOpen] = useState(true)
-
-	function handleModalState(){
+	function handleModalState(actionType){
+		actionType == "alertFrequency" ? setAction('alertFrequency') : setAction('createDevice')
+		setWelcome(false)
 		setOpen(!open)
 	}
 
@@ -58,8 +77,26 @@ export const Side = () => {
           	boxShadow: theme.shadows[3],
 	 	}}
 	 > 
-	 	<Toolbar />
-	 	<Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'space-between', overflow: 'auto', pt: 6, height: '100%', width: '240px'}}>
+	 <Toolbar />
+	 	<Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'space-between', overflow: 'auto', height: '100%', width: '240px'}}>
+	 		<Box>
+	 			<List>
+	 			{
+	 				topItems.map((data, index) => (
+	 					<ListItem key={data?.label} >
+	 						<Button
+              	startIcon={data?.icon}
+              	variant="outlined"
+              	onClick={() => alert("função não implementada")}
+            	>
+            		{data?.label}
+            	</Button>
+	 					</ListItem>
+	 				))
+	 			}
+	 			</List>
+	 			<Divider />
+	 		</Box>
 	 		<List>
 	 			{
 	 				mainItems.map((data, index) => (
@@ -67,32 +104,26 @@ export const Side = () => {
 	 						<Button
               	startIcon={data?.icon}
               	variant="contained"
+              	onClick={() => {
+              		handleModalState(data?.action)
+              	}}
             	>
             		{data?.label}
             	</Button>
 	 					</ListItem>
 	 				))
 	 			}
-	 			<ListItem >
-	 					<Button
-              startIcon={<Info fontSize="small" />}
-              variant="contained"
-              onClick={handleModalState}
-            >
-            	Frequência de alertas
-           </Button>
-	 			</ListItem>
 	 		</List>
 	 		<Box>
 	 			<Divider />
 	 			<List>
 	 			{
-	 				secondItems.map((data, index) => (
+	 				bottomItems.map((data, index) => (
 	 					<ListItem key={data?.label} >
 	 						<Button
               	startIcon={data?.icon}
               	variant="outlined"
-              	color={data?.color}
+              	onClick={() => alert("função não implementada")}
             	>
             		{data?.label}
             	</Button>
@@ -109,7 +140,9 @@ export const Side = () => {
   		aria-describedby="modal-modal-description"
   		sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
 		>
-  		<AlertPercentageForm />
+		{
+			useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice />) : <PaymentWarn/>
+		}
 		</Modal>
 	 </Drawer>
 

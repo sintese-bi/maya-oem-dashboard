@@ -273,7 +273,6 @@ export const getDashboard = (uuid) => (dispatch) => {
 export const getCapacities = (blUuids) => (dispatch) => {
   let capacities = []
   dispatch({type: users.GET_CAPACITY_REQUEST})
-
   blUuids?.map((data) => {
     api
    .get(`/report/${data}`)

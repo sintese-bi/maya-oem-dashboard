@@ -7,6 +7,7 @@ import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
 import { useLocation } from "react-router-dom";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 import { getUserCookie } from "src/services/session";
+import { PaymentWarn } from 'src/components/PaymentWarn'
 import {
   Backdrop,
   Box,
@@ -20,7 +21,8 @@ import {
   Select,
   TextField,
   Button,
-  Typography
+  Typography,
+  Modal
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -44,6 +46,7 @@ const Generation = () => {
   const location = useLocation();
   const { blUuidState, devUuidState, useNameState } = location.state || {};
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
+  const [open, setOpen] = useState(false)
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
@@ -83,7 +86,7 @@ const Generation = () => {
   }
 
   function handleReportGeneration(){
-    reportClientRule(generation, useNameState, capacity, setIsLoadingReport)
+    useCodePagarMe ? reportClientRule(generation, useNameState, capacity, setIsLoadingReport) : setOpen(!open)
   }
 
   useEffect(() => {
@@ -98,7 +101,6 @@ const Generation = () => {
 
   useEffect(() => {
     if (devices.length !== 0) {
-      //dispatch(getCapacities(deviceInfo.dev_uuid))
       dispatch(
         getGeneration({
           startDate,
@@ -109,7 +111,7 @@ const Generation = () => {
         })
       );
     } else if (devUuidState) {
-      //dispatch(getCapacities(devUuidState))
+      dispatch(getCapacities(devUuidState))
       dispatch(
         getGeneration({
           startDate,
@@ -204,22 +206,26 @@ const Generation = () => {
               <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
                 <Button
                   startIcon={<DownloadForOffline fontSize="small" />}
-                  variant="contained"
-                  sx={{ color: "primary", ml: 1, variant: "contained"}}
-                  disabled={useCodePagarMe ? false : true}
+                  variant={useCodePagarMe ? 'outlined' : ''}
                   onClick={() => handleReportGeneration()}
                 >
                   {
-                    isLoadingReport ? (
-                      'Preparar relatório'
+                    useCodePagarMe ? (
+                      isLoadingReport ? (
+                        'Preparar relatório'
+                      ) : 
+                      (
+                        <PDFDownloadLink 
+                          document={<ClientReport />} 
+                          fileName="relatório-cliente.pdf"
+                          style={{textDecoration: 'none'}}
+                        >
+                          {({ blob, url, loading, error }) => loading ? "Carregando relatório..." : "Relatório Cliente"}
+                        </PDFDownloadLink>
+                      )
+                      
                     ) : (
-                    
-                      <PDFDownloadLink 
-                        document={<ClientReport />}
-                        fileName="relatório-cliente.pdf"
-                        style={{color: 'white', textDecoration: 'none'}}>
-                        {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório..." : "Relatório cliente") : "Relatório indisponível")}
-                      </PDFDownloadLink>
+                      'Relatório indisponível'
                     )
                   }
                 </Button>
@@ -314,6 +320,15 @@ const Generation = () => {
           />
         </Box>
       </Container>
+      <Modal
+        open={open}
+        onClose={handleReportGeneration}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+      >
+        <PaymentWarn />
+      </Modal>
     </Box>
   );
 };

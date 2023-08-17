@@ -13,13 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const validateSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Informe um email valido.")
-    .required("E-mail é obrigatório."),
-});
-
-export const RecoveryPassword = () => {
+export const CreateDevice = () => {
 	const methods = useForm();
 
 	const {
@@ -28,17 +22,15 @@ export const RecoveryPassword = () => {
     	formState: { errors },
   	} = useForm({
     	mode: "onChange",
-    	resolver: yupResolver(validateSchema),
   	});
 
   	async function onSubmit(values) {
-  		const { email } = values;
-
+  		const { deviceLogin, devicePassword } = values;
   		try {
   			alert("função não implementada")
   		}
   		catch(error) {
-  			alert("função não implementada - error")
+  			alert("função não implementada")
   		}
   	}
 
@@ -59,24 +51,27 @@ export const RecoveryPassword = () => {
 					width: '40%'
 				}}
 			>
-				<Box sx={{
-					mb: 2
-				}}>
-					<Typography sx={{fontWeight: 'bold', mb: 1}} variant="h5">
-						Recuperação de senha
-					</Typography>
-					<Typography sx={{width: '100%', fontSize:'12px'}}>
-						Após confirmar o seu email, enviaremos um link de recuperação para você. 
-						Por favor clique no link enviado para continuar o processo de redefinição da senha.
+				<Box>
+					<Typography sx={{fontWeight: 'bold'}} variant="h5">
+						Criação de planta
 					</Typography>
 				</Box>
-				<TextField 
-					margin="normal"
-					label="E-mail"
-					{...register("email")}
-					error={!!errors.email}
-					helperText={errors.email?.message}
-				/>
+				<Box sx={{display:'flex', flexDirection: 'column', py: 4}}>
+					<TextField 
+						margin="normal"
+						label="Login da planta"
+						{...register("deviceLogin")}
+						error={!!errors.deviceLogin}
+						helperText={errors.deviceLogin?.message}
+					/>
+					<TextField 
+						margin=""
+						label="Senha"
+						{...register("devicePassword")}
+						error={!!errors.devicePassword}
+						helperText={errors.devicePassword?.message}
+					/>
+				</Box>
 				<Button
 					sx={{
 						width: '162px'
@@ -84,7 +79,7 @@ export const RecoveryPassword = () => {
 					type="submit"
 					variant="contained"
 				>
-					Enviar email 
+					Criar planta
 				</Button>
 			</Box>
 		</FormProvider>
