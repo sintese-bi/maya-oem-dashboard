@@ -56,10 +56,10 @@ export const DashboardNavbar = () => {
     },
     {
       label: "Plantas",
-      to: "/dashboard",
+      to: "/dashboard/devices",
       icon: <AccountCircle fontSize="small" />,
       disabled: profileLevel === "admin" ? true : false,
-      //active: location.pathname === "/dashboard/users" ? true : false,
+      active: location.pathname === "/dashboard/devices" ? true : false,
     },
     {
       label: "Proposta",

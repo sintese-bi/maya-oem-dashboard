@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import AlertPercentageForm from 'src/components/AlertPercentageForm';
+import { ChartsLinear } from "src/components/Charts";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getUserCookie } from "src/services/session";
 import {
@@ -63,31 +64,6 @@ export default function Plants(){
   	}
 
 	return (
-		<Box sx={{display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', pt: 6}}>
-			{data.length !== 0 ? (
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            py: 4,
-          }}
-        >
-          <Container maxWidth={false}>
-            <Box>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <MUIDataTable
-                    title={"Listagem de plantas"}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Container>
-        </Box>
-      ) : null}
-		</Box>
+		<ChartsLinear />
 	)
 }

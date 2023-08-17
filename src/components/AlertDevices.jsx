@@ -55,7 +55,7 @@ export default function AlertDevices(){
   useEffect(() => {
     if(dataDevices.length != 0){
       let devicesWithAlerts = dataDevices.filter((data) => data.alert != 0)
-      dispatch(getDevicesAlerts(devicesWithAlerts))  
+      devicesALerts.length != 0 ? null : dispatch(getDevicesAlerts(devicesWithAlerts))  
     }
   }, [dataDevices])
 
