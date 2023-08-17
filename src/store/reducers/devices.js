@@ -3,8 +3,11 @@ import { devices } from "../typesActions/types";
 const initialState = {
   isLoadingDevices: false,
   isLoadingCapacity: false,
+  isLoadingAlerts: false,
   devices: [],
   capacity: [],
+  allDevices: [],
+  devicesALerts: []
 };
 
 export default function userReducer(state = initialState, action) {
@@ -17,11 +20,13 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingDevices: true,
         devices: [],
+        capacity: [],
       };
 
     case devices.GET_DEVICES_SUCCESS:
       console.log("result-devices", result)
       return {
+        ...state,
         isLoadingDevices: false,
         devices: result,
       };
@@ -31,7 +36,50 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingDevices: false,
         devices: [],
+        capacity: [],
       };
+
+    case devices.GET_ALL_DEVICES_REQUEST:
+      return {
+        ...state,
+        allDevices: []
+      }
+
+    case devices.GET_ALL_DEVICES_SUCCESS:
+      console.log("all-devices-result", result)
+      return {
+        ...state,
+        allDevices: result
+      }
+
+      case devices.GET_ALL_DEVICES_FAILURE:
+      return {
+        ...state,
+        allDevices: []
+      }
+
+    case devices.GET_DEVICES_ALERTS_REQUEST:
+      return {
+        ...state,
+        isLoadingAlerts: true,
+        devicesALerts: []
+      }
+
+    case devices.GET_DEVICES_ALERTS_SUCCESS:
+      console.log('getDevicesAlerts-result', result, state.isLoadingAlerts)
+      return {
+        ...state,
+        isLoadingAlerts: false,
+        devicesALerts: [...state.devicesALerts, result]
+      }
+ 
+    case devices.GET_DEVICES_ALERTS_FAILURE:
+      console.log('erro')
+      return {
+        ...state,
+        isLoadingAlerts: false,
+        devicesALerts: []
+      }
 
     case devices.GET_CAPACITY_DEVICE_REQUEST:
       return {
@@ -53,7 +101,6 @@ export default function userReducer(state = initialState, action) {
         isLoadingCapacity: false,
         capacity: []
       }
-
 
     default:
       return state;

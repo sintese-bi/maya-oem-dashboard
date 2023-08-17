@@ -26,8 +26,10 @@ import {
   Grid,
   Button,
   Typography,
+  Modal
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
+import { PaymentWarn } from "src/components/PaymentWarn";
 import { BigNumberDashboard } from "src/components/BigNumber";
 
 // ASSETS
@@ -61,6 +63,8 @@ export default function Dashboard() {
     capacity,
     //useCodePagarMe
   } = useSelector((state) => state.users);
+
+  const [open, setOpen] = useState(false)
 
   const tableRef = useRef(null)
   const [data, setData] = useState([]);
@@ -109,7 +113,7 @@ export default function Dashboard() {
   }
 
   function handleReportGeneration(){
-    reportAdministratorRule(capacity, dataDevices, setIsLoadingReport)
+    useCodePagarMe ? reportAdministratorRule(capacity, dataDevices, setIsLoadingReport) : setOpen(!open)
   }
 
   useEffect(() => {
@@ -155,9 +159,7 @@ export default function Dashboard() {
           <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
             <Button
               startIcon={<DownloadForOffline fontSize="small" />}
-              variant="contained"
-              sx={{ color: "primary", variant: "contained" }}
-              disabled={useCodePagarMe ? false : true}
+              variant={useCodePagarMe ? 'outlined' : ''}
               onClick={() => handleReportGeneration()}
             >
               {
@@ -168,7 +170,7 @@ export default function Dashboard() {
                   <PDFDownloadLink 
                     document={<AdministratorReport />} 
                     fileName="relatório-integrador.pdf"
-                    style={{color: 'white', textDecoration: 'none'}}
+                    style={{textDecoration: 'none'}}
                   >
                     {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório..." : "Relatório Integrador") : "Relatório indisponível")}
                   </PDFDownloadLink>
@@ -286,6 +288,17 @@ export default function Dashboard() {
           </Container>
         </Box>
       ) : null}
+      <Modal
+        open={open}
+        onClose={handleReportGeneration}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+      >
+      {
+        <PaymentWarn/>
+      }
+      </Modal>
     </>
   );
 }

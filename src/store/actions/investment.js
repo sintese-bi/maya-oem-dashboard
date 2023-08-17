@@ -28,4 +28,3 @@ export const getInvestment = (date, devUuid) => (dispatch) => {
       dispatch({ type: investment.GET_INVESTMENT_FAILURE, message });
     });
 };
-

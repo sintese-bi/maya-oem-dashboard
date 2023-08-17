@@ -59,7 +59,7 @@ const validateSchema = Yup.object().shape({
   frequencyName: Yup.string().required("Campo é obrigatório."),
 });
 
-export default function AlertPercentageForm() {
+export default function AlertPercentageForm({ welcome }) {
   const [freePlan, setFreePlan] = useState(true)
   const dispatch = useDispatch();
 
@@ -113,33 +113,45 @@ export default function AlertPercentageForm() {
       component="form"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
+      sx={{bgcolor: 'red'}}
     >
       <Card sx={{
         display:'flex', 
         flexDirection: 'column', 
-        alignItems:'center', 
         bgcolor: 'background.paper',
         px: 6,
-        pb: 2,
-        pt: 4,
+        pb: 6,
+        pt: 6,
       }} >
-        <Box sx={{display: 'flex', justifyContent: 'space-around', gap: 2}}>
-          <Typography sx={{ fontWeight: 'bold', fontSize: '20px'}}>
-            Definição de frequência dos alertas
-          </Typography>
-          <Tooltip
-            sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            title="O Software envia automaticamente alertas de produção para seu email. Selecione aqui a frequência de alertas."
-          >
-            <Info />
-          </Tooltip>
+        {
+          welcome ? <Typography variant="h2" sx={{py: 2}}>Bem vindo</Typography> : null
+        }
+        <Box sx={{display: 'flex', flexDirection: 'column', pb: 6}}>
+          <Box sx={{display: 'flex', justifyContent: 'space-between', py: 2}}>
+            <Typography sx={{ fontWeight: 'bold', fontSize: '20px'}}>
+              Definição de frequência dos alertas
+            </Typography>
+            <Tooltip
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              title="O Software envia automaticamente alertas de produção para seu email. Selecione aqui a frequência de alertas."
+            >
+              <Info />
+            </Tooltip>
+          </Box>
+            <Typography sx={{width: 460, fontSize: '14px'}}>
+              {
+                `Prezado usuário, definir a frequência e o limite mínimo de produtividade
+                das suas plantas. Essa definição controla o envio de alerta das plantas
+                para seu email todas as vezes que suas plantas produzirem ${watch("percentage")}%
+                abaixo do definido enviaremos um alerta para você.`
+              }
+            </Typography>
         </Box>
-        <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'center', gap: 1, my: 1}}>
+        <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'space-between'}}>
           <List 
             sx={{
               width: "72%",
               bgcolor: "background.paper",
-              pr: 2,
             }}
           >
             <ListItem>
@@ -160,7 +172,7 @@ export default function AlertPercentageForm() {
               >
                 <TextField
                   sx={{ width: 200 }}
-                  label="Limite Mínimo (%)"
+                  label="Limite percentual mínimo (%)"
                   type="number"
                   {...register("percentage")}
                   error={!!errors.percentage}
