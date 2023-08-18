@@ -54,9 +54,17 @@ const TABS = {
   GENERATION_PERCENTAGE: 1,
 };
 
-export const ChartsLinear = () => {
-  
-  let labels = ['January', 'February', 'March', 'April'];
+export const ChartsLinear = (props) => {
+  const { startDate, endDate, generation, optionFilter, isLoading } = props
+
+  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
+
+  if (isLoading || !generation) return <LoadingSkeletonCharts />;
+
+  // Gerar rótulos de dia para o gráfico
+  const labels = Array.from({ length: totalDays }, (_, index) =>
+    moment(startDate).add(index, 'days').format('D')
+  );
 
   const options = {
     responsive: true,
@@ -65,8 +73,8 @@ export const ChartsLinear = () => {
         position: 'top',
       },
       title: {
-        display: true,
-        text: 'Chart.js Line Chart'
+        display: false,
+        text: ''
       }
     },
   }
@@ -75,14 +83,14 @@ export const ChartsLinear = () => {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: [20,168,40,180],
+        label: 'Geração real',
+        data: generation.realGeneration,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
       {
-        label: 'Dataset 2',
-        data: [160, 160, 160, 160],
+        label: 'Geração estimada',
+        data: generation.estimatedGeneration,
         backgroundColor: "#14B8A6",
       }
     ]
@@ -98,7 +106,7 @@ export const ChartsLinear = () => {
     >
         <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
-            Teste Plantas
+            Relação da geração real e geração estimada
           </Typography>
           <Box sx={{height: 300, width: 662}} >
             <Line type="bar" options={options} data={data}/>
