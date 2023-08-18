@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import { numbers } from '../helpers/utils'
 
 // LIBS DE ESTILOS
-import { Bar, Chart } from "react-chartjs-2";
+import { Bar, Chart, Line } from "react-chartjs-2";
 import {
   Box,
   Card,
@@ -46,13 +46,67 @@ ChartJS.register(
   PointElement,
   LineElement,
   LineController,
-  BarController
+  BarController,
 );
 
 const TABS = {
   GENERATION_KWH: 0,
   GENERATION_PERCENTAGE: 1,
 };
+
+export const ChartsLinear = () => {
+  
+  let labels = ['January', 'February', 'March', 'April'];
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart'
+      }
+    },
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [20,168,40,180],
+        borderColor: "#5048E5",
+        backgroundColor: "#5048E5",
+      },
+      {
+        label: 'Dataset 2',
+        data: [160, 160, 160, 160],
+        backgroundColor: "#14B8A6",
+      }
+    ]
+  };
+
+  return (
+    <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: "space-between",
+        alignItems: 'center',
+      }}
+    >
+        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
+          <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
+            Teste Plantas
+          </Typography>
+          <Box sx={{height: 300, width: 662}} >
+            <Line type="bar" options={options} data={data}/>
+          </Box>
+        </Card>
+    </Box>
+  )
+}
 
 export const ChartsDashboardHorizontal = (props) => {
   const { dataDevices } = props
