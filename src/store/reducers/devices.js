@@ -7,6 +7,8 @@ const initialState = {
   isLoadingCapacity: false,
   isLoadingAlerts: false,
   isLoadingDevicesGeneration: false,
+  loadingCreateDevice: true,
+  createDevice: [],
   devices: [],
   capacity: [],
   allDevices: [],
@@ -70,7 +72,7 @@ export default function userReducer(state = initialState, action) {
       }
 
     case devices.GET_DEVICES_ALERTS_SUCCESS:
-      console.log('getDevicesAlerts-result', result, state.isLoadingAlerts)
+      console.log('getDevicesAlerts-result', result)
       return {
         ...state,
         isLoadingAlerts: false,
@@ -96,16 +98,60 @@ export default function userReducer(state = initialState, action) {
       const { deviceData, latestTemp, deviceName } = result;
       const { date, type } = args;
 
+      function dateOrder(dateA, dateB){
+        const form = 'DD/MM';
+        const date1 = moment(dateA, form);
+        const date2 = moment(dateB, form);
+
+        if(date1.isBefore(date2)){
+          return -1;
+        } else if (date1.isAfter(date2)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+
+      function monthOrder(dateA, dateB){
+        const form = 'MM/YYYY';
+        const date1 = moment(dateA, form);
+        const date2 = moment(dateB, form);
+
+        if(date1.isBefore(date2)){
+          return -1;
+        } else if (date1.isAfter(date2)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+
+      let datesInfo = deviceData[0].generation.map((gen) => {
+        return moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM")
+      })
+      
+      let monthsInfo = []
+      deviceData[0].generation.map((gen) => {
+        let monthAlreadyCount = monthsInfo.filter((data) => data == moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+        
+        if(monthAlreadyCount.length == 0){
+          monthsInfo.push(moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+        }
+        
+      })
+
+      datesInfo.sort(dateOrder)
+      monthsInfo.sort(monthOrder)
+
       const month = parseInt(moment(date).format("MM"));
       const year = parseInt(moment(date).format("YYYY"));
-      const day = type === "month" ? new Date(year, month, 0).getDate() : 12;
+      const day = type === "month" ? datesInfo.length  : 12;
+      console.log(year, month, day, datesInfo, monthsInfo)
 
       // LABEL DO GRAFICO
       const label =
         type === "month"
-          ? Array(day)
-              .fill(null)
-              .map((_, i) => i + 1)
+          ? datesInfo
           : [
               "Jan",
               "Fev",
@@ -120,7 +166,7 @@ export default function userReducer(state = initialState, action) {
               "Nov",
               "Dez",
             ];
-
+      
       return {
         ...state,
         isLoadingDevicesGeneration: false,
@@ -146,6 +192,27 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingDevicesGeneration: false,
         devicesGeneration: []
+      }
+
+    case devices.POST_DEVICE_REQUEST:
+      return {
+        ...state,
+        loadingCreateDevice: true,
+        createDevice: false,
+      }
+
+    case devices.POST_DEVICE_SUCCESS:
+      return {
+        ...state,
+        loadingCreateDevice: false,
+        createDevice: true,
+      }
+
+    case devices.POST_DEVICE_FAILURE:
+      return {
+        ...state,
+        loadingCreateDevice: false,
+        createDevice: false,
       }
 
     case devices.GET_CAPACITY_DEVICE_REQUEST:

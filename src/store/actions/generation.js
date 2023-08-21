@@ -31,7 +31,7 @@ export const getGeneration = (params) => async (dispatch) => {
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,
-        args: { type: params.type, date: params.date },
+        args: { type: params.type, date: params.date},
       });
     })
     .catch((error) => {

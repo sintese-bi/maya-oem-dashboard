@@ -54,6 +54,37 @@ export const getAllDevices = (blUuids) => (dispatch) => {
   });
 }
 
+export const createDevice = (params) => (dispatch) => {
+  dispatch({ type: devices.POST_DEVICE_REQUEST })
+
+  const formatBrandLogin = JSON.stringify(params.bl_login);
+  delete params.bl_login;
+  const format = { ...params, bl_login: formatBrandLogin };
+
+  api
+    .post(`/deviceLogin`, format, configRequest())
+    .then((res) => {
+      const { data } = res;
+
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: devices.POST_DEVICE_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido - createDevice";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.POST_DEVICE_FAILURE, message });
+    });
+}
+
 export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
   dispatch({type: devices.GET_DEVICES_ALERTS_REQUEST})
   devicesWithAlerts.map((data) => {

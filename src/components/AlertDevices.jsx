@@ -28,8 +28,8 @@ import {
 import { CheckCircle } from "@mui/icons-material"
 
 export default function AlertDevices(){
+  let laoded = 0;
   const { useUuid, useName } = getUserCookie();
-
   const { devicesALerts, isLoadingAlerts }  = useSelector((state) => state.devices)
 
   const {
@@ -53,11 +53,18 @@ export default function AlertDevices(){
   const [columns, setColumns] = useState([])
   
   useEffect(() => {
-    if(dataDevices.length != 0){
+    if(dataDevices.length != 0 ){
       let devicesWithAlerts = dataDevices.filter((data) => data.alert != 0)
-      devicesALerts.length != 0 ? null : dispatch(getDevicesAlerts(devicesWithAlerts))  
+      setData(devicesWithAlerts)
+      laoded = 1
     }
   }, [dataDevices])
+
+  useEffect(() => {
+    if(devicesALerts.length == 0 && laoded == 0){
+      dispatch(getDevicesAlerts(data))
+    }
+  }, [data])
 
   useEffect(() => {
     dispatch(getDashboard(useUuid));
@@ -102,8 +109,8 @@ export default function AlertDevices(){
               </TableHead>
               <TableBody>
                 {devicesALerts && devicesALerts.length ? (
-                  devicesALerts.map((item) => (
-                    item.alerts.map((data, index) => (
+                  devicesALerts?.map((item) => (
+                    item.alerts?.map((data, index) => (
                       <TableRow
                         key={index}
                         sx={{

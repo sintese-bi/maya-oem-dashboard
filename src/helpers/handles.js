@@ -7,8 +7,8 @@ export const handlesGeneration = (data, type, day, label) => {
   const estimated = data.generation[0]?.gen_estimated ? data.generation[0]?.gen_estimated : 0;
 
   const realGeneration = Array(day).fill(0);
-
   const estimatedGeneration = Array(day).fill(estimated);
+  console.log(realGeneration, label)
 
   // RETORNAR PORCENTAGEM MAXIMA E MINIMA
   let percentMax = estimatedGeneration[0] * 0.2 + estimatedGeneration[0];
@@ -27,7 +27,7 @@ export const handlesGeneration = (data, type, day, label) => {
     data.generation.map((gen) => {
       label.filter((day, index) => {
         let dayBooleano =
-          parseInt(moment(gen.gen_date).format("DD")) === day ? true : false;
+          moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM") === day ? true : false;
 
         if (dayBooleano)
           realGeneration[index] = gen.gen_real
