@@ -1,6 +1,11 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { listBrand } from "src/utils/list-brand.js";
+import { useDispatch, useSelector } from "react-redux";
+import { FormProvider, useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { getUserCookie } from "src/services/session";
+
+import { createDevice } from "src/store/actions/devices"
 
 import {
   Button,
@@ -11,26 +16,39 @@ import {
   Box,
   Grid,
   Typography,
+  MenuItem
 } from "@mui/material";
+
+const validateSchema = Yup.object().shape({
+	bl_login: Yup.string().required("Campo é obrigatório."),
+	bl_password: Yup.string().required("Campo é obrigatório.")
+})
 
 export const CreateDevice = () => {
 	const methods = useForm();
-
+	const { useUuid, useName } = getUserCookie();
+	const dispatch = useDispatch();
 	const {
    		register,
     	handleSubmit,
+    	control,
+    	setValue,
+    	watch,
     	formState: { errors },
   	} = useForm({
     	mode: "onChange",
+    	resolver: yupResolver(validateSchema)
   	});
 
   	async function onSubmit(values) {
-  		const { deviceLogin, devicePassword } = values;
+  		const { bl_login, bl_password, bl_name } = values;
   		try {
-  			alert("função não implementada")
+  			dispatch(createDevice({ bl_login, bl_password, bl_name, use_uuid: useUuid }))
+  			setValue("deviceLogin", "")
+  			setValue("devicePassword", "")
   		}
   		catch(error) {
-  			alert("função não implementada")
+  			alert(error)
   		}
   	}
 
@@ -57,17 +75,30 @@ export const CreateDevice = () => {
 					</Typography>
 				</Box>
 				<Box sx={{display:'flex', flexDirection: 'column', py: 4}}>
+          <TextField
+            sx={{ width: 200, backgroundColor: 'transparent', px: 1}}
+            label="Brands"
+            {...register("bl_name")}
+            select
+            defaultValue="Aurora"
+            variant="standard"
+          >
+            {listBrand.map((data) => (
+              <MenuItem key={data.title} value={data.title} sx={{display: 'flex', justifyContent:'space-between'}}>{data.title}</MenuItem>
+            ))}
+          </TextField>              
 					<TextField 
 						margin="normal"
 						label="Login da planta"
-						{...register("deviceLogin")}
+						{...register("bl_login")}
 						error={!!errors.deviceLogin}
 						helperText={errors.deviceLogin?.message}
 					/>
 					<TextField 
-						margin=""
+						margin="normal"
 						label="Senha"
-						{...register("devicePassword")}
+						type="password"
+						{...register("bl_password")}
 						error={!!errors.devicePassword}
 						helperText={errors.devicePassword?.message}
 					/>

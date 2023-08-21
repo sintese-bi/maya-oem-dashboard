@@ -59,8 +59,6 @@ export const ChartsLinear = (props) => {
 
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
 
-  if (isLoading || !generation) return <LoadingSkeletonCharts />;
-
   // Gerar rótulos de dia para o gráfico
   const labels = Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
@@ -95,6 +93,17 @@ export const ChartsLinear = (props) => {
       }
     ]
   };
+
+  if (isLoading || !generation) return (
+      <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
+        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
+          Gerando gráfico
+        </Typography>
+        <Box sx={{height: 300, width: 662}} >
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
 
   return (
     <Box sx={{
@@ -327,11 +336,16 @@ export const ChartsGeneration = (props) => {
 
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-
+  const months = moment(endDate).diff(startDate, 'months');
+  console.log(months)
   // Gerar rótulos de dia para o gráfico
-  const labels = Array.from({ length: totalDays }, (_, index) =>
+  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
-  );
+  ) : Array.from({ length: 12 }, (_, index) =>
+    moment(startDate).add(index, 'months').format('MM/YYYY')
+  )
+
+  console.log(generation.realGeneration)
   
   // PROPS PARA O GRAFICO
   const dataKwh = {
@@ -446,7 +460,7 @@ export const ChartsGeneration = (props) => {
         },
         title: {
           display: true,
-          text: "Dias",
+          text: optionFilter == "month" ? "Dias" : "Meses",
           font: { size: 18, weight: "bold" },
         },
       },

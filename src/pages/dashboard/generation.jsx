@@ -128,6 +128,10 @@ const Generation = () => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
+  useEffect(() => {
+    moment(startDate).format("YYYY") == moment(endDate).format("YYYY") ? setOptionFilter("month") : setOptionFilter("years")
+  }, [startDate, endDate])
+
   if (isLoadingDevices) {
     return (
       <Backdrop
@@ -314,6 +318,7 @@ const Generation = () => {
         <Box sx={{ mt: 3 }}>
           <ChartsGeneration
             startDate={startDate}
+            endDate={endDate}
             optionFilter={optionFilter}
             generation={generation}
             isLoading={isLoadingGeneration}

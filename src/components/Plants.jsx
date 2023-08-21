@@ -1,16 +1,24 @@
 import {useState, useEffect} from 'react'
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
-import { useDispatch, useSelector } from "react-redux";
 import AlertPercentageForm from 'src/components/AlertPercentageForm';
+
 import { ChartsLinear } from "src/components/Charts";
+import {ChartsDashboardHorizontal} from 'src/components/Charts'
+import {ChartsDashboard} from 'src/components/Charts'
+
+import { useDispatch, useSelector } from "react-redux";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
+
 import { theme } from "src/theme";
+
 import { getUserCookie } from "src/services/session";
+
 import {
   columnsDevices,
 } from "src/constants/columns";
+
 import {
   Backdrop,
   Box,
@@ -95,16 +103,20 @@ export default function Plants(){
  	if (isLoading) {
     	return (
      		<Backdrop
-        		sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        		open={isLoading}
-      		>
+        	sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        	open={isLoading}
+      	>
         		<CircularProgress color="inherit" />
-      		</Backdrop>
+      	</Backdrop>
     	);
   	}
 
 	return (
 		<Box sx={{display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', py: 4}}>
+      <Box sx={{display: 'flex', justifyContent: 'center', width: '100%', gap: 4, py: 2}}>
+        <ChartsDashboardHorizontal dataDevices={dataDevices} />
+        <ChartsDashboard dataDevices={dataDevices} />
+      </Box>
       {data.length !== 0 ? (
         <Box
           component="main"
