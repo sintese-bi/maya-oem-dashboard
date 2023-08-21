@@ -1,9 +1,11 @@
 import {useState, useEffect} from 'react'
+import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
 import AlertPercentageForm from 'src/components/AlertPercentageForm';
 import { ChartsLinear } from "src/components/Charts";
 import { getDashboard, getCapacities } from "src/store/actions/users";
+import { getAllDevicesGeneration } from "src/store/actions/devices";
 import { theme } from "src/theme";
 import { getUserCookie } from "src/services/session";
 import {
@@ -31,13 +33,25 @@ import { CheckCircle, Poll } from "@mui/icons-material"
 
 export default function Plants(){
   const { useUuid, useName } = getUserCookie();
+
   const [open, setOpen] = useState(false)
+  const [selectedDevice, setSelectedDevice] = useState({})
+  const [startDate, setStartDate] = useState(
+    moment().startOf("month").format("YYYY-MM-DD")
+  );
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+  const [optionFilter, setOptionFilter] = useState("month");
 
 	const {
 	  isLoading,
     dataDevices,
     //useCodePagarMe
  	} = useSelector((state) => state.users);
+
+  const {
+    devicesGeneration,
+    isLoadingDevicesGeneration
+  } = useSelector((state) => state.devices);
 
   const dispatch = useDispatch();
 
@@ -51,22 +65,32 @@ export default function Plants(){
   	};
 
  	const [data, setData] = useState([])
- 	const [columns, setColumns] = useState([])
   
  	useEffect(() => {
  		if (dataDevices.length !== 0) {
-      		setData(dataDevices);
-      		setColumns(columnsDevices);
-    	}
+      let devices = dataDevices.map((data) => {
+        return {blUuid: data.blUuid, startDate, endDate, devUuid: data.uuid, type: optionFilter, name: data.name}
+      })
+      setData(devices)
+    }
  	}, [dataDevices])
+
+  useEffect(() => {
+    setSelectedDevice(devicesGeneration)
+  }, [devicesGeneration])
+
+  function handleChartLinearData(props) {
+    dispatch(getAllDevicesGeneration(props))
+  }
+
+  function handleModalState(){
+    setOpen(!open)
+  }
 
   useEffect(() => {
     dispatch(getDashboard(useUuid));
   }, [useUuid]);
 
-  function handleModalState(actionType){
-    setOpen(!open)
-  }
 
  	if (isLoading) {
     	return (
@@ -81,7 +105,7 @@ export default function Plants(){
 
 	return (
 		<Box sx={{display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', py: 4}}>
-      {dataDevices.length !== 0 ? (
+      {data.length !== 0 ? (
         <Box
           component="main"
           sx={{
@@ -89,7 +113,7 @@ export default function Plants(){
           }}
         >
           <TableContainer component={Paper}>
-           <Typography sx={{fontSize: '22px', fontWeight: 'bold', py: 4, px: 2}}>Plantas</Typography>
+           <Typography sx={{fontSize: '22px', fontWeight: 'bold', py: 4, px: 2}} onClick={() => console.log(devicesGeneration)}>Plantas</Typography>
             <Table>
               <TableHead>
                 <TableRow>
@@ -98,8 +122,8 @@ export default function Plants(){
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dataDevices && dataDevices.length ? (
-                  dataDevices.map((data, index) => (
+                {data && data.length ? (
+                  data.map((data, index) => (
                       <TableRow
                         key={index}
                         sx={{
@@ -109,7 +133,17 @@ export default function Plants(){
                         }}
                       >
                         <TableCell>{data.name}</TableCell>
-                        <TableCell component="th" scope="row" onClick={() => handleModalState()}>
+                        <TableCell component="th" scope="row" onClick={() => {
+                          handleChartLinearData({
+                            blUuid: data.blUuid, 
+                            startDate: data.startDate, 
+                            endDate: data.endDate, 
+                            devUuid: data.devUuid, 
+                            type: optionFilter, 
+                            name: data.name 
+                          })
+                          setOpen(!open)
+                        }}>
                           <Tooltip
                             sx={{ color: "action.active", mr: 1, my: 0.5 }}
                             title={'Análise em gráfico da geração real e geração estimada de cada planta.'}
@@ -131,7 +165,7 @@ export default function Plants(){
                           color: theme.palette.secondary.main,
                         }}
                       >
-                        <CheckCircleIcon fontSize="large" />
+                        <CheckCircle fontSize="large" />
                         <Typography variant="h5">
                           Plantas não achadas
                         </Typography>
@@ -150,7 +184,13 @@ export default function Plants(){
         aria-describedby="modal-modal-description"
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       >
-        <ChartsLinear />
+        <ChartsLinear 
+          startDate={startDate}
+          endDate={endDate}
+          generation={devicesGeneration}
+          optionFilter={optionFilter}
+          isLoading={isLoadingDevicesGeneration}
+        />
       </Modal>
     </Box>
 	)

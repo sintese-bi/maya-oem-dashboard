@@ -128,6 +128,7 @@ export default function Dashboard() {
     if (dataDevices.length !== 0) {
       setData(dataDevices);
       setColumns(columnsDevices);
+      console.log(dataDevices)
     }
   }, [dataDevices]);
 

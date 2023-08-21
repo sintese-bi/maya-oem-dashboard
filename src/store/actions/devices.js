@@ -79,6 +79,33 @@ export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
   })
 }
 
+export const getAllDevicesGeneration = (props) => (dispatch) => {
+  dispatch({type: devices.GET_ALL_DEVICES_GENERATION_REQUEST})
+    api
+    .get(
+      `/generationandtemperature?blUuid=${props.blUuid}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuid}&type=${props.type}`,
+      configRequest()
+    )
+    .then((res) => {
+      const { data } = res;
+      console.log('getGeneration:', data)
+      dispatch({
+        type: devices.GET_ALL_DEVICES_GENERATION_SUCCESS,
+        result: Object.assign(data, {deviceName: props.name}),
+        args: { type: props.type, date: props.date},
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevicesGeneration";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.GET_ALL_DEVICES_GENERATION_FAILURE, message });
+    });
+}
+
 export const getCapacities = (devUuid) => (dispatch) => {
   dispatch({type: devices.GET_CAPACITY_DEVICE_REQUEST})
   api
