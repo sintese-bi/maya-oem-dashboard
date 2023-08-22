@@ -11,6 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
 
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import { theme } from "src/theme";
 
 import { getUserCookie } from "src/services/session";
@@ -35,7 +39,8 @@ import {
   TableCell,
   Paper,
   Modal,
-  Tooltip
+  Tooltip,
+  TextField
 } from "@mui/material";
 import { CheckCircle, Poll } from "@mui/icons-material"
 
@@ -194,8 +199,31 @@ export default function Plants(){
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-      >
+        sx={{display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems: 'center'}}
+      > 
+        <Box sx={{bgcolor: 'background.paper', p: 4, border: 'none'}}>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="Data Inicial"
+            value={startDate}
+            onChange={(startDate) =>
+              setStartDate(
+                startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+              )
+            }
+            renderInput={(params) => <TextField {...params} />}
+          />
+            <DatePicker
+              label="Data Final"
+              value={endDate}
+              onChange={(endDate) =>
+                setEndDate(
+                  endDate ? moment(endDate).format("YYYY-MM-DD") : ""
+                )
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
         <ChartsLinear 
           startDate={startDate}
           endDate={endDate}
@@ -203,6 +231,7 @@ export default function Plants(){
           optionFilter={optionFilter}
           isLoading={isLoadingDevicesGeneration}
         />
+        </Box>
       </Modal>
     </Box>
 	)

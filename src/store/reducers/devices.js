@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 const initialState = {
   isLoadingDevices: false,
   isLoadingCapacity: false,
-  isLoadingAlerts: false,
+  isLoadingAlerts: true,
   isLoadingDevicesGeneration: false,
   loadingCreateDevice: true,
   createDevice: [],

@@ -25,9 +25,6 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/calculator" element={<HomePage />} />
-      <Route path="/calculator/client" element={<ClientCalculator />} />
-      <Route path="/calculator/admin" element={<AdminCalculator />} />
 
       <Route path="dashboard" element={<LayoutDashboard />}>
         <Route element={<PrivateRoute />}>
@@ -39,6 +36,11 @@ export default function App() {
           <Route path="alerts/:brand" element={<Alerts />} />
           <Route path="alertDevices" element={<AlertDevices />} />
           <Route path="devices" element={<Plants />} />
+
+          <Route path="calculator" element={<HomePage />} />
+          <Route path="calculator/client" element={<ClientCalculator />} />
+          <Route path="calculator/admin" element={<AdminCalculator />} />
+
         </Route>
 
         <Route element={<PrivateAdminRoute />}>

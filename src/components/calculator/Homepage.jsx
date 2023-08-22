@@ -1,16 +1,18 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 //Home page da Calculadora.
 function HomePage() {
   return (
-    <div
+    <Box
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         minHeight: "100vh",
         paddingTop: "80px",
+        paddingLeft: "20px",
+        paddingRight: "20px"
       }}
     >
       <img
@@ -21,10 +23,10 @@ function HomePage() {
       <h1 style={{ textAlign: "center", marginTop: "20px" }}>
         Calculadora de Orçamento e Gerador de Proposta
       </h1>
-      <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
+      <Box style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
         <Button
           component={Link}
-          to="/calculator/admin"
+          to="/dashboard/calculator/admin"
           variant="contained"
           color="primary"
           style={{ fontSize: "18px" }}
@@ -33,15 +35,15 @@ function HomePage() {
         </Button>
         <Button
           component={Link}
-          to="/calculator/client"
+          to="/dashboard/calculator/client"
           variant="contained"
           color="primary"
           style={{ fontSize: "18px" }}
         >
           Cliente
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

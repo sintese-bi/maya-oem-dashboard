@@ -58,12 +58,11 @@ export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, optionFilter, isLoading } = props
 
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-
   // Gerar rótulos de dia para o gráfico
   const labels = Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
-  );
-
+  ) 
+  
   const options = {
     responsive: true,
     plugins: {
