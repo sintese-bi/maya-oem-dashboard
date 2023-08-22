@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 const initialState = {
   isLoadingDevices: false,
   isLoadingCapacity: false,
-  isLoadingAlerts: false,
+  isLoadingAlerts: true,
   isLoadingDevicesGeneration: false,
   loadingCreateDevice: true,
   createDevice: [],
@@ -185,6 +185,14 @@ export default function userReducer(state = initialState, action) {
                 generationPercentage: [],
               }
       };
+
+
+    case devices.GET_ALL_DEVICES_GENERATION_FAILURE:
+      return {
+        ...state,
+        isLoadingDevicesGeneration: false,
+        devicesGeneration: []
+      }
 
 
     case devices.GET_ALL_DEVICES_GENERATION_FAILURE:

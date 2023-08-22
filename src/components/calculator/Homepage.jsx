@@ -1,47 +1,49 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 //Home page da Calculadora.
 function HomePage() {
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         minHeight: "100vh",
         paddingTop: "80px",
+        paddingLeft: "20px",
+        paddingRight: "20px"
       }}
     >
       <img
-        src="./Maya.png"
+        src="../../assets/img/Maya.png"
         alt="Descrição da imagem"
-        style={{ maxWidth: "100%" }}
+        sx={{ maxWidth: "100%" }}
       />
-      <h1 style={{ textAlign: "center", marginTop: "20px" }}>
+      <Typography variant="h4" sx={{ textAlign: "center", marginTop: "20px" }}>
         Calculadora de Orçamento e Gerador de Proposta
-      </h1>
-      <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
+      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "20px" }}>
         <Button
           component={Link}
-          to="/calculator/admin"
+          to="/dashboard/calculator/admin"
           variant="contained"
           color="primary"
-          style={{ fontSize: "18px" }}
+          sx={{ fontSize: "18px" }}
         >
           Administrador
         </Button>
         <Button
           component={Link}
-          to="/calculator/client"
+          to="/dashboard/calculator/client"
           variant="contained"
           color="primary"
-          style={{ fontSize: "18px" }}
+          sx={{ fontSize: "18px" }}
         >
           Cliente
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

@@ -55,15 +55,28 @@ const TABS = {
 };
 
 export const ChartsLinear = (props) => {
-  const { startDate, endDate, generation, optionFilter, isLoading } = props
+  
+  const { startDate, endDate, generation, isLoading, optionFilter } = props;
 
+  const theme = useTheme();
+
+  // ESTADOS DE CONTROLE DO FILTRO
+  const [valueTabs, setValueTabs] = useState(0);
+
+  if (isLoading || !generation) return <LoadingSkeletonCharts />;
+
+  // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-
+  const months = moment(endDate).diff(startDate, 'months');
+  console.log(months)
   // Gerar rótulos de dia para o gráfico
-  const labels = Array.from({ length: totalDays }, (_, index) =>
+  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
-  );
+  ) : Array.from({ length: 12 }, (_, index) =>
+    moment(startDate).add(index, 'months').format('MM/YYYY')
+  )
 
+  
   const options = {
     responsive: true,
     plugins: {

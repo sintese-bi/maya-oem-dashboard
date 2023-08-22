@@ -15,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  MenuItem,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 
@@ -294,7 +295,7 @@ function ClientCalculator({ onPreviousStep }) {
     setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
   const handleCityChange = (event, newCidade) => {
-    setCidade(newCidade);
+    setCidade(newCidade["props"].value);
   };
   useEffect(() => {
     // Verificar se cidade e estado não estão vazios antes de fazer a requisição
@@ -403,6 +404,7 @@ function ClientCalculator({ onPreviousStep }) {
         backgroundPosition: "center",
         backgroundSize: "50% auto",
         backgroundRepeat: "no-repeat",
+        p: 4,
       }}
     >
       {/* <Grid item sx={{ marginRight: "10px" }}>
@@ -747,24 +749,26 @@ function ClientCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <Autocomplete
-              freeSolo
-              options={uniqueCities}
-              value={cidade}
-              onChange={handleCityChange}
-              renderInput={(params) => (
-                <TextField {...params} label="Cidade" margin="normal" />
-              )}
-            />
-            <Autocomplete
-              freeSolo
-              options={estadosBrasileiros}
-              value={estado}
-              onChange={(event, newEstado) => setEstado(newEstado)}
-              renderInput={(params) => (
-                <TextField {...params} label="Estado" margin="normal" />
-              )}
-            />
+            <TextField defaultValue="Brasiléia" onChange={handleCityChange} select label="Cidade" margin="normal" >
+              {
+                uniqueCities.map((data) => (
+                  <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
+                ))
+              }
+            </TextField>
+            <TextField 
+              defaultValue="AMAZONAS"
+              onChange={(event, newEstado) => setEstado(newEstado["props"].value)} 
+              select
+              label="Estado"
+              margin="normal"
+            >
+              {
+                estadosBrasileiros.map((data) => (
+                  <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
+                ))
+              }
+            </TextField>
 
             <>
               <TextField

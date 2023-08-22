@@ -63,10 +63,10 @@ export const DashboardNavbar = () => {
     },
     {
       label: "Proposta",
-      to: "/calculator",
+      to: "/dashboard/calculator",
       icon: <BrandingWatermark fontSize="small" />,
       disabled: true,
-      active: location.pathname === "/calculator" ? true : false,
+      active: location.pathname === "/dashboard/calculator" ? true : false,
     },
   ];
 

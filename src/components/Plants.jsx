@@ -35,15 +35,22 @@ import {
   TableCell,
   Paper,
   Modal,
-  Tooltip
+  Tooltip,
+  TextField
 } from "@mui/material";
 import { CheckCircle, Poll } from "@mui/icons-material"
+
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export default function Plants(){
   const { useUuid, useName } = getUserCookie();
 
   const [open, setOpen] = useState(false)
-  const [selectedDevice, setSelectedDevice] = useState({})
+
+  const [selectedDevice, setSelectedDevice] = useState(null)
+
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
@@ -83,20 +90,26 @@ export default function Plants(){
     }
  	}, [dataDevices])
 
-  useEffect(() => {
-    setSelectedDevice(devicesGeneration)
-  }, [devicesGeneration])
-
   function handleChartLinearData(props) {
     dispatch(getAllDevicesGeneration(props))
   }
 
+  useEffect(() => {
+    if(selectedDevice){
+      dispatch(getAllDevicesGeneration(Object.assign(selectedDevice, {startDate: startDate, endDate: endDate})))
+    }
+  }, [startDate, endDate])
+
   function handleModalState(){
+    setStartDate(moment().startOf("month").format("YYYY-MM-DD"))
+    setEndDate(moment().format("YYYY-MM-DD"))
     setOpen(!open)
   }
 
   useEffect(() => {
-    dispatch(getDashboard(useUuid));
+    if(dataDevices.length == 0){
+      dispatch(getDashboard(useUuid));
+    }
   }, [useUuid]);
 
 
@@ -117,7 +130,7 @@ export default function Plants(){
         <ChartsDashboardHorizontal dataDevices={dataDevices} />
         <ChartsDashboard dataDevices={dataDevices} />
       </Box>
-      {data.length !== 0 ? (
+      {dataDevices.length !== 0 ? (
         <Box
           component="main"
           sx={{
@@ -134,8 +147,8 @@ export default function Plants(){
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data && data.length ? (
-                  data.map((data, index) => (
+                {dataDevices && dataDevices.length ? (
+                  dataDevices.map((data, index) => (
                       <TableRow
                         key={index}
                         sx={{
@@ -148,9 +161,15 @@ export default function Plants(){
                         <TableCell component="th" scope="row" onClick={() => {
                           handleChartLinearData({
                             blUuid: data.blUuid, 
-                            startDate: data.startDate, 
-                            endDate: data.endDate, 
-                            devUuid: data.devUuid, 
+                            startDate, 
+                            endDate, 
+                            devUuid: data.uuid, 
+                            type: optionFilter, 
+                            name: data.name 
+                          })
+                          setSelectedDevice({
+                            blUuid: data.blUuid, 
+                            devUuid: data.uuid, 
                             type: optionFilter, 
                             name: data.name 
                           })
@@ -196,13 +215,37 @@ export default function Plants(){
         aria-describedby="modal-modal-description"
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       >
-        <ChartsLinear 
-          startDate={startDate}
-          endDate={endDate}
-          generation={devicesGeneration}
-          optionFilter={optionFilter}
-          isLoading={isLoadingDevicesGeneration}
-        />
+        <Box sx={{bgcolor: "background.paper", p: 4}}>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DatePicker
+              label="Data Inicial"
+              value={startDate}
+              onChange={(startDate) =>
+                setStartDate(
+                  startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+                )
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <DatePicker
+              label="Data Final"
+              value={endDate}
+              onChange={(endDate) =>
+              setEndDate(
+                endDate ? moment(endDate).format("YYYY-MM-DD") : ""
+              )
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <ChartsLinear 
+            startDate={startDate}
+            endDate={endDate}
+            generation={devicesGeneration}
+            optionFilter={optionFilter}
+            isLoading={isLoadingDevicesGeneration}
+          />
+        </Box>
       </Modal>
     </Box>
 	)

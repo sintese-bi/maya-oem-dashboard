@@ -67,7 +67,9 @@ export default function AlertDevices(){
   }, [data])
 
   useEffect(() => {
-    dispatch(getDashboard(useUuid));
+    if(dataDevices.length == 0){
+      dispatch(getDashboard(useUuid));
+    }
   }, [useUuid]);
 
   useEffect(() => {
@@ -76,11 +78,11 @@ export default function AlertDevices(){
     })
   }, [devicesALerts])
 
-  if (isLoading) {
+  if (isLoadingAlerts) {
       return (
         <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={isLoading}
+            open={isLoadingAlerts}
           >
             <CircularProgress color="inherit" />
           </Backdrop>
@@ -119,12 +121,12 @@ export default function AlertDevices(){
                           },
                         }}
                       >
-                      <TableCell>{item.dev_name}</TableCell>
-                        <TableCell component="th" scope="row">
-                          {data.al_inv}
-                        </TableCell>
+                        <TableCell>{item.dev_name}</TableCell>
                         <TableCell component="th" scope="row">
                           {data.al_alerts}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {data.al_inv}
                         </TableCell>
                       </TableRow>   
                       ))
