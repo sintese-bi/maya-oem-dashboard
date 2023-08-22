@@ -194,6 +194,14 @@ export default function userReducer(state = initialState, action) {
         devicesGeneration: []
       }
 
+
+    case devices.GET_ALL_DEVICES_GENERATION_FAILURE:
+      return {
+        ...state,
+        isLoadingDevicesGeneration: false,
+        devicesGeneration: []
+      }
+
     case devices.POST_DEVICE_REQUEST:
       return {
         ...state,

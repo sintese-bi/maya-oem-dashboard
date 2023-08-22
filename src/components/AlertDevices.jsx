@@ -67,7 +67,9 @@ export default function AlertDevices(){
   }, [data])
 
   useEffect(() => {
-    dispatch(getDashboard(useUuid));
+    if(dataDevices.length == 0){
+      dispatch(getDashboard(useUuid));
+    }
   }, [useUuid]);
 
   useEffect(() => {
