@@ -54,6 +54,212 @@ const TABS = {
   GENERATION_PERCENTAGE: 1,
 };
 
+export const ChartsGenerationBITopAndLowValue = (props) => {
+  const canvas = useRef(null);
+  const { topAndLowValue } = props
+  const theme = useTheme();
+
+  const labels = ['22/08'+"    "+'08/08'];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        barThickness: 62,
+        maxBarThickness: 56,
+        borderRadius: 2,
+        label: 'Melhor dia',
+        data: [topAndLowValue.topValue, 0],
+        backgroundColor: "#5048E5",
+      },
+      {
+        barThickness: 62,
+        maxBarThickness: 56,
+        borderRadius: 2,
+        label: 'Pior dia',
+        data: [topAndLowValue.lowValue, 0],
+        backgroundColor: '#14B8A6',
+      },
+    ],
+  };
+
+const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins:{
+      legend: {
+        position: 'top'
+      }
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "kWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
+  };
+
+  return (
+    <Card sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: "space-between",
+        alignItems: 'center',
+        bgcolor: "background.paper",
+        px: 2,
+        pb: 2,
+        pt: 4,
+        height: 420,
+      }}
+    >
+        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
+            Dias com melhor e pior geração.
+        </Typography>
+        <Box sx={{height: 300, width: 400}} >
+          <Chart type="bar" options={options} data={data}/>
+        </Box>
+    </Card>
+  )
+  
+}
+
+export const ChartsGenerationBIProductive = (props) => {
+  const { startDate, endDate, optionFilter, generation, isLoading} = props
+
+  const canvas = useRef(null);
+  const theme = useTheme();
+
+  if (isLoading || !generation) return <LoadingSkeletonCharts />;
+
+  // Obter número total de dias entre as datas de início e fim
+  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
+  const months = moment(endDate).diff(startDate, 'months');
+  console.log(months)
+  // Gerar rótulos de dia para o gráfico
+  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
+    moment(startDate).add(index, 'days').format('D')
+  ) : Array.from({ length: 12 }, (_, index) =>
+    moment(startDate).add(index, 'months').format('MM/YYYY')
+  )
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: 'Geração Real',
+        data: generation.realGeneration,
+        backgroundColor: "#5048E5",
+      },
+      {
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: 'Geração Estimada',
+        data: generation.estimatedGeneration,
+        backgroundColor: '#14B8A6',
+      },
+    ],
+  };
+
+const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins:{
+      legend: {
+        position: 'top'
+      }
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "kWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
+  };
+
+  return (
+    <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: "space-between",
+        alignItems: 'center',
+        bgcolor: "background.paper",
+        px: 2,
+        pb: 2,
+        pt: 4,
+        height: 420,
+      }}
+    >
+        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
+            Produtividade da planta
+        </Typography>
+        <Box sx={{height: 300, width: '100%'}} >
+          <Chart type="bar" options={options} data={data}/>
+        </Box>
+    </Box>
+  )
+  
+}
+
 export const ChartsLinear = (props) => {
   
   const { startDate, endDate, generation, isLoading, optionFilter } = props;
@@ -252,7 +458,7 @@ export const ChartsDashboard = (props) => {
         label: "Geral Estimada",
         maxBarThickness: 76,
         label: 'Geração Real',
-        data: [generationRealTotalValue, 0],
+        data: [generationRealTotalValue, 100],
         backgroundColor: "#5048E5",
       },
       {
@@ -261,7 +467,7 @@ export const ChartsDashboard = (props) => {
         categoryPercentage: 0.5,
         maxBarThickness: 76,
         label: 'Geração Estimada',
-        data: [generationEstimatedTotalValue, 0],
+        data: [generationEstimatedTotalValue, 80],
         backgroundColor: '#14B8A6',
       },
     ],

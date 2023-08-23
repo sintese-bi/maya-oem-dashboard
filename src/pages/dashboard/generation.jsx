@@ -39,6 +39,7 @@ import { getGeneration } from "src/store/actions/generation";
 import { BigNumber } from "../../components/BigNumber";
 import { ChartsGeneration } from "../../components/Charts";
 import { DeviceDetail } from "../../components/DeviceDetail";
+import { GenerationBI } from "src/components/GenerationBI";
 import { LoadingSkeletonBigNumbers } from "../../components/Loading";
 import Tabs from "../../components/shared/Tabs";
 
@@ -238,7 +239,15 @@ const Generation = () => {
           </Box>
           <Tabs />
         </Box>
-
+        <Box sx={{m:4}}>
+          <GenerationBI 
+            startDate={startDate}
+            endDate={endDate}
+            optionFilter={optionFilter}
+            generation={generation}
+            isLoading={isLoadingGeneration}
+          />
+        </Box>
         <Box sx={{ mt: 3 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
