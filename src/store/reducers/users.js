@@ -11,6 +11,7 @@ const initialState = {
   loadingUser: false,
   isLoadingAlertFrequency: false,
   isLoadingCapacity: false,
+  loadingSendingEmail: false,
   authData: [],
   brandListUser: [],
   profileLevel: [],
@@ -29,6 +30,7 @@ const initialState = {
   percentage: [],
   frequencyName: [],
   capacity: [],
+  sendingEmail: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -403,6 +405,27 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingCapacity: false,
         capacity: [],
+      }
+
+    case users.SEND_EMAIL_REQUEST:
+      return {
+        ...state,
+        loadingSendingEmail: true,
+        sendingEmail: false,
+      }
+
+    case users.SEND_EMAIL_REQUEST:
+      return {
+        ...state,
+        loadingSendingEmail: false,
+        sendingEmail: true,
+      }
+
+    case users.SEND_EMAIL_REQUEST:
+      return {
+        ...state,
+        loadingSendingEmail: false,
+        sendingEmail: false,
       }
 
     default:

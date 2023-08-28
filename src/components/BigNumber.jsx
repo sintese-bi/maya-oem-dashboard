@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { Link } from 'react-router-dom';
 
 export const BigNumber = (props) => {
   const { title, value, icon, btnTitle = false } = props;
@@ -75,13 +76,17 @@ export const BigNumberDashboard = (props) => {
 
       {!btn ? (
         <CardActions>
-          <Button
+          <Link
+            to="/dashboard/devices"
+            state={{
+              type,
+            }}
             onClick={() => handleChangeColumns(type)}
             size="small"
-            color={activeBtn ? "success" : "primary" }
+            style={{color: "#10B981", fontSize: '14px', fontWeight: 600, textDecoration: 'none', underline: 'none', padding: '10px'}}
           >
             Visualizar
-          </Button>
+          </Link>
         </CardActions>
       ) : null}
     </Card>

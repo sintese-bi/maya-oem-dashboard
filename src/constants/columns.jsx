@@ -1,6 +1,7 @@
 import { Avatar, Link, Stack, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
+import { ModalPlantsGraph } from "src/components/ModalPlantsGraph"
 
 export const columnsDevices = [
   {
@@ -149,4 +150,22 @@ export const columnsDevices = [
       sort: true,
     },
   },
+  {
+    name: "individualGraph",
+    label: "Histórico de geração",
+    options: {
+      filter: true,
+      sort: true,
+      customBodyRender: (name, dataTable) => {
+        return(
+          <Stack direction="row" alignItems="center" gap={1}>
+            <ModalPlantsGraph 
+              devUuidState={dataTable.rowData[0]}
+              blUuidState={dataTable.rowData[1]}
+            />
+          </Stack>
+        )
+      },
+    },
+  }
 ];

@@ -17,7 +17,7 @@ export function reportAdministratorRule(
 	dataDevices, 
 	setIsLoadingReport,
 ){
-	let generationRealMonth = dataDevices.map((data) => {
+	  let generationRealMonth = dataDevices.map((data) => {
       let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
       return generationRealValue;
     })

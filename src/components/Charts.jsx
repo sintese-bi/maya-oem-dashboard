@@ -178,7 +178,7 @@ export const ChartsGenerationBIProductive = (props) => {
         borderRadius: 2,
         categoryPercentage: 0.5,
         label: 'Geração Real',
-        data: generation.realGeneration,
+        data: generation.realGeneration?.map((data) => data.value),
         backgroundColor: "#5048E5",
       },
       {
@@ -253,7 +253,7 @@ const options = {
             Produtividade da planta
         </Typography>
         <Box sx={{height: 300, width: '100%'}} >
-          <Chart type="bar" options={options} data={data}/>
+          <Line type="bar" options={options} data={data}/>
         </Box>
     </Box>
   )
@@ -274,7 +274,6 @@ export const ChartsLinear = (props) => {
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
   const months = moment(endDate).diff(startDate, 'months');
-  console.log(months)
   // Gerar rótulos de dia para o gráfico
   const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
@@ -294,6 +293,28 @@ export const ChartsLinear = (props) => {
         text: ''
       }
     },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "kWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "Dias",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
   }
 
   const data = {
@@ -301,7 +322,7 @@ export const ChartsLinear = (props) => {
     datasets: [
       {
         label: 'Geração real',
-        data: generation.realGeneration,
+        data: generation.realGeneration?.map((data) => data.value),
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
@@ -318,7 +339,7 @@ export const ChartsLinear = (props) => {
         <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
           Gerando gráfico
         </Typography>
-        <Box sx={{height: 300, width: 662}} >
+        <Box sx={{height: 300, width: 762}} >
           <LoadingSkeletonCharts />
         </Box>
       </Card>
@@ -332,14 +353,14 @@ export const ChartsLinear = (props) => {
         alignItems: 'center',
       }}
     >
-        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
+        <Box sx={{display: 'flex', justifyContent: "space-between", height: 560, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
             Relação da geração real e geração estimada
           </Typography>
-          <Box sx={{height: 300, width: 662}} >
+          <Box sx={{height: 400, width: 762}} >
             <Line type="bar" options={options} data={data}/>
           </Box>
-        </Card>
+        </Box>
     </Box>
   )
 }
@@ -412,7 +433,7 @@ export const ChartsDashboardHorizontal = (props) => {
           <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
             Plantas com melhores performance no último mês.
           </Typography>
-          <Box sx={{height: 300, width: 662}} >
+          <Box sx={{height: 300, width: 862}} >
             <Chart type="bar" options={options} data={data}/>
           </Box>
         </Card>
@@ -556,15 +577,12 @@ export const ChartsGeneration = (props) => {
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, 'days') + 1;
   const months = moment(endDate).diff(startDate, 'months');
-  console.log(months)
   // Gerar rótulos de dia para o gráfico
   const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
     moment(startDate).add(index, 'days').format('D')
   ) : Array.from({ length: 12 }, (_, index) =>
     moment(startDate).add(index, 'months').format('MM/YYYY')
   )
-
-  console.log(generation.realGeneration)
   
   // PROPS PARA O GRAFICO
   const dataKwh = {
@@ -575,7 +593,7 @@ export const ChartsGeneration = (props) => {
         barThickness: 15,
         borderRadius: 4,
         categoryPercentage: 0.5,
-        data: generation.realGeneration,
+        data: generation.realGeneration?.map((data) => data.value),
         label: "Geração Real",
         maxBarThickness: 10,
       },

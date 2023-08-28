@@ -8,7 +8,6 @@ export const handlesGeneration = (data, type, day, label) => {
 
   const realGeneration = Array(day).fill(0);
   const estimatedGeneration = Array(day).fill(estimated);
-  console.log(realGeneration, label)
 
   // RETORNAR PORCENTAGEM MAXIMA E MINIMA
   let percentMax = estimatedGeneration[0] * 0.2 + estimatedGeneration[0];
@@ -31,33 +30,38 @@ export const handlesGeneration = (data, type, day, label) => {
 
         if (dayBooleano)
           realGeneration[index] = gen.gen_real
-            ? parseFloat(gen.gen_real).toFixed(2)
-            : 0;
+            ? { value: parseFloat(gen.gen_real).toFixed(2), date: moment(gen.gen_date).format("DD/MM/YYYY") }
+            : { value: 0, date: moment(gen.gen_date).format("DD/MM/YYYY") };
         // realGeneration[index] = parseFloat(gen.gen_real / 1000).toFixed(2); // FOI DUVIDIDO POR 1000 POR CAUSA DA MARCA FRONUIS
       });
     });
   } else {
-    label.filter((_, index) => {
-      let sunGenReal = 0;
+    label.filter((data, index) => {
+      let sunGenReal = {value: 0, date: ''};
       data.generation.map((gen) => {
         let mothBooleano =
-          parseInt(moment(gen.gen_date).format("MM")) === index + 1
+          moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY") === data
             ? true
             : false;
 
-        if (mothBooleano) sunGenReal = gen.gen_real + sunGenReal;
+        if (mothBooleano) {
+          sunGenReal.value = gen.gen_real + sunGenReal.value;
+          sunGenReal.date =  moment(gen.gen_date).format("DD/MM/YYYY")
+        };
       });
-      realGeneration[index] = parseFloat(sunGenReal).toFixed(2);
+      realGeneration[index] = sunGenReal;
       // realGeneration[index] = parseFloat(sunGenReal / 1000).toFixed(2); // FOI DUVIDIDO POR 1000 POR CAUSA DA MARCA FRONUIS
     });
   }
 
   const realGenerationTotal = realGeneration.reduce(function (soma, i) {
-    return parseFloat(soma) + parseFloat(i);
+    return parseFloat(soma) + parseFloat(i.value);
   });
 
+  let realGenerationValues = realGeneration.map((data) => data.value)
+
   const generationPercentage = sunArrayPercentage(
-    realGeneration,
+    realGenerationValues,
     estimatedGeneration
   );
 

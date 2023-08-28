@@ -2,10 +2,12 @@
 import api, { configRequest } from "../../services/api";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {PDFDownloadLink} from '@react-pdf/renderer'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+
+import { GlobalUsinProductive } from "src/components/GlobalUsinProductive";
 
 import {ChartsDashboardHorizontal} from 'src/components/Charts'
 import {ChartsDashboard} from 'src/components/Charts'
@@ -26,7 +28,8 @@ import {
   Grid,
   Button,
   Typography,
-  Modal
+  Modal,
+  Card
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/PaymentWarn";
@@ -66,7 +69,6 @@ export default function Dashboard() {
 
   const [open, setOpen] = useState(false)
 
-  const tableRef = useRef(null)
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
@@ -83,7 +85,6 @@ export default function Dashboard() {
   };
 
   function handleChangeColumns(type) {
-    console.log(dataDevices);
     setType(type)
     switch (type) {
       case 1:
@@ -128,12 +129,10 @@ export default function Dashboard() {
     if (dataDevices.length !== 0) {
       setData(dataDevices);
       setColumns(columnsDevices);
-      console.log(dataDevices)
     }
   }, [dataDevices]);
 
   useEffect(() => {
-    tableRef?.current?.scrollIntoView()
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
   }, [type])
 
@@ -181,14 +180,17 @@ export default function Dashboard() {
           </Box>
         </ToolTipNoAccess>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 3,
-        }}
-      >
-        <BigNumberDashboard
+      <Box sx={{display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+        <Box sx={{width: '84%', my: 4}}>
+          <Typography variant="h4">Resumo de usinas</Typography>
+        </Box>
+        <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 3,
+          }}
+        >
+          <BigNumberDashboard
           title="Dispositivos/usuário"
           value={dataDevices.length !== 0 ? dataDevices.length : 0}
           icon={<AccountCircle />}
@@ -218,6 +220,7 @@ export default function Dashboard() {
           activeBtn={type === 3 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
+        </Box>
       </Box>
       <Box
         sx={{
@@ -254,7 +257,7 @@ export default function Dashboard() {
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>
-
+      <GlobalUsinProductive dataDevices={dataDevices} isLoading={isLoading} />
       {/* 
         Gráfico horizontal/Gráfico vertical
 
@@ -264,31 +267,6 @@ export default function Dashboard() {
         </Box>
         
       */}
-
-      {data.length !== 0 ? (
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            py: 4,
-          }}
-        >
-          <Container maxWidth={false} ref={tableRef}>
-            <Box>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <MUIDataTable
-                    title={"Listagem de marcas"}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Container>
-        </Box>
-      ) : null}
       <Modal
         open={open}
         onClose={handleReportGeneration}

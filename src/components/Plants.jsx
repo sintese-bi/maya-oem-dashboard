@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
 import AlertPercentageForm from 'src/components/AlertPercentageForm';
-
+import { useLocation } from 'react-router-dom';
 import { ChartsLinear } from "src/components/Charts";
 import {ChartsDashboardHorizontal} from 'src/components/Charts'
 import {ChartsDashboard} from 'src/components/Charts'
@@ -13,11 +13,11 @@ import { getAllDevicesGeneration } from "src/store/actions/devices";
 
 import { theme } from "src/theme";
 
-import { getUserCookie } from "src/services/session";
-
 import {
   columnsDevices,
 } from "src/constants/columns";
+
+import { getUserCookie } from "src/services/session";
 
 import {
   Backdrop,
@@ -45,12 +45,12 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export default function Plants(){
+  const location = useLocation();
+  const { type } = location.state || {};
   const { useUuid, useName } = getUserCookie();
 
   const [open, setOpen] = useState(false)
-
   const [selectedDevice, setSelectedDevice] = useState(null)
-
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
@@ -59,9 +59,17 @@ export default function Plants(){
 
 	const {
 	  isLoading,
+    brands,
+    blUuids,
     dataDevices,
-    //useCodePagarMe
+    generationBelowEstimated,
+    alerts,
+    offline,
+    online,
  	} = useSelector((state) => state.users);
+
+  const [data, setData] = useState(dataDevices)
+  const [columns, setColumns] = useState(columnsDevices)
 
   const {
     devicesGeneration,
@@ -79,16 +87,41 @@ export default function Plants(){
     	selectableRows: "none",
   	};
 
- 	const [data, setData] = useState([])
   
  	useEffect(() => {
  		if (dataDevices.length !== 0) {
-      let devices = dataDevices.map((data) => {
-        return {blUuid: data.blUuid, startDate, endDate, devUuid: data.uuid, type: optionFilter, name: data.name}
-      })
-      setData(devices)
+      setData(dataDevices)
     }
  	}, [dataDevices])
+
+  useEffect(() => {
+    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
+    switch (type) {
+      case 1:
+        setData(dataDevices);
+        break;
+      case 2:
+        setData(brands.map((data) => {
+          let brandItem = {brand: data}
+          return brandItem
+        }));
+        break;
+      case 3:
+        setData(generationBelowEstimated);
+        break;
+      case 4:
+        setData(alerts);
+        break;
+      case 5:
+        setData(offline);
+        break;
+      case 6:
+        setData(online);
+        break;
+      default:
+        break;
+    }
+  }, [type])
 
   function handleChartLinearData(props) {
     dispatch(getAllDevicesGeneration(props))
@@ -126,11 +159,17 @@ export default function Plants(){
 
 	return (
 		<Box sx={{display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', py: 4}}>
-      <Box sx={{display: 'flex', justifyContent: 'center', width: '100%', gap: 4, py: 2}}>
-        <ChartsDashboardHorizontal dataDevices={dataDevices} />
-        <ChartsDashboard dataDevices={dataDevices} />
-      </Box>
-      {dataDevices.length !== 0 ? (
+      <Grid container spacing={3} sx={{width: '100%'}}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title={"Listagem de Plantas"}
+              data={data}
+              columns={columns}
+              options={options}
+          />
+        </Grid>
+      </Grid>
+      {/*{dataDevices.length !== 0 ? (
         <Box
           component="main"
           sx={{
@@ -207,7 +246,7 @@ export default function Plants(){
             </Table>
           </TableContainer>
         </Box>
-      ) : null }
+      ) : null } */}
       <Modal
         open={open}
         onClose={handleModalState}
