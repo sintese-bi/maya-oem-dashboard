@@ -39,6 +39,7 @@ import { getGeneration } from "src/store/actions/generation";
 import { BigNumber } from "../../components/BigNumber";
 import { ChartsGeneration } from "../../components/Charts";
 import { DeviceDetail } from "../../components/DeviceDetail";
+import { GenerationBI } from "src/components/GenerationBI";
 import { LoadingSkeletonBigNumbers } from "../../components/Loading";
 import Tabs from "../../components/shared/Tabs";
 
@@ -125,12 +126,12 @@ const Generation = () => {
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
-    dispatch(getDevices(blUuidState));
-  }, [blUuidState]);
+    console.log(generation)
+  }, [generation])
 
   useEffect(() => {
-    moment(startDate).format("YYYY") == moment(endDate).format("YYYY") ? setOptionFilter("month") : setOptionFilter("years")
-  }, [startDate, endDate])
+    dispatch(getDevices(blUuidState));
+  }, [blUuidState]);
 
   if (isLoadingDevices) {
     return (
@@ -238,8 +239,7 @@ const Generation = () => {
           </Box>
           <Tabs />
         </Box>
-
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ mt: 10 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
             name={deviceInfo?.dev_name || ""}
@@ -250,7 +250,7 @@ const Generation = () => {
           />
         </Box>
 
-        <Box sx={{ mt: 3 }}>
+        {/*<Box sx={{ mt: 3 }}>
           <Grid container spacing={3}>
             <Grid item sm={12} lg={3}>
               {isLoadingGeneration ? (
@@ -314,14 +314,16 @@ const Generation = () => {
             </Grid>
           </Grid>
         </Box>
-
-        <Box sx={{ mt: 3 }}>
-          <ChartsGeneration
+        */}
+         <Box sx={{m:4}}>
+          <GenerationBI 
             startDate={startDate}
             endDate={endDate}
             optionFilter={optionFilter}
             generation={generation}
             isLoading={isLoadingGeneration}
+            temperature={temperature}
+            deviceInfo={deviceInfo}
           />
         </Box>
       </Container>

@@ -78,7 +78,7 @@ export const Side = () => {
 	 	}}
 	 > 
 	 <Toolbar />
-	 	<Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'space-between', overflow: 'auto', height: '100%', width: '240px'}}>
+	 	<Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'start', overflow: 'auto', height: '100%', width: '240px'}}>
 	 		<Box>
 	 			<List>
 	 			{
@@ -115,7 +115,6 @@ export const Side = () => {
 	 			}
 	 		</List>
 	 		<Box>
-	 			<Divider />
 	 			<List>
 	 			{
 	 				bottomItems.map((data, index) => (
@@ -141,7 +140,7 @@ export const Side = () => {
   		sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
 		>
 		{
-			useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice />) : <PaymentWarn/>
+			useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice />) : <PaymentWarn />
 		}
 		</Modal>
 	 </Drawer>

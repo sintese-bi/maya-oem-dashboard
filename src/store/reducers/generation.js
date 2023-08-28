@@ -74,27 +74,15 @@ export default function userReducer(state = initialState, action) {
 
       const month = parseInt(moment(date).format("MM"));
       const year = parseInt(moment(date).format("YYYY"));
-      const day = type === "month" ? datesInfo.length  : 12;
+      const day = type === "month" ? datesInfo.length  : monthsInfo.length;
       console.log(year, month, day, datesInfo, monthsInfo)
 
       // LABEL DO GRAFICO
       const label =
         type === "month"
           ? datesInfo
-          : [
-              "Jan",
-              "Fev",
-              "Mar",
-              "Abr",
-              "Mai",
-              "Jun",
-              "Jul",
-              "Ago",
-              "Set",
-              "Out",
-              "Nov",
-              "Dez",
-            ];
+          : monthsInfo
+
 
       return {
         isLoadingGeneration: false,

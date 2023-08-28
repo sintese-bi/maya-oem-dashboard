@@ -16,7 +16,7 @@ function HomePage() {
       }}
     >
       <img
-        src="../../assets/img/Maya.png"
+        src="src/assets/img/Maya.png"
         alt="Descrição da imagem"
         sx={{ maxWidth: "100%" }}
       />

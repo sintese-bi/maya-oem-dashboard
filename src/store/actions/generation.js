@@ -22,7 +22,7 @@ export const getGeneration = (params) => async (dispatch) => {
   // Caso o devUuid esteja definido, continuar com a chamada à API
   api
     .get(
-      `/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=${type}`,
+      `/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=years`,
       configRequest()
     )
     .then((res) => {

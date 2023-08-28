@@ -297,3 +297,30 @@ export const getCapacities = (blUuids) => (dispatch) => {
       result: capacities
   })
 }
+
+export const sendEmail = (data) => (dispatch) => {
+  dispatch({ type: users.SEND_EMAIL_REQUEST });
+  console.log(data)
+  api
+    .post("/sendingemail", {use_email: data.use_email}, configRequest())
+    .then((res) => {
+      const { data } = res;
+
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: users.SEND_EMAIL_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.SEND_EMAIL_FAILURE, message });
+    });  
+} 

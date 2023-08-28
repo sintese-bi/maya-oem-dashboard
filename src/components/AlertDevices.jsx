@@ -143,7 +143,7 @@ export default function AlertDevices(){
                           color: theme.palette.secondary.main,
                         }}
                       >
-                        <CheckCircleIcon fontSize="large" />
+                        <CheckCircle fontSize="large" />
                         <Typography variant="h5">
                           Sem alertas no momento.
                         </Typography>
