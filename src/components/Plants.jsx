@@ -9,7 +9,8 @@ import {ChartsDashboard} from 'src/components/Charts'
 
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboard, getCapacities } from "src/store/actions/users";
-import { getAllDevicesGeneration } from "src/store/actions/devices";
+import { getDeletedDevices, getAllDevicesGeneration } from "src/store/actions/devices";
+
 
 import { theme } from "src/theme";
 
@@ -45,6 +46,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export default function Plants(){
+  const [handlingDeviceDelete, setHandlingDeviceDelete] = useState(true)
   const location = useLocation();
   const { type } = location.state || {};
   const { useUuid, useName } = getUserCookie();
@@ -73,7 +75,7 @@ export default function Plants(){
 
   const {
     devicesGeneration,
-    isLoadingDevicesGeneration
+    isLoadingDevicesGeneration,
   } = useSelector((state) => state.devices);
 
   const dispatch = useDispatch();
@@ -86,11 +88,12 @@ export default function Plants(){
     	responsive: "simple",
     	selectableRows: "none",
   	};
-
   
  	useEffect(() => {
  		if (dataDevices.length !== 0) {
-      setData(dataDevices)
+      setData(dataDevices.map((data) => {
+          return data
+      }))
     }
  	}, [dataDevices])
 
@@ -143,7 +146,7 @@ export default function Plants(){
     if(dataDevices.length == 0){
       dispatch(getDashboard(useUuid));
     }
-  }, [useUuid]);
+  }, [useUuid])
 
 
  	if (isLoading) {

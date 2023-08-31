@@ -63,6 +63,7 @@ export const Side = () => {
 		}
 	]
 
+
 	function handleModalState(actionType){
 		actionType == "alertFrequency" ? setAction('alertFrequency') : setAction('createDevice')
 		setWelcome(false)

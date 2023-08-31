@@ -5,6 +5,7 @@ import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
 // PAGINAS
+import PasswordRecovery from './pages/passwordRecovery';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/dashboard";
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
 
       <Route path="dashboard" element={<LayoutDashboard />}>
         <Route element={<PrivateRoute />}>

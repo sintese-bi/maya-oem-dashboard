@@ -7,13 +7,15 @@ const initialState = {
   isLoadingCapacity: false,
   isLoadingAlerts: true,
   isLoadingDevicesGeneration: false,
+  loadingDeleteDevice: false,
   loadingCreateDevice: true,
   createDevice: [],
   devices: [],
   capacity: [],
   allDevices: [],
   devicesALerts: [],
-  devicesGeneration: []
+  devicesGeneration: [],
+  deviceDelete: true,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -242,6 +244,27 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingCapacity: false,
         capacity: []
+      }
+
+    case devices.DELETE_DEVICE_REQUEST:
+      return {
+        ...state,
+        loadingDeleteDevice: true,
+        deviceDelete: false,
+      }
+
+    case devices.DELETE_DEVICE_SUCCESS:
+      return {
+        ...state,
+        loadingDeleteDevice: false,
+        deviceDelete: true,
+      }
+
+    case devices.DELETE_DEVICE_FAILURE:
+      return {
+        ...state,
+        loadingDeleteDevice: false,
+        deviceDelete: false,
       }
 
     default:

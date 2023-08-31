@@ -122,7 +122,7 @@ export const AdministratorReport = () => {
             <Text style={{fontSize: '18px'}}>{reportAdministrator.useName}</Text>
           </View>
           <View style={styles.logo}>
-            <Image style={{width: '140px', height: '60px'}} src="https://ucarecdn.com/0eb9df1d-e0d6-440f-96a7-a4037dffb862/"></Image>
+            <Image style={{width: '140px', height: '60px'}} src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"></Image>
           </View>
         </View>
         <View style={styles.cardsRow}>

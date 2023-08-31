@@ -18,6 +18,7 @@ import {
 } from "src/constants/columns";
 import { getUserCookie } from "src/services/session";
 import { getDashboard, getCapacities } from "src/store/actions/users";
+import { getDeletedDevices } from "src/store/actions/devices";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -66,6 +67,9 @@ export default function Dashboard() {
     capacity,
     //useCodePagarMe
   } = useSelector((state) => state.users);
+  const {
+    devicesDeleted
+  } = useSelector((state) => state.devices);
 
   const [open, setOpen] = useState(false)
 
@@ -118,8 +122,8 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    dispatch(getDashboard(useUuid));
-  }, [useUuid]);
+     dispatch(getDashboard(useUuid))
+  }, [useUuid])
 
   useEffect(() => {
     dispatch(getCapacities(blUuids))
