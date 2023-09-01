@@ -27,7 +27,7 @@ import { auth } from "../store/actions/users";
 
 // ASSETS
 import BackgroundLogin from "../assets/img/illustrations/background-login.svg";
-import Logo from "../assets/img/logo/logo-watch.svg";
+import Logo from "../assets/img/logo/maya-watch-logo.png";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({

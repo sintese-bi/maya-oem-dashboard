@@ -137,6 +137,30 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
     });
 }
 
+export const deleteDevice = (devUuid) => (dispatch) => {
+  dispatch({type: devices.DELETE_DEVICE_REQUEST})
+  api
+    .post(`/deleteDevice`, ({devUuid}), configRequest())
+    .then((res) => {
+      const {data} = res;
+       toast.success(data.message, {
+        duration: 5000,
+      });
+      dispatch({
+        type: devices.DELETE_DEVICE_SUCCESS,
+      })
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(`${message} deleteDevices`, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.DELETE_DEVICE_FAILURE, message });  
+    })
+}
+
 export const getCapacities = (devUuid) => (dispatch) => {
   dispatch({type: devices.GET_CAPACITY_DEVICE_REQUEST})
   api

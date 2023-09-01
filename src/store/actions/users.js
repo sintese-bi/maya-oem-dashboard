@@ -249,7 +249,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
 // RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
-
   api
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
@@ -262,7 +261,7 @@ export const getDashboard = (uuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard";
       toast.error(message, {
         duration: 5000,
       });
@@ -324,3 +323,31 @@ export const sendEmail = (data) => (dispatch) => {
       dispatch({ type: users.SEND_EMAIL_FAILURE, message });
     });  
 } 
+
+export const passwordRecovery = (params) => (dispatch) => {
+  dispatch({type: users.RECOVER_PASSWORD_REQUEST})
+  const {new_password, use_token, use_email} = params
+  console.log(params)
+  api
+    .post(`/passrecover?use_token=${String(use_token)}&use_email=${String(use_email)}`, new_password, configRequest())
+    .then((res) => {
+      const { data } = res;
+
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: users.RECOVER_PASSWORD_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.RECOVER_PASSWORD_FAILURE, message });
+    })
+}

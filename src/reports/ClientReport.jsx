@@ -126,7 +126,7 @@ export const ClientReport = () => {
             <Text style={{fontSize: '18px'}}>{reportClient.useName}</Text>
           </View>
           <View style={styles.logo}>
-            <Image style={{width: '160px', height: '62px'}} src="https://ucarecdn.com/0eb9df1d-e0d6-440f-96a7-a4037dffb862/"></Image>
+            <Image style={{width: '160px', height: '62px'}} src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"></Image>
           </View>
         </View>
         <View style={styles.cardsRow}>

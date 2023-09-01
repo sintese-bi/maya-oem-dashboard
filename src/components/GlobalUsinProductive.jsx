@@ -60,15 +60,15 @@ export const GlobalUsinProductive = ({dataDevices, isLoading}) => {
         			<Box sx={{display: 'flex', justifyContent: 'space-between', mb: 10, width: '84%'}}>
           				<Grid item sm={12} lg={3}>
                 			<BigNumber
-                  				title="Geração Real total"
-                  				value={`${numbers(realGenerationTotal)}Kwh`}
+                  				title="Produção total de usinas"
+                  				value={`${(realGenerationTotal/1000).toFixed(2)}Mwh`}
                   				icon={<ElectricBolt />}
                 			/>
             			</Grid>
             			<Grid item sm={12} lg={3}>
                 			<BigNumber
-                  				title="Geração Estimada total"
-                  				value={`${numbers(estimatedGenerationTotal)}Kwh`}
+                  				title="Produtividade total estimada"
+                  				value={`${(estimatedGenerationTotal/1000).toFixed(2)}Mwh`}
                   				icon={<ElectricBolt />}
                 			/>
             			</Grid>

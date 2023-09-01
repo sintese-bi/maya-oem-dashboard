@@ -2,6 +2,7 @@ import { Avatar, Link, Stack, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
 import { ModalPlantsGraph } from "src/components/ModalPlantsGraph"
+import { DeleteDevice } from "src/components/deleteDevice"
 
 export const columnsDevices = [
   {
@@ -163,6 +164,21 @@ export const columnsDevices = [
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
             />
+          </Stack>
+        )
+      },
+    },
+  },
+  {
+    name: "deleteDevice",
+    label: "Deletar planta",
+    options: {
+      filter: true,
+      sort: true,
+      customBodyRender: (name, dataTable) => {
+        return(
+          <Stack direction="row" alignItems="center" gap={1}>
+            <DeleteDevice devUuid={dataTable.rowData[0]} />
           </Stack>
         )
       },

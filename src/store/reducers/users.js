@@ -7,6 +7,7 @@ const initialState = {
   isLoading: false,
   loading: false,
   loadingRegister: false,
+  loadingPasswordRecovery: false,
   loadingShow: false,
   loadingUser: false,
   isLoadingAlertFrequency: false,
@@ -31,10 +32,11 @@ const initialState = {
   frequencyName: [],
   capacity: [],
   sendingEmail: [],
+  passwordRecovery: []
 };
 
 export default function userReducer(state = initialState, action) {
-  const { payload, brandListUser, profileLevel, result } = action;
+  const { payload, brandListUser, profileLevel, result, args } = action;
   const { brand_login } = result || [];
 
   switch (action.type) {
@@ -289,10 +291,10 @@ export default function userReducer(state = initialState, action) {
       
     case users.GET_DASHBOARD_SUCCESS:
       const daysPassed = moment().date();
-      console.log(brand_login)
       const dataDevices = brand_login
         .map((item) => {
-          const res = item.devices.map((dev) => {
+          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted != true)
+          const res = devicesNotDeleted.map((dev) => {
             const generationEstimatedDay = dev.generation.length !== 0
             ? dev.generation[0].gen_estimated
             : 0
@@ -426,6 +428,27 @@ export default function userReducer(state = initialState, action) {
         ...state,
         loadingSendingEmail: false,
         sendingEmail: false,
+      }
+
+    case users.RECOVER_PASSWORD_REQUEST: 
+      return {
+        ...state,
+        loadingPasswordRecovery: true,
+        passwordRecovery: false,
+      }
+
+    case users.RECOVER_PASSWORD_SUCCESS: 
+      return {
+        ...state,
+        loadingPasswordRecovery: false,
+        passwordRecovery: true,
+      }
+
+    case users.RECOVER_PASSWORD_FAILURE: 
+      return {
+        ...state,
+        loadingPasswordRecovery: false,
+        passwordRecovery: false,
       }
 
     default:
