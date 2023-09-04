@@ -36,7 +36,7 @@ const initialState = {
 };
 
 export default function userReducer(state = initialState, action) {
-  const { payload, brandListUser, profileLevel, result, args } = action;
+  const { payload, brandListUser, profileLevel, result } = action;
   const { brand_login } = result || [];
 
   switch (action.type) {
@@ -293,7 +293,7 @@ export default function userReducer(state = initialState, action) {
       const daysPassed = moment().date();
       const dataDevices = brand_login
         .map((item) => {
-          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted != true)
+          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
           const res = devicesNotDeleted.map((dev) => {
             const generationEstimatedDay = dev.generation.length !== 0
             ? dev.generation[0].gen_estimated

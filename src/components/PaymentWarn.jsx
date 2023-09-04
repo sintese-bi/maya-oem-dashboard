@@ -15,7 +15,7 @@ import {
 
 import {
   InsertDriveFile,
-  Info
+  Info,
 } from "@mui/icons-material";
 
 export const PaymentWarn = () => {

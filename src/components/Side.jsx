@@ -20,7 +20,8 @@ import {
   CheckCircle,
   AddCircle,
   Error,
-  Info
+  Info,
+  Cancel
 } from "@mui/icons-material";
 
 export const Side = () => {
@@ -140,9 +141,21 @@ export const Side = () => {
   		aria-describedby="modal-modal-description"
   		sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
 		>
-		{
-			useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice />) : <PaymentWarn />
-		}
+			<Box sx={{
+					bgcolor: 'background.paper',
+					pb: 6, 
+					px:4, 
+					bgcolor:"background.paper",
+					borderRadius: 1,
+					border: 0
+				}}>
+				<Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
+		  		<Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+		  	</Box>
+		  	{
+					useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice setOpen={setOpen} open={open}/>) : <PaymentWarn />
+				}
+			</Box>
 		</Modal>
 	 </Drawer>
 

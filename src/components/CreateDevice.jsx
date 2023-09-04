@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { listBrand } from "src/utils/list-brand.js";
 import { useDispatch, useSelector } from "react-redux";
 import { FormProvider, useForm, Controller } from "react-hook-form";
@@ -6,7 +7,7 @@ import * as Yup from "yup";
 import { getUserCookie } from "src/services/session";
 
 import { createDevice } from "src/store/actions/devices"
-
+import { getDashboard } from "src/store/actions/users";
 import {
   Button,
   CssBaseline,
@@ -24,7 +25,10 @@ const validateSchema = Yup.object().shape({
 	bl_password: Yup.string().required("Campo é obrigatório.")
 })
 
-export const CreateDevice = () => {
+export const CreateDevice = ({setOpen}) => {  
+	const {
+    deviceCreated
+  } = useSelector((state) => state.devices);
 	const methods = useForm();
 	const { useUuid, useName } = getUserCookie();
 	const dispatch = useDispatch();
@@ -44,8 +48,9 @@ export const CreateDevice = () => {
   		const { bl_login, bl_password, bl_name } = values;
   		try {
   			dispatch(createDevice({ bl_login, bl_password, bl_name, use_uuid: useUuid }))
-  			setValue("deviceLogin", "")
-  			setValue("devicePassword", "")
+  			dispatch(getDashboard(useUuid))
+  			setValue("bl_login", "")
+  			setValue("bl_password", "")
   		}
   		catch(error) {
   			alert(error)
@@ -62,11 +67,7 @@ export const CreateDevice = () => {
 					display: 'flex',
 					flexDirection: 'column',
 					justifyContent: 'start',
-					py: 6, 
-					px:4, 
-					bgcolor:"background.paper",
-					borderRadius: 1,
-					width: '40%'
+					width: 364
 				}}
 			>
 				<Box>
@@ -110,7 +111,7 @@ export const CreateDevice = () => {
 					type="submit"
 					variant="contained"
 				>
-					Criar planta
+					Adicionar portal do inversor
 				</Button>
 			</Box>
 		</FormProvider>

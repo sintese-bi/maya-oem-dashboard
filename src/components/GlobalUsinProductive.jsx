@@ -17,7 +17,8 @@ export const GlobalUsinProductive = ({dataDevices, isLoading}) => {
 	})
 
 	useEffect(() => {
-		let generationRealMonth = dataDevices.map((data) => {
+		console.log(dataDevices)
+			let generationRealMonth = dataDevices.map((data) => {
       		let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
       		return generationRealValue;
     	})
@@ -61,14 +62,14 @@ export const GlobalUsinProductive = ({dataDevices, isLoading}) => {
           				<Grid item sm={12} lg={3}>
                 			<BigNumber
                   				title="Produção total de usinas"
-                  				value={`${(realGenerationTotal/1000).toFixed(2)}Mwh`}
+                  				value={`${(realGenerationTotal/1000).toFixed(2)}MWh`}
                   				icon={<ElectricBolt />}
                 			/>
             			</Grid>
             			<Grid item sm={12} lg={3}>
                 			<BigNumber
                   				title="Produtividade total estimada"
-                  				value={`${(estimatedGenerationTotal/1000).toFixed(2)}Mwh`}
+                  				value={`${(estimatedGenerationTotal/1000).toFixed(2)}MWh`}
                   				icon={<ElectricBolt />}
                 			/>
             			</Grid>
@@ -78,7 +79,7 @@ export const GlobalUsinProductive = ({dataDevices, isLoading}) => {
 	 						<ListItemAvatar >
 								<Info />
 							</ListItemAvatar>
-							<ListItemText>{`Sua produtividade atual é de ${numbers(realGenerationTotal)}Kwh`}</ListItemText>
+							<ListItemText>{`Sua produtividade atual é de ${(realGenerationTotal/1000).toFixed(2)}MWh`}</ListItemText>
 	 					</ListItem>
 	 					<ListItem>
 	 						<ListItemAvatar>

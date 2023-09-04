@@ -19,6 +19,7 @@ import {
 import { getUserCookie } from "src/services/session";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getDeletedDevices } from "src/store/actions/devices";
+import { numbers } from 'src/helpers/utils';
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -76,6 +77,7 @@ export default function Dashboard() {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
+  const [emittedCarbon, setEmittedCarbon] = useState(0)
 
   const [isLoadingReport, setIsLoadingReport] = useState(true)
 
@@ -135,6 +137,15 @@ export default function Dashboard() {
       setColumns(columnsDevices);
     }
   }, [dataDevices]);
+
+  useEffect(() => {
+    let realGenerationTempArray = dataDevices.map((data) => {
+      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
+      return generationRealValue;
+    })
+    setEmittedCarbon(numbers(realGenerationTempArray.reduce((total, element) => total + element, 0).toFixed()))
+  }, [data])
+
 
   useEffect(() => {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
@@ -213,15 +224,11 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Semanal abaixo da estimada"
-          value={
-            generationBelowEstimated.length !== 0
-              ? generationBelowEstimated.length
-              : 0
-          }
-          icon={<AlignVerticalTop />}
-          type={3}
-          activeBtn={type === 3 ? true : false }
+          title="Online"
+          value={online.length !== 0 ? online.length : 0}
+          icon={<ThumbUpOffAlt />}
+          type={6}
+          activeBtn={type === 6 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
         </Box>
@@ -244,20 +251,19 @@ export default function Dashboard() {
         />
 
         <BigNumberDashboard
-          title="Online"
-          value={online.length !== 0 ? online.length : 0}
-          icon={<ThumbUpOffAlt />}
-          type={6}
-          activeBtn={type === 6 ? true : false }
-          handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
-
-        <BigNumberDashboard
           title="Plantas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
           type={4}
           activeBtn={type === 4 ? true : false }
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
+        <BigNumberDashboard
+          title="Economia de carbono emitido"
+          value={`${emittedCarbon} CO²`}
+          icon={<AlignVerticalTop />}
+          type={3}
+          activeBtn={type === 3 ? true : false }
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>

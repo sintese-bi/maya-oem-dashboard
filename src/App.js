@@ -9,7 +9,6 @@ import PasswordRecovery from './pages/passwordRecovery';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/dashboard";
-import Devices from "./pages/dashboard/devices";
 import Generation from "./pages/dashboard/generation";
 import Investment from "./pages/dashboard/investment";
 import Alerts from "./pages/dashboard/alerts";

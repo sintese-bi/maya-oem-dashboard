@@ -90,9 +90,10 @@ function AdminCalculator({ onPreviousStep }) {
     setmodQuant(event.target.value);
   };
   //Inserção
+  const [uniqueCities, setUniqueCities] = useState([])
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("");
+  const [estado, setEstado] = useState("AMAZONAS");
   // const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
@@ -282,11 +283,8 @@ function AdminCalculator({ onPreviousStep }) {
         // setErrors(validationErrors);
       });
   };
-  const uniqueCities = [...new Set(citiesData.map((city) => city.ic_city))];
   useEffect(() => {
     setNome("");
-    setCidade("");
-    setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
     setNumeroModulos("");
     setValorDoKwh(""); // Limpa o estado do número de módulos
@@ -303,6 +301,7 @@ function AdminCalculator({ onPreviousStep }) {
   useEffect(() => {
     calcularValorEstimado();
   }, [radiacao, potenciaModulos, numeroModulos, valorDoKwh]);
+
 
   const onSubmit = (data) => {
     const formData = {
@@ -392,6 +391,11 @@ function AdminCalculator({ onPreviousStep }) {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    let filteredCities = citiesData.filter((data) => data.ic_states == estado)
+    setUniqueCities(filteredCities)
+  }, [estado])
 
   return (
     <Box
@@ -757,10 +761,10 @@ function AdminCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField defaultValue="Brasiléia" onChange={handleCityChange} select label="Cidade" margin="normal" >
+            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
               {
-                uniqueCities.map((data) => (
-                  <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
+                uniqueCities?.map((data) => (
+                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
                 ))
               }
             </TextField>
@@ -772,7 +776,7 @@ function AdminCalculator({ onPreviousStep }) {
               margin="normal"
             >
               {
-                estadosBrasileiros.map((data) => (
+                estadosBrasileiros?.map((data) => (
                   <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
                 ))
               }

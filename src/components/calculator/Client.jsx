@@ -89,9 +89,10 @@ function ClientCalculator({ onPreviousStep }) {
     setmodQuant(event.target.value);
   };
   //Inserção
+  const [uniqueCities, setUniqueCities] = useState([])
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("");
+  const [estado, setEstado] = useState("AMAZONAS");
   // const [errors, setErrors] = useState({});
   const [radiacao, setRadiacao] = useState(null);
   const [valorEstimado, setValorEstimado] = useState(null);
@@ -119,8 +120,8 @@ function ClientCalculator({ onPreviousStep }) {
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       setNome(parsedData.nome || "");
-      setCidade(parsedData.cidade || "");
       setEstado(parsedData.estado || "");
+      setCidade(parsedData.cidade || "");
       setValorEstimado(parsedData.valorEstimado || null);
       setPotenciaModulos(parsedData.potenciaModulos || "");
       setNumeroModulos(parsedData.numeroModulos || "");
@@ -285,12 +286,8 @@ function ClientCalculator({ onPreviousStep }) {
         // setErrors(validationErrors);
       });
   };
-  const uniqueCities = [...new Set(citiesData.map((city) => city.ic_city))];
-
   useEffect(() => {
     setNome("");
-    setCidade("");
-    setEstado("");
     setPotenciaModulos(""); // Limpa o estado da potência dos módulos
     setNumeroModulos(""); // Limpa o estado do número de módulos
   }, []);
@@ -394,6 +391,11 @@ function ClientCalculator({ onPreviousStep }) {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    let filteredCities = citiesData.filter((data) => data.ic_states == estado)
+    setUniqueCities(filteredCities)
+  }, [estado])
 
   return (
     <Box
@@ -749,10 +751,10 @@ function ClientCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField defaultValue="Brasiléia" onChange={handleCityChange} select label="Cidade" margin="normal" >
+            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
               {
                 uniqueCities.map((data) => (
-                  <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
+                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
                 ))
               }
             </TextField>

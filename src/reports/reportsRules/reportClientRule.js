@@ -20,10 +20,10 @@ export const reportClient = {
 }
 
 export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport){
-	reportClient.estimatedGenerationTotal = numbers(generation.estimatedGenerationTotal.toFixed('2'))
-	reportClient.realGenerationTotal = numbers(Number(generation.realGenerationTotal).toFixed('2'))
+	reportClient.estimatedGenerationTotal = generation.estimatedGenerationTotal.toFixed()
+	reportClient.realGenerationTotal = generation.realGeneration.reduce((total, element) => total + Number(element.value), 0)
 
-    let percentValue = (Number(generation.realGenerationTotal)/generation.estimatedGenerationTotal)*100
+    let percentValue = (generation.realGeneration.reduce((total, element) => total + Number(element.value), 0)/generation.estimatedGenerationTotal)*100
     reportClient.percent = percentValue.toFixed()
     generation.realGenerationTotal < reportClient.estimatedGenerationTotal ? reportClient.lowLevel = true : reportClient.lowLevel = false
 

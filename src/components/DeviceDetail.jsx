@@ -6,7 +6,9 @@ import * as Yup from "yup";
 import citiesData from "src/services/municipios";
 import axios from "axios";
 import React from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getDevices } from "src/store/actions/devices";
+import api, { configRequest } from "../services/api";
 import Autocomplete from "@mui/material/Autocomplete";
 // COMPONETS
 
@@ -43,10 +45,12 @@ const validateSchema = Yup.object().shape({
 });
 
 export const DeviceDetail = (props) => {
-  const { name, address, contactNumber, kwp, loadingDevices, devUuid } = props;
+  const { name, address, contactNumber, kwp, loadingDevices, devUuid, blUuidState } = props;
   const [selectedCity, setSelectedCity] = useState(null);
   const { profileLevel } = getUserCookie() || null;
   const [isSaved, setIsSaved] = useState(false);
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -59,16 +63,15 @@ export const DeviceDetail = (props) => {
     mode: "onChange",
     resolver: yupResolver(validateSchema),
   });
-
+  console.log(address)
   const [editInputs, setEditInputs] = useState(false);
-
   async function onSubmit(values) {
     setSelectedCity((prevValue) => (prevValue ? prevValue : values.address));
     setIsSaved(true);
 
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
+      const response = await api.get(
+        `/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
         {
           params: {
             potSistema: values.inverterPower,
@@ -83,6 +86,9 @@ export const DeviceDetail = (props) => {
 
       // Faça o que for necessário com o valor estimado retornado.
       console.log("Valor estimado da geração:", gen_estimated1);
+      dispatch(getDevices(blUuidState))
+      setEditInputs(!editInputs)
+
     } catch (error) {
       // Lida com erros, se necessário.
       console.error("Erro ao fazer a requisição:", error);
@@ -170,6 +176,7 @@ export const DeviceDetail = (props) => {
                     error={!!errors.name}
                     helperText={errors.name?.message}
                     variant="outlined"
+                    defaultValue={contactNumber}
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
@@ -187,6 +194,7 @@ export const DeviceDetail = (props) => {
                     error={!!errors.inverterPower}
                     // helperText={errors.inverterPower?.message}
                     variant="outlined"
+                    defaultValue={kwp}
                   />
                 </ListItem>
               </List>

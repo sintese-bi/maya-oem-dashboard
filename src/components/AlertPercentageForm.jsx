@@ -118,9 +118,6 @@ export default function AlertPercentageForm({ welcome }) {
         display:'flex', 
         flexDirection: 'column', 
         bgcolor: 'background.paper',
-        px: 6,
-        pb: 6,
-        pt: 6,
       }} >
         {
           welcome ? <Typography variant="h2" sx={{py: 2}}>Bem vindo</Typography> : null
