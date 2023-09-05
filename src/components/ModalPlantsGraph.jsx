@@ -1,4 +1,7 @@
 import { Poll } from "@mui/icons-material"
+import {
+  Cancel
+} from "@mui/icons-material";
 import {useState, useEffect} from 'react'
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,7 +77,10 @@ export const ModalPlantsGraph = ({devUuidState, blUuidState}) => {
                 aria-describedby="modal-modal-description"
                 sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
               >
-                <Box sx={{bgcolor: "background.paper", p: 4}}>
+                <Box sx={{bgcolor: "background.paper", px: 4}}>
+                  <Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
+                    <Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+                  </Box>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                   <DatePicker
               label="Data Inicial"

@@ -239,83 +239,7 @@ const Generation = () => {
           </Box>
           <Tabs />
         </Box>
-        <Box sx={{ mt: 10 }}>
-          <DeviceDetail
-            loadingDevices={isLoadingDevices}
-            name={deviceInfo?.dev_name || ""}
-            address={deviceInfo?.dev_address || ""}
-            contactNumber={deviceInfo?.dev_contract_name || ""}
-            kwp={deviceInfo?.dev_capacity || ""}
-            devUuid={selectedDevUuid}
-          />
-        </Box>
-
-        {/*<Box sx={{ mt: 3 }}>
-          <Grid container spacing={3}>
-            <Grid item sm={12} lg={3}>
-              {isLoadingGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Geração Estimada"
-                  value={`${
-                    deviceInfo?.generation?.gen_estimated
-                      ? deviceInfo?.generation?.gen_estimated + "Kwh"
-                      : "-"
-                  }`}
-                  icon={<Bolt />}
-                />
-              )}
-            </Grid>
-            <Grid item sm={12} lg={3}>
-              {isLoadingGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Geração Real"
-                  value={`${
-                    deviceInfo?.generation?.gen_real
-                      ? deviceInfo?.generation?.gen_real + "Kwh"
-                      : "-"
-                  }`}
-                  icon={<ElectricBolt />}
-                />
-              )}
-            </Grid>
-            <Grid item sm={12} lg={3}>
-              {isLoadingGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Geração percentual"
-                  value={`${
-                    deviceInfo?.generation?.gen_real
-                      ? parseFloat(
-                          (deviceInfo?.generation.gen_real /
-                            deviceInfo?.generation.gen_estimated) *
-                            100
-                        ).toFixed(2)
-                      : 0
-                  } %`}
-                  icon={<OfflineBolt />}
-                />
-              )}
-            </Grid>
-            <Grid item sm={12} lg={3}>
-              {isLoadingGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Temperatura"
-                  value={temperature ? `${temperature}°` : "-"}
-                  icon={<Thermostat />}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Box>
-        */}
-         <Box sx={{m:4}}>
+         <Box sx={{mx:4, my: 10}}>
           <GenerationBI 
             startDate={startDate}
             endDate={endDate}
@@ -324,6 +248,17 @@ const Generation = () => {
             isLoading={isLoadingGeneration}
             temperature={temperature}
             deviceInfo={deviceInfo}
+          />
+        </Box>
+        <Box sx={{ my: 10 }}>
+          <DeviceDetail
+            loadingDevices={isLoadingDevices}
+            name={deviceInfo?.dev_name || ""}
+            address={deviceInfo?.dev_address || ""}
+            contactNumber={deviceInfo?.dev_contract_name || ""}
+            kwp={deviceInfo?.dev_capacity || ""}
+            devUuid={selectedDevUuid}
+            blUuidState={blUuidState}
           />
         </Box>
       </Container>

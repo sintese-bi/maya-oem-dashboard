@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 import { ChartsLinear } from "src/components/Charts";
 import {ChartsDashboardHorizontal} from 'src/components/Charts'
 import {ChartsDashboard} from 'src/components/Charts'
-
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getDeletedDevices, getAllDevicesGeneration } from "src/store/actions/devices";

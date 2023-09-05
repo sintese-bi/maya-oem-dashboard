@@ -9,7 +9,7 @@ const initialState = {
   isLoadingDevicesGeneration: false,
   loadingDeleteDevice: false,
   loadingCreateDevice: true,
-  createDevice: [],
+  deviceCreated: false,
   devices: [],
   capacity: [],
   allDevices: [],
@@ -208,21 +208,21 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         loadingCreateDevice: true,
-        createDevice: false,
+        deviceCreated: false,
       }
 
     case devices.POST_DEVICE_SUCCESS:
       return {
         ...state,
         loadingCreateDevice: false,
-        createDevice: true,
+        deviceCreated: true,
       }
 
     case devices.POST_DEVICE_FAILURE:
       return {
         ...state,
         loadingCreateDevice: false,
-        createDevice: false,
+        deviceCreated: false,
       }
 
     case devices.GET_CAPACITY_DEVICE_REQUEST:

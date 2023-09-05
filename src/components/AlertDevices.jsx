@@ -1,21 +1,13 @@
 import {useState, useEffect} from 'react'
-import AlertPercentageForm from 'src/components/AlertPercentageForm';
-import MUIDataTable from "mui-datatables";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboard, getCapacities } from "src/store/actions/users";
+import { getDashboard } from "src/store/actions/users";
 import { getDevicesAlerts } from "src/store/actions/devices";
 import { getUserCookie } from "src/services/session";
 import { theme } from "src/theme";
 import {
-  columnsDevices,
-} from "src/constants/columns";
-import {
   Backdrop,
   Box,
   CircularProgress,
-  Container,
-  Grid,
-  Button,
   Typography,
   TableContainer,
   Table,
@@ -29,54 +21,37 @@ import { CheckCircle } from "@mui/icons-material"
 
 export default function AlertDevices(){
   let laoded = 0;
-  const { useUuid, useName } = getUserCookie();
+  const { useUuid } = getUserCookie();
   const { devicesALerts, isLoadingAlerts }  = useSelector((state) => state.devices)
 
   const {
-    isLoading,
     dataDevices,
     //useCodePagarMe
   } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
 
-  const options = {
-      filter: true,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10, 50, 100, 200, 300],
-      filterType: "dropdown",
-      responsive: "simple",
-      selectableRows: "none",
-    };
-
   const [data, setData] = useState([])
-  const [columns, setColumns] = useState([])
   
   useEffect(() => {
-    if(dataDevices.length != 0 ){
-      let devicesWithAlerts = dataDevices.filter((data) => data.alert != 0)
+    if(dataDevices.length !== 0 ){
+      let devicesWithAlerts = dataDevices.filter((data) => data.alert !== 0)
       setData(devicesWithAlerts)
       laoded = 1
     }
   }, [dataDevices])
 
   useEffect(() => {
-    if(devicesALerts.length == 0 && laoded == 0){
+    if(devicesALerts.length === 0 && laoded === 0){
       dispatch(getDevicesAlerts(data))
     }
   }, [data])
 
   useEffect(() => {
-    if(dataDevices.length == 0){
+    if(dataDevices.length === 0){
       dispatch(getDashboard(useUuid));
     }
   }, [useUuid]);
-
-  useEffect(() => {
-    devicesALerts.map((seila) => {
-      console.log(seila)
-    })
-  }, [devicesALerts])
 
   if (isLoadingAlerts) {
       return (
