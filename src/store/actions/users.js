@@ -299,7 +299,6 @@ export const getCapacities = (blUuids) => (dispatch) => {
 
 export const sendEmail = (data) => (dispatch) => {
   dispatch({ type: users.SEND_EMAIL_REQUEST });
-  console.log(data)
   api
     .post("/sendingemail", {use_email: data.use_email}, configRequest())
     .then((res) => {
@@ -326,17 +325,16 @@ export const sendEmail = (data) => (dispatch) => {
 
 export const passwordRecovery = (params) => (dispatch) => {
   dispatch({type: users.RECOVER_PASSWORD_REQUEST})
-  const {new_password, use_token, use_email} = params
-  console.log(params)
+  const {new_password, use_token, use_email, navigate} = params
   api
-    .post(`/passrecover?use_token=${String(use_token)}&use_email=${String(use_email)}`, new_password, configRequest())
+    .post(`/passrecover?use_token=${use_token}&use_email=${use_email}`, {use_password: new_password}, configRequest())
     .then((res) => {
       const { data } = res;
 
       toast.success(data.message, {
         duration: 5000,
       });
-
+      navigate("/")
       dispatch({
         type: users.RECOVER_PASSWORD_SUCCESS,
       });
