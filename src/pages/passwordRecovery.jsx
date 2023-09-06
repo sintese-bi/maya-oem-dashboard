@@ -1,6 +1,6 @@
 import { listBrand } from "src/utils/list-brand.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -27,6 +27,7 @@ const validateSchema = Yup.object().shape({
 })
 
 export default function PasswordRecovery(){
+	const navigate = useNavigate()
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const use_token = searchParams.get("use_token")
@@ -50,7 +51,7 @@ export default function PasswordRecovery(){
   		const { new_password, confirm_password } = values;
   		try {
   			if(new_password == confirm_password){
-  				dispatch(passwordRecovery({new_password, use_token, use_email}))
+  				dispatch(passwordRecovery({new_password, use_token, use_email, navigate}))
   			}
   			setValue("new_password", "")
   			setValue("confirm_password", "")

@@ -281,24 +281,6 @@ export const ChartsLinear = (props) => {
     moment(startDate).add(index, 'months').format('MM/YYYY')
   )
 
-  const weeklyDates = []
-  let currentWeekStart =  moment(startDate).startOf('week');
-  while(currentWeekStart.isSameOrBefore(endDate)){
-    const currentWeekEnd = moment(currentWeekStart).endOf('week');
-    weeklyDates.push({start: moment(currentWeekStart).format('DD/MM/YYYY'), end: moment(currentWeekEnd).format('DD/MM/YYYY')})
-    currentWeekStart = currentWeekStart.add(1, 'week')
-  }
-
-  weeklyDates.sort((a, b) => a.start - b.start)
-
- let seila =  weeklyDates.map((dates) => {
-    console.log(dates)
-    let gen = generation.realGeneration?.filter((data) => moment(data.date).isSameOrBefore(dates.end))
-    return gen
-  })
-
- console.log(seila)
-
   const options = {
     responsive: true,
     plugins: {
