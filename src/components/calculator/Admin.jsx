@@ -761,13 +761,6 @@ function AdminCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
-              {
-                uniqueCities?.map((data) => (
-                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
-                ))
-              }
-            </TextField>
             <TextField 
               defaultValue="AMAZONAS"
               onChange={(event, newEstado) => setEstado(newEstado["props"].value)} 
@@ -778,6 +771,13 @@ function AdminCalculator({ onPreviousStep }) {
               {
                 estadosBrasileiros?.map((data) => (
                   <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
+                ))
+              }
+            </TextField>
+            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
+              {
+                uniqueCities?.map((data) => (
+                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
                 ))
               }
             </TextField>

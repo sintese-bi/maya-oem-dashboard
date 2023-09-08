@@ -9,7 +9,7 @@ export default function PrivateAdminRoute() {
     const { profileLevel } = getUserCookie() || null;
     // SE O USUARIO NÃO FOR ADMIN, REDIRECIONA PARA DASHBOARD
     if (profileLevel !== "admin") {
-      return <Navigate to="/dashboard" />;
+      return <Navigate to="/dashboard/devices" />;
     }
   }
 

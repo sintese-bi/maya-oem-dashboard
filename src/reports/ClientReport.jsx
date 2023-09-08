@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 export const ClientReport = () => {
   return (
     <Document>
-    <Page size="A4" style={styles.page}>
+    <Page size="A5" style={styles.page}>
         <View style={styles.main}>
         <View style={styles.header}>
           <View style={styles.generationDate}>
@@ -144,22 +144,24 @@ export const ClientReport = () => {
             </View>
              <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>             
           </View>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-             <Text style={styles.cardNumber}>{reportClient.realGenerationTotal} Kwh</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
+        </View>
+        <View style={styles.cardsRow}>
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
+                <Text style={styles.cardNumber}>{reportClient.realGenerationTotal} Kwh</Text>
+              </View>
+              <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
+            </View>
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
+                <Text style={styles.cardNumber}>{reportClient.estimatedGenerationTotal} Kwh</Text>
+              </View>
+              <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
           </View>
         </View>
         <View style={styles.cardsRow}>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-             <Text style={styles.cardNumber}>{reportClient.estimatedGenerationTotal} Kwh</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"></Image>            
-          </View>
           <View style={styles.card}>
            <View>
             <Text style={styles.cardLabel}>PERCENTUAL</Text>
@@ -174,62 +176,7 @@ export const ClientReport = () => {
            </View>
            <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
           </View>
-        </View>
-        <View style={styles.cardsRow}>
-        <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>LOCALIZAÇÃO</Text>
-             <Text style={styles.cardText}>{reportClient.address}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>PORTAL</Text>
-             <Text style={styles.cardText}>{reportClient.portal}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>Status</Text>
-             <Text style={styles.cardText}>{reportClient.state}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-        </View>
-        <View style={styles.cardsRow}>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>EMAIL</Text>
-             <Text style={styles.cardText}>{reportClient.email}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>CELULAR</Text>
-             <Text style={styles.cardText}>{reportClient.phone}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-          <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>NOME DE REF. DO CONTRATO</Text>
-             <Text style={styles.cardText}>{reportClient.contracterName}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View> 
-        </View>
-        <View style={styles.cardsRow}>
-           <View style={styles.card}>
-           <View>
-             <Text style={styles.cardLabel}>Nº DE CONTRATO</Text>
-             <Text style={styles.cardText}>{reportClient.contractNumber}</Text>
-           </View>
-           <Image style={styles.icon} src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"></Image>            
-          </View>
-        </View>
+        </View>       
         <View style={styles.madeBy}>
           <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
           <Image

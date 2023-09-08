@@ -28,25 +28,30 @@ export const GenerationBI = ({startDate, endDate, optionFilter, generation, isLo
 	const [topValueDate, lowValueDate] = useState()
 
 	useEffect(() => {
-		setTotalRealGeneration((generation?.realGeneration?.reduce((total, element) => total + Number(element?.value), 0))?.toFixed())
-		setTotalEstimatedGeneration((generation?.estimatedGeneration?.reduce((total, element) => total + element, 0))?.toFixed())
+		setTotalRealGeneration((generation?.realGeneration?.reduce((total, element) => total + Number(element?.value), 0))?.toFixed('2'))
+		setTotalEstimatedGeneration((generation?.estimatedGeneration?.reduce((total, element) => total + element, 0))?.toFixed('2'))
 		if(totalRealGeneration > totalEstimatedGeneration){
 			setDeviceIsProductive(true)
 		}
 
 		let realGenerationTempArray = generation?.realGeneration?.filter((data) => data.value != 0)
-		realGenerationTempArray?.sort((a, b) => Number(a.value) - Number(b.value))
+		let realGenerationFinalArray = realGenerationTempArray?.sort((a, b) => Number(a.value) - Number(b.value))?.map((data) => {
+			return {
+				...data,
+				value: numbers(data.value)
+			}
+		})
 
 		setTopAndLowValue({
-			topValue: realGenerationTempArray?.pop(),
-			lowValue: realGenerationTempArray?.shift()
+			topValue: realGenerationFinalArray?.pop(),
+			lowValue: realGenerationFinalArray?.shift()
 		})
 
 	}, [generation])
 
 	useEffect(() => {
 		console.log(totalRealGeneration, totalEstimatedGeneration, generation)
-		setProductivePercent(((totalRealGeneration/totalEstimatedGeneration)*100).toFixed())
+		setProductivePercent(((totalRealGeneration/totalEstimatedGeneration)*100).toFixed(''))
 	}, [totalRealGeneration, totalEstimatedGeneration])
 
 	return (
@@ -85,7 +90,7 @@ export const GenerationBI = ({startDate, endDate, optionFilter, generation, isLo
                   title="Geração Estimada"
                   value={`${
                     deviceInfo?.generation?.gen_estimated
-                      ? deviceInfo?.generation?.gen_estimated + "Kwh"
+                      ? numbers(deviceInfo?.generation?.gen_estimated.toFixed('2')) + "Kwh"
                       : "-"
                   }`}
                   icon={<Bolt />}
@@ -100,7 +105,7 @@ export const GenerationBI = ({startDate, endDate, optionFilter, generation, isLo
                   title="Geração Real"
                   value={`${
                     deviceInfo?.generation?.gen_real
-                      ? deviceInfo?.generation?.gen_real + "Kwh"
+                      ? numbers(deviceInfo?.generation?.gen_real.toFixed('2')) + "Kwh"
                       : "-"
                   }`}
                   icon={<ElectricBolt />}
@@ -115,11 +120,11 @@ export const GenerationBI = ({startDate, endDate, optionFilter, generation, isLo
                   title="Geração percentual"
                   value={`${
                     deviceInfo?.generation?.gen_real
-                      ? parseFloat(
+                      ? numbers(parseFloat(
                           (deviceInfo?.generation.gen_real /
                             deviceInfo?.generation.gen_estimated) *
                             100
-                        ).toFixed(2)
+                        ).toFixed(2))
                       : 0
                   } %`}
                   icon={<OfflineBolt />}
@@ -139,15 +144,15 @@ export const GenerationBI = ({startDate, endDate, optionFilter, generation, isLo
 				</Grid>
       </Grid>
 			<Box sx={{mt: 16, bgcolor: 'background.paper', p:4, boxShadow: 3}}>
-				<Typography sx={{fontSize: '16px', mb: 6}}>
+				<Typography sx={{fontSize: '20px', mb: 6, fontWeight: '600'}}>
 				{isLoading ? '' : 
 						deviceIsProductive ? `
 							Parabéns! A produção da sua usina esta dentro do esperado.
-							Sua produtividade no período escolhido é de ${(totalRealGeneration/1000).toFixed(2)}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
+							Sua produtividade no período escolhido é de ${numbers((totalRealGeneration/1000).toFixed(2))}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
 						` : `
 							Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua
 							usina.
-							Sua produtividade no período escolhido é de ${(totalRealGeneration/1000).toFixed(2)}Mwh o que corresponde a ${productivePercent}% da produção estimada.
+							Sua produtividade no período escolhido é de ${numbers((totalRealGeneration/1000).toFixed(2))}Mwh o que corresponde a ${productivePercent}% da produção estimada.
 						`
 				}
 				</Typography>

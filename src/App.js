@@ -29,23 +29,24 @@ export default function App() {
 
       <Route path="dashboard" element={<LayoutDashboard />}>
         <Route element={<PrivateRoute />}>
-          <Route index element={<Dashboard />} />
           {/* <Route index path="devices" element={<Devices />} /> */}
           
           <Route path="generation/:brand" element={<Generation />} />
-          <Route path="investment/:brand" element={<Investment />} />
           <Route path="alerts/:brand" element={<Alerts />} />
-          <Route path="alertDevices" element={<AlertDevices />} />
           <Route path="devices" element={<Plants />} />
-
-          <Route path="calculator" element={<HomePage />} />
-          <Route path="calculator/client" element={<ClientCalculator />} />
-          <Route path="calculator/admin" element={<AdminCalculator />} />
 
         </Route>
 
         <Route element={<PrivateAdminRoute />}>
+          <Route index element={<Dashboard />} />
+
           <Route path="users" element={<ListUsers />} />
+          
+          <Route path="alertDevices" element={<AlertDevices />} />
+          <Route path="investment/:brand" element={<Investment />} />
+          <Route path="calculator" element={<HomePage />} />
+          <Route path="calculator/client" element={<ClientCalculator />} />
+          <Route path="calculator/admin" element={<AdminCalculator />} />
         </Route>
       </Route>
 

@@ -5,6 +5,7 @@ import { getUserCookie, removeUserCookie } from "src/services/session";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/PaymentWarn";
 import { CreateDevice } from "src/components/CreateDevice";
+import{ MayaWatchPro } from "src/components/MayaWatchPro";
 
 // COMPONENTS
 import { Drawer, Box, Button, Toolbar, Typography, Modal, Divider, List, ListItem, ListItemText,ListItemButton, ListItemIcon } from "@mui/material";
@@ -32,6 +33,34 @@ export const Side = () => {
 	const { useUuid, useName } = getUserCookie();
   const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
 
+  const ModalContent = () => {
+  	switch (action) {
+      case 'alertFrequency':
+        return (
+        	<Box>
+    				{useCodePagarMe ? <AlertPercentageForm welcome={welcome} /> : <PaymentWarn welcome={welcome} handleModalState={handleModalState} />}
+    			</Box>
+        )
+        break;
+      case 'createDevice':
+      	return (
+      		<Box>
+    				<CreateDevice />
+    			</Box>
+      	)
+      	break;
+      case 'assignPlan':
+      	return (
+      		<Box>
+    				<MayaWatchPro />
+    			</Box>
+      	)
+      	break;
+      default:
+        break;
+    }
+  }
+
   const topItems = [
   	{
   		label: "Usuário",
@@ -42,7 +71,7 @@ export const Side = () => {
 
 	const mainItems = [
 	 {
-	 			label: "Criar nova planta",
+	 			label: "Adicionar portal",
       	icon: <AddCircle fontSize="small" />,
       	disabled: true,
       	action: 'createDevice'
@@ -57,7 +86,7 @@ export const Side = () => {
 
 	const bottomItems = [
 		{
-			label: "Assinar Plano",
+			label: "MAYA WATCH PRO",
       icon: <CheckCircle fontSize="small" />,
       disabled: true,
       action: 'assignPlan'
@@ -66,9 +95,14 @@ export const Side = () => {
 
 
 	function handleModalState(actionType){
-		actionType == "alertFrequency" ? setAction('alertFrequency') : setAction('createDevice')
-		setWelcome(false)
-		setOpen(!open)
+		if(action == 'alertFrequency' && actionType == 'assignPlan'){
+			setAction(actionType)			
+			setOpen(true)
+		} else {
+			setAction(actionType)
+			setWelcome(false)
+			setOpen(!open)
+		}
 	}
 
 	return(
@@ -107,6 +141,7 @@ export const Side = () => {
               	startIcon={data?.icon}
               	variant="contained"
               	onClick={() => {
+              		setAction(data?.action)
               		handleModalState(data?.action)
               	}}
             	>
@@ -124,7 +159,10 @@ export const Side = () => {
 	 						<Button
               	startIcon={data?.icon}
               	variant="outlined"
-              	onClick={() => alert("função não implementada")}
+              	onClick={() => {
+              		handleModalState(data?.action)
+              		setAction(data?.action)
+              	}}
             	>
             		{data?.label}
             	</Button>
@@ -152,9 +190,9 @@ export const Side = () => {
 				<Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
 		  		<Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
 		  	</Box>
-		  	{
-					useCodePagarMe ? (action == "alertFrequency" ? <AlertPercentageForm welcome={welcome} /> : <CreateDevice setOpen={setOpen} open={open}/>) : <PaymentWarn />
-				}
+		  	
+		  		<ModalContent />
+				
 			</Box>
 		</Modal>
 	 </Drawer>
