@@ -35,6 +35,7 @@ import {
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/PaymentWarn";
+import{ MayaWatchPro } from "src/components/MayaWatchPro";
 import { BigNumberDashboard } from "src/components/BigNumber";
 
 // ASSETS
@@ -46,6 +47,7 @@ import {
   ThumbUpOffAlt,
   Warning,
   DownloadForOffline,
+  Cancel
 } from "@mui/icons-material";
 import MUIDataTable from "mui-datatables";
 
@@ -78,7 +80,7 @@ export default function Dashboard() {
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
   const [emittedCarbon, setEmittedCarbon] = useState(0)
-
+  const [action, setAction] = useState('')
   const [isLoadingReport, setIsLoadingReport] = useState(true)
 
   const options = {
@@ -119,8 +121,15 @@ export default function Dashboard() {
     }
   }
 
-  function handleReportGeneration(){
-    useCodePagarMe ? reportAdministratorRule(capacity, dataDevices, setIsLoadingReport) : setOpen(!open)
+  function handleReportGeneration(action){
+    if(useCodePagarMe){
+      reportAdministratorRule(capacity, dataDevices, setIsLoadingReport)
+    } else if(action){
+      setAction(action)
+    } else {
+      setOpen(!open)
+      setAction('')
+    }
   }
 
   useEffect(() => {
@@ -143,7 +152,7 @@ export default function Dashboard() {
       let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
       return generationRealValue;
     })
-    setEmittedCarbon(numbers(realGenerationTempArray.reduce((total, element) => total + element, 0).toFixed()))
+    setEmittedCarbon(numbers(realGenerationTempArray.reduce((total, element) => total + element, 0).toFixed('2')))
   }, [data])
 
 
@@ -284,9 +293,19 @@ export default function Dashboard() {
         aria-describedby="modal-modal-description"
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       >
-      {
-        <PaymentWarn/>
-      }
+        <Box sx={{
+          bgcolor: 'background.paper',
+          pb: 6, 
+          px:4, 
+          bgcolor:"background.paper",
+          borderRadius: 1,
+          border: 0
+        }}>
+          <Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
+            <Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+          </Box>
+          { action == 'assignPlan' ? <MayaWatchPro /> : <PaymentWarn handleReportGeneration={handleReportGeneration} />}
+        </Box>
       </Modal>
     </>
   );

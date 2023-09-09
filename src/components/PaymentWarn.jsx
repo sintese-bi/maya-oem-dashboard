@@ -18,9 +18,12 @@ import {
   Info,
 } from "@mui/icons-material";
 
-export const PaymentWarn = () => {
+export const PaymentWarn = ({ welcome, handleModalState, handleReportGeneration }) => {
 	return(
-		<Box sx={{bgcolor: 'background.paper', px: 4, py: 4, borderRadius: 1, width: '30%'}}>
+		<Box sx={{bgcolor: 'background.paper', px: 4, borderRadius: 1, width: '100%'}}>
+			{
+          welcome ? <Typography variant="h2" sx={{pb: 4}}>Bem vindo</Typography> : null
+      }
 			<Typography sx={{fontSize: '24px', fontWeight: 'bold', pb: 1}}>Assine nosso plano</Typography>
 			<Typography sx={{width: '100%'}}>Assine nosso plano para ter acesso as seguintes funcionalidades:</Typography>
 			<List sx={{py: 4}}>
@@ -37,7 +40,9 @@ export const PaymentWarn = () => {
 					<ListItemText>Geração de relatórios</ListItemText>
 				</ListItem>
 			</List>
-			<Button variant="contained"> 
+			<Button variant="contained" onClick={() => {
+				handleModalState ? handleModalState('assignPlan') : handleReportGeneration('assignPlan')
+			}}> 
 				Assinar Plano
 			</Button>
 		</Box>

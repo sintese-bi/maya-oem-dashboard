@@ -751,13 +751,6 @@ function ClientCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
-              {
-                uniqueCities.map((data) => (
-                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
-                ))
-              }
-            </TextField>
             <TextField 
               defaultValue="AMAZONAS"
               onChange={(event, newEstado) => setEstado(newEstado["props"].value)} 
@@ -771,7 +764,13 @@ function ClientCalculator({ onPreviousStep }) {
                 ))
               }
             </TextField>
-
+            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
+              {
+                uniqueCities.map((data) => (
+                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
+                ))
+              }
+            </TextField>
             <>
               <TextField
                 label="Potência da Usina(em kWp)"

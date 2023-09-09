@@ -29,6 +29,9 @@ import { auth } from "../store/actions/users";
 import BackgroundLogin from "../assets/img/illustrations/background-login.svg";
 import Logo from "../assets/img/logo/maya-watch-logo.png";
 
+//COOKIES
+import { getUserCookie, removeUserCookie } from "src/services/session";
+
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
   email: Yup.string()
@@ -40,7 +43,7 @@ const validateSchema = Yup.object().shape({
 // COMPONENTE DA PÁGINA
 export default function Login() {
   const [open, setOpen] = useState(false)
-
+  const { profileLevel, useName } = getUserCookie();
   const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,7 +67,12 @@ export default function Login() {
       );
 
       if (status === 200) {
-        navigate("/dashboard");
+        if(profileLevel == 'admin'){
+          navigate("/dashboard");
+        }else{
+          navigate("/dashboard/devices");
+        }
+        
       } else {
 
       }
@@ -185,8 +193,7 @@ export default function Login() {
                   </Grid>
                   <Grid item>
                     <Link
-                      href="https://mayaenergy.com.br/oem"
-                      target="_blank"
+                      href="/register"
                       variant="body2"
                     >
                       {"Não tem uma conta? Contrate agora!"}

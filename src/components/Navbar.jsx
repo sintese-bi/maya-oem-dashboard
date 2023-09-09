@@ -37,7 +37,7 @@ export const DashboardNavbar = () => {
       label: "Home",
       to: "/dashboard",
       icon: <AccountCircle fontSize="small" />,
-      disabled: true,
+      disabled: profileLevel === 'admin' ? true : false,
       active: location.pathname === "/dashboard" ? true : false,
     },
     {
@@ -58,14 +58,14 @@ export const DashboardNavbar = () => {
       label: "Plantas",
       to: "/dashboard/devices",
       icon: <AccountCircle fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
+      disabled: true,
       active: location.pathname === "/dashboard/devices" ? true : false,
     },
     {
       label: "Proposta",
       to: "/dashboard/calculator",
       icon: <BrandingWatermark fontSize="small" />,
-      disabled: true,
+      disabled: profileLevel === "admin" ? true : false,
       active: location.pathname === "/dashboard/calculator" ? true : false,
     },
   ];

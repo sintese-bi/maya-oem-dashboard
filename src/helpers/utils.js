@@ -300,21 +300,24 @@ export const selectPropsStyle = () => {
 export const numbers = (value) => {
   let number = value;
   console.log(number)
-  if (number.length > 3 && number.length < 7) {
+  if (number.length > 6 && number.length < 10) {
     let numberToArray = number?.split('');
-    numberToArray.splice(-3, 0, '.')
+    numberToArray.splice(-3, 1, ',')
+    numberToArray.splice(-6, 0, '.')
     let transformedNumber = numberToArray.join('')
     return transformedNumber;
-  } else if (number.length >= 7) {
+  } else if (number.length >= 10) {
     let numberToArray = number?.split('');
-    numberToArray.splice(-3, 0, '.')
-    numberToArray.splice(-7, 0, '.')
+    numberToArray.splice(-3, 1, ',')
+    numberToArray.splice(-6, 1, '.')
+    numberToArray.splice(-10, 0, '.')
     let transformedNumber = numberToArray.join('')
     return transformedNumber;
-  } else if (number.length == 6) {
+  } else if (number.length <= 6) {
     let numberToArray = number?.split('');
     numberToArray.splice(-3, 1, ',')
     let transformedNumber = numberToArray.join('')
+    console.log(transformedNumber)
     return transformedNumber;
   }
 }

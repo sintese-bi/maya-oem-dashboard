@@ -25,7 +25,7 @@ const validateSchema = Yup.object().shape({
 	bl_password: Yup.string().required("Campo é obrigatório.")
 })
 
-export const CreateDevice = ({setOpen}) => {  
+export const CreateDevice = () => {  
 	const {
     deviceCreated
   } = useSelector((state) => state.devices);
@@ -72,7 +72,7 @@ export const CreateDevice = ({setOpen}) => {
 			>
 				<Box>
 					<Typography sx={{fontWeight: 'bold'}} variant="h5">
-						Criação de planta
+						Adicionar portal
 					</Typography>
 				</Box>
 				<Box sx={{display:'flex', flexDirection: 'column', py: 4}}>
@@ -111,7 +111,7 @@ export const CreateDevice = ({setOpen}) => {
 					type="submit"
 					variant="contained"
 				>
-					Adicionar portal do inversor
+					Confirmar
 				</Button>
 			</Box>
 		</FormProvider>

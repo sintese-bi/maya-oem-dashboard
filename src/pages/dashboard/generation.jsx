@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
 import { getUserCookie } from "src/services/session";
 import { PaymentWarn } from 'src/components/PaymentWarn'
+import{ MayaWatchPro } from "src/components/MayaWatchPro";
 import {
   Backdrop,
   Box,
@@ -32,7 +33,8 @@ import {
   ElectricBolt,
   OfflineBolt,
   Thermostat,
-  DownloadForOffline
+  DownloadForOffline,
+  Cancel
 } from "@mui/icons-material";
 import { getDevices, getCapacities } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
@@ -48,6 +50,7 @@ const Generation = () => {
   const { blUuidState, devUuidState, useNameState } = location.state || {};
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
   const [open, setOpen] = useState(false)
+  const [action, setAction] = useState('')
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
@@ -86,8 +89,15 @@ const Generation = () => {
     setSelectedDevUuid(useUuid);
   }
 
-  function handleReportGeneration(){
-    useCodePagarMe ? reportClientRule(generation, useNameState, capacity, setIsLoadingReport) : setOpen(!open)
+  function handleReportGeneration(action){
+    if(useCodePagarMe){
+      reportClientRule(generation, useNameState, capacity, setIsLoadingReport)
+    } else if(action){
+      setAction(action)
+    } else {
+      setOpen(!open)
+      setAction('')
+    }
   }
 
   useEffect(() => {
@@ -269,7 +279,19 @@ const Generation = () => {
         aria-describedby="modal-modal-description"
         sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       >
-        <PaymentWarn />
+        <Box sx={{
+          bgcolor: 'background.paper',
+          pb: 6, 
+          px:4, 
+          bgcolor:"background.paper",
+          borderRadius: 1,
+          border: 0
+        }}>
+          <Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
+            <Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+          </Box>
+          {action == 'assignPlan' ? <MayaWatchPro /> : <PaymentWarn handleReportGeneration={handleReportGeneration} />}
+        </Box>
       </Modal>
     </Box>
   );
