@@ -10,7 +10,7 @@ export default function PrivateAdminRoute() {
     // SE O USUARIO NÃO FOR ADMIN, REDIRECIONA PARA DASHBOARD
     if (profileLevel !== "admin") {
       return <Navigate to="/dashboard/devices" />;
-    }
+    } 
   }
 
   return <Outlet />;

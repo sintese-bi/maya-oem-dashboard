@@ -1,5 +1,5 @@
 // IMPORTS
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 // LIBS DE ESTILOS
 import { Box, CssBaseline } from "@mui/material";
@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 // COMPONENTS
 import { DashboardNavbar } from "../components/Navbar";
 import { Side } from "../components/Side";
+import { useEffect } from 'react'
 
 // STYLE
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({

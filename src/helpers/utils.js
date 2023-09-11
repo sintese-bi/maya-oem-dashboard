@@ -299,7 +299,6 @@ export const selectPropsStyle = () => {
 // FORMATA UMA STRING PARA UM VALOR MONETÁRIO SEPARANDO OS MILHARES POR VIRGULA
 export const numbers = (value) => {
   let number = value;
-  console.log(number)
   if (number.length > 6 && number.length < 10) {
     let numberToArray = number?.split('');
     numberToArray.splice(-3, 1, ',')
@@ -317,7 +316,6 @@ export const numbers = (value) => {
     let numberToArray = number?.split('');
     numberToArray.splice(-3, 1, ',')
     let transformedNumber = numberToArray.join('')
-    console.log(transformedNumber)
     return transformedNumber;
   }
 }

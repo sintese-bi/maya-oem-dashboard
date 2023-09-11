@@ -43,7 +43,6 @@ const validateSchema = Yup.object().shape({
 // COMPONENTE DA PÁGINA
 export default function Login() {
   const [open, setOpen] = useState(false)
-  const { profileLevel, useName } = getUserCookie();
   const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ export default function Login() {
       if (status === 200) {
         if(profileLevel == 'admin'){
           navigate("/dashboard");
-        }else{
+        }else if(profileLevel == 'client'){
           navigate("/dashboard/devices");
         }
         

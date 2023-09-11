@@ -281,6 +281,30 @@ export const ChartsLinear = (props) => {
     moment(startDate).add(index, 'months').format('MM/YYYY')
   )
 
+  const weeks = [];
+  let recentDate = moment(startDate).startOf('week');
+  let endOfInterval = moment(endDate);
+
+  while(recentDate.isBefore(endDate) || recentDate.isSame(endDate, 'week')){
+    let startWeek = recentDate.clone();
+    let endWeek = recentDate.clone().endOf('week');
+
+    if(endWeek.isAfter(endOfInterval)){
+      endWeek = endOfInterval.clone();
+    }
+
+    weeks.push({startWeek: moment(startWeek).format('DD/MM/YYYY'), endWeek: moment(endWeek).format('DD/MM/YYYY')});
+
+    recentDate.add(1, 'week')
+  }
+
+  console.log(weeks)
+  weeks.forEach((date) => {
+    console.log(`start of the week: ${date.startWeek} - End of the week: ${date.endWeek}`)
+    let filtered = generation.realGeneration?.filter((data) => moment(data.date).isSameOrBefore(date.endWeek) && moment(data.date).isSameOrAfter(date.startWeek))
+    console.log(filtered)
+  })
+
   const options = {
     responsive: true,
     plugins: {
