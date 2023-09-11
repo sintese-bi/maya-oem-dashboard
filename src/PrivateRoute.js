@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, BrowserRouter as Router } from "react-router-dom";
 import { getUserCookie } from "./services/session";
 
 export default function PrivateRoute() {

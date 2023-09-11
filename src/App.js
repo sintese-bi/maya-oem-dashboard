@@ -27,27 +27,24 @@ export default function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
 
-      <Route path="dashboard" element={<LayoutDashboard />}>
-        <Route element={<PrivateRoute />}>
+      <Route element={<PrivateRoute />}>
+        <Route path="dashboard" element={<LayoutDashboard />}>
+          <Route index element={<Dashboard />} />
           {/* <Route index path="devices" element={<Devices />} /> */}
-          
           <Route path="generation/:brand" element={<Generation />} />
           <Route path="alerts/:brand" element={<Alerts />} />
-          <Route path="devices" element={<Plants />} />
+          <Route index path="devices" element={<Plants />} />
 
+          <Route element={<PrivateAdminRoute />}>
+            <Route path="alertDevices" element={<AlertDevices />} />
+            <Route path="investment/:brand" element={<Investment />} />
+            <Route path="calculator" element={<HomePage />} />
+            <Route path="calculator/client" element={<ClientCalculator />} />
+            <Route path="calculator/admin" element={<AdminCalculator />} />
+            <Route path="users" element={<ListUsers />} />
+          </Route>
         </Route>
 
-        <Route element={<PrivateAdminRoute />}>
-          <Route index element={<Dashboard />} />
-
-          <Route path="users" element={<ListUsers />} />
-          
-          <Route path="alertDevices" element={<AlertDevices />} />
-          <Route path="investment/:brand" element={<Investment />} />
-          <Route path="calculator" element={<HomePage />} />
-          <Route path="calculator/client" element={<ClientCalculator />} />
-          <Route path="calculator/admin" element={<AdminCalculator />} />
-        </Route>
       </Route>
 
       <Route path="*" element={<Login />} />

@@ -1,6 +1,7 @@
 // IMPORTS
 import api, { configRequest } from "../../services/api";
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { AdministratorReport } from "src/reports/AdministratorReport";
@@ -52,9 +53,14 @@ import {
 import MUIDataTable from "mui-datatables";
 
 export default function Dashboard() {
+  const navigate = useNavigate()
   // PROPS DE CONTROLLER
-  const { useUuid, useName } = getUserCookie();
+  const { useUuid, useName, profileLevel } = getUserCookie();
   const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+
+  if(profileLevel !== 'admin'){
+    navigate('/dashboard/devices')
+  }
 
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
