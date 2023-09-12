@@ -1,7 +1,7 @@
 // IMPORTS
 import { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
-import { numbers } from '../helpers/utils'
+import { handleMonthFilter, handleWeekFilter, numbers } from "../helpers/utils";
 
 // LIBS DE ESTILOS
 import { Bar, Chart, Line } from "react-chartjs-2";
@@ -46,7 +46,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   LineController,
-  BarController,
+  BarController
 );
 
 const TABS = {
@@ -56,10 +56,10 @@ const TABS = {
 
 export const ChartsGenerationBITopAndLowValue = (props) => {
   const canvas = useRef(null);
-  const { topAndLowValue } = props
+  const { topAndLowValue } = props;
   const theme = useTheme();
 
-  const labels = ['22/08'+"    "+'08/08'];
+  const labels = ["22/08" + "    " + "08/08"];
 
   const data = {
     labels,
@@ -68,7 +68,7 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
         barThickness: 62,
         maxBarThickness: 56,
         borderRadius: 2,
-        label: 'Melhor dia',
+        label: "Melhor dia",
         data: [topAndLowValue.topValue, 0],
         backgroundColor: "#5048E5",
       },
@@ -76,23 +76,23 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
         barThickness: 62,
         maxBarThickness: 56,
         borderRadius: 2,
-        label: 'Pior dia',
+        label: "Pior dia",
         data: [topAndLowValue.lowValue, 0],
-        backgroundColor: '#14B8A6',
+        backgroundColor: "#14B8A6",
       },
     ],
   };
 
-const options = {
+  const options = {
     animation: true,
     cornerRadius: 20,
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
-    plugins:{
+    plugins: {
       legend: {
-        position: 'top'
-      }
+        position: "top",
+      },
     },
     yAxes: [
       {
@@ -129,11 +129,12 @@ const options = {
   };
 
   return (
-    <Card sx={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: 'center',
+        alignItems: "center",
         bgcolor: "background.paper",
         px: 2,
         pb: 2,
@@ -141,19 +142,21 @@ const options = {
         height: 420,
       }}
     >
-        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
-            Dias com melhor e pior geração.
-        </Typography>
-        <Box sx={{height: 300, width: 400}} >
-          <Chart type="bar" options={options} data={data}/>
-        </Box>
+      <Typography
+        color="textPrimary"
+        sx={{ fontWeight: "bold", fontSize: "20px" }}
+      >
+        Dias com melhor e pior geração.
+      </Typography>
+      <Box sx={{ height: 300, width: 400 }}>
+        <Chart type="bar" options={options} data={data} />
+      </Box>
     </Card>
-  )
-  
-}
+  );
+};
 
 export const ChartsGenerationBIProductive = (props) => {
-  const { startDate, endDate, optionFilter, generation, isLoading} = props
+  const { startDate, endDate, optionFilter, generation, isLoading } = props;
 
   const canvas = useRef(null);
   const theme = useTheme();
@@ -161,15 +164,18 @@ export const ChartsGenerationBIProductive = (props) => {
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
 
   // Obter número total de dias entre as datas de início e fim
-  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-  const months = moment(endDate).diff(startDate, 'months');
-  console.log(months)
+  const totalDays = moment(endDate).diff(startDate, "days") + 1;
+  const months = moment(endDate).diff(startDate, "months");
+  console.log(months);
   // Gerar rótulos de dia para o gráfico
-  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
-    moment(startDate).add(index, 'days').format('D')
-  ) : Array.from({ length: 12 }, (_, index) =>
-    moment(startDate).add(index, 'months').format('MM/YYYY')
-  )
+  const labels =
+    optionFilter == "month"
+      ? Array.from({ length: totalDays }, (_, index) =>
+          moment(startDate).add(index, "days").format("D")
+        )
+      : Array.from({ length: 12 }, (_, index) =>
+          moment(startDate).add(index, "months").format("MM/YYYY")
+        );
 
   const data = {
     labels,
@@ -177,30 +183,30 @@ export const ChartsGenerationBIProductive = (props) => {
       {
         borderRadius: 2,
         categoryPercentage: 0.5,
-        label: 'Geração Real',
+        label: "Geração Real",
         data: generation.realGeneration?.map((data) => data.value),
         backgroundColor: "#5048E5",
       },
       {
         borderRadius: 2,
         categoryPercentage: 0.5,
-        label: 'Geração Estimada',
+        label: "Geração Estimada",
         data: generation.estimatedGeneration,
-        backgroundColor: '#14B8A6',
+        backgroundColor: "#14B8A6",
       },
     ],
   };
 
-const options = {
+  const options = {
     animation: true,
     cornerRadius: 20,
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
-    plugins:{
+    plugins: {
       legend: {
-        position: 'top'
-      }
+        position: "top",
+      },
     },
     yAxes: [
       {
@@ -237,11 +243,12 @@ const options = {
   };
 
   return (
-    <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: 'center',
+        alignItems: "center",
         bgcolor: "background.paper",
         px: 2,
         pb: 2,
@@ -249,19 +256,20 @@ const options = {
         height: 420,
       }}
     >
-        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
-            Produtividade da planta
-        </Typography>
-        <Box sx={{height: 300, width: '100%'}} >
-          <Line type="bar" options={options} data={data}/>
-        </Box>
+      <Typography
+        color="textPrimary"
+        sx={{ fontWeight: "bold", fontSize: "20px" }}
+      >
+        Produtividade da planta
+      </Typography>
+      <Box sx={{ height: 300, width: "100%" }}>
+        <Line type="bar" options={options} data={data} />
+      </Box>
     </Box>
-  )
-  
-}
+  );
+};
 
 export const ChartsLinear = (props) => {
-  
   const { startDate, endDate, generation, isLoading, optionFilter } = props;
 
   const theme = useTheme();
@@ -271,50 +279,44 @@ export const ChartsLinear = (props) => {
 
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
 
+  let filteredWeekValues = handleWeekFilter(
+    startDate,
+    endDate,
+    generation?.realGeneration
+  );
+
+  let filteredMonthValues = handleMonthFilter(
+    startDate,
+    endDate,
+    generation?.realGeneration
+  );
+
   // Obter número total de dias entre as datas de início e fim
-  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-  const months = moment(endDate).diff(startDate, 'months');
+  const totalDays = moment(endDate).diff(startDate, "days") + 1;
+  const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
-  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
-    moment(startDate).add(index, 'days').format('D')
-  ) : Array.from({ length: 12 }, (_, index) =>
-    moment(startDate).add(index, 'months').format('MM/YYYY')
-  )
-
-  const weeks = [];
-  let recentDate = moment(startDate).startOf('week');
-  let endOfInterval = moment(endDate);
-
-  while(recentDate.isBefore(endDate) || recentDate.isSame(endDate, 'week')){
-    let startWeek = recentDate.clone();
-    let endWeek = recentDate.clone().endOf('week');
-
-    if(endWeek.isAfter(endOfInterval)){
-      endWeek = endOfInterval.clone();
-    }
-
-    weeks.push({startWeek: moment(startWeek).format('DD/MM/YYYY'), endWeek: moment(endWeek).format('DD/MM/YYYY')});
-
-    recentDate.add(1, 'week')
-  }
-
-  console.log(weeks)
-  weeks.forEach((date) => {
-    console.log(`start of the week: ${date.startWeek} - End of the week: ${date.endWeek}`)
-    let filtered = generation.realGeneration?.filter((data) => moment(data.date).isSameOrBefore(date.endWeek) && moment(data.date).isSameOrAfter(date.startWeek))
-    console.log(filtered)
-  })
+  const labels =
+    optionFilter == "days"
+      ? Array.from({ length: totalDays }, (_, index) =>
+          moment(startDate).add(index, "days").format("D")
+        )
+      : filteredWeekValues.weeks.map((data) => {
+          let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
+            data.endWeek
+          ).format("DD/MM")}`;
+          return date;
+        });
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: false,
-        text: ''
-      }
+        text: "",
+      },
     },
     scales: {
       y: {
@@ -333,80 +335,132 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: "Dias",
+          text: optionFilter == "days" ? "Dias" : "Semanas",
           font: { size: 18, weight: "bold" },
         },
       },
     },
-  }
+  };
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'Geração real',
-        data: generation.realGeneration?.map((data) => data.value),
+        label: "Geração real",
+        data:
+          optionFilter == "days"
+            ? generation.realGeneration?.map((data) => data.value)
+            : filteredWeekValues.realGenerationData,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
       {
-        label: 'Geração estimada',
+        label: "Geração estimada",
         data: generation.estimatedGeneration,
         backgroundColor: "#14B8A6",
-      }
-    ]
+      },
+    ],
   };
 
-  if (isLoading || !generation) return (
-      <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
-        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
+  if (isLoading || !generation)
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pb: 6,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
           Gerando gráfico
         </Typography>
-        <Box sx={{height: 300, width: 762}} >
+        <Box sx={{ height: 300, width: 762 }}>
           <LoadingSkeletonCharts />
         </Box>
       </Card>
     );
 
   return (
-    <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: 'center',
+        alignItems: "center",
       }}
     >
-        <Box sx={{display: 'flex', justifyContent: "space-between", height: 560, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
-          <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
-            Relação da geração real e geração estimada
-          </Typography>
-          <Box sx={{height: 400, width: 762}} >
-            <Line type="bar" options={options} data={data}/>
-          </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 560,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pb: 6,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Relação da geração real e geração estimada
+        </Typography>
+        <Box sx={{ height: 400, width: 762 }}>
+          <Line type="bar" options={options} data={data} />
         </Box>
+      </Box>
     </Box>
-  )
-}
+  );
+};
 
 export const ChartsDashboardHorizontal = (props) => {
-  const { dataDevices } = props
-  const [topDevices, setTopDevices] = useState([])
+  const { dataDevices } = props;
+  const [topDevices, setTopDevices] = useState([]);
 
   useEffect(() => {
     let realAndEstimatedDivision = dataDevices.map((data) => {
-       let real = Number(data.generationRealMonth.replace(/\Kwh/g, '')).toFixed();
-       let estimated = Number(data.generationEstimatedMonth.replace(/\Kwh/g, '')).toFixed();
-       let divisionPercentage = ((real/estimated)*100).toFixed();
-       let finalResult = {divisionPercentage: divisionPercentage, name: data.name}
-       return finalResult;
-    })
-    realAndEstimatedDivision.sort((a, b) => b.divisionPercentage - a.divisionPercentage);
-    setTopDevices(realAndEstimatedDivision.slice(0, 5))
-  }, [dataDevices])
-  
+      let real = Number(
+        data.generationRealMonth.replace(/\Kwh/g, "")
+      ).toFixed();
+      let estimated = Number(
+        data.generationEstimatedMonth.replace(/\Kwh/g, "")
+      ).toFixed();
+      let divisionPercentage = ((real / estimated) * 100).toFixed();
+      let finalResult = {
+        divisionPercentage: divisionPercentage,
+        name: data.name,
+      };
+      return finalResult;
+    });
+    realAndEstimatedDivision.sort(
+      (a, b) => b.divisionPercentage - a.divisionPercentage
+    );
+    setTopDevices(realAndEstimatedDivision.slice(0, 5));
+  }, [dataDevices]);
+
   useEffect(() => {
-    console.log(topDevices)
-  }, [topDevices])
+    console.log(topDevices);
+  }, [topDevices]);
 
   const data = {
     labels: topDevices.map((data) => data.name),
@@ -416,7 +470,7 @@ export const ChartsDashboardHorizontal = (props) => {
         borderRadius: 2,
         categoryPercentage: 0.5,
         maxBarThickness: 16,
-        label: 'Porcentagem',
+        label: "Porcentagem",
         data: topDevices.map((data) => data.divisionPercentage),
         backgroundColor: "#5048E5",
       },
@@ -424,76 +478,104 @@ export const ChartsDashboardHorizontal = (props) => {
   };
 
   const options = {
-    indexAxis: 'y',
+    indexAxis: "y",
     animation: true,
     cornerRadius: 20,
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
-    indexAxis: 'y' ,
+    indexAxis: "y",
     responsive: true,
     plugins: {
       legend: {
-        position: 'top' ,
+        position: "top",
+      },
+      title: {
+        display: false,
+        text: "",
+        size: "26px",
+      },
     },
-    title: {
-      display: false,
-      text: '',
-      size: "26px"
-    },
-  },
   };
 
   return (
-     <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: 'center',
+        alignItems: "center",
       }}
     >
-        <Card sx={{display: 'flex', justifyContent: "space-between", height: 460, flexDirection:'column', bgcolor: "background.paper", px: 3, pb: 6, pt: 4}}>
-          <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', mb: '4'}}>
-            Plantas com melhores performance no último mês.
-          </Typography>
-          <Box sx={{height: 300, width: 862}} >
-            <Chart type="bar" options={options} data={data}/>
-          </Box>
-        </Card>
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pb: 6,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Plantas com melhores performance no último mês.
+        </Typography>
+        <Box sx={{ height: 300, width: 862 }}>
+          <Chart type="bar" options={options} data={data} />
+        </Box>
+      </Card>
     </Box>
-  )
-}
+  );
+};
 
 export const ChartsDashboard = (props) => {
   const canvas = useRef(null);
-  const { dataDevices } = props
+  const { dataDevices } = props;
   const theme = useTheme();
 
-  const labels = ['Geração Real x Geração Estimada'];
+  const labels = ["Geração Real x Geração Estimada"];
 
-  const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0)
-  const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] = useState(0)
+  const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0);
+  const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] =
+    useState(0);
   const [valueTabs, setValueTabs] = useState(0);
 
   useEffect(() => {
     let generationRealMonth = dataDevices.map((data) => {
-      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
+      let generationRealValue = Number(
+        data.generationRealMonth.replace(/\Kwh/g, "")
+      );
       return generationRealValue;
-    })
-    let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed()
-    setGenerationRealTotalValue(generationRealMonthTotal)
+    });
+    let generationRealMonthTotal = generationRealMonth
+      .reduce((total, element) => total + element, 0)
+      .toFixed();
+    setGenerationRealTotalValue(generationRealMonthTotal);
 
     let generationEstimatedMonth = dataDevices.map((data) => {
-      let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
+      let generationEstimatedValue = Number(
+        data.generationEstimatedMonth.replace(/\Kwh/g, "")
+      );
       return generationEstimatedValue;
-    })
-    let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed()
-    setGenerationEstimatedTotalValue(generationEstimatedMonthTotal)
-    
-  }, [dataDevices])
+    });
+    let generationEstimatedMonthTotal = generationEstimatedMonth
+      .reduce((total, element) => total + element, 0)
+      .toFixed();
+    setGenerationEstimatedTotalValue(generationEstimatedMonthTotal);
+  }, [dataDevices]);
 
   const data = {
-    labels: [''],
+    labels: [""],
     datasets: [
       {
         barThickness: 82,
@@ -501,7 +583,7 @@ export const ChartsDashboard = (props) => {
         categoryPercentage: 0.5,
         label: "Geral Estimada",
         maxBarThickness: 76,
-        label: 'Geração Real',
+        label: "Geração Real",
         data: [generationRealTotalValue, 100],
         backgroundColor: "#5048E5",
       },
@@ -510,23 +592,23 @@ export const ChartsDashboard = (props) => {
         borderRadius: 2,
         categoryPercentage: 0.5,
         maxBarThickness: 76,
-        label: 'Geração Estimada',
+        label: "Geração Estimada",
         data: [generationEstimatedTotalValue, 80],
-        backgroundColor: '#14B8A6',
+        backgroundColor: "#14B8A6",
       },
     ],
   };
 
-const options = {
+  const options = {
     animation: true,
     cornerRadius: 20,
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
-    plugins:{
+    plugins: {
       legend: {
-        position: 'top'
-      }
+        position: "top",
+      },
     },
     yAxes: [
       {
@@ -563,11 +645,12 @@ const options = {
   };
 
   return (
-    <Card sx={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: 'center',
+        alignItems: "center",
         bgcolor: "background.paper",
         px: 2,
         pb: 2,
@@ -575,16 +658,18 @@ const options = {
         height: 420,
       }}
     >
-        <Typography color="textPrimary" sx={{fontWeight: 'bold', fontSize: '20px'}}>
-            Resumo da geração real vs estimada
-        </Typography>
-        <Box sx={{height: 300, width: 300}} >
-          <Chart type="bar" options={options} data={data}/>
-        </Box>
+      <Typography
+        color="textPrimary"
+        sx={{ fontWeight: "bold", fontSize: "20px" }}
+      >
+        Resumo da geração real vs estimada
+      </Typography>
+      <Box sx={{ height: 300, width: 300 }}>
+        <Chart type="bar" options={options} data={data} />
+      </Box>
     </Card>
-  )
-  
-}
+  );
+};
 
 // GRAFICO DE GERAÇÃO EM (Kwh) vs PERCENTAGEM
 export const ChartsGeneration = (props) => {
@@ -598,15 +683,18 @@ export const ChartsGeneration = (props) => {
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
 
   // Obter número total de dias entre as datas de início e fim
-  const totalDays = moment(endDate).diff(startDate, 'days') + 1;
-  const months = moment(endDate).diff(startDate, 'months');
+  const totalDays = moment(endDate).diff(startDate, "days") + 1;
+  const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
-  const labels = optionFilter == "month" ? Array.from({ length: totalDays }, (_, index) =>
-    moment(startDate).add(index, 'days').format('D')
-  ) : Array.from({ length: 12 }, (_, index) =>
-    moment(startDate).add(index, 'months').format('MM/YYYY')
-  )
-  
+  const labels =
+    optionFilter == "month"
+      ? Array.from({ length: totalDays }, (_, index) =>
+          moment(startDate).add(index, "days").format("D")
+        )
+      : Array.from({ length: 12 }, (_, index) =>
+          moment(startDate).add(index, "months").format("MM/YYYY")
+        );
+
   // PROPS PARA O GRAFICO
   const dataKwh = {
     datasets: [

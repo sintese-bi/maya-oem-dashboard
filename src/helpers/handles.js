@@ -37,7 +37,7 @@ export const handlesGeneration = (data, type, day, label) => {
     });
   } else {
     label.filter((data, index) => {
-      let sunGenReal = {value: 0, date: ''};
+      let sunGenReal = { value: 0, date: '' };
       data.generation.map((gen) => {
         let mothBooleano =
           moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY") === data
@@ -46,7 +46,7 @@ export const handlesGeneration = (data, type, day, label) => {
 
         if (mothBooleano) {
           sunGenReal.value = gen.gen_real + sunGenReal.value;
-          sunGenReal.date =  moment(gen.gen_date).format("DD/MM/YYYY")
+          sunGenReal.date = moment(gen.gen_date).format("DD/MM/YYYY")
         };
       });
       realGeneration[index] = sunGenReal;
