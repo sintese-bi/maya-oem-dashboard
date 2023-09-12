@@ -1,4 +1,6 @@
 import toast from "react-hot-toast";
+import moment from "moment";
+import { generation } from "src/store/typesActions/types";
 
 //FORMATA DATA TIME = 00:00
 export const formatTime = (date) => {
@@ -318,4 +320,108 @@ export const numbers = (value) => {
     let transformedNumber = numberToArray.join('')
     return transformedNumber;
   }
+}
+
+export const handleWeekFilter = (startDate, endDate, realGeneration) => {
+  const weeks = [];
+  let recentDate = moment(startDate).startOf("week");
+  let endOfInterval = moment(endDate);
+
+  while (recentDate.isBefore(endDate) || recentDate.isSame(endDate, "week")) {
+    let startWeek = recentDate.clone().startOf("week");
+    let endWeek = recentDate.clone().endOf("week");
+
+    if (endWeek.isAfter(endOfInterval)) {
+      endWeek = endOfInterval.clone();
+    }
+
+    weeks.push({
+      startWeek: moment(startWeek).format("MM/DD/YYYY"),
+      endWeek: moment(endWeek).format("MM/DD/YYYY"),
+    });
+
+    recentDate.add(1, "week");
+  }
+
+  let filteredValues = { realGenerationData: filterValuesByWeeks(realGeneration, weeks), weeks }
+  return filteredValues
+
+}
+
+export const handleMonthFilter = (startDate, endDate, realGeneration) => {
+  const months = [];
+  let recentDate = moment(startDate).startOf("month");
+  let endOfInterval = moment(endDate);
+
+  while (recentDate.isBefore(endDate) || recentDate.isSame(endDate, "month")) {
+    let startMonth = recentDate.clone().startOf("month");
+    let endMonth = recentDate.clone().endOf("month");
+
+    if (endMonth.isAfter(endOfInterval)) {
+      endMonth = endOfInterval.clone();
+    }
+
+    months.push({
+      startMonth: moment(startMonth).format("MM/DD/YYYY"),
+      endMonth: moment(endMonth).format("MM/DD/YYYY"),
+    });
+
+    recentDate.add(1, "month");
+  }
+  let filteredValues = { realGenerationData: filterValuesByMonths(realGeneration, months), months }
+  return filteredValues
+
+}
+
+function filterValuesByMonths(dataArray, months) {
+  const filteredValues = [];
+
+  for (const month of months) {
+    const startMonth = new Date(month.startMonth);
+    const endMonth = new Date(month.endMonth);
+
+    const valuesInMonth = dataArray?.filter((item) => {
+      let date = moment(item.date, "MM/DD/YYYY").format("DD/MM/YYYY");
+      const itemDate = new Date(date);
+      return itemDate >= startMonth && itemDate <= endMonth;
+    });
+    filteredValues.push(valuesInMonth);
+  }
+
+  let finalResult = filteredValues.map((week) => {
+    let totalValue = week.reduce(
+      (total, element) => total + Number(element.value),
+      0
+    );
+    return totalValue.toFixed(2);
+  })
+
+  return finalResult;
+}
+
+function filterValuesByWeeks(dataArray, weeks) {
+  const filteredValues = [];
+
+  for (const week of weeks) {
+    const startWeek = new Date(week.startWeek);
+    const endWeek = new Date(week.endWeek);
+
+    const valuesInWeek = dataArray?.filter((item) => {
+      let date = moment(item.date, "MM/DD/YYYY").format("DD/MM/YYYY");
+      const itemDate = new Date(date);
+      return itemDate >= startWeek && itemDate <= endWeek;
+    });
+    filteredValues.push(valuesInWeek);
+  }
+
+  let finalResult = filteredValues.map((week) => {
+    let totalValue = week.reduce(
+      (total, element) => total + Number(element.value),
+      0
+    );
+    return totalValue.toFixed(2);
+  })
+
+
+  return finalResult;
 }

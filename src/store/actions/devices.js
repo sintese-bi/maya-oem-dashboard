@@ -28,24 +28,24 @@ export const getDevices = (blUuid) => (dispatch) => {
 
 export const getAllDevices = (blUuids) => (dispatch) => {
   const allDevices = []
-  dispatch({type: devices.GET_ALL_DEVICES_REQUEST})
+  dispatch({ type: devices.GET_ALL_DEVICES_REQUEST })
 
   blUuids.map((data) => {
     api
-    .get(`/devices/${data}`, configRequest())
-    .then((res) => {
-      const { data } = res;
-      allDevices.push(data)
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevices";
+      .get(`/devices/${data}`, configRequest())
+      .then((res) => {
+        const { data } = res;
+        allDevices.push(data)
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevices";
 
-      toast.error(`${message} getAllDevices`, {
-        duration: 5000,
+        toast.error(`${message} getAllDevices`, {
+          duration: 5000,
+        });
+        dispatch({ type: devices.GET_ALL_DEVICES_FAILURE, message });
       });
-      dispatch({ type: devices.GET_ALL_DEVICES_FAILURE, message });
-    });
   })
 
   dispatch({
@@ -86,44 +86,43 @@ export const createDevice = (params) => (dispatch) => {
 }
 
 export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
-  dispatch({type: devices.GET_DEVICES_ALERTS_REQUEST})
+  dispatch({ type: devices.GET_DEVICES_ALERTS_REQUEST })
   devicesWithAlerts.map((data) => {
     api
-    .get(`/alerts?devUuid=${data.uuid}`, configRequest())
-    .then((res) => {
-      const { data } = res;
-      console.log(data)
-      dispatch({
-        type: devices.GET_DEVICES_ALERTS_SUCCESS,
-        result: data.length !== 0 ? data[0] : [],
-      });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      .get(`/alerts?devUuid=${data.uuid}`, configRequest())
+      .then((res) => {
+        const { data } = res;
+        console.log(data)
+        dispatch({
+          type: devices.GET_DEVICES_ALERTS_SUCCESS,
+          result: data.length !== 0 ? data[0] : [],
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        const message = err && err.data ? err.data.message : "Erro desconhecido";
 
-      toast.error(message, {
-        duration: 5000,
+        toast.error(message, {
+          duration: 5000,
+        });
+        dispatch({ type: devices.GET_DEVICES_ALERTS_FAILURE, message });
       });
-      dispatch({ type: devices.GET_DEVICES_ALERTS_FAILURE, message });
-    });
   })
 }
 
 export const getAllDevicesGeneration = (props) => (dispatch) => {
-  dispatch({type: devices.GET_ALL_DEVICES_GENERATION_REQUEST})
-    api
+  dispatch({ type: devices.GET_ALL_DEVICES_GENERATION_REQUEST })
+  api
     .get(
-      `/generationandtemperature?blUuid=${props.blUuid}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuid}&type=${props.type}`,
+      `/generationandtemperature?blUuid=${props.blUuid}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuid}&type=month`,
       configRequest()
     )
     .then((res) => {
       const { data } = res;
-      console.log('getGeneration:', data)
       dispatch({
         type: devices.GET_ALL_DEVICES_GENERATION_SUCCESS,
-        result: Object.assign(data, {deviceName: props.name}),
-        args: { type: props.type, date: props.date},
+        result: Object.assign(data, { deviceName: props.name }),
+        args: { type: 'month', date: props.date },
       });
     })
     .catch((error) => {
@@ -138,12 +137,12 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
 }
 
 export const deleteDevice = (devUuid) => (dispatch) => {
-  dispatch({type: devices.DELETE_DEVICE_REQUEST})
+  dispatch({ type: devices.DELETE_DEVICE_REQUEST })
   api
-    .post(`/deleteDevice`, ({devUuid}), configRequest())
+    .post(`/deleteDevice`, ({ devUuid }), configRequest())
     .then((res) => {
-      const {data} = res;
-       toast.success(data.message, {
+      const { data } = res;
+      toast.success(data.message, {
         duration: 5000,
       });
       dispatch({
@@ -157,22 +156,22 @@ export const deleteDevice = (devUuid) => (dispatch) => {
       toast.error(`${message} deleteDevices`, {
         duration: 5000,
       });
-      dispatch({ type: devices.DELETE_DEVICE_FAILURE, message });  
+      dispatch({ type: devices.DELETE_DEVICE_FAILURE, message });
     })
 }
 
 export const getCapacities = (devUuid) => (dispatch) => {
-  dispatch({type: devices.GET_CAPACITY_DEVICE_REQUEST})
+  dispatch({ type: devices.GET_CAPACITY_DEVICE_REQUEST })
   api
-   .get(`/reportclient/${devUuid}`)
-   .then((res) => {
-    const {data} = res;
-    dispatch({
-      type: devices.GET_CAPACITY_DEVICE_SUCCESS,
-      result: data
+    .get(`/reportclient/${devUuid}`)
+    .then((res) => {
+      const { data } = res;
+      dispatch({
+        type: devices.GET_CAPACITY_DEVICE_SUCCESS,
+        result: data
+      })
     })
-   })
-   .catch((error) => {
+    .catch((error) => {
       const { response: err } = error;
       const message = err && err.data ? err.data.message : "Erro desconhecido - capacity";
 
@@ -180,5 +179,5 @@ export const getCapacities = (devUuid) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: devices.GET_CAPACITY_DEVICE_FAILURE, message });
-   })
+    })
 }
