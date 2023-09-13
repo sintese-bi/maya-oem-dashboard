@@ -306,11 +306,32 @@ export const ChartsLinear = (props) => {
   const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
 
+  const filterPeriodData = () => {
+    switch (optionFilter) {
+      case "days":
+        return generation.realGeneration?.map((data) => data.value);
+        break;
+      case "weeks":
+        return filteredWeekValues.realGenerationData;
+        break;
+      case "months":
+        return filteredMonthValues.realGenerationData;
+        break;
+      case "biweek":
+        return filteredQuinzenasValues.realGenerationData;
+        break;
+      default:
+        break;
+    }
+  };
+
+  console.log(generation);
+
   const filterPeriod = () => {
     switch (optionFilter) {
       case "days":
-        return Array.from({ length: totalDays }, (_, index) =>
-          moment(startDate).add(index, "days").format("D")
+        return generation?.realGeneration?.map((data) =>
+          moment(data.date, "DD/MM/YYYY").format("DD/MM")
         );
         break;
       case "weeks":
@@ -329,12 +350,21 @@ export const ChartsLinear = (props) => {
           return date;
         });
         break;
+      case "biweek":
+        return filteredQuinzenasValues.quinzenas.map((data) => {
+          let date = `${moment(data.startQuinzena).format("DD/MM")} - ${moment(
+            data.endQuinzena
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
       default:
         break;
     }
   };
 
   const labels = filterPeriod();
+  const periodData = filterPeriodData();
 
   const options = {
     responsive: true,
@@ -376,10 +406,7 @@ export const ChartsLinear = (props) => {
     datasets: [
       {
         label: "Geração real",
-        data:
-          optionFilter == "days"
-            ? generation.realGeneration?.map((data) => data.value)
-            : filteredWeekValues.realGenerationData,
+        data: periodData,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
