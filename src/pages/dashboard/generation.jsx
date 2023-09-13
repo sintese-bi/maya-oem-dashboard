@@ -5,10 +5,10 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
 import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
 import { useLocation } from "react-router-dom";
-import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
 import { getUserCookie } from "src/services/session";
-import { PaymentWarn } from 'src/components/PaymentWarn'
-import{ MayaWatchPro } from "src/components/MayaWatchPro";
+import { PaymentWarn } from "src/components/PaymentWarn";
+import { MayaWatchPro } from "src/components/MayaWatchPro";
 import {
   Backdrop,
   Box,
@@ -23,7 +23,7 @@ import {
   TextField,
   Button,
   Typography,
-  Modal
+  Modal,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -34,7 +34,7 @@ import {
   OfflineBolt,
   Thermostat,
   DownloadForOffline,
-  Cancel
+  Cancel,
 } from "@mui/icons-material";
 import { getDevices, getCapacities } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
@@ -49,31 +49,32 @@ const Generation = () => {
   const location = useLocation();
   const { blUuidState, devUuidState, useNameState } = location.state || {};
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
-  const [open, setOpen] = useState(false)
-  const [action, setAction] = useState('')
+  const [open, setOpen] = useState(false);
+  const [action, setAction] = useState("");
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
   );
-  const { isLoadingDevices, devices, capacity } = useSelector((state) => state.devices);
+  const { isLoadingDevices, devices, capacity } = useSelector(
+    (state) => state.devices
+  );
 
   //const { useCodePagarMe } = useSelector((state) => state.users);
 
   const { useName } = getUserCookie();
-  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
-
+  const useCodePagarMe =
+    useName == "Maya Energy" || useName == "darcio" ? true : false;
 
   const [deviceInfo, setDeviceInfo] = useState({});
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  const [optionFilter, setOptionFilter] = useState("month");
+  const [optionFilter, setOptionFilter] = useState("days");
 
-  const [isLoadingReport, setIsLoadingReport] = useState(true)
+  const [isLoadingReport, setIsLoadingReport] = useState(true);
 
-
-  function handleSelectDevices(useUuid) { 
+  function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
     setDeviceInfo(datInfo[0]);
 
@@ -89,14 +90,14 @@ const Generation = () => {
     setSelectedDevUuid(useUuid);
   }
 
-  function handleReportGeneration(action){
-    if(useCodePagarMe){
-      reportClientRule(generation, useNameState, capacity, setIsLoadingReport)
-    } else if(action){
-      setAction(action)
+  function handleReportGeneration(action) {
+    if (useCodePagarMe) {
+      reportClientRule(generation, useNameState, capacity, setIsLoadingReport);
+    } else if (action) {
+      setAction(action);
     } else {
-      setOpen(!open)
-      setAction('')
+      setOpen(!open);
+      setAction("");
     }
   }
 
@@ -118,36 +119,42 @@ const Generation = () => {
           endDate,
           blUuid: blUuidState,
           devUuid: deviceInfo?.dev_uuid,
-          type: optionFilter,
         })
       );
     } else if (devUuidState) {
-      dispatch(getCapacities(devUuidState))
+      dispatch(getCapacities(devUuidState));
       dispatch(
         getGeneration({
           startDate,
           endDate,
           blUuid: blUuidState,
           devUuid: devUuidState,
-          type: optionFilter,
         })
       );
     }
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
-    console.log(generation)
-  }, [generation])
+    console.log(
+      startDate,
+      endDate,
+      optionFilter,
+      generation,
+      isLoadingGeneration,
+      temperature,
+      deviceInfo
+    );
+  }, [generation]);
 
   useEffect(() => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
-  if (isLoadingDevices) {
+  if (isLoadingGeneration == true && isLoadingDevices == true) {
     return (
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoadingDevices}
+        open={isLoadingGeneration == true && isLoadingDevices == true}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -172,10 +179,12 @@ const Generation = () => {
             mt: 3,
           }}
         >
-          <Box sx={{
-            display: "flex",
-            alignItems: "center"
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <FormControl sx={{ mr: 1, width: 200 }}>
               <InputLabel>Lista de Usuários</InputLabel>
               <NativeSelect
@@ -218,48 +227,58 @@ const Generation = () => {
             </LocalizationProvider>
 
             <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
-              <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "220px",
+                }}
+              >
                 <Button
                   startIcon={<DownloadForOffline fontSize="small" />}
-                  variant={useCodePagarMe ? 'outlined' : ''}
+                  variant={useCodePagarMe ? "outlined" : ""}
                   onClick={() => handleReportGeneration()}
                 >
-                  {
-                    useCodePagarMe ? (
-                      isLoadingReport ? (
-                        'Preparar relatório'
-                      ) : 
-                      (
-                        <PDFDownloadLink 
-                          document={<ClientReport />} 
-                          fileName="relatório-cliente.pdf"
-                          style={{textDecoration: 'none'}}
-                        >
-                          {({ blob, url, loading, error }) => loading ? "Carregando relatório..." : "Relatório Cliente"}
-                        </PDFDownloadLink>
-                      )
-                      
+                  {useCodePagarMe ? (
+                    isLoadingReport ? (
+                      "Preparar relatório"
                     ) : (
-                      'Relatório indisponível'
+                      <PDFDownloadLink
+                        document={<ClientReport />}
+                        fileName="relatório-cliente.pdf"
+                        style={{ textDecoration: "none" }}
+                      >
+                        {({ blob, url, loading, error }) =>
+                          loading
+                            ? "Carregando relatório..."
+                            : "Relatório Cliente"
+                        }
+                      </PDFDownloadLink>
                     )
-                  }
+                  ) : (
+                    "Relatório indisponível"
+                  )}
                 </Button>
               </Box>
             </ToolTipNoAccess>
           </Box>
           <Tabs />
         </Box>
-         <Box sx={{mx:4, my: 10}}>
-          <GenerationBI 
-            startDate={startDate}
-            endDate={endDate}
-            optionFilter={optionFilter}
-            generation={generation}
-            isLoading={isLoadingGeneration}
-            temperature={temperature}
-            deviceInfo={deviceInfo}
-          />
-        </Box>
+        <TextField
+          sx={{ width: 200, backgroundColor: "transparent", mt: 4, ml: 1 }}
+          label="Filtrar por"
+          select
+          defaultValue="days"
+          variant="standard"
+          onChange={(e) => setOptionFilter(e.target.value)}
+        >
+          <MenuItem value="days">Dias</MenuItem>
+          <MenuItem value="weeks">Semanas</MenuItem>
+          <MenuItem disabled value="quinzena">
+            Quinzena
+          </MenuItem>
+          <MenuItem value="months">Mês</MenuItem>
+        </TextField>
         <Box sx={{ my: 10 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
@@ -271,26 +290,55 @@ const Generation = () => {
             blUuidState={blUuidState}
           />
         </Box>
+        <Box sx={{ mx: 4, my: 10 }}>
+          <GenerationBI
+            startDate={startDate}
+            endDate={endDate}
+            optionFilter={optionFilter}
+            generation={generation}
+            isLoading={isLoadingGeneration}
+            isLoadingDevices={isLoadingDevices}
+            temperature={temperature}
+            deviceInfo={deviceInfo}
+          />
+        </Box>
       </Container>
       <Modal
         open={open}
         onClose={handleReportGeneration}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box sx={{
-          bgcolor: 'background.paper',
-          pb: 6, 
-          px:4, 
-          bgcolor:"background.paper",
-          borderRadius: 1,
-          border: 0
-        }}>
-          <Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
-            <Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            pb: 6,
+            px: 4,
+            bgcolor: "background.paper",
+            borderRadius: 1,
+            border: 0,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              width: "100%",
+              py: 4,
+            }}
+          >
+            <Cancel
+              fontSize="large"
+              onClick={() => setOpen(!open)}
+              sx={{ cursor: "pointer" }}
+            />
           </Box>
-          {action == 'assignPlan' ? <MayaWatchPro /> : <PaymentWarn handleReportGeneration={handleReportGeneration} />}
+          {action == "assignPlan" ? (
+            <MayaWatchPro />
+          ) : (
+            <PaymentWarn handleReportGeneration={handleReportGeneration} />
+          )}
         </Box>
       </Modal>
     </Box>

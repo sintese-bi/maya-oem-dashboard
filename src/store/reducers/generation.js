@@ -27,12 +27,12 @@ export default function userReducer(state = initialState, action) {
       const { deviceData, latestTemp } = result;
       const { date, type } = args;
 
-      function dateOrder(dateA, dateB){
+      function dateOrder(dateA, dateB) {
         const form = 'DD/MM';
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
-        if(date1.isBefore(date2)){
+        if (date1.isBefore(date2)) {
           return -1;
         } else if (date1.isAfter(date2)) {
           return 1;
@@ -41,12 +41,12 @@ export default function userReducer(state = initialState, action) {
         }
       }
 
-      function monthOrder(dateA, dateB){
+      function monthOrder(dateA, dateB) {
         const form = 'MM/YYYY';
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
-        if(date1.isBefore(date2)){
+        if (date1.isBefore(date2)) {
           return -1;
         } else if (date1.isAfter(date2)) {
           return 1;
@@ -58,15 +58,15 @@ export default function userReducer(state = initialState, action) {
       let datesInfo = deviceData[0].generation.map((gen) => {
         return moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM")
       })
-      
+
       let monthsInfo = []
       deviceData[0].generation.map((gen) => {
         let monthAlreadyCount = monthsInfo.filter((data) => data == moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
-        
-        if(monthAlreadyCount.length == 0){
+
+        if (monthAlreadyCount.length == 0) {
           monthsInfo.push(moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
         }
-        
+
       })
 
       datesInfo.sort(dateOrder)
@@ -74,15 +74,26 @@ export default function userReducer(state = initialState, action) {
 
       const month = parseInt(moment(date).format("MM"));
       const year = parseInt(moment(date).format("YYYY"));
-      const day = type === "month" ? datesInfo.length  : monthsInfo.length;
-      console.log(year, month, day, datesInfo, monthsInfo)
+      const day = type === "month" ? datesInfo.length : 12;
 
       // LABEL DO GRAFICO
       const label =
         type === "month"
           ? datesInfo
-          : monthsInfo
-
+          : [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez",
+          ];
 
       return {
         isLoadingGeneration: false,
@@ -90,16 +101,16 @@ export default function userReducer(state = initialState, action) {
           deviceData.length !== 0
             ? handlesGeneration(deviceData[0], type, day, label)
             : {
-                label,
-                realGeneration: [],
-                estimatedGeneration: [],
-                percentMax: [],
-                percentMin: [],
-                realGenerationTotal: 0,
-                estimatedGenerationTotal: 0,
-                generationPercentageTotal: 0,
-                generationPercentage: [],
-              },
+              label,
+              realGeneration: [],
+              estimatedGeneration: [],
+              percentMax: [],
+              percentMin: [],
+              realGenerationTotal: 0,
+              estimatedGenerationTotal: 0,
+              generationPercentageTotal: 0,
+              generationPercentage: [],
+            },
         temperature: latestTemp?.[0]?.temperature[0]?.temp_temperature,
       };
 
@@ -122,12 +133,12 @@ export default function userReducer(state = initialState, action) {
       const alerts =
         result.length !== 0
           ? result.alerts.map((item) => {
-              return {
-                devName: result.dev_name,
-                alInv: item.al_inv,
-                alAlert: item.al_alerts,
-              };
-            })
+            return {
+              devName: result.dev_name,
+              alInv: item.al_inv,
+              alAlert: item.al_alerts,
+            };
+          })
           : [];
       return {
         ...state,
