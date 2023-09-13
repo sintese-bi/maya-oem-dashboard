@@ -119,6 +119,7 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
+      console.log(data);
       dispatch({
         type: devices.GET_ALL_DEVICES_GENERATION_SUCCESS,
         result: Object.assign(data, { deviceName: props.name }),

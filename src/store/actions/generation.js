@@ -6,8 +6,7 @@ import toast from "react-hot-toast";
 
 export const getGeneration = (params) => async (dispatch) => {
   dispatch({ type: generation.GET_GENERATION_REQUEST });
-
-  const { blUuid, startDate, endDate, type } = params;
+  const { blUuid, startDate, endDate } = params;
   let { devUuid } = params;
 
   // Loop while para aguardar até que o devUuid esteja definido
@@ -22,7 +21,7 @@ export const getGeneration = (params) => async (dispatch) => {
   // Caso o devUuid esteja definido, continuar com a chamada à API
   api
     .get(
-      `/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=years`,
+      `/generationandtemperature?blUuid=${blUuid}&startDate=${startDate}&endDate=${endDate}&devUuid=${devUuid}&type=month`,
       configRequest()
     )
     .then((res) => {
@@ -31,7 +30,7 @@ export const getGeneration = (params) => async (dispatch) => {
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,
-        args: { type: params.type, date: params.date},
+        args: { type: 'month', date: params.date },
       });
     })
     .catch((error) => {

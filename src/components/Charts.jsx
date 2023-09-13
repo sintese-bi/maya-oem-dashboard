@@ -1,7 +1,12 @@
 // IMPORTS
 import { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
-import { handleMonthFilter, handleWeekFilter, numbers } from "../helpers/utils";
+import {
+  handleMonthFilter,
+  handleQuinzenaFilter,
+  handleWeekFilter,
+  numbers,
+} from "../helpers/utils";
 
 // LIBS DE ESTILOS
 import { Bar, Chart, Line } from "react-chartjs-2";
@@ -271,7 +276,6 @@ export const ChartsGenerationBIProductive = (props) => {
 
 export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter } = props;
-
   const theme = useTheme();
 
   // ESTADOS DE CONTROLE DO FILTRO
@@ -291,21 +295,46 @@ export const ChartsLinear = (props) => {
     generation?.realGeneration
   );
 
+  let filteredQuinzenasValues = handleQuinzenaFilter(
+    startDate,
+    endDate,
+    generation?.realGeneration
+  );
+
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, "days") + 1;
   const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
-  const labels =
-    optionFilter == "days"
-      ? Array.from({ length: totalDays }, (_, index) =>
+
+  const filterPeriod = () => {
+    switch (optionFilter) {
+      case "days":
+        return Array.from({ length: totalDays }, (_, index) =>
           moment(startDate).add(index, "days").format("D")
-        )
-      : filteredWeekValues.weeks.map((data) => {
+        );
+        break;
+      case "weeks":
+        return filteredWeekValues.weeks.map((data) => {
           let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
             data.endWeek
           ).format("DD/MM")}`;
           return date;
         });
+        break;
+      case "months":
+        return filteredMonthValues.months.map((data) => {
+          let date = `${moment(data.startMonth).format("DD/MM")} - ${moment(
+            data.endMonth
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const labels = filterPeriod();
 
   const options = {
     responsive: true,
@@ -335,7 +364,7 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: optionFilter == "days" ? "Dias" : "Semanas",
+          text: optionFilter,
           font: { size: 18, weight: "bold" },
         },
       },

@@ -326,7 +326,7 @@ export const handleWeekFilter = (startDate, endDate, realGeneration) => {
   const weeks = [];
   let recentDate = moment(startDate).startOf("week");
   let endOfInterval = moment(endDate);
-
+  console.log(startDate, endDate, realGeneration);
   while (recentDate.isBefore(endDate) || recentDate.isSame(endDate, "week")) {
     let startWeek = recentDate.clone().startOf("week");
     let endWeek = recentDate.clone().endOf("week");
@@ -353,23 +353,66 @@ export const handleMonthFilter = (startDate, endDate, realGeneration) => {
   let recentDate = moment(startDate).startOf("month");
   let endOfInterval = moment(endDate);
 
-  while (recentDate.isBefore(endDate) || recentDate.isSame(endDate, "month")) {
+  while (recentDate.isBefore(endDate) || recentDate.isSame(endDate)) {
     let startMonth = recentDate.clone().startOf("month");
     let endMonth = recentDate.clone().endOf("month");
-
-    if (endMonth.isAfter(endOfInterval)) {
-      endMonth = endOfInterval.clone();
-    }
 
     months.push({
       startMonth: moment(startMonth).format("MM/DD/YYYY"),
       endMonth: moment(endMonth).format("MM/DD/YYYY"),
     });
-
     recentDate.add(1, "month");
   }
   let filteredValues = { realGenerationData: filterValuesByMonths(realGeneration, months), months }
   return filteredValues
+
+}
+
+export const handleQuinzenaFilter = (startDate, endDate, realGeneration) => {
+  const quinzenas = [];
+  let recentDate = moment(startDate).startOf("month");
+  let endOfInterval = moment(endDate);
+
+  while (recentDate.isBefore(endDate) || recentDate.isSame(endDate)) {
+    let startQuinzena = recentDate.clone().startOf("month");
+    let endQuinzena = recentDate.add(15, "month");
+
+    console.log(startQuinzena, endQuinzena);
+
+    quinzenas.push({
+      startQuinzena: moment(startQuinzena).format("MM/DD/YYYY"),
+      endQuinzena: moment(endQuinzena).format("MM/DD/YYYY"),
+    });
+    recentDate.add(15, "month");
+  }
+  let filteredValues = { realGenerationData: filterValuesByQuinzenas(realGeneration, quinzenas), quinzenas }
+  return filteredValues
+
+}
+
+function filterValuesByQuinzenas(dataArray, quinzenas) {
+  const filteredValues = [];
+
+  for (const quinzena of quinzenas) {
+    const startQuinzena = new Date(quinzena.startQuinzena);
+    const endQuinzena = new Date(quinzena.endQuinzena);
+    const valuesInQuinzena = dataArray?.filter((item) => {
+      let date = moment(item.date, "DD/MM/YYYY");
+      const itemDate = new Date(date);
+      return itemDate >= startQuinzena && itemDate <= endQuinzena;
+    });
+    filteredValues.push(valuesInQuinzena);
+  }
+
+  let finalResult = filteredValues.map((quinzena) => {
+    let totalValue = quinzena?.reduce(
+      (total, element) => total + Number(element.value),
+      0
+    );
+    return totalValue?.toFixed(2);
+  })
+  console.log(filteredValues);
+  return finalResult;
 
 }
 
@@ -379,9 +422,8 @@ function filterValuesByMonths(dataArray, months) {
   for (const month of months) {
     const startMonth = new Date(month.startMonth);
     const endMonth = new Date(month.endMonth);
-
     const valuesInMonth = dataArray?.filter((item) => {
-      let date = moment(item.date, "MM/DD/YYYY").format("DD/MM/YYYY");
+      let date = moment(item.date, "DD/MM/YYYY");
       const itemDate = new Date(date);
       return itemDate >= startMonth && itemDate <= endMonth;
     });
@@ -389,13 +431,13 @@ function filterValuesByMonths(dataArray, months) {
   }
 
   let finalResult = filteredValues.map((week) => {
-    let totalValue = week.reduce(
+    let totalValue = week?.reduce(
       (total, element) => total + Number(element.value),
       0
     );
-    return totalValue.toFixed(2);
+    return totalValue?.toFixed(2);
   })
-
+  console.log(filteredValues);
   return finalResult;
 }
 
@@ -415,13 +457,13 @@ function filterValuesByWeeks(dataArray, weeks) {
   }
 
   let finalResult = filteredValues.map((week) => {
-    let totalValue = week.reduce(
+    let totalValue = week?.reduce(
       (total, element) => total + Number(element.value),
       0
     );
-    return totalValue.toFixed(2);
+    return totalValue?.toFixed(2);
   })
 
-
+  console.log(filteredValues);
   return finalResult;
 }
