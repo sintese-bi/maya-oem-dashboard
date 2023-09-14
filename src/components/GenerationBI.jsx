@@ -21,6 +21,7 @@ export const GenerationBI = ({
   isLoadingDevices,
   temperature,
   deviceInfo,
+  graphRef,
 }) => {
   const [totalRealGeneration, setTotalRealGeneration] = useState();
   const [totalEstimatedGeneration, setTotalEstimatedGeneration] = useState();
@@ -163,7 +164,10 @@ export const GenerationBI = ({
           )}
         </Grid>
       </Grid>
-      <Box sx={{ mt: 16, bgcolor: "background.paper", p: 4, boxShadow: 3 }}>
+      <Box
+        sx={{ mt: 16, bgcolor: "background.paper", p: 4, boxShadow: 3 }}
+        ref={graphRef}
+      >
         <Typography sx={{ fontSize: "20px", mb: 6, fontWeight: "600" }}>
           {isLoading
             ? ""

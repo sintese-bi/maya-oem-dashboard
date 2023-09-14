@@ -3,7 +3,7 @@ import { numbers } from 'src/helpers/utils';
 
 export const reportClient = {
     date: new Date(),
-	estimatedGenerationTotal: "",
+    estimatedGenerationTotal: "",
     realGenerationTotal: "",
     percent: "",
     capacity: "",
@@ -19,11 +19,11 @@ export const reportClient = {
     state: ""
 }
 
-export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport){
-	reportClient.estimatedGenerationTotal = numbers(generation.estimatedGenerationTotal.toFixed('2'))
-	reportClient.realGenerationTotal = numbers(generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2))
+export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport) {
+    reportClient.estimatedGenerationTotal = numbers(generation.estimatedGeneration.reduce((total, element) => total + element, 0).toFixed(2))
+    reportClient.realGenerationTotal = numbers(generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2))
 
-    let percentValue = (generation.realGeneration.reduce((total, element) => total + Number(element.value), 0)/generation.estimatedGenerationTotal)*100
+    let percentValue = (generation.realGeneration.reduce((total, element) => total + Number(element.value), 0) / generation.estimatedGeneration.reduce((total, element) => total + element, 0)) * 100
     reportClient.percent = percentValue.toFixed()
     generation.realGenerationTotal < reportClient.estimatedGenerationTotal ? reportClient.lowLevel = true : reportClient.lowLevel = false
 
