@@ -326,7 +326,6 @@ export const handleWeekFilter = (startDate, endDate, realGeneration) => {
   const weeks = [];
   let recentDate = moment(startDate).startOf("week");
   let endOfInterval = moment(endDate);
-  console.log(startDate, endDate, realGeneration);
   while (recentDate.isBefore(endDate) || recentDate.isSame(endDate, "week")) {
     let startWeek = recentDate.clone().startOf("week");
     let endWeek = recentDate.clone().endOf("week");
@@ -344,8 +343,8 @@ export const handleWeekFilter = (startDate, endDate, realGeneration) => {
   }
 
   let filteredValues = { realGenerationData: filterValuesByWeeks(realGeneration, weeks), weeks }
-  return filteredValues
 
+  return filteredValues
 }
 
 export const handleMonthFilter = (startDate, endDate, realGeneration) => {
@@ -364,30 +363,31 @@ export const handleMonthFilter = (startDate, endDate, realGeneration) => {
     recentDate.add(1, "month");
   }
   let filteredValues = { realGenerationData: filterValuesByMonths(realGeneration, months), months }
-  return filteredValues
 
+  return filteredValues
 }
 
 export const handleQuinzenaFilter = (startDate, endDate, realGeneration) => {
   const quinzenas = [];
   let recentDate = moment(startDate).startOf("month");
-  let endOfInterval = moment(endDate);
+  let endOfInterval = recentDate.clone().endOf("month");
 
   while (recentDate.isBefore(endDate) || recentDate.isSame(endDate)) {
-    let startQuinzena = recentDate.clone().startOf("month");
-    let endQuinzena = recentDate.add(15, "month");
+    let startQuinzena = recentDate.clone();
+    let endQuinzena = recentDate.add(14, "days");
 
-    console.log(startQuinzena, endQuinzena);
 
     quinzenas.push({
-      startQuinzena: moment(startQuinzena).format("MM/DD/YYYY"),
+      startQuinzena: moment(startQuinzena).format('MM/DD/YYYY'),
       endQuinzena: moment(endQuinzena).format("MM/DD/YYYY"),
     });
-    recentDate.add(15, "month");
+
+
+    recentDate.add(1, 'days')
   }
   let filteredValues = { realGenerationData: filterValuesByQuinzenas(realGeneration, quinzenas), quinzenas }
-  return filteredValues
 
+  return filteredValues
 }
 
 function filterValuesByQuinzenas(dataArray, quinzenas) {
@@ -411,9 +411,8 @@ function filterValuesByQuinzenas(dataArray, quinzenas) {
     );
     return totalValue?.toFixed(2);
   })
-  console.log(filteredValues);
-  return finalResult;
 
+  return finalResult;
 }
 
 function filterValuesByMonths(dataArray, months) {
@@ -430,14 +429,13 @@ function filterValuesByMonths(dataArray, months) {
     filteredValues.push(valuesInMonth);
   }
 
-  let finalResult = filteredValues.map((week) => {
-    let totalValue = week?.reduce(
+  let finalResult = filteredValues.map((month) => {
+    let totalValue = month?.reduce(
       (total, element) => total + Number(element.value),
       0
     );
     return totalValue?.toFixed(2);
   })
-  console.log(filteredValues);
   return finalResult;
 }
 
@@ -464,6 +462,5 @@ function filterValuesByWeeks(dataArray, weeks) {
     return totalValue?.toFixed(2);
   })
 
-  console.log(filteredValues);
   return finalResult;
 }

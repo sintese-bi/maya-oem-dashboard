@@ -136,9 +136,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
           >
             <MenuItem value="days">Dias</MenuItem>
             <MenuItem value="weeks">Semanas</MenuItem>
-            <MenuItem disabled value="quinzena">
-              Quinzena
-            </MenuItem>
+            <MenuItem value="biweek">Quinzena</MenuItem>
             <MenuItem value="months">Mês</MenuItem>
           </TextField>
           <ChartsLinear
