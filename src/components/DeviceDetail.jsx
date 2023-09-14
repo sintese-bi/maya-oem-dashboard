@@ -45,7 +45,15 @@ const validateSchema = Yup.object().shape({
 });
 
 export const DeviceDetail = (props) => {
-  const { name, address, contactNumber, kwp, loadingDevices, devUuid, blUuidState } = props;
+  const {
+    name,
+    address,
+    contactNumber,
+    kwp,
+    loadingDevices,
+    devUuid,
+    blUuidState,
+  } = props;
   const [selectedCity, setSelectedCity] = useState(null);
   const { profileLevel } = getUserCookie() || null;
   const [isSaved, setIsSaved] = useState(false);
@@ -63,7 +71,7 @@ export const DeviceDetail = (props) => {
     mode: "onChange",
     resolver: yupResolver(validateSchema),
   });
-  console.log(address)
+  console.log(address);
   const [editInputs, setEditInputs] = useState(false);
   async function onSubmit(values) {
     setSelectedCity((prevValue) => (prevValue ? prevValue : values.address));
@@ -86,9 +94,8 @@ export const DeviceDetail = (props) => {
 
       // Faça o que for necessário com o valor estimado retornado.
       console.log("Valor estimado da geração:", gen_estimated1);
-      dispatch(getDevices(blUuidState))
-      setEditInputs(!editInputs)
-
+      dispatch(getDevices(blUuidState));
+      setEditInputs(!editInputs);
     } catch (error) {
       // Lida com erros, se necessário.
       console.error("Erro ao fazer a requisição:", error);
@@ -227,17 +234,15 @@ export const DeviceDetail = (props) => {
         Informações do usuário
       </Typography>
 
-      {profileLevel === "admin" ? (
-        <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            onClick={() => setEditInputs(!editInputs)}
-            variant="outlined"
-            startIcon={<Edit />}
-          >
-            Editar
-          </Button>
-        </Box>
-      ) : null}
+      <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          onClick={() => setEditInputs(!editInputs)}
+          variant="outlined"
+          startIcon={<Edit />}
+        >
+          Editar
+        </Button>
+      </Box>
 
       {!editInputs ? (
         <Grid container>
