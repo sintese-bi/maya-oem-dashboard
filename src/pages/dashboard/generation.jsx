@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
@@ -48,6 +48,7 @@ import Tabs from "../../components/shared/Tabs";
 const Generation = () => {
   const location = useLocation();
   const { blUuidState, devUuidState, useNameState } = location.state || {};
+  const graphRef = useRef(null);
   const [selectedDevUuid, setSelectedDevUuid] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
@@ -132,6 +133,8 @@ const Generation = () => {
         })
       );
     }
+
+    graphRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
@@ -226,57 +229,56 @@ const Generation = () => {
               />
             </LocalizationProvider>
 
-            <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "220px",
-                }}
-              >
-                <Button
-                  startIcon={<DownloadForOffline fontSize="small" />}
-                  variant={useCodePagarMe ? "outlined" : ""}
-                  onClick={() => handleReportGeneration()}
-                >
-                  {useCodePagarMe ? (
-                    isLoadingReport ? (
-                      "Preparar relatório"
-                    ) : (
-                      <PDFDownloadLink
-                        document={<ClientReport />}
-                        fileName="relatório-cliente.pdf"
-                        style={{ textDecoration: "none" }}
-                      >
-                        {({ blob, url, loading, error }) =>
-                          loading
-                            ? "Carregando relatório..."
-                            : "Relatório Cliente"
-                        }
-                      </PDFDownloadLink>
-                    )
-                  ) : (
-                    "Relatório indisponível"
-                  )}
-                </Button>
-              </Box>
-            </ToolTipNoAccess>
+            <TextField
+              sx={{ width: 200, backgroundColor: "transparent", ml: 1 }}
+              label="Filtrar por"
+              select
+              defaultValue="days"
+              variant="standard"
+              onChange={(e) => setOptionFilter(e.target.value)}
+            >
+              <MenuItem value="days">Dias</MenuItem>
+              <MenuItem value="weeks">Semanas</MenuItem>
+              <MenuItem value="biweek">Quinzena</MenuItem>
+              <MenuItem value="months">Mês</MenuItem>
+            </TextField>
           </Box>
           <Tabs />
         </Box>
-        <TextField
-          sx={{ width: 200, backgroundColor: "transparent", mt: 4, ml: 1 }}
-          label="Filtrar por"
-          select
-          defaultValue="days"
-          variant="standard"
-          onChange={(e) => setOptionFilter(e.target.value)}
-        >
-          <MenuItem value="days">Dias</MenuItem>
-          <MenuItem value="weeks">Semanas</MenuItem>
-          <MenuItem value="biweek">Quinzena</MenuItem>
-          <MenuItem value="months">Mês</MenuItem>
-        </TextField>
+        <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "200px",
+            }}
+          >
+            <Button
+              startIcon={<DownloadForOffline fontSize="small" />}
+              variant={useCodePagarMe ? "outlined" : ""}
+              sx={{ width: "100%", mt: 4 }}
+              onClick={() => handleReportGeneration()}
+            >
+              {useCodePagarMe ? (
+                isLoadingReport ? (
+                  "Preparar relatório"
+                ) : (
+                  <PDFDownloadLink
+                    document={<ClientReport />}
+                    fileName="relatório-cliente.pdf"
+                    style={{ textDecoration: "none", height: "100%" }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Carregando relatório..." : "Relatório Cliente"
+                    }
+                  </PDFDownloadLink>
+                )
+              ) : (
+                "Relatório indisponível"
+              )}
+            </Button>
+          </Box>
+        </ToolTipNoAccess>
         <Box sx={{ my: 10 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
@@ -290,6 +292,7 @@ const Generation = () => {
         </Box>
         <Box sx={{ mx: 4, my: 10 }}>
           <GenerationBI
+            graphRef={graphRef}
             startDate={startDate}
             endDate={endDate}
             optionFilter={optionFilter}

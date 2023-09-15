@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const BigNumber = (props) => {
   const { title, value, icon, btnTitle = false } = props;
@@ -44,7 +44,8 @@ export const BigNumber = (props) => {
 };
 
 export const BigNumberDashboard = (props) => {
-  const { title, value, icon, handleChangeColumns, type, btn, activeBtn } = props;
+  const { title, value, icon, handleChangeColumns, type, btn, activeBtn } =
+    props;
 
   return (
     <Card sx={{ width: 345 }}>
@@ -83,7 +84,14 @@ export const BigNumberDashboard = (props) => {
             }}
             onClick={() => handleChangeColumns(type)}
             size="small"
-            style={{color: "#10B981", fontSize: '14px', fontWeight: 600, textDecoration: 'none', underline: 'none', padding: '10px'}}
+            style={{
+              color: "#10B981",
+              fontSize: "14px",
+              fontWeight: 600,
+              textDecoration: "none",
+              underline: "none",
+              padding: "10px",
+            }}
           >
             Visualizar
           </Link>
