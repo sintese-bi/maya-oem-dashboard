@@ -144,7 +144,7 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
                 <ListItemText>
                   {generationPercentState.biggerThanEsimated
                     ? `A produtividade global atual está ${generationPercentState.percentValue}% acima da esperada`
-                    : `Tenha atenção as suas plantas, sua produtividade atual está ${generationPercentState.percentValue}%
+                    : `Sua produtividade hoje está ${generationPercentState.percentValue}%
             		  abaixo da esperada`}
                 </ListItemText>
               </ListItem>

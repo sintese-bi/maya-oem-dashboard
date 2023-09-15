@@ -489,6 +489,44 @@ export const ChartsLinear = (props) => {
   );
 };
 
+export const chartsToGenerationReports = async (props) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 400; // Defina a largura e altura conforme necessário
+  canvas.height = 300;
+
+  const ctx = canvas.getContext("2d");
+
+  function done() {
+    alert("function done executed");
+    const graphURL = graph.toBase64Image();
+    console.log(graphURL);
+  }
+
+  const graph = new ChartJS(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Votes",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      bezierCurve: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+
+  console.log(canvas.toDataURL(), graph);
+};
+
 export const ChartsDashboardHorizontal = (props) => {
   const { dataDevices } = props;
   const [topDevices, setTopDevices] = useState([]);

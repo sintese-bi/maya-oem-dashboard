@@ -10,6 +10,7 @@ export const getDevices = (blUuid) => (dispatch) => {
     .get(`/devices/${blUuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: devices.GET_DEVICES_SUCCESS,
         result: data,

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -12,6 +13,19 @@ import {
 import { InsertDriveFile, Info } from "@mui/icons-material";
 
 export const MayaWatchPro = () => {
+  const {
+    isLoading,
+    brands,
+    blUuids,
+    dataDevices,
+    generationBelowEstimated,
+    alerts,
+    offline,
+    online,
+    capacity,
+    useEmail,
+    //useCodePagarMe
+  } = useSelector((state) => state.users);
   return (
     <Box
       sx={{
@@ -28,10 +42,10 @@ export const MayaWatchPro = () => {
           Maya Watch PRO
         </Typography>
         <Typography variant="body2" sx={{ width: "70%" }}>
-          A um passo de liberar todas as funcionalidades PRO do nosso software.
-          Tenha relatorios personalizaveis a qualquer hora, configure alertas e
-          tenha suporte continuo do nosso time de monitoramento. Veja os planos
-          disponiveis abaixo.
+          A um passo de liberar todas as {useEmail + "f"} funcionalidades PRO do
+          nosso software. Tenha relatorios personalizaveis a qualquer hora,
+          configure alertas e tenha suporte continuo do nosso time de
+          monitoramento. Veja os planos disponiveis abaixo.
         </Typography>
       </Box>
       <Box

@@ -44,7 +44,7 @@ export const GenerationBI = ({
         ?.reduce((total, element) => total + element, 0)
         ?.toFixed("2")
     );
-    if (totalRealGeneration > totalEstimatedGeneration) {
+    if ((totalRealGeneration / totalEstimatedGeneration) * 100 >= 80) {
       setDeviceIsProductive(true);
     }
 
