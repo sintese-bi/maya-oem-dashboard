@@ -92,8 +92,18 @@ const Generation = () => {
   }
 
   function handleReportGeneration(action) {
+    let startDateReport = moment(startDate).format("DD/MM/YYYY");
+    let endDateReport = moment(endDate).format("DD/MM/YYYY");
     if (useCodePagarMe) {
-      reportClientRule(generation, useNameState, capacity, setIsLoadingReport);
+      reportClientRule(
+        generation,
+        useNameState,
+        capacity,
+        setIsLoadingReport,
+        graphRef,
+        startDateReport,
+        endDateReport
+      );
     } else if (action) {
       setAction(action);
     } else {
@@ -133,8 +143,6 @@ const Generation = () => {
         })
       );
     }
-
-    graphRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
@@ -172,18 +180,6 @@ const Generation = () => {
         py: 2,
       }}
     >
-      {/*<PDFViewer
-          fileName="relatório-cliente.pdf"
-          style={{ textDecoration: "none", height: "100%" }}
-        >
-          <Report />
-        </PDFViewer>
-        <PDFViewer
-          fileName="relatório-cliente.pdf"
-          style={{ textDecoration: "none", height: "100%" }}
-        >
-          <ClientReport />
-        </PDFViewer>*/}
       <Container maxWidth={false}>
         <Box
           sx={{

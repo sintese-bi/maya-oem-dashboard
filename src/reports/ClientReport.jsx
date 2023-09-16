@@ -5,9 +5,6 @@ import {
   View,
   Document,
   StyleSheet,
-  PDFViewer,
-  Svg,
-  Polygon,
   Image,
 } from "@react-pdf/renderer";
 
@@ -116,15 +113,26 @@ export const ClientReport = () => {
       <Page size="A4" style={styles.page}>
         <View style={styles.main}>
           <View style={styles.header}>
-            <View style={styles.generationDate}>
-              <Text style={styles.generationDateText}>Data de geração</Text>
-              <Text style={styles.generationDateValue}>
-                {reportClient.date.getDate() < 10 ? "0" : ""}
-                {reportClient.date.getDate()}/
-                {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
-                {reportClient.date.getMonth() + 1}/
-                {reportClient.date.getFullYear()}
-              </Text>
+            <View>
+              <View style={styles.generationDate}>
+                <Text style={styles.generationDateText}>Data de geração</Text>
+                <Text style={styles.generationDateValue}>
+                  {reportClient.date.getDate() < 10 ? "0" : ""}
+                  {reportClient.date.getDate()}/
+                  {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
+                  {reportClient.date.getMonth() + 1}/
+                  {reportClient.date.getFullYear()}
+                </Text>
+              </View>
+              <View style={styles.generationDate}>
+                <Text style={styles.generationDateText}>
+                  Data de aquisição dos dados
+                </Text>
+                <Text style={styles.generationDateValue}>
+                  {reportClient.requistionStartDate} -
+                  {reportClient.requisitionEndDate}
+                </Text>
+              </View>
               <Text style={{ fontSize: "18px" }}>{reportClient.useName}</Text>
             </View>
             <View style={styles.logo}>
@@ -207,6 +215,24 @@ export const ClientReport = () => {
                 src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"
               ></Image>
             </View>
+          </View>
+          <View
+            style={{
+              width: "80%",
+              backgroundColor: "white",
+              padding: "20px",
+              marginBottom: "20px",
+              marginTop: "30px",
+              borderRadius: "10px",
+            }}
+          >
+            <Image
+              style={{
+                width: "100%",
+                height: "220px",
+              }}
+              src={reportClient.graph}
+            ></Image>
           </View>
           <View style={styles.madeBy}>
             <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>

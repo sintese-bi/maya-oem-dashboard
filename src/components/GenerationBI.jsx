@@ -164,10 +164,7 @@ export const GenerationBI = ({
           )}
         </Grid>
       </Grid>
-      <Box
-        sx={{ mt: 16, bgcolor: "background.paper", p: 4, boxShadow: 3 }}
-        ref={graphRef}
-      >
+      <Box sx={{ mt: 16, bgcolor: "background.paper", p: 4, boxShadow: 3 }}>
         <Typography sx={{ fontSize: "20px", mb: 6, fontWeight: "600" }}>
           {isLoading
             ? ""
@@ -192,6 +189,7 @@ export const GenerationBI = ({
           optionFilter={optionFilter}
           generation={generation}
           isLoading={isLoading}
+          graphRef={graphRef}
         />
       </Box>
     </Box>

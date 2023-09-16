@@ -275,7 +275,8 @@ export const ChartsGenerationBIProductive = (props) => {
 };
 
 export const ChartsLinear = (props) => {
-  const { startDate, endDate, generation, isLoading, optionFilter } = props;
+  const { startDate, endDate, generation, isLoading, optionFilter, graphRef } =
+    props;
   const theme = useTheme();
 
   // ESTADOS DE CONTROLE DO FILTRO
@@ -482,7 +483,7 @@ export const ChartsLinear = (props) => {
           Relação da geração real e geração estimada
         </Typography>
         <Box sx={{ height: 400, width: 762 }}>
-          <Line type="bar" options={options} data={data} />
+          <Line type="bar" options={options} data={data} ref={graphRef} />
         </Box>
       </Box>
     </Box>
