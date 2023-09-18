@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BigNumber } from "./BigNumber";
 import { LoadingSkeletonBigNumbers } from "./Loading";
 import { numbers } from "src/helpers/utils";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, MenuItem, TextField } from "@mui/material";
 import { ChartsLinear } from "src/components/Charts";
 
 import {
@@ -22,6 +22,7 @@ export const GenerationBI = ({
   temperature,
   deviceInfo,
   graphRef,
+  setOptionFilter,
 }) => {
   const [totalRealGeneration, setTotalRealGeneration] = useState();
   const [totalEstimatedGeneration, setTotalEstimatedGeneration] = useState();
@@ -75,6 +76,9 @@ export const GenerationBI = ({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", mt: 4 }}>
+      <Typography variant="h4" sx={{ mb: 6 }}>
+        Informações do dia
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           {isLoadingDevices ? (
@@ -164,13 +168,18 @@ export const GenerationBI = ({
           )}
         </Grid>
       </Grid>
-      <Box sx={{ mt: 16, bgcolor: "background.paper", p: 4, boxShadow: 3 }}>
+      <Typography variant="h4" sx={{ mb: 6, mt: 16 }}>
+        Informações do período
+      </Typography>
+      <Box sx={{ bgcolor: "background.paper", p: 4, boxShadow: 3 }}>
         <Typography sx={{ fontSize: "20px", mb: 6, fontWeight: "600" }}>
           {isLoading
             ? ""
             : deviceIsProductive
             ? `
-							Parabéns! A produção da sua usina esta dentro do esperado.
+							${
+                productivePercent > 100 ? "Parabéns!" : ""
+              }A produção da sua usina esta dentro do esperado.
 							Sua produtividade no período escolhido é de ${numbers(
                 (totalRealGeneration / 1000).toFixed(2)
               )}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
@@ -183,6 +192,74 @@ export const GenerationBI = ({
               )}Mwh o que corresponde a ${productivePercent}% da produção estimada.
 						`}
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "space-around",
+            mb: 18,
+          }}
+        >
+          <Grid item xs={4}>
+            {isLoading ? (
+              <LoadingSkeletonBigNumbers />
+            ) : (
+              <BigNumber
+                title="Geração Total Real"
+                value={`${
+                  generation.realGeneration
+                    ? numbers(
+                        generation.realGeneration
+                          .reduce(
+                            (total, element) => total + Number(element.value),
+                            0
+                          )
+                          .toFixed(2)
+                      ) + "Kwh"
+                    : "-"
+                }`}
+                icon={<Bolt />}
+              />
+            )}
+          </Grid>
+          <Grid item xs={4}>
+            {isLoading ? (
+              <LoadingSkeletonBigNumbers />
+            ) : (
+              <BigNumber
+                title="Geração Total Estimada"
+                value={`${
+                  generation.estimatedGeneration
+                    ? numbers(
+                        generation.estimatedGeneration
+                          .reduce((total, element) => total + element, 0)
+                          .toFixed(2)
+                      ) + "Kwh"
+                    : "-"
+                }`}
+                icon={<Bolt />}
+              />
+            )}
+          </Grid>
+        </Box>
+        <TextField
+          sx={{
+            width: 200,
+            backgroundColor: "transparent",
+            ml: 1,
+          }}
+          label="Filtrar período do gráfico por"
+          select
+          defaultValue="days"
+          variant="standard"
+          onChange={(e) => setOptionFilter(e.target.value)}
+        >
+          <MenuItem value="days">Dias</MenuItem>
+          <MenuItem value="weeks">Semanas</MenuItem>
+          <MenuItem value="biweek">Quinzena</MenuItem>
+          <MenuItem value="months">Mês</MenuItem>
+        </TextField>
         <ChartsLinear
           startDate={startDate}
           endDate={endDate}

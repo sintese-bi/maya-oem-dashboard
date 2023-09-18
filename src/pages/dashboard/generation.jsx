@@ -92,6 +92,7 @@ const Generation = () => {
   }
 
   function handleReportGeneration(action) {
+    let address = deviceInfo?.dev_address;
     let startDateReport = moment(startDate).format("DD/MM/YYYY");
     let endDateReport = moment(endDate).format("DD/MM/YYYY");
     if (useCodePagarMe) {
@@ -102,7 +103,8 @@ const Generation = () => {
         setIsLoadingReport,
         graphRef,
         startDateReport,
-        endDateReport
+        endDateReport,
+        address
       );
     } else if (action) {
       setAction(action);
@@ -236,57 +238,45 @@ const Generation = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-
-            <TextField
-              sx={{ width: 200, backgroundColor: "transparent", ml: 1 }}
-              label="Filtrar por"
-              select
-              defaultValue="days"
-              variant="standard"
-              onChange={(e) => setOptionFilter(e.target.value)}
-            >
-              <MenuItem value="days">Dias</MenuItem>
-              <MenuItem value="weeks">Semanas</MenuItem>
-              <MenuItem value="biweek">Quinzena</MenuItem>
-              <MenuItem value="months">Mês</MenuItem>
-            </TextField>
           </Box>
+          <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                width: "200px",
+              }}
+            >
+              <Button
+                startIcon={<DownloadForOffline fontSize="small" />}
+                variant={useCodePagarMe ? "outlined" : ""}
+                sx={{ width: "100%" }}
+                onClick={() => handleReportGeneration()}
+              >
+                {useCodePagarMe ? (
+                  isLoadingReport ? (
+                    "Preparar relatório"
+                  ) : (
+                    <PDFDownloadLink
+                      document={<ClientReport />}
+                      fileName="relatório-cliente.pdf"
+                      style={{ textDecoration: "none", height: "100%" }}
+                    >
+                      {({ blob, url, loading, error }) =>
+                        loading
+                          ? "Carregando relatório..."
+                          : "Relatório Cliente"
+                      }
+                    </PDFDownloadLink>
+                  )
+                ) : (
+                  "Relatório indisponível"
+                )}
+              </Button>
+            </Box>
+          </ToolTipNoAccess>
           <Tabs />
         </Box>
-        <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              width: "200px",
-            }}
-          >
-            <Button
-              startIcon={<DownloadForOffline fontSize="small" />}
-              variant={useCodePagarMe ? "outlined" : ""}
-              sx={{ width: "100%", mt: 4 }}
-              onClick={() => handleReportGeneration()}
-            >
-              {useCodePagarMe ? (
-                isLoadingReport ? (
-                  "Preparar relatório"
-                ) : (
-                  <PDFDownloadLink
-                    document={<ClientReport />}
-                    fileName="relatório-cliente.pdf"
-                    style={{ textDecoration: "none", height: "100%" }}
-                  >
-                    {({ blob, url, loading, error }) =>
-                      loading ? "Carregando relatório..." : "Relatório Cliente"
-                    }
-                  </PDFDownloadLink>
-                )
-              ) : (
-                "Relatório indisponível"
-              )}
-            </Button>
-          </Box>
-        </ToolTipNoAccess>
         <Box sx={{ my: 10 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
@@ -300,6 +290,7 @@ const Generation = () => {
         </Box>
         <Box sx={{ mx: 4, my: 10 }}>
           <GenerationBI
+            setOptionFilter={setOptionFilter}
             graphRef={graphRef}
             startDate={startDate}
             endDate={endDate}

@@ -20,15 +20,15 @@ export const auth = (params) => (dispatch) => {
       .post("/login", params)
       .then((res) => {
         const { data } = res;
-        console.log(data)
         const { message, token, result } = data;
-        const { profile_level, use_name, use_uuid } = result;
+        const { profile_level, use_name, use_uuid, use_email } = result;
         console.log('auth-data', data);
         setUserCookie({
           token,
           profileLevel: profile_level.pl_cod,
           useUuid: use_uuid,
           useName: use_name,
+          useEmail: use_email
         });
 
         toast.success(message, {
@@ -271,36 +271,36 @@ export const getDashboard = (uuid) => (dispatch) => {
 
 export const getCapacities = (blUuids) => (dispatch) => {
   let capacities = []
-  dispatch({type: users.GET_CAPACITY_REQUEST})
+  dispatch({ type: users.GET_CAPACITY_REQUEST })
   blUuids?.map((data) => {
     api
-   .get(`/report/${data}`)
-   .then((res) => {
-    const {data} = res;
-    capacities.push(data.sumOfDevCapacities)
-   })
-   .catch((error) => {
-      const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - user-capacity";
-      toast.error(message, {
-        duration: 5000,
-      });
-      dispatch({
-       type: users.GET_CAPACITY_FAILURE, message
+      .get(`/report/${data}`)
+      .then((res) => {
+        const { data } = res;
+        capacities.push(data.sumOfDevCapacities)
       })
-    })
+      .catch((error) => {
+        const { response: err } = error;
+        const message = err && err.data ? err.data.message : "Erro desconhecido - user-capacity";
+        toast.error(message, {
+          duration: 5000,
+        });
+        dispatch({
+          type: users.GET_CAPACITY_FAILURE, message
+        })
+      })
   })
 
   dispatch({
-      type: users.GET_CAPACITY_SUCCESS,
-      result: capacities
+    type: users.GET_CAPACITY_SUCCESS,
+    result: capacities
   })
 }
 
 export const sendEmail = (data) => (dispatch) => {
   dispatch({ type: users.SEND_EMAIL_REQUEST });
   api
-    .post("/sendingemail", {use_email: data.use_email}, configRequest())
+    .post("/sendingemail", { use_email: data.use_email }, configRequest())
     .then((res) => {
       const { data } = res;
 
@@ -320,14 +320,14 @@ export const sendEmail = (data) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: users.SEND_EMAIL_FAILURE, message });
-    });  
-} 
+    });
+}
 
 export const passwordRecovery = (params) => (dispatch) => {
-  dispatch({type: users.RECOVER_PASSWORD_REQUEST})
-  const {new_password, use_token, use_email, navigate} = params
+  dispatch({ type: users.RECOVER_PASSWORD_REQUEST })
+  const { new_password, use_token, use_email, navigate } = params
   api
-    .post(`/passrecover?use_token=${use_token}&use_email=${use_email}`, {use_password: new_password}, configRequest())
+    .post(`/passrecover?use_token=${use_token}&use_email=${use_email}`, { use_password: new_password }, configRequest())
     .then((res) => {
       const { data } = res;
 

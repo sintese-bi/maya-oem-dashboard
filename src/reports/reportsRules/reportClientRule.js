@@ -19,27 +19,42 @@ export const reportClient = {
     phone: "",
     portal: "",
     state: "",
-    graph: ""
+    graph: "",
+    situation: ""
 }
 
-export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport) {
-    reportClient.estimatedGenerationTotal = numbers(generation.estimatedGeneration.reduce((total, element) => total + element, 0).toFixed(2))
-    reportClient.realGenerationTotal = numbers(generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2))
-
-    console.log(generation);
-
-    let percentValue = (generation.realGeneration.reduce((total, element) => total + Number(element.value), 0) / generation.estimatedGeneration.reduce((total, element) => total + element, 0)) * 100
-    reportClient.percent = percentValue.toFixed()
-    generation.estimatedGeneration.reduce((total, element) => total + element, 0).toFixed(2) < generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2) ? reportClient.lowLevel = false : reportClient.lowLevel = true
-
+export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
     const { useName } = getUserCookie()
-    reportClient.useName = useName
+    let estimatedGenerationNumber = generation.estimatedGeneration.reduce((total, element) => total + element, 0).toFixed(2)
+    let realGenerationNumber = generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2)
 
+    function handleSituation(percent) {
+        if (percent < 100) {
+            if (percent > 80) {
+                return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
+                    (realGenerationNumber / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
+            } else {
+                return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${numbers(
+                    (realGenerationNumber / 1000).toFixed(2))}Mwh o que corresponde a ${percent}% da produção estimada.`
+            }
+        } else {
+            return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((reportClient.realGenerationTotal / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
+        }
+    }
+
+    reportClient.useName = useName
+    reportClient.estimatedGenerationTotal = numbers(estimatedGenerationNumber)
+    reportClient.realGenerationTotal = numbers(realGenerationNumber)
+    reportClient.percent = ((realGenerationNumber / estimatedGenerationNumber) * 100).toFixed()
     reportClient.brand = useNameState;
+    reportClient.situation = handleSituation(reportClient.percent)
     reportClient.graph = graphRef.current.toBase64Image();
     reportClient.requistionStartDate = startDateReport;
     reportClient.requisitionEndDate = endDateReport;
     reportClient.capacity = numbers(String(capacity.dev_capacity));
+    reportClient.lowLevel = estimatedGenerationNumber < realGenerationNumber
+    reportClient.address = address
 
+    console.log(reportClient.situation, handleSituation(reportClient.percent))
     setIsLoadingReport(false);
 }

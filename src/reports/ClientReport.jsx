@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontWeight: "ultrabold",
   },
   cardText: {
-    fontSize: "8px",
+    fontSize: "10px",
     fontWeight: "ultrabold",
     width: "86px",
   },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: "50px",
   },
   madeBy: {
-    marginTop: "62px",
+    marginTop: "30px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -114,26 +114,42 @@ export const ClientReport = () => {
         <View style={styles.main}>
           <View style={styles.header}>
             <View>
-              <View style={styles.generationDate}>
-                <Text style={styles.generationDateText}>Data de geração</Text>
-                <Text style={styles.generationDateValue}>
-                  {reportClient.date.getDate() < 10 ? "0" : ""}
-                  {reportClient.date.getDate()}/
-                  {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
-                  {reportClient.date.getMonth() + 1}/
-                  {reportClient.date.getFullYear()}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <View style={{ marginRight: "22px" }}>
+                  <Text style={styles.generationDateText}>Data de geração</Text>
+                  <Text style={styles.generationDateValue}>
+                    {reportClient.date.getDate() < 10 ? "0" : ""}
+                    {reportClient.date.getDate()}/
+                    {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
+                    {reportClient.date.getMonth() + 1}/
+                    {reportClient.date.getFullYear()}
+                  </Text>
+                </View>
+                <View style={styles.generationDate}>
+                  <Text style={styles.generationDateText}>
+                    Data de aquisição dos dados
+                  </Text>
+                  <Text style={styles.generationDateValue}>
+                    {reportClient.requistionStartDate} -
+                    {reportClient.requisitionEndDate}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
+                  End. de instalação: {reportClient.address}
                 </Text>
               </View>
-              <View style={styles.generationDate}>
-                <Text style={styles.generationDateText}>
-                  Data de aquisição dos dados
-                </Text>
-                <Text style={styles.generationDateValue}>
-                  {reportClient.requistionStartDate} -
-                  {reportClient.requisitionEndDate}
+              <View>
+                <Text style={{ fontSize: "18px", marginRight: "20px" }}>
+                  Cliente: {reportClient.useName}
                 </Text>
               </View>
-              <Text style={{ fontSize: "18px" }}>{reportClient.useName}</Text>
             </View>
             <View style={styles.logo}>
               <Image
@@ -146,7 +162,9 @@ export const ClientReport = () => {
             <View style={styles.card}>
               <View>
                 <Text style={styles.cardLabel}>MARCA</Text>
-                <Text style={styles.cardText}>{reportClient.brand}</Text>
+                <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
+                  {reportClient.brand}
+                </Text>
               </View>
               <Image
                 style={styles.icon}
@@ -167,6 +185,22 @@ export const ClientReport = () => {
             </View>
             <View style={styles.card}>
               <View>
+                <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
+                <Text style={styles.cardText}>
+                  {reportClient.lowLevel
+                    ? "O valor real está abaixo do estimado"
+                    : "O valor real está acima do valor estimado"}
+                </Text>
+              </View>
+              <Image
+                style={styles.icon}
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+              ></Image>
+            </View>
+          </View>
+          <View style={styles.cardsRow}>
+            <View style={styles.card}>
+              <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                 <Text style={styles.cardNumber}>
                   {reportClient.realGenerationTotal} Kwh
@@ -175,32 +209,6 @@ export const ClientReport = () => {
               <Image
                 style={styles.icon}
                 src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"
-              ></Image>
-            </View>
-          </View>
-          <View style={styles.cardsRow}>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>PERCENTUAL</Text>
-                <Text style={styles.cardNumber}>{reportClient.percent} %</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-                <Text style={styles.cardText}>
-                  {reportClient.lowLevel
-                    ? "O valor real está abaixo do estimado"
-                    : "O valor real está acima do valor estimadoo"}
-                </Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
               ></Image>
             </View>
             <View style={styles.card}>
@@ -215,10 +223,33 @@ export const ClientReport = () => {
                 src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"
               ></Image>
             </View>
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.cardLabel}>PERCENTUAL</Text>
+                <Text style={styles.cardNumber}>{reportClient.percent} %</Text>
+              </View>
+              <Image
+                style={styles.icon}
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+              ></Image>
+            </View>
           </View>
           <View
             style={{
               width: "80%",
+              backgroundColor: "white",
+              paddingVertical: "24px",
+              paddingHorizontal: "12px",
+              marginBottom: "10px",
+              marginTop: "10px",
+              borderRadius: "10px",
+            }}
+          >
+            <Text style={{ fontSize: "12px" }}>{reportClient.situation}</Text>
+          </View>
+          <View
+            style={{
+              width: "94%",
               backgroundColor: "white",
               padding: "20px",
               marginBottom: "20px",
@@ -231,7 +262,15 @@ export const ClientReport = () => {
                 width: "100%",
                 height: "220px",
               }}
-              src={reportClient.graph}
+              src={`${
+                reportClient.graph
+                  ? reportClient.graph
+                  : `https://ucarecdn.com/
+              258f82dc-bf80-4b30-a4be-bcea7118f14a/
+              -/preview/500x500/
+              -/quality/smart_retina/
+              -/format/auto/`
+              }`}
             ></Image>
           </View>
           <View style={styles.madeBy}>
@@ -240,9 +279,6 @@ export const ClientReport = () => {
               style={{ width: "60px", height: "24px" }}
               src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
             ></Image>
-          </View>
-          <View style={styles.madeBy}>
-            <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
           </View>
         </View>
       </Page>
