@@ -1,26 +1,24 @@
 // IMPORTS
 import api, { configRequest } from "../../services/api";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PDFDownloadLink } from '@react-pdf/renderer'
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
-import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
 
 import { GlobalUsinProductive } from "src/components/GlobalUsinProductive";
 
-import {ChartsDashboardHorizontal} from 'src/components/Charts'
-import {ChartsDashboard} from 'src/components/Charts'
+import { ChartsDashboardHorizontal } from "src/components/Charts";
+import { ChartsDashboard } from "src/components/Charts";
 
 // QUERYS
-import {
-  columnsDevices,
-} from "src/constants/columns";
+import { columnsDevices } from "src/constants/columns";
 import { getUserCookie } from "src/services/session";
 import { getDashboard, getCapacities } from "src/store/actions/users";
 import { getDeletedDevices } from "src/store/actions/devices";
-import { numbers } from 'src/helpers/utils';
+import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -32,11 +30,11 @@ import {
   Button,
   Typography,
   Modal,
-  Card
+  Card,
 } from "@mui/material";
 import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/PaymentWarn";
-import{ MayaWatchPro } from "src/components/MayaWatchPro";
+import { MayaWatchPro } from "src/components/MayaWatchPro";
 import { BigNumberDashboard } from "src/components/BigNumber";
 
 // ASSETS
@@ -48,18 +46,19 @@ import {
   ThumbUpOffAlt,
   Warning,
   DownloadForOffline,
-  Cancel
+  Cancel,
 } from "@mui/icons-material";
 import MUIDataTable from "mui-datatables";
 
 export default function Dashboard() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // PROPS DE CONTROLLER
   const { useUuid, useName, profileLevel } = getUserCookie();
-  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+  const useCodePagarMe =
+    useName == "Maya Energy" || useName == "darcio" ? true : false;
 
-  if(profileLevel !== 'admin'){
-    navigate('/dashboard/devices')
+  if (profileLevel !== "admin") {
+    navigate("/dashboard/devices");
   }
 
   // ESTADOS DE QUERIES
@@ -76,18 +75,16 @@ export default function Dashboard() {
     capacity,
     //useCodePagarMe
   } = useSelector((state) => state.users);
-  const {
-    devicesDeleted
-  } = useSelector((state) => state.devices);
+  const { devicesDeleted } = useSelector((state) => state.devices);
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [type, setType] = useState(1);
-  const [emittedCarbon, setEmittedCarbon] = useState(0)
-  const [action, setAction] = useState('')
-  const [isLoadingReport, setIsLoadingReport] = useState(true)
+  const [emittedCarbon, setEmittedCarbon] = useState(0);
+  const [action, setAction] = useState("");
+  const [isLoadingReport, setIsLoadingReport] = useState(true);
 
   const options = {
     filter: true,
@@ -99,16 +96,18 @@ export default function Dashboard() {
   };
 
   function handleChangeColumns(type) {
-    setType(type)
+    setType(type);
     switch (type) {
       case 1:
         setData(dataDevices);
         break;
       case 2:
-        setData(brands.map((data) => {
-          let brandItem = {brand: data}
-          return brandItem
-        }));
+        setData(
+          brands.map((data) => {
+            let brandItem = { brand: data };
+            return brandItem;
+          })
+        );
         break;
       case 3:
         setData(generationBelowEstimated);
@@ -127,24 +126,24 @@ export default function Dashboard() {
     }
   }
 
-  function handleReportGeneration(action){
-    if(useCodePagarMe){
-      reportAdministratorRule(capacity, dataDevices, setIsLoadingReport)
-    } else if(action){
-      setAction(action)
+  function handleReportGeneration(action) {
+    if (useCodePagarMe) {
+      reportAdministratorRule(capacity, dataDevices, setIsLoadingReport);
+    } else if (action) {
+      setAction(action);
     } else {
-      setOpen(!open)
-      setAction('')
+      setOpen(!open);
+      setAction("");
     }
   }
 
   useEffect(() => {
-     dispatch(getDashboard(useUuid))
-  }, [useUuid])
+    dispatch(getDashboard(useUuid));
+  }, [useUuid]);
 
   useEffect(() => {
-    dispatch(getCapacities(blUuids))
-  }, [blUuids])
+    dispatch(getCapacities(blUuids));
+  }, [blUuids]);
 
   useEffect(() => {
     if (dataDevices.length !== 0) {
@@ -155,16 +154,23 @@ export default function Dashboard() {
 
   useEffect(() => {
     let realGenerationTempArray = dataDevices.map((data) => {
-      let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
+      let generationRealValue = Number(
+        data.generationRealMonth.replace(/\Kwh/g, "")
+      );
       return generationRealValue;
-    })
-    setEmittedCarbon(numbers(realGenerationTempArray.reduce((total, element) => total + element, 0).toFixed('2')))
-  }, [data])
-
+    });
+    setEmittedCarbon(
+      numbers(
+        realGenerationTempArray
+          .reduce((total, element) => total + element, 0)
+          .toFixed("2")
+      )
+    );
+  }, [data]);
 
   useEffect(() => {
-    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices)
-  }, [type])
+    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
+  }, [type]);
 
   if (isLoading) {
     return (
@@ -179,73 +185,88 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'end',
-        my: 3,
-        ml: 3
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "end",
+          my: 3,
+          ml: 3,
+        }}
+      >
         <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
-          <Box sx={{display: 'flex', justifyContent: 'center', width:'220px'}}>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", width: "220px" }}
+          >
             <Button
               startIcon={<DownloadForOffline fontSize="small" />}
-              variant={useCodePagarMe ? 'outlined' : ''}
+              variant={useCodePagarMe ? "outlined" : ""}
               onClick={() => handleReportGeneration()}
             >
-              {
-                isLoadingReport ? (
-                  'Preparar relatório'
-                ) : 
-                (
-                  <PDFDownloadLink 
-                    document={<AdministratorReport />} 
-                    fileName="relatório-integrador.pdf"
-                    style={{textDecoration: 'none'}}
-                  >
-                    {({ blob, url, loading, error }) => (useCodePagarMe ? (loading ? "Carregando relatório..." : "Relatório Integrador") : "Relatório indisponível")}
-                  </PDFDownloadLink>
-                )
-              }
+              {isLoadingReport ? (
+                "Preparar relatório"
+              ) : (
+                <PDFDownloadLink
+                  document={<AdministratorReport />}
+                  fileName="relatório-integrador.pdf"
+                  style={{ textDecoration: "none" }}
+                >
+                  {({ blob, url, loading, error }) =>
+                    useCodePagarMe
+                      ? loading
+                        ? "Carregando relatório..."
+                        : "Relatório Integrador"
+                      : "Relatório indisponível"
+                  }
+                </PDFDownloadLink>
+              )}
             </Button>
           </Box>
         </ToolTipNoAccess>
       </Box>
-      <Box sx={{display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-        <Box sx={{width: '84%', my: 4}}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Box sx={{ width: "84%", my: 4 }}>
           <Typography variant="h4">Resumo de usinas</Typography>
         </Box>
-        <Box sx={{
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "center",
             gap: 3,
           }}
         >
           <BigNumberDashboard
-          title="Dispositivos/usuário"
-          value={dataDevices.length !== 0 ? dataDevices.length : 0}
-          icon={<AccountCircle />}
-          type={1}
-          activeBtn={type === 1 ? true : false }
-          handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
+            title="Dispositivos/usuário"
+            value={dataDevices.length !== 0 ? dataDevices.length : 0}
+            icon={<AccountCircle />}
+            type={1}
+            activeBtn={type === 1 ? true : false}
+            handleChangeColumns={(type) => handleChangeColumns(type)}
+          />
 
-        <BigNumberDashboard
-          title="Marcas"
-          value={brands.length !== 0 ? brands.length : 0}
-          icon={<BrandingWatermark />}
-          type={2}
-          activeBtn={type === 2 ? true : false}
-          handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
+          <BigNumberDashboard
+            title="Marcas"
+            value={brands.length !== 0 ? brands.length : 0}
+            icon={<BrandingWatermark />}
+            type={2}
+            activeBtn={type === 2 ? true : false}
+            handleChangeColumns={(type) => handleChangeColumns(type)}
+          />
 
-        <BigNumberDashboard
-          title="Online"
-          value={online.length !== 0 ? online.length : 0}
-          icon={<ThumbUpOffAlt />}
-          type={6}
-          activeBtn={type === 6 ? true : false }
-          handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
+          <BigNumberDashboard
+            title="Online"
+            value={online.length !== 0 ? online.length : 0}
+            icon={<ThumbUpOffAlt />}
+            type={6}
+            activeBtn={type === 6 ? true : false}
+            handleChangeColumns={(type) => handleChangeColumns(type)}
+          />
         </Box>
       </Box>
       <Box
@@ -261,7 +282,7 @@ export default function Dashboard() {
           value={offline.length !== 0 ? offline.length : 0}
           icon={<ThumbDownOffAlt />}
           type={5}
-          activeBtn={type === 5 ? true : false }
+          activeBtn={type === 5 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -270,7 +291,7 @@ export default function Dashboard() {
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
           type={4}
-          activeBtn={type === 4 ? true : false }
+          activeBtn={type === 4 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
         <BigNumberDashboard
@@ -278,7 +299,7 @@ export default function Dashboard() {
           value={`${emittedCarbon} CO²`}
           icon={<AlignVerticalTop />}
           type={3}
-          activeBtn={type === 3 ? true : false }
+          activeBtn={type === 3 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
       </Box>
@@ -297,20 +318,37 @@ export default function Dashboard() {
         onClose={handleReportGeneration}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box sx={{
-          bgcolor: 'background.paper',
-          pb: 6, 
-          px:4, 
-          bgcolor:"background.paper",
-          borderRadius: 1,
-          border: 0
-        }}>
-          <Box sx={{display: 'flex', justifyContent: 'end', width: '100%', py: 4}}>
-            <Cancel fontSize="large" onClick={() => setOpen(!open)} sx={{cursor: 'pointer'}} />
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            pb: 6,
+            px: 4,
+            bgcolor: "background.paper",
+            borderRadius: 1,
+            border: 0,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              width: "100%",
+              py: 4,
+            }}
+          >
+            <Cancel
+              fontSize="large"
+              onClick={() => setOpen(!open)}
+              sx={{ cursor: "pointer" }}
+            />
           </Box>
-          { action == 'assignPlan' ? <MayaWatchPro /> : <PaymentWarn handleReportGeneration={handleReportGeneration} />}
+          {action == "assignPlan" ? (
+            <MayaWatchPro />
+          ) : (
+            <PaymentWarn handleReportGeneration={handleReportGeneration} />
+          )}
         </Box>
       </Modal>
     </>

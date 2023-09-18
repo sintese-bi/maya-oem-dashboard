@@ -1,14 +1,16 @@
 import moment from "moment-timezone";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
+import { Report } from "src/reports/Report";
 import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
 import { useLocation } from "react-router-dom";
 import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
 import { getUserCookie } from "src/services/session";
 import { PaymentWarn } from "src/components/PaymentWarn";
 import { MayaWatchPro } from "src/components/MayaWatchPro";
+import { chartsToGenerationReports } from "../../components/Charts";
 import {
   Backdrop,
   Box,
@@ -22,7 +24,6 @@ import {
   Select,
   TextField,
   Button,
-  Typography,
   Modal,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -38,11 +39,8 @@ import {
 } from "@mui/icons-material";
 import { getDevices, getCapacities } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
-import { BigNumber } from "../../components/BigNumber";
-import { ChartsGeneration } from "../../components/Charts";
 import { DeviceDetail } from "../../components/DeviceDetail";
 import { GenerationBI } from "src/components/GenerationBI";
-import { LoadingSkeletonBigNumbers } from "../../components/Loading";
 import Tabs from "../../components/shared/Tabs";
 
 const Generation = () => {
@@ -59,6 +57,8 @@ const Generation = () => {
   const { isLoadingDevices, devices, capacity } = useSelector(
     (state) => state.devices
   );
+
+  chartsToGenerationReports();
 
   //const { useCodePagarMe } = useSelector((state) => state.users);
 
@@ -92,8 +92,18 @@ const Generation = () => {
   }
 
   function handleReportGeneration(action) {
+    let startDateReport = moment(startDate).format("DD/MM/YYYY");
+    let endDateReport = moment(endDate).format("DD/MM/YYYY");
     if (useCodePagarMe) {
-      reportClientRule(generation, useNameState, capacity, setIsLoadingReport);
+      reportClientRule(
+        generation,
+        useNameState,
+        capacity,
+        setIsLoadingReport,
+        graphRef,
+        startDateReport,
+        endDateReport
+      );
     } else if (action) {
       setAction(action);
     } else {
@@ -133,8 +143,6 @@ const Generation = () => {
         })
       );
     }
-
-    graphRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
