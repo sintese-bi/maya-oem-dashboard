@@ -310,16 +310,28 @@ export const ChartsLinear = (props) => {
   const filterPeriodData = () => {
     switch (optionFilter) {
       case "days":
-        return generation.realGeneration?.map((data) => data.value);
+        return {
+          data: generation.realGeneration?.map((data) => data.value),
+          period: "Dias",
+        };
         break;
       case "weeks":
-        return filteredWeekValues.realGenerationData;
+        return {
+          data: filteredWeekValues.realGenerationData,
+          period: "Semanas",
+        };
         break;
       case "months":
-        return filteredMonthValues.realGenerationData;
+        return {
+          data: filteredMonthValues.realGenerationData,
+          period: "Meses",
+        };
         break;
       case "biweek":
-        return filteredQuinzenasValues.realGenerationData;
+        return {
+          data: filteredQuinzenasValues.realGenerationData,
+          period: "Quinzenas",
+        };
         break;
       default:
         break;
@@ -395,7 +407,7 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: optionFilter,
+          text: periodData.period,
           font: { size: 18, weight: "bold" },
         },
       },
@@ -407,7 +419,7 @@ export const ChartsLinear = (props) => {
     datasets: [
       {
         label: "Geração real",
-        data: periodData,
+        data: periodData.data,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },

@@ -11,21 +11,10 @@ import {
   Button,
 } from "@mui/material";
 import { InsertDriveFile, Info } from "@mui/icons-material";
+import { getUserCookie } from "src/services/session";
 
 export const MayaWatchPro = () => {
-  const {
-    isLoading,
-    brands,
-    blUuids,
-    dataDevices,
-    generationBelowEstimated,
-    alerts,
-    offline,
-    online,
-    capacity,
-    useEmail,
-    //useCodePagarMe
-  } = useSelector((state) => state.users);
+  const { useEmail } = getUserCookie();
   return (
     <Box
       sx={{
@@ -42,10 +31,10 @@ export const MayaWatchPro = () => {
           Maya Watch PRO
         </Typography>
         <Typography variant="body2" sx={{ width: "70%" }}>
-          A um passo de liberar todas as {useEmail + "f"} funcionalidades PRO do
-          nosso software. Tenha relatorios personalizaveis a qualquer hora,
-          configure alertas e tenha suporte continuo do nosso time de
-          monitoramento. Veja os planos disponiveis abaixo.
+          A um passo de liberar todas as funcionalidades PRO do nosso software.
+          Tenha relatorios personalizaveis a qualquer hora, configure alertas e
+          tenha suporte continuo do nosso time de monitoramento. Veja os planos
+          disponiveis abaixo.
         </Typography>
       </Box>
       <Box
@@ -149,7 +138,7 @@ export const MayaWatchPro = () => {
             </ListItem>
           </List>
           <Button
-            to="https://buy.stripe.com/fZecQp2th4CMc3C4gx"
+            to={`https://buy.stripe.com/fZecQp2th4CMc3C4gx?prefilled_email=${useEmail}`}
             target="_blank"
             component={Link}
             sx={{ mb: 2 }}
@@ -253,7 +242,7 @@ export const MayaWatchPro = () => {
             </ListItem>
           </List>
           <Button
-            to="https://buy.stripe.com/eVa17H7NB8T2gjS14m"
+            to={`https://buy.stripe.com/eVa17H7NB8T2gjS14m?prefilled_email=${useEmail}`}
             target="_blank"
             component={Link}
             sx={{ mb: 2 }}
@@ -357,7 +346,7 @@ export const MayaWatchPro = () => {
             </ListItem>
           </List>
           <Button
-            to="https://buy.stripe.com/7sI5nX7NB0mwaZydR9"
+            to={`https://buy.stripe.com/7sI5nX7NB0mwaZydR9?prefilled_email=${useEmail}`}
             target="_blank"
             component={Link}
             sx={{ mb: 2 }}
