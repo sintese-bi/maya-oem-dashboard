@@ -30,7 +30,7 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
 
     function handleSituation(percent) {
         if (percent < 100) {
-            if (percent > 80) {
+            if (percent >= 80) {
                 return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
                     (realGenerationNumber / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
             } else {
@@ -41,8 +41,6 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
             return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((reportClient.realGenerationTotal / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
         }
     }
-
-    console.log(graphRef.current.toBase64Image())
 
     reportClient.useName = useName
     reportClient.estimatedGenerationTotal = numbers(estimatedGenerationNumber)
@@ -57,6 +55,5 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.lowLevel = estimatedGenerationNumber < realGenerationNumber
     reportClient.address = address
 
-    console.log(reportClient.situation, handleSituation(reportClient.percent))
     setIsLoadingReport(false);
 }

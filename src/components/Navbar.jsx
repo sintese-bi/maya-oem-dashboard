@@ -17,18 +17,20 @@ import {
   ExitToApp,
   House,
   ContentPaste,
-  Warning
+  Warning,
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 export const DashboardNavbar = () => {
   // PROPS DE CONTROLLER
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { useNameState } = location.state || {};
+  const { selectedUser } = useSelector((state) => state.users);
   const { profileLevel, useName } = getUserCookie();
 
-  const name = useNameState ? useNameState : useName;
+  const name =
+    selectedUser.length != 0 ? selectedUser[0]?.useNameState : useName;
 
   const { brand } = useParams();
 
@@ -37,7 +39,7 @@ export const DashboardNavbar = () => {
       label: "Home",
       to: "/dashboard",
       icon: <AccountCircle fontSize="small" />,
-      disabled: profileLevel === 'admin' ? true : false,
+      disabled: profileLevel === "admin" ? true : false,
       active: location.pathname === "/dashboard" ? true : false,
     },
     {
@@ -147,11 +149,11 @@ export const DashboardNavbar = () => {
       </DashboardSidebar> */}
 
       <AppBar
-        position="fixed" 
+        position="fixed"
         sx={{
           backgroundColor: theme.palette.background.paper,
           boxShadow: theme.shadows[3],
-          zIndex: theme.zIndex.drawer + 1
+          zIndex: theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar

@@ -88,12 +88,15 @@ export const createDevice = (params) => (dispatch) => {
 
 export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
   dispatch({ type: devices.GET_DEVICES_ALERTS_REQUEST })
+  if (devicesWithAlerts.length == 0) {
+    dispatch({ type: devices.GET_DEVICES_ALERTS_FAILURE, message: "Nenhum alerta encontrado" });
+  }
   devicesWithAlerts.map((data) => {
     api
       .get(`/alerts?devUuid=${data.uuid}`, configRequest())
       .then((res) => {
         const { data } = res;
-        console.log(data)
+        console.log('success', data)
         dispatch({
           type: devices.GET_DEVICES_ALERTS_SUCCESS,
           result: data.length !== 0 ? data[0] : [],

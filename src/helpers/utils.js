@@ -322,7 +322,7 @@ export const numbers = (value) => {
   }
 }
 
-export const handleWeekFilter = (startDate, endDate, realGeneration) => {
+export const handleWeekFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
   const weeks = [];
   let recentDate = moment(startDate).startOf("week");
   let endOfInterval = moment(endDate);
@@ -342,12 +342,12 @@ export const handleWeekFilter = (startDate, endDate, realGeneration) => {
     recentDate.add(1, "week");
   }
 
-  let filteredValues = { realGenerationData: filterValuesByWeeks(realGeneration, weeks), weeks }
+  let filteredValues = { data: filterValuesByWeeks(realGeneration, estimatedGeneration, weeks), weeks }
 
   return filteredValues
 }
 
-export const handleMonthFilter = (startDate, endDate, realGeneration) => {
+export const handleMonthFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
   const months = [];
   let recentDate = moment(startDate).startOf("month");
   let endOfInterval = moment(endDate);
@@ -362,12 +362,12 @@ export const handleMonthFilter = (startDate, endDate, realGeneration) => {
     });
     recentDate.add(1, "month");
   }
-  let filteredValues = { realGenerationData: filterValuesByMonths(realGeneration, months), months }
+  let filteredValues = { data: filterValuesByMonths(realGeneration, estimatedGeneration, months), months }
 
   return filteredValues
 }
 
-export const handleQuinzenaFilter = (startDate, endDate, realGeneration) => {
+export const handleQuinzenaFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
   const quinzenas = [];
   let recentDate = moment(startDate).startOf("month");
   let endOfInterval = recentDate.clone().endOf("month");
@@ -385,12 +385,12 @@ export const handleQuinzenaFilter = (startDate, endDate, realGeneration) => {
 
     recentDate.add(1, 'days')
   }
-  let filteredValues = { realGenerationData: filterValuesByQuinzenas(realGeneration, quinzenas), quinzenas }
+  let filteredValues = { data: filterValuesByQuinzenas(realGeneration, estimatedGeneration, quinzenas), quinzenas }
 
   return filteredValues
 }
 
-function filterValuesByQuinzenas(dataArray, quinzenas) {
+function filterValuesByQuinzenas(dataArray, estimatedGeneration, quinzenas) {
   const filteredValues = [];
 
   for (const quinzena of quinzenas) {
@@ -404,18 +404,21 @@ function filterValuesByQuinzenas(dataArray, quinzenas) {
     filteredValues.push(valuesInQuinzena);
   }
 
-  let finalResult = filteredValues.map((quinzena) => {
-    let totalValue = quinzena?.reduce(
-      (total, element) => total + Number(element.value),
-      0
-    );
-    return totalValue?.toFixed(2);
-  })
+  let finalResult = {
+    realGeneration: filteredValues.map((quinzena) => {
+      let totalValue = quinzena?.reduce(
+        (total, element) => total + Number(element.value),
+        0
+      );
+      return totalValue?.toFixed(2);
+    }),
+    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 15)
+  }
 
   return finalResult;
 }
 
-function filterValuesByMonths(dataArray, months) {
+function filterValuesByMonths(dataArray, estimatedGeneration, months) {
   const filteredValues = [];
 
   for (const month of months) {
@@ -429,17 +432,20 @@ function filterValuesByMonths(dataArray, months) {
     filteredValues.push(valuesInMonth);
   }
 
-  let finalResult = filteredValues.map((month) => {
-    let totalValue = month?.reduce(
-      (total, element) => total + Number(element.value),
-      0
-    );
-    return totalValue?.toFixed(2);
-  })
+  let finalResult = {
+    realGeneration: filteredValues.map((month) => {
+      let totalValue = month?.reduce(
+        (total, element) => total + Number(element.value),
+        0
+      );
+      return totalValue?.toFixed(2);
+    }),
+    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 30)
+  }
   return finalResult;
 }
 
-function filterValuesByWeeks(dataArray, weeks) {
+function filterValuesByWeeks(dataArray, estimatedGeneration, weeks) {
   const filteredValues = [];
 
   for (const week of weeks) {
@@ -454,13 +460,16 @@ function filterValuesByWeeks(dataArray, weeks) {
     filteredValues.push(valuesInWeek);
   }
 
-  let finalResult = filteredValues.map((week) => {
-    let totalValue = week?.reduce(
-      (total, element) => total + Number(element.value),
-      0
-    );
-    return totalValue?.toFixed(2);
-  })
+  let finalResult = {
+    realGeneration: filteredValues.map((week) => {
+      let totalValue = week?.reduce(
+        (total, element) => total + Number(element.value),
+        0
+      );
+      return totalValue?.toFixed(2);
+    }),
+    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 7)
+  }
 
   return finalResult;
 }
