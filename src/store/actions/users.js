@@ -21,14 +21,15 @@ export const auth = (params) => (dispatch) => {
       .then((res) => {
         const { data } = res;
         const { message, token, result } = data;
-        const { profile_level, use_name, use_uuid, use_email } = result;
+        const { profile_level, use_name, use_uuid, use_email, use_type_member } = result;
         console.log('auth-data', data);
         setUserCookie({
           token,
           profileLevel: profile_level.pl_cod,
           useUuid: use_uuid,
           useName: use_name,
-          useEmail: use_email
+          useEmail: use_email,
+          useTypeMember: use_type_member,
         });
 
         toast.success(message, {
@@ -59,6 +60,11 @@ export const auth = (params) => (dispatch) => {
       });
   });
 };
+
+export const selectedUser = (params) => (dispatch) => {
+  console.log(params)
+  dispatch({ type: users.SELECT_USER, result: params })
+}
 
 // REGISTRAR DADOS DO USUARIO
 export const registerUser = (params) => (dispatch) => {

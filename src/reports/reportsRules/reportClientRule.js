@@ -42,6 +42,8 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
         }
     }
 
+    console.log(graphRef.current.toBase64Image())
+
     reportClient.useName = useName
     reportClient.estimatedGenerationTotal = numbers(estimatedGenerationNumber)
     reportClient.realGenerationTotal = numbers(realGenerationNumber)

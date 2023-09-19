@@ -44,16 +44,14 @@ export const Side = () => {
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(true);
 
-  const { useUuid, useName, useEmail } = getUserCookie();
-  const useCodePagarMe =
-    useName == "Maya Energy" || useName == "darcio" ? true : false;
+  const { useName, useTypeMember, useEmail } = getUserCookie();
 
   const ModalContent = () => {
     switch (action) {
       case "alertFrequency":
         return (
           <Box>
-            {useCodePagarMe ? (
+            {useTypeMember ? (
               <AlertPercentageForm welcome={welcome} />
             ) : (
               <PaymentWarn

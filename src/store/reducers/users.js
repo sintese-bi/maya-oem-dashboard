@@ -32,7 +32,8 @@ const initialState = {
   frequencyName: [],
   capacity: [],
   sendingEmail: [],
-  passwordRecovery: []
+  passwordRecovery: [],
+  selectedUser: {}
 };
 
 export default function userReducer(state = initialState, action) {
@@ -64,6 +65,12 @@ export default function userReducer(state = initialState, action) {
         brandListUser: [],
         profileLevel: [],
       };
+
+    case users.SELECT_USER:
+      return {
+        ...state,
+        selectedUser: result
+      }
 
     // REGISTRAR DADOS DO USUARIO
     case users.POST_REGISTER_REQUEST:
@@ -288,7 +295,7 @@ export default function userReducer(state = initialState, action) {
         online: [],
       };
 
-      
+
     case users.GET_DASHBOARD_SUCCESS:
       const daysPassed = moment().date();
       const dataDevices = brand_login
@@ -296,16 +303,16 @@ export default function userReducer(state = initialState, action) {
           const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
           const res = devicesNotDeleted.map((dev) => {
             const generationEstimatedDay = dev.generation.length !== 0
-            ? dev.generation[0].gen_estimated
-            : 0
+              ? dev.generation[0].gen_estimated
+              : 0
 
             let sumRealWeek = 0;
             let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassed);
 
-            let sumRealMonth =   0;
-            let sumEstimatedMonth =  generationEstimatedDay  * daysPassed;
-           
-            
+            let sumRealMonth = 0;
+            let sumEstimatedMonth = generationEstimatedDay * daysPassed;
+
+
             dev.generation.forEach((item) => {
               if (
                 moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
@@ -335,11 +342,11 @@ export default function userReducer(state = initialState, action) {
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real  + "Kwh"
-                  : 0  + "Kwh",
+                  ? generationRealDay[0].gen_real + "Kwh"
+                  : 0 + "Kwh",
               generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
               generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
-              generationEstimatedDay: generationEstimatedDay ?generationEstimatedDay  + "Kwh": 0 + "Kwh",
+              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay + "Kwh" : 0 + "Kwh",
               generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
               generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
               alert: alerts.length,
@@ -430,21 +437,21 @@ export default function userReducer(state = initialState, action) {
         sendingEmail: false,
       }
 
-    case users.RECOVER_PASSWORD_REQUEST: 
+    case users.RECOVER_PASSWORD_REQUEST:
       return {
         ...state,
         loadingPasswordRecovery: true,
         passwordRecovery: false,
       }
 
-    case users.RECOVER_PASSWORD_SUCCESS: 
+    case users.RECOVER_PASSWORD_SUCCESS:
       return {
         ...state,
         loadingPasswordRecovery: false,
         passwordRecovery: true,
       }
 
-    case users.RECOVER_PASSWORD_FAILURE: 
+    case users.RECOVER_PASSWORD_FAILURE:
       return {
         ...state,
         loadingPasswordRecovery: false,

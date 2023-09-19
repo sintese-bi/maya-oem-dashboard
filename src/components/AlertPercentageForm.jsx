@@ -1,13 +1,13 @@
 // IMPORTS
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ChartsDashboard } from '../components/Charts';
+import { ChartsDashboard } from "../components/Charts";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {PDFDownloadLink} from '@react-pdf/renderer';
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as Yup from "yup";
 
 import { AdministratorReport } from "src/reports/AdministratorReport";
-import { ToolTipNoAccess } from 'src/components/ToolTipNoAccess'
+import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
 
 import { getUserCookie } from "src/services/session";
 
@@ -29,7 +29,7 @@ import {
   ListItemText,
   Avatar,
   Divider,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
@@ -60,21 +60,18 @@ const validateSchema = Yup.object().shape({
 });
 
 export default function AlertPercentageForm({ welcome }) {
-  const [freePlan, setFreePlan] = useState(true)
+  const [freePlan, setFreePlan] = useState(true);
   const dispatch = useDispatch();
 
-  const { useUuid, useName } = getUserCookie();
-  const useCodePagarMe = (useName == "Maya Energy" || useName == "darcio") ? true : false
+  const { useUuid, useName, profileLevel, useTypeMember } = getUserCookie();
 
-  const { 
-    isLoadingAlertFrequency, 
-    percentage, 
-    frequencyName, 
-    dataDevices, 
-    //useCodePagarMe 
-  } = useSelector(
-    (state) => state.users
-  );
+  const {
+    isLoadingAlertFrequency,
+    percentage,
+    frequencyName,
+    dataDevices,
+    //useCodePagarMe
+  } = useSelector((state) => state.users);
 
   const {
     register,
@@ -98,33 +95,33 @@ export default function AlertPercentageForm({ welcome }) {
 
   useEffect(() => {
     if (percentage && frequencyName) {
-      if(useCodePagarMe){
+      if (useTypeMember) {
         setValue("percentage", percentage);
         setValue("frequencyName", frequencyName);
       } else {
         setValue("percentage", 80);
-        setValue("frequencyName", 'month')
+        setValue("frequencyName", "month");
       }
     }
   }, [percentage, frequencyName]);
 
   return (
-    <Box
-      component="form"
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Card sx={{
-        display:'flex', 
-        flexDirection: 'column', 
-        bgcolor: 'background.paper',
-      }} >
-        {
-          welcome ? <Typography variant="h2" sx={{py: 2}}>Bem vindo</Typography> : null
-        }
-        <Box sx={{display: 'flex', flexDirection: 'column', pb: 6}}>
-          <Box sx={{display: 'flex', justifyContent: 'space-between', py: 2}}>
-            <Typography sx={{ fontWeight: 'bold', fontSize: '20px'}}>
+    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: "background.paper",
+        }}
+      >
+        {welcome ? (
+          <Typography variant="h2" sx={{ py: 2 }}>
+            Bem vindo
+          </Typography>
+        ) : null}
+        <Box sx={{ display: "flex", flexDirection: "column", pb: 6 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
+            <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
               Definição de frequência dos alertas
             </Typography>
             <Tooltip
@@ -134,17 +131,24 @@ export default function AlertPercentageForm({ welcome }) {
               <Info />
             </Tooltip>
           </Box>
-            <Typography sx={{width: 460, fontSize: '14px'}}>
-              {
-                `Prezado usuário, definir a frequência e o limite mínimo de produtividade
+          <Typography sx={{ width: 460, fontSize: "14px" }}>
+            {`Prezado usuário, definir a frequência e o limite mínimo de produtividade
                 das suas plantas. Essa definição controla o envio de alerta das plantas
-                para seu email todas as vezes que suas plantas produzirem ${watch("percentage")}%
-                abaixo do definido enviaremos um alerta para você.`
-              }
-            </Typography>
+                para seu email todas as vezes que suas plantas produzirem ${watch(
+                  "percentage"
+                )}%
+                abaixo do definido enviaremos um alerta para você.`}
+          </Typography>
         </Box>
-        <Grid container sx={{ display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-          <List 
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <List
             sx={{
               width: "72%",
               bgcolor: "background.paper",
@@ -153,19 +157,17 @@ export default function AlertPercentageForm({ welcome }) {
             <ListItem>
               <ListItemAvatar>
                 <Tooltip
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
-                  "percentage"
-                )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
+                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  title={`Percentual mínimo de geração da usina. Caso sua usina produza menos que (${watch(
+                    "percentage"
+                  )} %) na semana, enviaremos um alerta para avisar sobre a saúde do seu sistema fotovoltaico.`}
                 >
                   <Avatar>
-                    <Info  />
+                    <Info />
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ToolTipNoAccess
-                useCodePagarMe={useCodePagarMe}
-              >
+              <ToolTipNoAccess useTypeMember={useTypeMember}>
                 <TextField
                   sx={{ width: 200 }}
                   label="Limite percentual mínimo (%)"
@@ -174,20 +176,20 @@ export default function AlertPercentageForm({ welcome }) {
                   error={!!errors.percentage}
                   helperText={errors.percentage?.message}
                   variant="standard"
-                  disabled={!useCodePagarMe}
+                  disabled={!useTypeMember}
                   inputProps={{ min: 0, max: 80 }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
-              </ToolTipNoAccess>         
+              </ToolTipNoAccess>
             </ListItem>
             <Divider variant="inset" component="li" />
             <ListItem>
               <ListItemAvatar>
                 <Tooltip
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                title="Define a frequência de alertas diário, semanal ou mensal."
+                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  title="Define a frequência de alertas diário, semanal ou mensal."
                 >
                   <Avatar>
                     <Info />
@@ -199,9 +201,7 @@ export default function AlertPercentageForm({ welcome }) {
                 control={control}
                 name="frequencyName"
                 render={({ field }) => (
-                  <ToolTipNoAccess
-                    useCodePagarMe={useCodePagarMe}
-                  >
+                  <ToolTipNoAccess useTypeMember={useTypeMember}>
                     <TextField
                       {...field}
                       sx={{ width: 200 }}
@@ -212,14 +212,42 @@ export default function AlertPercentageForm({ welcome }) {
                       select
                       defaultValue="month"
                       variant="standard"
-                      disabled={isLoadingAlertFrequency == false && useCodePagarMe != false ? false : true }
+                      disabled={
+                        isLoadingAlertFrequency == false &&
+                        useTypeMember != false
+                          ? false
+                          : true
+                      }
                     >
-                      <MenuItem value="day"  sx={{display: 'flex', justifyContent:'space-between'}}>Dia</MenuItem>
-                      <MenuItem value="week"  sx={{display: 'flex', justifyContent:'space-between'}}>Semanal</MenuItem>
-                      <MenuItem value="month" sx={{display: 'flex', justifyContent:'space-between'}}>Mês</MenuItem>
+                      <MenuItem
+                        value="day"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        Dia
+                      </MenuItem>
+                      <MenuItem
+                        value="week"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        Semanal
+                      </MenuItem>
+                      <MenuItem
+                        value="month"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        Mês
+                      </MenuItem>
                     </TextField>
                   </ToolTipNoAccess>
-                  
                 )}
               />
             </ListItem>
@@ -233,7 +261,7 @@ export default function AlertPercentageForm({ welcome }) {
             >
               Salvar
             </Button>
-            ) : (
+          ) : (
             <CircularProgress color="success" />
           )}
         </Grid>

@@ -253,7 +253,7 @@ export const ClientReport = () => {
               backgroundColor: "white",
               padding: "20px",
               marginBottom: "20px",
-              marginTop: "30px",
+              marginTop: "10px",
               borderRadius: "10px",
             }}
           >
