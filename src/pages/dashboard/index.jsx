@@ -1,7 +1,6 @@
 // IMPORTS
-import api, { configRequest } from "../../services/api";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
@@ -52,10 +51,9 @@ import MUIDataTable from "mui-datatables";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
   // PROPS DE CONTROLLER
-  const { useUuid, useName, profileLevel } = getUserCookie();
-  const useCodePagarMe =
-    useName == "Maya Energy" || useName == "darcio" ? true : false;
+  const { useUuid, useName, profileLevel, useTypeMember } = getUserCookie();
 
   if (profileLevel !== "admin") {
     navigate("/dashboard/devices");
@@ -127,7 +125,7 @@ export default function Dashboard() {
   }
 
   function handleReportGeneration(action) {
-    if (useCodePagarMe) {
+    if (useTypeMember) {
       reportAdministratorRule(capacity, dataDevices, setIsLoadingReport);
     } else if (action) {
       setAction(action);
@@ -193,13 +191,13 @@ export default function Dashboard() {
           ml: 3,
         }}
       >
-        <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+        <ToolTipNoAccess useTypeMember={useTypeMember}>
           <Box
             sx={{ display: "flex", justifyContent: "center", width: "220px" }}
           >
             <Button
               startIcon={<DownloadForOffline fontSize="small" />}
-              variant={useCodePagarMe ? "outlined" : ""}
+              variant={useTypeMember ? "outlined" : ""}
               onClick={() => handleReportGeneration()}
             >
               {isLoadingReport ? (
@@ -211,7 +209,7 @@ export default function Dashboard() {
                   style={{ textDecoration: "none" }}
                 >
                   {({ blob, url, loading, error }) =>
-                    useCodePagarMe
+                    useTypeMember
                       ? loading
                         ? "Carregando relatório..."
                         : "Relatório Integrador"

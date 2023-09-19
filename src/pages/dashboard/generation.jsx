@@ -58,13 +58,7 @@ const Generation = () => {
     (state) => state.devices
   );
 
-  chartsToGenerationReports();
-
-  //const { useCodePagarMe } = useSelector((state) => state.users);
-
-  const { useName } = getUserCookie();
-  const useCodePagarMe =
-    useName == "Maya Energy" || useName == "darcio" ? true : false;
+  const { useTypeMember } = getUserCookie();
 
   const [deviceInfo, setDeviceInfo] = useState({});
   const [startDate, setStartDate] = useState(
@@ -95,7 +89,7 @@ const Generation = () => {
     let address = deviceInfo?.dev_address;
     let startDateReport = moment(startDate).format("DD/MM/YYYY");
     let endDateReport = moment(endDate).format("DD/MM/YYYY");
-    if (useCodePagarMe) {
+    if (useTypeMember) {
       reportClientRule(
         generation,
         useNameState,
@@ -239,7 +233,7 @@ const Generation = () => {
               />
             </LocalizationProvider>
           </Box>
-          <ToolTipNoAccess useCodePagarMe={useCodePagarMe}>
+          <ToolTipNoAccess useTypeMember={useTypeMember}>
             <Box
               sx={{
                 display: "flex",
@@ -249,11 +243,11 @@ const Generation = () => {
             >
               <Button
                 startIcon={<DownloadForOffline fontSize="small" />}
-                variant={useCodePagarMe ? "outlined" : ""}
+                variant={useTypeMember ? "outlined" : ""}
                 sx={{ width: "100%" }}
                 onClick={() => handleReportGeneration()}
               >
-                {useCodePagarMe ? (
+                {useTypeMember ? (
                   isLoadingReport ? (
                     "Preparar relatório"
                   ) : (
