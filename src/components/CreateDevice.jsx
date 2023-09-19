@@ -84,7 +84,7 @@ export const CreateDevice = () => {
             variant="standard"
           >
             {listBrand.map((data) =>
-              data.title != "SolarView" ? (
+              data.title != "SolarView" && data.title != "Solarz" ? (
                 <MenuItem
                   key={data.title}
                   value={data.title}

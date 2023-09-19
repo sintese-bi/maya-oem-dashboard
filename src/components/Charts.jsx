@@ -287,19 +287,22 @@ export const ChartsLinear = (props) => {
   let filteredWeekValues = handleWeekFilter(
     startDate,
     endDate,
-    generation?.realGeneration
+    generation?.realGeneration,
+    generation?.estimatedGeneration
   );
 
   let filteredMonthValues = handleMonthFilter(
     startDate,
     endDate,
-    generation?.realGeneration
+    generation?.realGeneration,
+    generation?.estimatedGeneration
   );
 
   let filteredQuinzenasValues = handleQuinzenaFilter(
     startDate,
     endDate,
-    generation?.realGeneration
+    generation?.realGeneration,
+    generation?.estimatedGeneration
   );
 
   // Obter número total de dias entre as datas de início e fim
@@ -311,25 +314,42 @@ export const ChartsLinear = (props) => {
     switch (optionFilter) {
       case "days":
         return {
-          data: generation.realGeneration?.map((data) => data.value),
+          data: {
+            realGeneration: generation.realGeneration?.map(
+              (data) => data.value
+            ),
+            estimatedGeneration: generation.estimatedGeneration?.map(
+              (data) => data
+            ),
+          },
           period: "Dias",
         };
         break;
       case "weeks":
         return {
-          data: filteredWeekValues.realGenerationData,
+          data: {
+            realGeneration: filteredWeekValues.data.realGeneration,
+            estimatedGeneration: filteredWeekValues.data.estimatedGeneration,
+          },
           period: "Semanas",
         };
         break;
       case "months":
         return {
-          data: filteredMonthValues.realGenerationData,
+          data: {
+            realGeneration: filteredMonthValues.data.realGeneration,
+            estimatedGeneration: filteredMonthValues.data.estimatedGeneration,
+          },
           period: "Meses",
         };
         break;
       case "biweek":
         return {
-          data: filteredQuinzenasValues.realGenerationData,
+          data: {
+            realGeneration: filteredQuinzenasValues.data.realGeneration,
+            estimatedGeneration:
+              filteredQuinzenasValues.data.estimatedGeneration,
+          },
           period: "Quinzenas",
         };
         break;
@@ -337,8 +357,6 @@ export const ChartsLinear = (props) => {
         break;
     }
   };
-
-  console.log(generation);
 
   const filterPeriod = () => {
     switch (optionFilter) {
@@ -419,13 +437,13 @@ export const ChartsLinear = (props) => {
     datasets: [
       {
         label: "Geração real",
-        data: periodData.data,
+        data: periodData.data?.realGeneration,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
       {
         label: "Geração estimada",
-        data: generation.estimatedGeneration,
+        data: periodData.data?.estimatedGeneration,
         backgroundColor: "#14B8A6",
       },
     ],

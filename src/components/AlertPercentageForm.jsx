@@ -48,8 +48,7 @@ const validateSchema = Yup.object().shape({
           originalValue === "" ? null : value
         ),
       otherwise: Yup.number()
-        .min(20, "O valor mínimo é 20")
-        .max(80, "O valor máximo é 80")
+        .min(80, "O valor mínimo é 80")
         .nullable()
         .transform((value, originalValue) =>
           originalValue === "" ? null : value

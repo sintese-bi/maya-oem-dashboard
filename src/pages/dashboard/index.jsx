@@ -71,6 +71,7 @@ export default function Dashboard() {
     offline,
     online,
     capacity,
+    selectedUser,
     //useCodePagarMe
   } = useSelector((state) => state.users);
   const { devicesDeleted } = useSelector((state) => state.devices);
@@ -136,7 +137,9 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    dispatch(getDashboard(useUuid));
+    selectedUser.length != 0
+      ? dispatch(getDashboard(selectedUser[0]?.useUuidState))
+      : dispatch(getDashboard(useUuid));
   }, [useUuid]);
 
   useEffect(() => {

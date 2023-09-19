@@ -1,10 +1,10 @@
 // IMPORTS
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as LinkRouter } from "react-router-dom";
+import { Link as LinkRouter, useNavigate } from "react-router-dom";
 
 // QUERIES
-import { getUsers } from "src/store/actions/users";
+import { getUsers, selectedUser } from "src/store/actions/users";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -20,6 +20,7 @@ import {
   TableRow,
   TableCell,
   Backdrop,
+  Typography,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 
@@ -29,6 +30,7 @@ import { listBrand } from "src/utils/list-brand";
 export default function ListUsers() {
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isLoading, data } = useSelector((state) => state.users);
 
   const columns = [
@@ -48,15 +50,24 @@ export default function ListUsers() {
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
+          function handleSelectUser(props) {
+            dispatch(selectedUser(props));
+            navigate("/dashboard");
+          }
           return (
-            <Link
-              component={LinkRouter}
-              to={{ pathname: "/dashboard" }}
-              state={{ useUuidState: dataTable.rowData[0], useNameState: name }}
-              underline="hover"
+            <Typography
+              onClick={() =>
+                handleSelectUser({
+                  useUuidState: dataTable.rowData[0],
+                  useNameState: name,
+                })
+              }
+              color="blue"
+              variant="body2"
+              sx={{ cursor: "pointer" }}
             >
               {name}
-            </Link>
+            </Typography>
           );
         },
       },

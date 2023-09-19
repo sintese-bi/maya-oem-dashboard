@@ -33,7 +33,7 @@ const initialState = {
   capacity: [],
   sendingEmail: [],
   passwordRecovery: [],
-  selectedUser: {}
+  selectedUser: []
 };
 
 export default function userReducer(state = initialState, action) {
@@ -69,7 +69,7 @@ export default function userReducer(state = initialState, action) {
     case users.SELECT_USER:
       return {
         ...state,
-        selectedUser: result
+        selectedUser: [result]
       }
 
     // REGISTRAR DADOS DO USUARIO
