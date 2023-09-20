@@ -2,6 +2,7 @@ import { Poll } from "@mui/icons-material";
 import { Cancel } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import moment from "moment-timezone";
+import { LoadingSkeletonBigNumbers } from "./Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -15,17 +16,22 @@ import {
   Modal,
   TextField,
   MenuItem,
+  Grid,
 } from "@mui/material";
+import { Thermostat } from "@mui/icons-material";
 import { Link as LinkRouter } from "react-router-dom";
+import { BigNumber } from "./BigNumber";
 import { listBrand } from "src/utils/list-brand";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
 
 import { ChartsLinear } from "src/components/Charts";
+import { numbers } from "src/helpers/utils";
 
 export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [optionFilter, setOptionFilter] = useState("days");
+  const [generation, setGeneration] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -37,7 +43,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-
+  console.log(devicesGeneration);
   function handleChartLinearData(props) {
     dispatch(getAllDevicesGeneration(props));
   }
@@ -47,6 +53,10 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
     setEndDate(moment().format("YYYY-MM-DD"));
     setOpen(!open);
   }
+
+  useEffect(() => {
+    setGeneration(devicesGeneration);
+  }, [devicesGeneration]);
 
   useEffect(() => {
     if (selectedDevice) {
@@ -62,7 +72,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
   }, [startDate, endDate, optionFilter]);
 
   return (
-    <>
+    <Box>
       <Avatar
         onClick={() => {
           handleChartLinearData({
@@ -91,7 +101,14 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
         aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box sx={{ bgcolor: "background.paper", px: 4 }}>
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            px: 4,
+            maxHeight: "80%",
+            overflow: "auto",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -146,8 +163,58 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
             optionFilter={optionFilter}
             isLoading={isLoadingDevicesGeneration}
           />
+          <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+            <Grid item xs={4}>
+              {isLoadingDevicesGeneration ? (
+                <LoadingSkeletonBigNumbers />
+              ) : (
+                <BigNumber
+                  title="Sua produção no periodo escolhido é"
+                  value={
+                    devicesGeneration
+                      ? `${devicesGeneration.realGeneration
+                          ?.reduce((total, element) => total + element.value, 0)
+                          .toFixed(2)}KWp`
+                      : `${100}KWp`
+                  }
+                  icon={<Thermostat />}
+                />
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {isLoadingDevicesGeneration ? (
+                <LoadingSkeletonBigNumbers />
+              ) : (
+                <BigNumber
+                  title="sua produção estimada para o periodo escolhido é"
+                  value={
+                    devicesGeneration
+                      ? `${devicesGeneration.estimatedGeneration
+                          ?.reduce((total, element) => total + element, 0)
+                          .toFixed(2)}KWp`
+                      : `${100}KWp`
+                  }
+                  icon={<Thermostat />}
+                />
+              )}
+            </Grid>
+          </Box>
+          <Typography
+            sx={{ fontWeight: "bold", fontSize: "18px", py: 6, ml: 8 }}
+          >
+            {`O percentual de producao é de: ${
+              (devicesGeneration.realGeneration
+                ?.reduce((total, element) => total + element.value, 0)
+                .toFixed(2) /
+                devicesGeneration.estimatedGeneration?.reduce(
+                  (total, element) => total + element,
+                  0
+                )) *
+              (100).toFixed(2)
+            }%`}
+          </Typography>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };

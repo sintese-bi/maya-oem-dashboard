@@ -474,7 +474,7 @@ export const ChartsLinear = (props) => {
         >
           Gerando gráfico
         </Typography>
-        <Box sx={{ height: 300, width: 762 }}>
+        <Box sx={{ height: 300 }}>
           <LoadingSkeletonCharts />
         </Box>
       </Card>
@@ -492,13 +492,14 @@ export const ChartsLinear = (props) => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
+          alignItems: "center",
           height: 560,
+          width: "100%",
           flexDirection: "column",
-          bgcolor: "background.paper",
-          px: 3,
-          pb: 6,
-          pt: 4,
+          px: 1,
+          pb: 4,
+          pt: 2,
         }}
       >
         <Typography
@@ -512,7 +513,7 @@ export const ChartsLinear = (props) => {
         >
           Relação da geração real e geração estimada
         </Typography>
-        <Box sx={{ height: 400, width: 762 }}>
+        <Box sx={{ height: 400, width: "90%" }}>
           <Line type="bar" options={options} data={data} ref={graphRef} />
         </Box>
       </Box>
@@ -630,6 +631,7 @@ export const ChartsDashboardHorizontal = (props) => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
+        mt: 4,
       }}
     >
       <Card
@@ -664,62 +666,27 @@ export const ChartsDashboardHorizontal = (props) => {
 };
 
 export const ChartsDashboard = (props) => {
-  const canvas = useRef(null);
   const { dataDevices } = props;
   const theme = useTheme();
 
-  const labels = ["Geração Real x Geração Estimada"];
-
-  const [generationRealTotalValue, setGenerationRealTotalValue] = useState(0);
-  const [generationEstimatedTotalValue, setGenerationEstimatedTotalValue] =
-    useState(0);
-  const [valueTabs, setValueTabs] = useState(0);
-
-  useEffect(() => {
-    let generationRealMonth = dataDevices.map((data) => {
-      let generationRealValue = Number(
-        data.generationRealMonth.replace(/\Kwh/g, "")
-      );
-      return generationRealValue;
-    });
-    let generationRealMonthTotal = generationRealMonth
-      .reduce((total, element) => total + element, 0)
-      .toFixed();
-    setGenerationRealTotalValue(generationRealMonthTotal);
-
-    let generationEstimatedMonth = dataDevices.map((data) => {
-      let generationEstimatedValue = Number(
-        data.generationEstimatedMonth.replace(/\Kwh/g, "")
-      );
-      return generationEstimatedValue;
-    });
-    let generationEstimatedMonthTotal = generationEstimatedMonth
-      .reduce((total, element) => total + element, 0)
-      .toFixed();
-    setGenerationEstimatedTotalValue(generationEstimatedMonthTotal);
-  }, [dataDevices]);
+  const labels = Object.keys(dataDevices).map((data) =>
+    moment(data).format("DD/MM")
+  );
+  const values = Object.values(dataDevices);
 
   const data = {
-    labels: [""],
+    labels,
     datasets: [
       {
-        barThickness: 82,
+        barThickness: 20,
         borderRadius: 2,
         categoryPercentage: 0.5,
         label: "Geral Estimada",
-        maxBarThickness: 76,
+        maxBarThickness: 22,
+        barPercentage: 0.8,
         label: "Geração Real",
-        data: [generationRealTotalValue, 100],
+        data: values,
         backgroundColor: "#5048E5",
-      },
-      {
-        barThickness: 82,
-        borderRadius: 2,
-        categoryPercentage: 0.5,
-        maxBarThickness: 76,
-        label: "Geração Estimada",
-        data: [generationEstimatedTotalValue, 80],
-        backgroundColor: "#14B8A6",
       },
     ],
   };
@@ -776,11 +743,10 @@ export const ChartsDashboard = (props) => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        bgcolor: "background.paper",
         px: 2,
         pb: 2,
         pt: 4,
-        height: 420,
+        height: 520,
       }}
     >
       <Typography
@@ -789,7 +755,7 @@ export const ChartsDashboard = (props) => {
       >
         Resumo da geração real vs estimada
       </Typography>
-      <Box sx={{ height: 300, width: 300 }}>
+      <Box sx={{ height: 360, width: "100%" }}>
         <Chart type="bar" options={options} data={data} />
       </Box>
     </Card>

@@ -188,8 +188,8 @@ export const ClientReport = () => {
                 <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
                 <Text style={styles.cardText}>
                   {reportClient.lowLevel
-                    ? "O valor real está abaixo do estimado"
-                    : "O valor real está acima do valor estimado"}
+                    ? "Produção dentro do esperado para o mês."
+                    : "Produção não está dentro do esperado para o mês."}
                 </Text>
               </View>
               <Image

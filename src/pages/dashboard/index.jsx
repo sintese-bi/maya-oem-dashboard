@@ -48,6 +48,7 @@ import {
   Cancel,
 } from "@mui/icons-material";
 import MUIDataTable from "mui-datatables";
+import moment from "moment";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -84,15 +85,6 @@ export default function Dashboard() {
   const [emittedCarbon, setEmittedCarbon] = useState(0);
   const [action, setAction] = useState("");
   const [isLoadingReport, setIsLoadingReport] = useState(true);
-
-  const options = {
-    filter: true,
-    rowsPerPage: 10,
-    rowsPerPageOptions: [10, 50, 100, 200, 300],
-    filterType: "dropdown",
-    responsive: "simple",
-    selectableRows: "none",
-  };
 
   function handleChangeColumns(type) {
     setType(type);
@@ -232,8 +224,20 @@ export default function Dashboard() {
           flexDirection: "column",
         }}
       >
-        <Box sx={{ width: "84%", my: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "84%",
+            my: 4,
+          }}
+        >
           <Typography variant="h4">Resumo de usinas</Typography>
+          <Typography
+            variant="body1"
+            sx={{ lineHeight: "100%", py: 2, fontWeight: "bold", ml: 2 }}
+          >
+            {moment().format("DD/MM/YYYY")}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -297,7 +301,7 @@ export default function Dashboard() {
         />
         <BigNumberDashboard
           title="Economia de carbono emitido"
-          value={`${emittedCarbon} CO²`}
+          value={`${emittedCarbon} CO₂`}
           icon={<AlignVerticalTop />}
           type={3}
           activeBtn={type === 3 ? true : false}
