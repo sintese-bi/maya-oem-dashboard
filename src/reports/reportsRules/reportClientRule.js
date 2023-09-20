@@ -32,13 +32,13 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
         if (percent < 100) {
             if (percent >= 80) {
                 return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
-                    (realGenerationNumber / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
+                    (realGenerationNumber / 1000).toFixed(2))}Mwh.`
             } else {
                 return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${numbers(
-                    (realGenerationNumber / 1000).toFixed(2))}Mwh o que corresponde a ${percent}% da produção estimada.`
+                    (realGenerationNumber / 1000).toFixed(2))}Mwh.`
             }
         } else {
-            return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((reportClient.realGenerationTotal / 1000).toFixed(2))}Mwh, o que corresponde a ${percent}% da produção estimada.`
+            return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((reportClient.realGenerationTotal / 1000).toFixed(2))}Mwh.`
         }
     }
 

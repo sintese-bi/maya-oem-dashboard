@@ -195,7 +195,15 @@ export default function Plants() {
         aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box sx={{ bgcolor: "background.paper", p: 4 }}>
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            p: 4,
+            overflowY: "auto",
+          }}
+          minHeight={100}
+          maxHeight={200}
+        >
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
               label="Data Inicial"

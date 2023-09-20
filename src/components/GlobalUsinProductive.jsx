@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Link as LinkRouter } from "react-router-dom";
+import api, { configRequest } from "src/services/api";
 import {
   Box,
   Typography,
@@ -12,9 +14,20 @@ import {
   ListItemText,
   Grid,
   TextField,
+  Paper,
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  TableContainer,
+  Link,
 } from "@mui/material";
 import { Info, ElectricBolt } from "@mui/icons-material";
-import { ChartsDashboardHorizontal } from "src/components/Charts";
+import {
+  ChartsDashboard,
+  ChartsDashboardHorizontal,
+} from "src/components/Charts";
 import { numbers } from "src/helpers/utils";
 import { BigNumber } from "./BigNumber";
 import moment from "moment";
@@ -28,9 +41,33 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
   });
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+  const [topDevicesKWp, setTopDevicesKWp] = useState([]);
+  const [globalGenerationGraph, setGlobalGenerationGraph] = useState([]);
+
+  function handleTopDevicesKWp(devices) {
+    setTopDevicesKWp(
+      devices.sort((a, b) => b.capacity - a.capacity).slice(0, 10)
+    );
+  }
+
+  async function handleGlobalGenerationData() {
+    const { data } = await api.post(
+      "/genrealday",
+      { startDate: startDate, endDate: endDate },
+      configRequest()
+    );
+    if (!data) {
+      return;
+    }
+    setGlobalGenerationGraph(data.somaPorDia);
+  }
 
   useEffect(() => {
-    console.log(dataDevices);
+    handleGlobalGenerationData();
+  }, [startDate, endDate, dataDevices]);
+
+  useEffect(() => {
+    handleTopDevicesKWp(dataDevices);
     let generationRealMonth = dataDevices.map((data) => {
       let generationRealValue = Number(
         data.generationRealMonth.replace(/\Kwh/g, "")
@@ -87,8 +124,20 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
             mt: 8,
           }}
         >
-          <Box sx={{ width: "84%", my: 4 }}>
-            <Typography variant="h4">Produtividade global de usinas</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              width: "84%",
+              my: 4,
+            }}
+          >
+            <Typography variant="h4">Produtividade de usinas</Typography>
+            <Typography
+              variant="body1"
+              sx={{ lineHeight: "100%", py: 2, fontWeight: "bold", ml: 2 }}
+            >
+              {moment().format("DD/MM/YYYY")}
+            </Typography>
           </Box>
           <Card
             sx={{
@@ -111,7 +160,7 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
             >
               <Grid item sm={12} lg={3}>
                 <BigNumber
-                  title="Produção total de usinas"
+                  title="Produção total"
                   value={`${numbers(
                     (realGenerationTotal / 1000).toFixed(2)
                   )}MWh`}
@@ -120,7 +169,7 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
               </Grid>
               <Grid item sm={12} lg={3}>
                 <BigNumber
-                  title="Produtividade total estimada"
+                  title="Produtividade estimada"
                   value={`${numbers(
                     (estimatedGenerationTotal / 1000).toFixed(2)
                   )}MWh`}
@@ -172,8 +221,66 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
+              <ChartsDashboard dataDevices={globalGenerationGraph} />
             </Box>
             <ChartsDashboardHorizontal dataDevices={dataDevices} />
+            <Box
+              component="main"
+              sx={{
+                width: "94%",
+              }}
+            >
+              <TableContainer component={Paper}>
+                <Typography
+                  sx={{
+                    fontSize: "22px",
+                    fontWeight: "bold",
+                    py: 4,
+                    px: 2,
+                    mt: 4,
+                  }}
+                >
+                  Top 10 usinas
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Dispositivo/Usuário</TableCell>
+                      <TableCell>Capacidade (KWp)</TableCell>
+                      <TableCell>Conferir planta</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {topDevicesKWp.map((device) => (
+                      <TableRow>
+                        <TableCell>{device.name}</TableCell>
+                        <TableCell>
+                          {(device.capacity / 1000).toFixed(2)}MWp
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            component={LinkRouter}
+                            to={{
+                              pathname: `/dashboard/generation/${device.brand}`,
+                            }}
+                            state={{
+                              devUuidState: device.uuid,
+                              blUuidState: device.blUuid,
+                              useNameState: device.name,
+                            }}
+                            underline="hover"
+                          >
+                            <Typography variant="body2">
+                              {device.name}
+                            </Typography>
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </Card>
         </Box>
       )}
