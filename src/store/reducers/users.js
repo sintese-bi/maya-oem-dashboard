@@ -33,7 +33,9 @@ const initialState = {
   capacity: [],
   sendingEmail: [],
   passwordRecovery: [],
-  selectedUser: []
+  selectedUser: [],
+  graphData: [],
+  loadingGraphData: false
 };
 
 export default function userReducer(state = initialState, action) {
@@ -65,6 +67,27 @@ export default function userReducer(state = initialState, action) {
         brandListUser: [],
         profileLevel: [],
       };
+
+    case users.GRAPH_REQUEST:
+      return {
+        ...state,
+        loadingGraphData: true,
+        graphData: []
+      }
+
+    case users.GRAPH_SUCCESS:
+      return {
+        ...state,
+        loadingGraphData: false,
+        graphData: result
+      }
+
+    case users.GRAPH_FAILURE:
+      return {
+        ...state,
+        loadingGraphData: false,
+        graphData: []
+      }
 
     case users.SELECT_USER:
       return {
@@ -339,7 +362,7 @@ export default function userReducer(state = initialState, action) {
               brand: dev.dev_brand,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
-              capacity: dev.dev_capacity,
+              capacity: `${(dev.dev_capacity / 1000).toFixed(2)}MWp`,
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0

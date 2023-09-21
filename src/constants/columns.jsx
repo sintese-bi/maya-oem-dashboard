@@ -1,8 +1,8 @@
 import { Avatar, Link, Stack, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
-import { ModalPlantsGraph } from "src/components/ModalPlantsGraph"
-import { DeleteDevice } from "src/components/deleteDevice"
+import { ModalPlantsGraph } from "src/components/ModalPlantsGraph";
+import { DeleteDevice } from "src/components/deleteDevice";
 
 export const columnsDevices = [
   {
@@ -42,7 +42,7 @@ export const columnsDevices = [
               state={{
                 devUuidState: dataTable.rowData[0],
                 blUuidState: dataTable.rowData[1],
-                useNameState: dataTable.rowData[2]
+                useNameState: dataTable.rowData[2],
               }}
               underline="hover"
             >
@@ -60,6 +60,10 @@ export const columnsDevices = [
       filter: true,
       sort: true,
     },
+  },
+  {
+    name: "capacity",
+    label: "Capacidade da usina",
   },
   {
     name: "generationEstimatedDay",
@@ -116,7 +120,6 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customBodyRender: (name, dataTable) => {
-      
         return (
           <Stack direction="row" alignItems="center" gap={1}>
             <Typography variant="body1">{name}</Typography>
@@ -158,14 +161,14 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customBodyRender: (name, dataTable) => {
-        return(
+        return (
           <Stack direction="row" alignItems="center" gap={1}>
-            <ModalPlantsGraph 
+            <ModalPlantsGraph
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
             />
           </Stack>
-        )
+        );
       },
     },
   },
@@ -176,12 +179,12 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customBodyRender: (name, dataTable) => {
-        return(
+        return (
           <Stack direction="row" alignItems="center" gap={1}>
             <DeleteDevice devUuid={dataTable.rowData[0]} />
           </Stack>
-        )
+        );
       },
     },
-  }
+  },
 ];

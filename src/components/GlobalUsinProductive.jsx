@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Link as LinkRouter } from "react-router-dom";
+import { columnsDevices } from "../constants/columns";
 import api, { configRequest } from "src/services/api";
 import {
   Box,
@@ -14,15 +14,9 @@ import {
   ListItemText,
   Grid,
   TextField,
-  Paper,
-  Table,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Link,
 } from "@mui/material";
+import MUIDataTable from "mui-datatables";
+
 import { Info, ElectricBolt } from "@mui/icons-material";
 import {
   ChartsDashboard,
@@ -31,39 +25,54 @@ import {
 import { numbers } from "src/helpers/utils";
 import { BigNumber } from "./BigNumber";
 import moment from "moment";
+import Plants from "./Plants";
+import { useDispatch, useSelector } from "react-redux";
+import { getGraphData } from "src/store/actions/users";
+import { LoadingSkeletonBigNumbers } from "./Loading";
 
-export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
+export const GlobalUsinProductive = ({
+  dataDevices,
+  isLoading,
+  setEstimatedGeneration,
+  setRealGeneration,
+}) => {
+  const { graphData, loadingGraphData } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const [realGenerationTotal, setRealGenerationTotal] = useState("0");
   const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState("0");
-  const [generationPercentState, setGenerationPercentState] = useState({
-    biggerThanEsimated: false,
-    percentValue: "0%",
-  });
+  const [generationPercentState, setGenerationPercentState] = useState(0);
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [topDevicesKWp, setTopDevicesKWp] = useState([]);
   const [globalGenerationGraph, setGlobalGenerationGraph] = useState([]);
+  const [realGenerationFiltered, setRealGenerationFiltered] = useState(0);
+  const [estimatedGenerationFiltered, setEstimatedGenerationFiltered] =
+    useState(0);
 
   function handleTopDevicesKWp(devices) {
-    setTopDevicesKWp(
-      devices.sort((a, b) => b.capacity - a.capacity).slice(0, 10)
-    );
-  }
-
-  async function handleGlobalGenerationData() {
-    const { data } = await api.post(
-      "/genrealday",
-      { startDate: startDate, endDate: endDate },
-      configRequest()
-    );
-    if (!data) {
-      return;
-    }
-    setGlobalGenerationGraph(data.somaPorDia);
+    setTopDevicesKWp(devices.sort((a, b) => b.capacity - a.capacity));
   }
 
   useEffect(() => {
-    handleGlobalGenerationData();
+    setRealGenerationFiltered(
+      (
+        graphData.somaPorDiaReal?.[
+          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
+        ] / 1000
+      ).toFixed(2)
+    );
+    setEstimatedGenerationFiltered(
+      (
+        graphData.somaPorDiaEstimada?.[
+          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
+        ] / 1000
+      ).toFixed(2)
+    );
+  }, [graphData]);
+
+  useEffect(() => {
+    dispatch(getGraphData({ startDate: startDate, endDate: endDate }));
   }, [startDate, endDate, dataDevices]);
 
   useEffect(() => {
@@ -92,28 +101,35 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
   }, [dataDevices]);
 
   useEffect(() => {
-    console.log(realGenerationTotal, estimatedGenerationTotal);
-    let generationPercentStateTemp = {
-      biggerThanEsimated: false,
-      percentValue: "0%",
-    };
-    let percent = (
-      (realGenerationTotal / estimatedGenerationTotal) *
-      100
-    ).toFixed();
-    if (percent < 100) {
-      generationPercentStateTemp.percentValue = 100 - percent;
-      generationPercentStateTemp.biggerThanEsimated = false;
-    } else {
-      generationPercentStateTemp.percentValue = percent - 100;
-      generationPercentStateTemp.biggerThanEsimated = true;
-    }
-    setGenerationPercentState(generationPercentStateTemp);
-  }, [realGenerationTotal, estimatedGenerationTotal]);
+    setGenerationPercentState(
+      (
+        (graphData.somaPorDiaReal?.[
+          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
+        ] /
+          graphData.somaPorDiaEstimada?.[
+            moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
+          ]) *
+        100
+      ).toFixed()
+    );
+  }, [realGenerationFiltered, realGenerationFiltered]);
 
   return (
     <>
-      {isLoading ? null : (
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            py: 4,
+            mt: 8,
+          }}
+        >
+          <Typography variant="h4">Carregando dados...</Typography>
+        </Box>
+      ) : (
         <Box
           sx={{
             display: "flex",
@@ -131,7 +147,9 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
               my: 4,
             }}
           >
-            <Typography variant="h4">Produtividade de usinas</Typography>
+            <Typography variant="h4">
+              Producão de todas as usinas do mês
+            </Typography>
             <Typography
               variant="body1"
               sx={{ lineHeight: "100%", py: 2, fontWeight: "bold", ml: 2 }}
@@ -159,22 +177,26 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
               }}
             >
               <Grid item sm={12} lg={3}>
-                <BigNumber
-                  title="Produção total"
-                  value={`${numbers(
-                    (realGenerationTotal / 1000).toFixed(2)
-                  )}MWh`}
-                  icon={<ElectricBolt />}
-                />
+                {loadingGraphData ? (
+                  <LoadingSkeletonBigNumbers />
+                ) : (
+                  <BigNumber
+                    title="Produção total"
+                    value={`${realGenerationFiltered}MWh`}
+                    icon={<ElectricBolt />}
+                  />
+                )}
               </Grid>
               <Grid item sm={12} lg={3}>
-                <BigNumber
-                  title="Produtividade estimada"
-                  value={`${numbers(
-                    (estimatedGenerationTotal / 1000).toFixed(2)
-                  )}MWh`}
-                  icon={<ElectricBolt />}
-                />
+                {loadingGraphData ? (
+                  <LoadingSkeletonBigNumbers />
+                ) : (
+                  <BigNumber
+                    title="Produtividade estimada"
+                    value={`${estimatedGenerationFiltered}MWh`}
+                    icon={<ElectricBolt />}
+                  />
+                )}
               </Grid>
             </Box>
             <List sx={{ width: "100%", mb: 4 }}>
@@ -182,19 +204,26 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
                 <ListItemAvatar>
                   <Info />
                 </ListItemAvatar>
-                <ListItemText>{`Sua produtividade atual é de ${numbers(
-                  (realGenerationTotal / 1000).toFixed(2)
-                )}MWh`}</ListItemText>
+                <ListItemText>
+                  {loadingGraphData
+                    ? `Buscando dados...`
+                    : `Sua produtividade atual é de ${realGenerationFiltered}MWh`}
+                </ListItemText>
               </ListItem>
               <ListItem>
                 <ListItemAvatar>
                   <Info />
                 </ListItemAvatar>
                 <ListItemText>
-                  {generationPercentState.biggerThanEsimated
-                    ? `A produtividade global atual está ${generationPercentState.percentValue}% acima da esperada`
-                    : `Sua produtividade hoje está ${generationPercentState.percentValue}%
-            		  abaixo da esperada`}
+                  {loadingGraphData
+                    ? `Buscando dados...`
+                    : generationPercentState > 100
+                    ? `A produtividade global atual está ${
+                        generationPercentState - 100
+                      }% acima da esperada`
+                    : `A produtividade global atual está ${
+                        100 - generationPercentState
+                      }% abaixo da esperada`}
                 </ListItemText>
               </ListItem>
             </List>
@@ -221,65 +250,15 @@ export const GlobalUsinProductive = ({ dataDevices, isLoading }) => {
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <ChartsDashboard dataDevices={globalGenerationGraph} />
+              <ChartsDashboard dataDevices={graphData} />
             </Box>
-            <ChartsDashboardHorizontal dataDevices={dataDevices} />
             <Box
               component="main"
               sx={{
-                width: "94%",
+                width: "100%",
               }}
             >
-              <TableContainer component={Paper}>
-                <Typography
-                  sx={{
-                    fontSize: "22px",
-                    fontWeight: "bold",
-                    py: 4,
-                    px: 2,
-                    mt: 4,
-                  }}
-                >
-                  Top 10 usinas
-                </Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Dispositivo/Usuário</TableCell>
-                      <TableCell>Capacidade (KWp)</TableCell>
-                      <TableCell>Conferir planta</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {topDevicesKWp.map((device) => (
-                      <TableRow>
-                        <TableCell>{device.name}</TableCell>
-                        <TableCell>
-                          {(device.capacity / 1000).toFixed(2)}MWp
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            component={LinkRouter}
-                            to={{
-                              pathname: `/dashboard/generation/${device.brand}`,
-                            }}
-                            state={{
-                              devUuidState: device.uuid,
-                              blUuidState: device.blUuid,
-                              useNameState: device.name,
-                            }}
-                            underline="hover"
-                          >
-                            <Typography variant="body2">
-                              {device.name}
-                            </Typography>
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Plants toptopDevicesKWp={topDevicesKWp} />
             </Box>
           </Card>
         </Box>
