@@ -28,12 +28,13 @@ import { ChartsLinear } from "src/components/Charts";
 import { numbers } from "src/helpers/utils";
 
 export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [optionFilter, setOptionFilter] = useState("days");
-  const [generation, setGeneration] = useState(null);
-
-  const dispatch = useDispatch();
+  const [generationRealTotal, setGenerationRealTotal] = useState("");
+  const [generationEstimatedTotal, setGenerationEstimatedTotalt] = useState("");
 
   const { devicesGeneration, isLoadingDevicesGeneration } = useSelector(
     (state) => state.devices
@@ -43,7 +44,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  console.log(devicesGeneration);
+
   function handleChartLinearData(props) {
     dispatch(getAllDevicesGeneration(props));
   }
@@ -53,10 +54,6 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
     setEndDate(moment().format("YYYY-MM-DD"));
     setOpen(!open);
   }
-
-  useEffect(() => {
-    setGeneration(devicesGeneration);
-  }, [devicesGeneration]);
 
   useEffect(() => {
     if (selectedDevice) {
@@ -70,6 +67,19 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
       );
     }
   }, [startDate, endDate, optionFilter]);
+
+  useEffect(() => {
+    setGenerationEstimatedTotalt(
+      devicesGeneration.estimatedGeneration
+        ?.reduce((total, element) => total + element, 0)
+        .toFixed(2)
+    );
+    setGenerationRealTotal(
+      devicesGeneration.realGeneration
+        ?.reduce((total, element) => total + Number(element.value), 0)
+        .toFixed(2)
+    );
+  }, [devicesGeneration]);
 
   return (
     <Box>
@@ -172,9 +182,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
                   title="Sua produção no periodo escolhido é"
                   value={
                     devicesGeneration
-                      ? `${devicesGeneration.realGeneration
-                          ?.reduce((total, element) => total + element.value, 0)
-                          .toFixed(2)}KWp`
+                      ? `${generationRealTotal}KWp`
                       : `${100}KWp`
                   }
                   icon={<Thermostat />}
@@ -189,9 +197,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
                   title="sua produção estimada para o periodo escolhido é"
                   value={
                     devicesGeneration
-                      ? `${devicesGeneration.estimatedGeneration
-                          ?.reduce((total, element) => total + element, 0)
-                          .toFixed(2)}KWp`
+                      ? `${generationEstimatedTotal}KWp`
                       : `${100}KWp`
                   }
                   icon={<Thermostat />}
@@ -202,16 +208,10 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
           <Typography
             sx={{ fontWeight: "bold", fontSize: "18px", py: 6, ml: 8 }}
           >
-            {`O percentual de producao é de: ${
-              (devicesGeneration.realGeneration
-                ?.reduce((total, element) => total + element.value, 0)
-                .toFixed(2) /
-                devicesGeneration.estimatedGeneration?.reduce(
-                  (total, element) => total + element,
-                  0
-                )) *
-              (100).toFixed(2)
-            }%`}
+            {`O percentual de producao é de: ${(
+              (generationRealTotal / generationEstimatedTotal) *
+              100
+            ).toFixed(2)}%`}
           </Typography>
         </Box>
       </Modal>

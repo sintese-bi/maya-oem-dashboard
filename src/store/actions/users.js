@@ -61,6 +61,32 @@ export const auth = (params) => (dispatch) => {
   });
 };
 
+export const getGraphData = (params) => (dispatch) => {
+  dispatch({ type: users.GRAPH_REQUEST })
+  api
+    .post(
+      "/genrealday",
+      { startDate: params.startDate, endDate: params.endDate },
+      configRequest()
+    )
+    .then((res) => {
+      const { data } = res
+      dispatch({
+        type: users.GRAPH_SUCCESS,
+        result: data
+      })
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.POST_REGISTER_FAILURE, message });
+    });
+}
+
 export const selectedUser = (params) => (dispatch) => {
   console.log(params)
   dispatch({ type: users.SELECT_USER, result: params })

@@ -1,19 +1,11 @@
 import { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
-import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { useLocation } from "react-router-dom";
 import { ChartsLinear } from "src/components/Charts";
-import { ChartsDashboardHorizontal } from "src/components/Charts";
-import { ChartsDashboard } from "src/components/Charts";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboard, getCapacities } from "src/store/actions/users";
-import {
-  getDeletedDevices,
-  getAllDevicesGeneration,
-} from "src/store/actions/devices";
-
-import { theme } from "src/theme";
+import { getDashboard } from "src/store/actions/users";
+import { getAllDevicesGeneration } from "src/store/actions/devices";
 
 import { columnsDevices } from "src/constants/columns";
 
@@ -23,33 +15,22 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  Container,
   Grid,
-  Button,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
   Modal,
-  Tooltip,
   TextField,
 } from "@mui/material";
-import { CheckCircle, Poll } from "@mui/icons-material";
-
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-export default function Plants() {
+export default function Plants(props) {
+  const { topDevicesKWp } = props;
+
   const [handlingDeviceDelete, setHandlingDeviceDelete] = useState(true);
   const location = useLocation();
   const { type } = location.state || {};
   const { useUuid, useName } = getUserCookie();
-
+  const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [startDate, setStartDate] = useState(
@@ -61,15 +42,14 @@ export default function Plants() {
   const {
     isLoading,
     brands,
-    blUuids,
     dataDevices,
+    blUuids,
     generationBelowEstimated,
     alerts,
     offline,
     online,
   } = useSelector((state) => state.users);
 
-  const [data, setData] = useState(dataDevices);
   const [columns, setColumns] = useState(columnsDevices);
 
   const { devicesGeneration, isLoadingDevicesGeneration } = useSelector(
@@ -90,9 +70,11 @@ export default function Plants() {
   useEffect(() => {
     if (dataDevices.length !== 0) {
       setData(
-        dataDevices.map((data) => {
-          return data;
-        })
+        topDevicesKWp
+          ? topDevicesKWp
+          : dataDevices.map((data) => {
+              return data;
+            })
       );
     }
   }, [dataDevices]);
@@ -181,7 +163,7 @@ export default function Plants() {
       <Grid container spacing={3} sx={{ width: "100%" }}>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"Listagem de Plantas"}
+            title="Listagem de usinas"
             data={data}
             columns={columns}
             options={options}

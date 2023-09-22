@@ -669,10 +669,47 @@ export const ChartsDashboard = (props) => {
   const { dataDevices } = props;
   const theme = useTheme();
 
-  const labels = Object.keys(dataDevices).map((data) =>
+  if (dataDevices.length == 0) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pb: 6,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box sx={{ height: 300 }}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  }
+
+  const labels = Object.keys(dataDevices.somaPorDiaReal).map((data) =>
     moment(data).format("DD/MM")
   );
-  const values = Object.values(dataDevices);
+  const real = Object.values(dataDevices.somaPorDiaReal).map(
+    (data) => data / 1000
+  );
+  const estimated = Object.values(dataDevices.somaPorDiaEstimada).map(
+    (data) => data / 1000
+  );
 
   const data = {
     labels,
@@ -681,12 +718,23 @@ export const ChartsDashboard = (props) => {
         barThickness: 20,
         borderRadius: 2,
         categoryPercentage: 0.5,
-        label: "Geral Estimada",
+        label: "Geração real",
         maxBarThickness: 22,
         barPercentage: 0.8,
-        label: "Geração Real",
-        data: values,
+        label: "Geração real",
+        data: real,
         backgroundColor: "#5048E5",
+      },
+      {
+        barThickness: 20,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: "Geração estimada",
+        maxBarThickness: 22,
+        barPercentage: 0.8,
+        label: "Geração estimada",
+        data: estimated,
+        backgroundColor: "#14B8A6",
       },
     ],
   };
@@ -729,7 +777,7 @@ export const ChartsDashboard = (props) => {
         },
         title: {
           display: true,
-          text: "kWh",
+          text: "MWp",
           font: { size: 18, weight: "bold" },
         },
       },
