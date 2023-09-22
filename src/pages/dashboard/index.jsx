@@ -205,6 +205,10 @@ export default function Dashboard() {
   }, [data]);
 
   useEffect(() => {
+    console.log(realGeneration, estimatedGeneration);
+  }, [realGeneration, estimatedGeneration]);
+
+  useEffect(() => {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
   }, [type]);
 
@@ -224,19 +228,36 @@ export default function Dashboard() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "end",
-          my: 3,
+          justifyContent: "space-between",
+          alignItems: "center",
+          mt: 4,
+          mb: 8,
           ml: 3,
+          px: 2,
+          width: "100%",
         }}
       >
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="h3">Usuário: {useName}</Typography>
+          <Typography sx={{ fontSize: "24px", fontWeight: "700" }}>
+            Data: {moment().format("DD/MM/YYYY")}
+          </Typography>
+        </Box>
         <ToolTipNoAccess useTypeMember={useTypeMember}>
           <Box
-            sx={{ display: "flex", justifyContent: "center", width: "220px" }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "220px",
+            }}
           >
             <Button
               startIcon={<DownloadForOffline fontSize="small" />}
               variant={useTypeMember ? "outlined" : ""}
               onClick={() => handleReportGeneration()}
+              sx={{
+                height: "40px",
+              }}
             >
               {isLoadingReport ? (
                 "Preparar relatório"
@@ -313,7 +334,7 @@ export default function Dashboard() {
               ) : (
                 <BigNumber
                   title="Produzido (MWh)"
-                  value={`${numbers(realGenerationTotal)}MWh`}
+                  value={`${realGeneration}MWh`}
                   icon={<ElectricBolt />}
                 />
               )}
@@ -324,7 +345,7 @@ export default function Dashboard() {
               ) : (
                 <BigNumber
                   title="Esperado (MWh)"
-                  value={`${numbers(estimatedGenerationTotal)}MWh`}
+                  value={`${estimatedGeneration}MWh`}
                   icon={<ElectricBolt />}
                 />
               )}
@@ -335,12 +356,7 @@ export default function Dashboard() {
               ) : (
                 <BigNumber
                   title="Desempenho"
-                  value={
-                    (
-                      (realGenerationTotal / estimatedGenerationTotal) *
-                      100
-                    ).toFixed() + "%"
-                  }
+                  value={100 + "%"}
                   icon={<ElectricBolt />}
                 />
               )}
@@ -367,7 +383,7 @@ export default function Dashboard() {
               my: 2,
             }}
           >
-            <Typography variant="h4">Total produzido</Typography>
+            <Typography variant="h4">Total produzido este mês</Typography>
             <Typography
               sx={{
                 lineHeight: "100%",
@@ -381,20 +397,15 @@ export default function Dashboard() {
             </Typography>
           </Box>
           <Typography sx={{ my: 4 }}>
-            {`Prezado ${useName} sua produtivade hoje é ${numbers(
-              realGenerationTotal
+            {`Prezado ${useName} sua produtivade este mês é ${numbers(
+              realGeneration
             )}MWh`}
           </Typography>
           <Card sx={{ p: 4 }}>
             <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
-              {`Para este mês suas usinas devem produzir ${numbers(
-                estimatedGenerationTotal
-              )}MWh, 
-            no momento você está ${numbers(realGenerationTotal)}MWh.
-            Isto corresponde a um desempenho de ${(
-              (realGenerationTotal / estimatedGenerationTotal) *
-              100
-            ).toFixed()}% `}
+              {`Para este mês suas usinas devem produzir ${estimatedGeneration}MWh, 
+            no momento você produziu ${realGenerationTotal}MWh.
+            Isto corresponde a um desempenho de ${100}% `}
             </Typography>
           </Card>
         </Box>

@@ -38,14 +38,10 @@ export const GlobalUsinProductive = ({
 }) => {
   const { graphData, loadingGraphData } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [realGenerationTotal, setRealGenerationTotal] = useState("0");
-  const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState("0");
   const [generationPercentState, setGenerationPercentState] = useState(0);
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [topDevicesKWp, setTopDevicesKWp] = useState([]);
-  const [globalGenerationGraph, setGlobalGenerationGraph] = useState([]);
   const [realGenerationFiltered, setRealGenerationFiltered] = useState(0);
   const [estimatedGenerationFiltered, setEstimatedGenerationFiltered] =
     useState(0);
@@ -55,18 +51,27 @@ export const GlobalUsinProductive = ({
   }
 
   useEffect(() => {
+    const somaPorDiaReal = graphData.somaPorDiaReal
+      ? graphData?.somaPorDiaReal
+      : { key: 0 };
+    const somaPorDiaEstimada = graphData.somaPorDiaEstimada
+      ? graphData.somaPorDiaEstimada
+      : { key: 0 };
+    console.log(somaPorDiaReal);
     setRealGenerationFiltered(
       (
-        graphData.somaPorDiaReal?.[
-          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
-        ] / 1000
+        Object.values(somaPorDiaReal).reduce(
+          (total, element) => total + element,
+          0
+        ) / 1000
       ).toFixed(2)
     );
     setEstimatedGenerationFiltered(
       (
-        graphData.somaPorDiaEstimada?.[
-          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
-        ] / 1000
+        Object.values(somaPorDiaEstimada).reduce(
+          (total, element) => total + element,
+          0
+        ) / 1000
       ).toFixed(2)
     );
   }, [graphData]);
@@ -77,42 +82,18 @@ export const GlobalUsinProductive = ({
 
   useEffect(() => {
     handleTopDevicesKWp(dataDevices);
-    let generationRealMonth = dataDevices.map((data) => {
-      let generationRealValue = Number(
-        data.generationRealMonth.replace(/\Kwh/g, "")
-      );
-      return generationRealValue;
-    });
-    let generationRealMonthTotal = generationRealMonth
-      .reduce((total, element) => total + element, 0)
-      .toFixed("2");
-    setRealGenerationTotal(generationRealMonthTotal);
+    let generationRealMonthTotal = (
+      graphData.somaPorDiaReal?.[moment(endDate).format("YYYY-MM-DD")] / 1000
+    ).toFixed(2);
+    setRealGeneration(generationRealMonthTotal);
 
-    let generationEstimatedMonth = dataDevices.map((data) => {
-      let generationEstimatedValue = Number(
-        data.generationEstimatedMonth.replace(/\Kwh/g, "")
-      );
-      return generationEstimatedValue;
-    });
-    let generationEstimatedMonthTotal = generationEstimatedMonth
-      .reduce((total, element) => total + element, 0)
-      .toFixed("2");
-    setEstimatedGenerationTotal(generationEstimatedMonthTotal);
+    let generationEstimatedMonthTotal = 0;
+    setEstimatedGeneration(generationEstimatedMonthTotal);
   }, [dataDevices]);
 
   useEffect(() => {
-    setGenerationPercentState(
-      (
-        (graphData.somaPorDiaReal?.[
-          moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
-        ] /
-          graphData.somaPorDiaEstimada?.[
-            moment(endDate).subtract(1, "days").format("YYYY-MM-DD")
-          ]) *
-        100
-      ).toFixed()
-    );
-  }, [realGenerationFiltered, realGenerationFiltered]);
+    setGenerationPercentState(100);
+  }, [realGenerationFiltered, estimatedGenerationFiltered]);
 
   return (
     <>
@@ -217,13 +198,7 @@ export const GlobalUsinProductive = ({
                 <ListItemText>
                   {loadingGraphData
                     ? `Buscando dados...`
-                    : generationPercentState > 100
-                    ? `A produtividade global atual está ${
-                        generationPercentState - 100
-                      }% acima da esperada`
-                    : `A produtividade global atual está ${
-                        100 - generationPercentState
-                      }% abaixo da esperada`}
+                    : `A produtividade global atual está ${generationPercentState}`}
                 </ListItemText>
               </ListItem>
             </List>
