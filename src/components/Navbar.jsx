@@ -56,13 +56,13 @@ export const DashboardNavbar = () => {
       disabled: profileLevel === "admin" ? true : false,
       active: location.pathname === "/dashboard/alertDevices" ? true : false,
     },
-    {
-      label: "Plantas",
-      to: "/dashboard/devices",
-      icon: <AccountCircle fontSize="small" />,
-      disabled: true,
-      active: location.pathname === "/dashboard/devices" ? true : false,
-    },
+    //{
+    //  label: "Plantas",
+    //  to: "/dashboard/devices",
+    //  icon: <AccountCircle fontSize="small" />,
+    //  disabled: true,
+    //  active: location.pathname === "/dashboard/devices" ? true : false,
+    //},
     {
       label: "Proposta",
       to: "/dashboard/calculator",

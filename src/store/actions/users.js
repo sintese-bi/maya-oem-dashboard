@@ -71,6 +71,7 @@ export const getGraphData = (params) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res
+      console.log(data);
       dispatch({
         type: users.GRAPH_SUCCESS,
         result: data

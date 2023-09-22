@@ -8,6 +8,7 @@ import { getDashboard } from "src/store/actions/users";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
 
 import { columnsDevices } from "src/constants/columns";
+import { columnsDevicesDashboard } from "src/constants/dashboard-columns";
 
 import { getUserCookie } from "src/services/session";
 
@@ -50,7 +51,7 @@ export default function Plants(props) {
     online,
   } = useSelector((state) => state.users);
 
-  const [columns, setColumns] = useState(columnsDevices);
+  const [columns, setColumns] = useState(columnsDevicesDashboard);
 
   const { devicesGeneration, isLoadingDevicesGeneration } = useSelector(
     (state) => state.devices
@@ -68,6 +69,7 @@ export default function Plants(props) {
   };
 
   useEffect(() => {
+    console.log(topDevicesKWp);
     if (dataDevices.length !== 0) {
       setData(
         topDevicesKWp

@@ -707,9 +707,9 @@ export const ChartsDashboard = (props) => {
   const real = Object.values(dataDevices.somaPorDiaReal).map(
     (data) => data / 1000
   );
-  const estimated = Object.values(dataDevices.somaPorDiaEstimada).map(
-    (data) => data / 1000
-  );
+  const estimated = dataDevices?.somaPorDiaEstimada
+    ? Object.values(dataDevices?.somaPorDiaEstimada)?.map((data) => data / 1000)
+    : null;
 
   const data = {
     labels,
@@ -733,7 +733,7 @@ export const ChartsDashboard = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.8,
         label: "Geração estimada",
-        data: estimated,
+        data: estimated ? estimated : Array(30).fill(80),
         backgroundColor: "#14B8A6",
       },
     ],
