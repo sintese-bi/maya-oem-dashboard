@@ -1,12 +1,12 @@
 // IMPORTS
-import {  useState  } from 'react'
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import { RecoveryPassword } from 'src/components/recoveryPassword';
+import { RecoveryPassword } from "src/components/recoveryPassword";
 
 // LIBS DE ESTILOS
 import {
@@ -18,7 +18,7 @@ import {
   Box,
   Grid,
   Typography,
-  Modal
+  Modal,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -42,7 +42,7 @@ const validateSchema = Yup.object().shape({
 
 // COMPONENTE DA PÁGINA
 export default function Login() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,14 +66,12 @@ export default function Login() {
       );
 
       if (status === 200) {
-        if(profileLevel == 'admin'){
+        if (profileLevel == "admin") {
           navigate("/dashboard");
-        }else if(profileLevel == 'client'){
+        } else if (profileLevel == "client") {
           navigate("/dashboard/devices");
         }
-        
       } else {
-
       }
     } catch (error) {
       // Verificando erros
@@ -88,9 +86,9 @@ export default function Login() {
     return (
       <Typography
         style={{
-          width: '100%',
-          marginTop: '18rem',
-          display: 'block',
+          width: "100%",
+          marginTop: "18rem",
+          display: "block",
         }}
         variant="body2"
         color="text.secondary"
@@ -111,8 +109,8 @@ export default function Login() {
     );
   }
 
-  function handleModalState(){
-    setOpen(!open)
+  function handleModalState() {
+    setOpen(!open);
   }
 
   return (
@@ -147,7 +145,7 @@ export default function Login() {
               style={{
                 maxWidth: "50%",
                 marginBottom: "8rem",
-                marginTop: "4rem"
+                marginTop: "4rem",
               }}
             />
             <FormProvider {...methods}>
@@ -179,22 +177,29 @@ export default function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, height: '56px', backgroundColor: '#33B297', fontSize: '16px', ":hover": { backgroundColor: '#129D95' } }}
-
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    height: "56px",
+                    backgroundColor: "#33B297",
+                    fontSize: "16px",
+                    ":hover": { backgroundColor: "#129D95" },
+                  }}
                 >
                   Entrar
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link sx={{cursor: 'pointer'}} onClick={handleModalState} variant="body2">
+                    <Link
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleModalState}
+                      variant="body2"
+                    >
                       Esqueceu a senha?
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link
-                      href="/register"
-                      variant="body2"
-                    >
+                    <Link href="/register" variant="body2">
                       {"Não tem uma conta? Contrate agora!"}
                     </Link>
                   </Grid>
@@ -210,7 +215,7 @@ export default function Login() {
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <RecoveryPassword />
       </Modal>

@@ -22,7 +22,6 @@ export const auth = (params) => (dispatch) => {
         const { data } = res;
         const { message, token, result } = data;
         const { profile_level, use_name, use_uuid, use_email, use_type_member } = result;
-        console.log('auth-data', data);
         setUserCookie({
           token,
           profileLevel: profile_level.pl_cod,
@@ -61,35 +60,7 @@ export const auth = (params) => (dispatch) => {
   });
 };
 
-export const getGraphData = (params) => (dispatch) => {
-  dispatch({ type: users.GRAPH_REQUEST })
-  api
-    .post(
-      "/genrealday",
-      { startDate: params.startDate, endDate: params.endDate },
-      configRequest()
-    )
-    .then((res) => {
-      const { data } = res
-      console.log(data);
-      dispatch({
-        type: users.GRAPH_SUCCESS,
-        result: data
-      })
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
-
-      toast.error(message, {
-        duration: 5000,
-      });
-      dispatch({ type: users.POST_REGISTER_FAILURE, message });
-    });
-}
-
 export const selectedUser = (params) => (dispatch) => {
-  console.log(params)
   dispatch({ type: users.SELECT_USER, result: params })
 }
 
@@ -183,7 +154,6 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
-      console.log('getUsers-data', data);
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -208,7 +178,6 @@ export const getUserBrands = (uuid) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log("getUserBrands-data", data)
       dispatch({
         type: users.GET_USER_BRANDS_SUCCESS,
         result: data,
@@ -232,7 +201,6 @@ export const patchAlertFrequency = (params) => (dispatch) => {
     .patch("/alertFrequency", params)
     .then((res) => {
       const { data } = res;
-      console.log("patchAlertFrequency-data", data)
       toast.success(data.message, {
         duration: 5000,
       });
@@ -244,9 +212,6 @@ export const patchAlertFrequency = (params) => (dispatch) => {
     .catch((error) => {
       const { response: err } = error;
       const message = err && err.data ? err.data.message : "Erro desconhecido";
-
-      console.log("error: ", error);
-      console.log("err: ", err);
       toast.error(message, {
         duration: 5000,
       });
@@ -261,7 +226,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
     .get(`/alertFrequency/${uuid}`)
     .then((res) => {
       const { data } = res;
-      console.log("alertFrequency-data", data)
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
         result: data
@@ -271,7 +235,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
       const { response: err } = error;
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
-      console.log("err: ", err);
       toast.error(message, {
         duration: 5000,
       });
@@ -280,13 +243,12 @@ export const alertFrequency = (uuid) => (dispatch) => {
 };
 
 // RETORNA OS DADOS DA DASHBOARD
-export const getDashboard = (uuid) => (dispatch) => {
+export const getDashboard = (uuid, component) => (dispatch) => {
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
   api
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      //console.log('getDashboard-data', data);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
         result: data,
@@ -301,6 +263,32 @@ export const getDashboard = (uuid) => (dispatch) => {
       dispatch({ type: users.GET_DASHBOARD_FAILURE, message });
     });
 };
+
+export const getGraphData = (params) => (dispatch) => {
+  dispatch({ type: users.GRAPH_REQUEST })
+  api
+    .post(
+      "/genrealday",
+      { startDate: params.startDate, endDate: params.endDate },
+      configRequest()
+    )
+    .then((res) => {
+      const { data } = res
+      dispatch({
+        type: users.GRAPH_SUCCESS,
+        result: { data: data, dates: { startDate: params.startDate, endDate: params.endDate } }
+      })
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.POST_REGISTER_FAILURE, message });
+    });
+}
 
 export const getCapacities = (blUuids) => (dispatch) => {
   let capacities = []

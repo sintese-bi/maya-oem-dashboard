@@ -1,6 +1,6 @@
 // IMPORTS
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
@@ -9,14 +9,10 @@ import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
 
 import { GlobalUsinProductive } from "src/components/GlobalUsinProductive";
 
-import { ChartsDashboardHorizontal } from "src/components/Charts";
-import { ChartsDashboard } from "src/components/Charts";
-
 // QUERYS
 import { columnsDevices } from "src/constants/columns";
 import { getUserCookie } from "src/services/session";
 import { getDashboard, getCapacities } from "src/store/actions/users";
-import { getDeletedDevices } from "src/store/actions/devices";
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
@@ -24,14 +20,12 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  Container,
   Grid,
   Button,
   Typography,
   Modal,
   Card,
 } from "@mui/material";
-import AlertPercentageForm from "src/components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/PaymentWarn";
 import { MayaWatchPro } from "src/components/MayaWatchPro";
 import { BigNumber, BigNumberDashboard } from "src/components/BigNumber";
@@ -48,9 +42,12 @@ import {
   Cancel,
   ElectricBolt,
 } from "@mui/icons-material";
-import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { LoadingSkeletonBigNumbers } from "src/components/Loading";
+import { UserDivcesLastDayInfo } from "src/components/dashboard-components/user-devices-last-day-info";
+import { UserDevicesTotalInfo } from "src/components/dashboard-components/user-devices-total-info";
+import { UserDevicesResume } from "src/components/dashboard-components/user-devices-resume";
+import { DashboardHeader } from "src/components/dashboard-components/dashboard-header";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -66,6 +63,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const {
     isLoading,
+    isLoadingGraph,
     brands,
     blUuids,
     dataDevices,
@@ -77,7 +75,8 @@ export default function Dashboard() {
     selectedUser,
     //useCodePagarMe
   } = useSelector((state) => state.users);
-  const { devicesDeleted } = useSelector((state) => state.devices);
+
+  const devicesTableRef = useRef(null);
 
   const [open, setOpen] = useState(false);
 
@@ -88,10 +87,23 @@ export default function Dashboard() {
   const [capacityTotal, setCapacityTotal] = useState(0);
   const [action, setAction] = useState("");
   const [isLoadingReport, setIsLoadingReport] = useState(true);
-  const [realGenerationTotal, setRealGenerationTotal] = useState("");
-  const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState("");
+
+  // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
+
+  const [realGenerationTotal, setRealGenerationTotal] = useState(0);
+  const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0);
+  const [percentTotal, setPercentTotal] = useState(0);
+
+  // valores de geração real, estimada e porcentagem, referentes ao - ÚLTIMO DIA -
+
   const [realGeneration, setRealGeneration] = useState(0);
   const [estimatedGeneration, setEstimatedGeneration] = useState(0);
+  const [percent, setPercent] = useState(0);
+
+  // datas para requisições com período de tempo
+
+  const [startDate, setStartDate] = useState(moment().startOf("month"));
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
 
   function handleChangeColumns(type) {
     setType(type);
@@ -122,12 +134,13 @@ export default function Dashboard() {
       default:
         break;
     }
+    devicesTableRef.current.scrollIntoView();
   }
 
   function handleRealGenerationTotal(devices) {
     let generationRealMonth = devices.map((data) => {
       let generationRealValue = Number(
-        data.generationRealMonth.replace(/\Kwh/g, "")
+        data.generationRealMonth?.replace(/\Kwh/g, "")
       );
       return generationRealValue;
     });
@@ -140,7 +153,7 @@ export default function Dashboard() {
   function handleEstimatedGenerationTotal(devices) {
     let generationEstimatedMonth = devices.map((data) => {
       let generationEstimatedValue = Number(
-        data.generationEstimatedMonth.replace(/\Kwh/g, "")
+        data.generationEstimatedMonth?.replace(/\Kwh/g, "")
       );
       return generationEstimatedValue;
     });
@@ -165,9 +178,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     selectedUser.length != 0
-      ? dispatch(getDashboard(selectedUser[0]?.useUuidState))
-      : dispatch(getDashboard(useUuid));
-  }, [useUuid]);
+      ? dispatch(
+          getDashboard(
+            selectedUser[0]?.useUuidState,
+            "index.jsx - selectedUser"
+          )
+        )
+      : dispatch(getDashboard(useUuid, "index.jsx - normal"));
+  }, []);
 
   useEffect(() => {
     dispatch(getCapacities(blUuids));
@@ -181,8 +199,8 @@ export default function Dashboard() {
   }, [dataDevices]);
 
   useEffect(() => {
-    handleRealGenerationTotal(data);
-    handleEstimatedGenerationTotal(data);
+    handleRealGenerationTotal(dataDevices);
+    handleEstimatedGenerationTotal(dataDevices);
 
     let realGenerationTempArray = dataDevices.map((data) => {
       let generationRealValue = Number(data.capacity.replace(/\MWp/g, ""));
@@ -202,11 +220,15 @@ export default function Dashboard() {
           .toFixed("2")
       )
     );
-  }, [data]);
+  }, [dataDevices]);
 
   useEffect(() => {
-    console.log(realGeneration, estimatedGeneration);
-  }, [realGeneration, estimatedGeneration]);
+    let percentValue = (
+      (realGenerationTotal / estimatedGenerationTotal) *
+      100
+    ).toFixed();
+    setPercentTotal(percentValue);
+  }, [realGenerationTotal, estimatedGenerationTotal]);
 
   useEffect(() => {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
@@ -225,61 +247,13 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mt: 4,
-          mb: 8,
-          ml: 3,
-          px: 2,
-          width: "100%",
-        }}
-      >
-        <Box sx={{ textAlign: "center" }}>
-          <Typography variant="h3">Usuário: {useName}</Typography>
-          <Typography sx={{ fontSize: "24px", fontWeight: "700" }}>
-            Data: {moment().format("DD/MM/YYYY")}
-          </Typography>
-        </Box>
-        <ToolTipNoAccess useTypeMember={useTypeMember}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              width: "220px",
-            }}
-          >
-            <Button
-              startIcon={<DownloadForOffline fontSize="small" />}
-              variant={useTypeMember ? "outlined" : ""}
-              onClick={() => handleReportGeneration()}
-              sx={{
-                height: "40px",
-              }}
-            >
-              {isLoadingReport ? (
-                "Preparar relatório"
-              ) : (
-                <PDFDownloadLink
-                  document={<AdministratorReport />}
-                  fileName="relatório-integrador.pdf"
-                  style={{ textDecoration: "none" }}
-                >
-                  {({ blob, url, loading, error }) =>
-                    useTypeMember
-                      ? loading
-                        ? "Carregando relatório..."
-                        : "Relatório Integrador"
-                      : "Relatório indisponível"
-                  }
-                </PDFDownloadLink>
-              )}
-            </Button>
-          </Box>
-        </ToolTipNoAccess>
-      </Box>
+      <DashboardHeader
+        label={"Apresentção do usuário / botão para download de relatório"}
+        isLoadingReport={isLoadingReport}
+        useTypeMember={useTypeMember}
+        useName={useName}
+        handleReportGeneration={handleReportGeneration}
+      />
       <Box
         sx={{
           display: "flex",
@@ -288,235 +262,48 @@ export default function Dashboard() {
           flexDirection: "column",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            width: "80%",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              my: 2,
-            }}
-          >
-            <Typography variant="h4">Minhas usinas</Typography>
-            <Typography
-              sx={{
-                lineHeight: "100%",
-                py: 2,
-                fontWeight: "bold",
-                ml: 2,
-                fontSize: "20px",
-              }}
-            >
-              Hoje, {moment().format("DD/MM/YYYY")}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              p: 4,
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-          >
-            <Grid item sm={12} lg={3}>
-              {isLoading ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Produzido (MWh)"
-                  value={`${realGeneration}MWh`}
-                  icon={<ElectricBolt />}
-                />
-              )}
-            </Grid>
-            <Grid item sm={12} lg={3}>
-              {isLoading ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Esperado (MWh)"
-                  value={`${estimatedGeneration}MWh`}
-                  icon={<ElectricBolt />}
-                />
-              )}
-            </Grid>
-            <Grid item sm={12} lg={3}>
-              {isLoading ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Desempenho"
-                  value={100 + "%"}
-                  icon={<ElectricBolt />}
-                />
-              )}
-            </Grid>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            width: "80%",
-            my: 8,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              my: 2,
-            }}
-          >
-            <Typography variant="h4">Total produzido este mês</Typography>
-            <Typography
-              sx={{
-                lineHeight: "100%",
-                py: 2,
-                fontWeight: "bold",
-                ml: 2,
-                fontSize: "20px",
-              }}
-            >
-              Hoje, {moment().format("DD/MM/YYYY")}
-            </Typography>
-          </Box>
-          <Typography sx={{ my: 4 }}>
-            {`Prezado ${useName} sua produtivade este mês é ${numbers(
-              realGeneration
-            )}MWh`}
-          </Typography>
-          <Card sx={{ p: 4 }}>
-            <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
-              {`Para este mês suas usinas devem produzir ${estimatedGeneration}MWh, 
-            no momento você produziu ${realGenerationTotal}MWh.
-            Isto corresponde a um desempenho de ${100}% `}
-            </Typography>
-          </Card>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            width: "84%",
-            my: 4,
-          }}
-        >
-          <Typography variant="h4">Resumo de usinas</Typography>
-          <Typography
-            variant="body1"
-            sx={{ lineHeight: "100%", py: 2, fontWeight: "bold", ml: 2 }}
-          >
-            {moment().format("DD/MM/YYYY")}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 3,
-          }}
-        >
-          <BigNumberDashboard
-            title="Dispositivos/usuário"
-            value={dataDevices.length !== 0 ? dataDevices.length : 0}
-            icon={<AccountCircle />}
-            type={1}
-            activeBtn={type === 1 ? true : false}
-            handleChangeColumns={(type) => handleChangeColumns(type)}
-          />
-
-          <BigNumberDashboard
-            title="Marcas"
-            value={brands.length !== 0 ? brands.length : 0}
-            icon={<BrandingWatermark />}
-            type={2}
-            activeBtn={type === 2 ? true : false}
-            handleChangeColumns={(type) => handleChangeColumns(type)}
-          />
-          <BigNumberDashboard
-            title="Capacidade total Usinas"
-            value={`${capacityTotal}MWp`}
-            icon={<AlignVerticalTop />}
-            type={3}
-            activeBtn={type === 3 ? true : false}
-            handleChangeColumns={(type) => handleChangeColumns(type)}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 3,
-          mt: 3,
-        }}
-      >
-        <BigNumberDashboard
-          title="Online"
-          value={online.length !== 0 ? online.length : 0}
-          icon={<ThumbUpOffAlt />}
-          type={6}
-          activeBtn={type === 6 ? true : false}
-          handleChangeColumns={(type) => handleChangeColumns(type)}
+        <UserDivcesLastDayInfo
+          label={"Minhas Usinas"}
+          isLoading={isLoadingGraph}
+          realGeneration={realGeneration}
+          estimatedGeneration={estimatedGeneration}
+          percent={percent}
         />
-        <BigNumberDashboard
-          title="Offline"
-          value={offline.length !== 0 ? offline.length : 0}
-          icon={<ThumbDownOffAlt />}
-          type={5}
-          activeBtn={type === 5 ? true : false}
-          handleChangeColumns={(type) => handleChangeColumns(type)}
+        <UserDevicesTotalInfo
+          label={"Total produzido este mês"}
+          useName={useName}
+          realGenerationTotal={realGenerationTotal}
+          estimatedGenerationTotal={estimatedGenerationTotal}
+          percentTotal={percentTotal}
         />
-
-        <BigNumberDashboard
-          title="Plantas em Alerta"
-          value={alerts.length !== 0 ? alerts.length : 0}
-          icon={<Warning />}
-          type={4}
-          activeBtn={type === 4 ? true : false}
-          handleChangeColumns={(type) => handleChangeColumns(type)}
+        <UserDevicesResume
+          label={"Resumo de usinas"}
+          type={type}
+          handleChangeColumns={handleChangeColumns}
+          dataDevices={dataDevices}
+          brands={brands}
+          capacityTotal={capacityTotal}
+          online={online}
+          offline={offline}
+          alerts={alerts}
         />
-
-        {/* <BigNumberDashboard
-          title="Economia de carbono emitido"
-          value={`${emittedCarbon} CO₂`}
-          icon={<AlignVerticalTop />}
-          type={3}
-          activeBtn={type === 3 ? true : false}
-          handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
-      */}
       </Box>
       <GlobalUsinProductive
+        realGenerationTotal={realGenerationTotal}
+        estimatedGenerationTotal={estimatedGenerationTotal}
+        percentTotal={percentTotal}
         dataDevices={dataDevices}
+        data={data}
         isLoading={isLoading}
         setEstimatedGeneration={setEstimatedGeneration}
         setRealGeneration={setRealGeneration}
+        setPercent={setPercent}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        devicesTableRef={devicesTableRef}
       />
-      {/* 
-        Gráfico horizontal/Gráfico vertical
-
-        <Box sx={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', mt: 10}}>
-          <ChartsDashboardHorizontal dataDevices={dataDevices} />
-          <ChartsDashboard dataDevices={dataDevices} />
-        </Box>
-        
-      */}
       <Modal
         open={open}
         onClose={handleReportGeneration}

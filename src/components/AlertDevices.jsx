@@ -51,8 +51,10 @@ export default function AlertDevices() {
   useEffect(() => {
     if (dataDevices.length === 0) {
       selectedUser.length != 0
-        ? dispatch(getDashboard(selectedUser[0]?.useUuidState))
-        : dispatch(getDashboard(useUuid));
+        ? dispatch(
+            getDashboard(selectedUser[0]?.useUuidState, "alert-devices.jsx")
+          )
+        : dispatch(getDashboard(useUuid, "alert-devices.jsx"));
     }
   }, [useUuid]);
 
@@ -83,7 +85,6 @@ export default function AlertDevices() {
           sx={{
             width: "94%",
           }}
-          onClick={() => console.log(devicesALerts, isLoadingAlerts)}
         >
           <TableContainer component={Paper}>
             <Typography

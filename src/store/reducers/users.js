@@ -5,6 +5,7 @@ import moment from "moment-timezone";
 const initialState = {
   message: "",
   isLoading: false,
+  isLoadingGraph: false,
   loading: false,
   loadingRegister: false,
   loadingPasswordRecovery: false,
@@ -24,6 +25,7 @@ const initialState = {
   brands: [],
   blUuids: [],
   dataDevices: [],
+  graphData: [],
   generationBelowEstimated: [],
   alerts: [],
   offline: [],
@@ -34,8 +36,6 @@ const initialState = {
   sendingEmail: [],
   passwordRecovery: [],
   selectedUser: [],
-  graphData: [],
-  loadingGraphData: false
 };
 
 export default function userReducer(state = initialState, action) {
@@ -67,27 +67,6 @@ export default function userReducer(state = initialState, action) {
         brandListUser: [],
         profileLevel: [],
       };
-
-    case users.GRAPH_REQUEST:
-      return {
-        ...state,
-        loadingGraphData: true,
-        graphData: []
-      }
-
-    case users.GRAPH_SUCCESS:
-      return {
-        ...state,
-        loadingGraphData: false,
-        graphData: result
-      }
-
-    case users.GRAPH_FAILURE:
-      return {
-        ...state,
-        loadingGraphData: false,
-        graphData: []
-      }
 
     case users.SELECT_USER:
       return {
@@ -418,6 +397,28 @@ export default function userReducer(state = initialState, action) {
         offline: [],
         online: [],
       };
+
+    case users.GRAPH_REQUEST:
+      return {
+        ...state,
+        isLoadingGraph: true,
+        graphData: []
+      }
+
+    case users.GRAPH_SUCCESS:
+      return {
+        ...state,
+        isLoadingGraph: false,
+        graphData: result
+      }
+
+    case users.GRAPH_FAILURE:
+      return {
+        ...state,
+        isLoadingGraph: false,
+        graphData: []
+      }
+
 
     case users.GET_CAPACITY_REQUEST:
       return {

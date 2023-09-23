@@ -48,7 +48,7 @@ export const CreateDevice = () => {
       dispatch(
         createDevice({ bl_login, bl_password, bl_name, use_uuid: useUuid })
       );
-      dispatch(getDashboard(useUuid));
+      dispatch(getDashboard(useUuid, "create-devices.jsx"));
       setValue("bl_login", "");
       setValue("bl_password", "");
     } catch (error) {

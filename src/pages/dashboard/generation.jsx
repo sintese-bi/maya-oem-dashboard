@@ -142,18 +142,6 @@ const Generation = () => {
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
-    console.log(
-      startDate,
-      endDate,
-      optionFilter,
-      generation,
-      isLoadingGeneration,
-      temperature,
-      deviceInfo
-    );
-  }, [generation]);
-
-  useEffect(() => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
