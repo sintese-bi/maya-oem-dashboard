@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
-import { useLocation } from "react-router-dom";
 import { ChartsLinear } from "src/components/Charts";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboard } from "src/store/actions/users";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
 
 import { columnsDevices } from "src/constants/columns";
-import { columnsDevicesDashboard } from "src/constants/dashboard-columns";
-
-import { getUserCookie } from "src/services/session";
 
 import {
   Backdrop,
@@ -25,13 +20,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export default function Plants(props) {
-  const { topDevicesKWp } = props;
+  const { data, devicesTableRef } = props;
 
-  const [handlingDeviceDelete, setHandlingDeviceDelete] = useState(true);
-  const location = useLocation();
-  const { type } = location.state || {};
-  const { useUuid, useName } = getUserCookie();
-  const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [startDate, setStartDate] = useState(
@@ -43,7 +33,6 @@ export default function Plants(props) {
   const {
     isLoading,
     brands,
-    dataDevices,
     blUuids,
     generationBelowEstimated,
     alerts,
@@ -51,7 +40,7 @@ export default function Plants(props) {
     online,
   } = useSelector((state) => state.users);
 
-  const [columns, setColumns] = useState(columnsDevicesDashboard);
+  const [columns, setColumns] = useState(columnsDevices);
 
   const { devicesGeneration, isLoadingDevicesGeneration } = useSelector(
     (state) => state.devices
@@ -67,50 +56,6 @@ export default function Plants(props) {
     responsive: "simple",
     selectableRows: "none",
   };
-
-  useEffect(() => {
-    console.log(topDevicesKWp);
-    if (dataDevices.length !== 0) {
-      setData(
-        topDevicesKWp
-          ? topDevicesKWp
-          : dataDevices.map((data) => {
-              return data;
-            })
-      );
-    }
-  }, [dataDevices]);
-
-  useEffect(() => {
-    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
-    switch (type) {
-      case 1:
-        setData(dataDevices);
-        break;
-      case 2:
-        setData(
-          brands.map((data) => {
-            let brandItem = { brand: data };
-            return brandItem;
-          })
-        );
-        break;
-      case 3:
-        setData(generationBelowEstimated);
-        break;
-      case 4:
-        setData(alerts);
-        break;
-      case 5:
-        setData(offline);
-        break;
-      case 6:
-        setData(online);
-        break;
-      default:
-        break;
-    }
-  }, [type]);
 
   function handleChartLinearData(props) {
     dispatch(getAllDevicesGeneration(props));
@@ -135,12 +80,6 @@ export default function Plants(props) {
     setOpen(!open);
   }
 
-  useEffect(() => {
-    if (dataDevices.length == 0) {
-      dispatch(getDashboard(useUuid));
-    }
-  }, [useUuid]);
-
   if (isLoading) {
     return (
       <Backdrop
@@ -162,7 +101,7 @@ export default function Plants(props) {
         py: 4,
       }}
     >
-      <Grid container spacing={3} sx={{ width: "100%" }}>
+      <Grid container spacing={3} sx={{ width: "100%" }} ref={devicesTableRef}>
         <Grid item xs={12}>
           <MUIDataTable
             title="Listagem de usinas"

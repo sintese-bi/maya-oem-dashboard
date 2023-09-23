@@ -89,7 +89,7 @@ function ClientCalculator({ onPreviousStep }) {
     setmodQuant(event.target.value);
   };
   //Inserção
-  const [uniqueCities, setUniqueCities] = useState([])
+  const [uniqueCities, setUniqueCities] = useState([]);
   const [nome, setNome] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("AMAZONAS");
@@ -266,14 +266,6 @@ function ClientCalculator({ onPreviousStep }) {
         { abortEarly: false }
       )
       .then(() => {
-        console.log("Dados do formulário:", {
-          nome,
-          cidade,
-          valorEstimado,
-          potenciaModulos,
-          numeroModulos,
-        });
-
         armazenarValorEstimado();
         // console.log(cidade, estado);
         // fetchRadiacao(cidade, estado);
@@ -375,13 +367,11 @@ function ClientCalculator({ onPreviousStep }) {
     };
 
     const json = JSON.stringify(formData);
-    console.log(json);
     const segPlanGigaValue = String(selectedPlan);
     axios
       .post("https://calc.mayaoem.com.br/api/v2/cal-mrkp/", formData)
       .then((response) => {
         // Manipule a resposta da API conforme necessário
-        console.log(response.data);
         let apiResponse = response.data;
         setResponseData(response.data);
         enviarDadosParaAPI(apiResponse, segPlanGigaValue);
@@ -393,9 +383,9 @@ function ClientCalculator({ onPreviousStep }) {
   };
 
   useEffect(() => {
-    let filteredCities = citiesData.filter((data) => data.ic_states == estado)
-    setUniqueCities(filteredCities)
-  }, [estado])
+    let filteredCities = citiesData.filter((data) => data.ic_states == estado);
+    setUniqueCities(filteredCities);
+  }, [estado]);
 
   return (
     <Box
@@ -751,25 +741,40 @@ function ClientCalculator({ onPreviousStep }) {
               error={!!errors.nome}
               helperText={errors.nome}
             />
-            <TextField 
+            <TextField
               defaultValue="AMAZONAS"
-              onChange={(event, newEstado) => setEstado(newEstado["props"].value)} 
+              onChange={(event, newEstado) =>
+                setEstado(newEstado["props"].value)
+              }
               select
               label="Estado"
               margin="normal"
             >
-              {
-                estadosBrasileiros.map((data) => (
-                  <MenuItem key={data} value={data} sx={{display: 'flex', justifyContent:'space-between'}}>{data}</MenuItem>
-                ))
-              }
+              {estadosBrasileiros.map((data) => (
+                <MenuItem
+                  key={data}
+                  value={data}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  {data}
+                </MenuItem>
+              ))}
             </TextField>
-            <TextField onChange={handleCityChange} select label="Cidade" margin="normal" >
-              {
-                uniqueCities.map((data) => (
-                  <MenuItem key={data.ic_city} value={data.ic_city} sx={{display: 'flex', justifyContent:'space-between'}}>{data.ic_city}</MenuItem>
-                ))
-              }
+            <TextField
+              onChange={handleCityChange}
+              select
+              label="Cidade"
+              margin="normal"
+            >
+              {uniqueCities.map((data) => (
+                <MenuItem
+                  key={data.ic_city}
+                  value={data.ic_city}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  {data.ic_city}
+                </MenuItem>
+              ))}
             </TextField>
             <>
               <TextField
@@ -1047,4 +1052,4 @@ function ClientCalculator({ onPreviousStep }) {
   );
 }
 
-export { ClientCalculator }
+export { ClientCalculator };

@@ -71,7 +71,6 @@ export const DeviceDetail = (props) => {
     mode: "onChange",
     resolver: yupResolver(validateSchema),
   });
-  console.log(address);
   const [editInputs, setEditInputs] = useState(false);
   async function onSubmit(values) {
     setSelectedCity((prevValue) => (prevValue ? prevValue : values.address));
@@ -93,7 +92,6 @@ export const DeviceDetail = (props) => {
       const gen_estimated1 = response.data;
 
       // Faça o que for necessário com o valor estimado retornado.
-      console.log("Valor estimado da geração:", gen_estimated1);
       dispatch(getDevices(blUuidState));
       setEditInputs(!editInputs);
     } catch (error) {

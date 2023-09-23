@@ -171,7 +171,6 @@ export const ChartsGenerationBIProductive = (props) => {
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, "days") + 1;
   const months = moment(endDate).diff(startDate, "months");
-  console.log(months);
   // Gerar rótulos de dia para o gráfico
   const labels =
     optionFilter == "month"
@@ -531,7 +530,6 @@ export const chartsToGenerationReports = async (props) => {
   function done() {
     alert("function done executed");
     const graphURL = graph.toBase64Image();
-    console.log(graphURL);
   }
 
   const graph = new ChartJS(ctx, {
@@ -555,8 +553,6 @@ export const chartsToGenerationReports = async (props) => {
       },
     },
   });
-
-  console.log(canvas.toDataURL(), graph);
 };
 
 export const ChartsDashboardHorizontal = (props) => {
@@ -583,10 +579,6 @@ export const ChartsDashboardHorizontal = (props) => {
     );
     setTopDevices(realAndEstimatedDivision.slice(0, 5));
   }, [dataDevices]);
-
-  useEffect(() => {
-    console.log(topDevices);
-  }, [topDevices]);
 
   const data = {
     labels: topDevices.map((data) => data.name),
@@ -666,10 +658,24 @@ export const ChartsDashboardHorizontal = (props) => {
 };
 
 export const ChartsDashboard = (props) => {
-  const { dataDevices } = props;
+  const { dataDevices, isLoading } = props;
   const theme = useTheme();
 
-  if (dataDevices.length == 0) {
+  function dateOrder(dateA, dateB) {
+    const form = "DD/MM";
+    const date1 = moment(dateA, form);
+    const date2 = moment(dateB, form);
+
+    if (date1.isBefore(date2)) {
+      return -1;
+    } else if (date1.isAfter(date2)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  if (isLoading) {
     return (
       <Card
         sx={{
@@ -701,18 +707,22 @@ export const ChartsDashboard = (props) => {
     );
   }
 
-  const labels = Object.keys(dataDevices.somaPorDiaReal).map((data) =>
-    moment(data).format("DD/MM")
+  const realData = dataDevices?.somaPorDiaReal || {};
+  const estimatedData = dataDevices?.somaPorDiaEstimada || {};
+
+  // Obter as datas e ordená-las
+  const sortedDates = Object.keys(realData).sort(
+    (a, b) => new Date(a) - new Date(b)
   );
-  const real = Object.values(dataDevices.somaPorDiaReal).map(
-    (data) => data / 1000
-  );
-  const estimated = dataDevices?.somaPorDiaEstimada
-    ? Object.values(dataDevices?.somaPorDiaEstimada)?.map((data) => data / 1000)
-    : null;
+
+  // Mapear as datas para os valores correspondentes
+  const realValues = sortedDates.map((data) => realData[data] / 1000);
+  const estimatedValues = sortedDates.map((data) => estimatedData[data] / 1000);
+
+  const labels = sortedDates.map((data) => moment(data).format("DD/MM"));
 
   const data = {
-    labels,
+    labels: labels,
     datasets: [
       {
         barThickness: 20,
@@ -722,7 +732,7 @@ export const ChartsDashboard = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.8,
         label: "Geração real",
-        data: real,
+        data: realValues,
         backgroundColor: "#5048E5",
       },
       {
@@ -733,7 +743,7 @@ export const ChartsDashboard = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.8,
         label: "Geração estimada",
-        data: estimated ? estimated : Array(30).fill(80),
+        data: estimatedValues,
         backgroundColor: "#14B8A6",
       },
     ],

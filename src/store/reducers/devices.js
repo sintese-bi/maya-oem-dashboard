@@ -32,7 +32,6 @@ export default function userReducer(state = initialState, action) {
       };
 
     case devices.GET_DEVICES_SUCCESS:
-      console.log("result-devices", result)
       return {
         ...state,
         isLoadingDevices: false,
@@ -54,7 +53,6 @@ export default function userReducer(state = initialState, action) {
       }
 
     case devices.GET_ALL_DEVICES_SUCCESS:
-      console.log("all-devices-result", result)
       return {
         ...state,
         allDevices: result
@@ -74,7 +72,6 @@ export default function userReducer(state = initialState, action) {
       }
 
     case devices.GET_DEVICES_ALERTS_SUCCESS:
-      console.log('getDevicesAlerts-result', result)
       return {
         ...state,
         isLoadingAlerts: false,
@@ -82,7 +79,6 @@ export default function userReducer(state = initialState, action) {
       }
 
     case devices.GET_DEVICES_ALERTS_FAILURE:
-      console.log('erro')
       return {
         ...state,
         isLoadingAlerts: false,

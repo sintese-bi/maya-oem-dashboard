@@ -17,7 +17,6 @@ export const getGeneration = (params) => async (dispatch) => {
     // Obter novamente o valor de devUuid após o atraso
     devUuid = params.devUuid;
   }
-  console.log(params);
   // Caso o devUuid esteja definido, continuar com a chamada à API
   api
     .get(
@@ -26,7 +25,6 @@ export const getGeneration = (params) => async (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
-      console.log('getGeneration:', data)
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,

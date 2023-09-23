@@ -10,7 +10,6 @@ export const getDevices = (blUuid) => (dispatch) => {
     .get(`/devices/${blUuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data)
       dispatch({
         type: devices.GET_DEVICES_SUCCESS,
         result: data,
@@ -96,7 +95,6 @@ export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
       .get(`/alerts?devUuid=${data.uuid}`, configRequest())
       .then((res) => {
         const { data } = res;
-        console.log('success', data)
         dispatch({
           type: devices.GET_DEVICES_ALERTS_SUCCESS,
           result: data.length !== 0 ? data[0] : [],
@@ -123,7 +121,6 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({
         type: devices.GET_ALL_DEVICES_GENERATION_SUCCESS,
         result: Object.assign(data, { deviceName: props.name }),

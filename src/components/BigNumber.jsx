@@ -77,24 +77,21 @@ export const BigNumberDashboard = (props) => {
 
       {!btn ? (
         <CardActions>
-          <Link
-            to="/dashboard/devices"
-            state={{
-              type,
-            }}
+          <Typography
             onClick={() => handleChangeColumns(type)}
             size="small"
             style={{
-              color: "#10B981",
+              color: activeBtn ? "lightblue" : "#10B981",
               fontSize: "14px",
               fontWeight: 600,
               textDecoration: "none",
               underline: "none",
               padding: "10px",
+              cursor: "pointer",
             }}
           >
             Visualizar
-          </Link>
+          </Typography>
         </CardActions>
       ) : null}
     </Card>

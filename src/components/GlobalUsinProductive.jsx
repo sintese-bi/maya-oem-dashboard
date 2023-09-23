@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { columnsDevices } from "../constants/columns";
-import api, { configRequest } from "src/services/api";
 import {
   Box,
   Typography,
@@ -15,14 +13,9 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import MUIDataTable from "mui-datatables";
 
 import { Info, ElectricBolt } from "@mui/icons-material";
-import {
-  ChartsDashboard,
-  ChartsDashboardHorizontal,
-} from "src/components/Charts";
-import { numbers } from "src/helpers/utils";
+import { ChartsDashboard } from "src/components/Charts";
 import { BigNumber } from "./BigNumber";
 import moment from "moment";
 import Plants from "./Plants";
@@ -31,16 +24,25 @@ import { getGraphData } from "src/store/actions/users";
 import { LoadingSkeletonBigNumbers } from "./Loading";
 
 export const GlobalUsinProductive = ({
+  realGenerationTotal,
+  estimatedGenerationTotal,
+  percentTotal,
   dataDevices,
   isLoading,
   setEstimatedGeneration,
   setRealGeneration,
+  setPercent,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  type,
+  data,
+  devicesTableRef,
 }) => {
-  const { graphData, loadingGraphData } = useSelector((state) => state.users);
+  const { graphData, isLoadingGraph } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [generationPercentState, setGenerationPercentState] = useState(0);
-  const [startDate, setStartDate] = useState(moment().startOf("month"));
-  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [topDevicesKWp, setTopDevicesKWp] = useState([]);
   const [realGenerationFiltered, setRealGenerationFiltered] = useState(0);
   const [estimatedGenerationFiltered, setEstimatedGenerationFiltered] =
@@ -57,7 +59,6 @@ export const GlobalUsinProductive = ({
     const somaPorDiaEstimada = graphData.somaPorDiaEstimada
       ? graphData.somaPorDiaEstimada
       : { key: 0 };
-    console.log(somaPorDiaReal);
     setRealGenerationFiltered(
       (
         Object.values(somaPorDiaReal).reduce(
@@ -77,19 +78,42 @@ export const GlobalUsinProductive = ({
   }, [graphData]);
 
   useEffect(() => {
-    dispatch(getGraphData({ startDate: startDate, endDate: endDate }));
-  }, [startDate, endDate, dataDevices]);
+    let graphStartDate = graphData?.dates?.startDate;
+    let graphEndDate = graphData?.dates?.endDate;
+    if (
+      moment(startDate).isSame(graphStartDate) &&
+      moment(endDate).isSame(graphEndDate)
+    ) {
+      return;
+    }
+    dispatch(
+      getGraphData({
+        startDate: moment(startDate).format("YYYY-MM-DD"),
+        endDate: moment(endDate).format("YYYY-MM-DD"),
+      })
+    );
+  }, [startDate, endDate]);
 
   useEffect(() => {
     handleTopDevicesKWp(dataDevices);
     let generationRealMonthTotal = (
-      graphData.somaPorDiaReal?.[moment(endDate).format("YYYY-MM-DD")] / 1000
+      graphData?.data?.somaPorDiaReal?.[moment().format("YYYY-MM-DD")] / 1000
     ).toFixed(2);
     setRealGeneration(generationRealMonthTotal);
 
-    let generationEstimatedMonthTotal = 0;
+    let generationEstimatedMonthTotal = (
+      graphData?.data?.somaPorDiaEstimada?.[moment().format("YYYY-MM-DD")] /
+      1000
+    ).toFixed(2);
     setEstimatedGeneration(generationEstimatedMonthTotal);
-  }, [dataDevices]);
+
+    setPercent(
+      (
+        (generationRealMonthTotal / generationEstimatedMonthTotal) *
+        100
+      ).toFixed()
+    );
+  }, [graphData]);
 
   useEffect(() => {
     setGenerationPercentState(100);
@@ -97,7 +121,7 @@ export const GlobalUsinProductive = ({
 
   return (
     <>
-      {isLoading ? (
+      {isLoadingGraph ? (
         <Box
           sx={{
             display: "flex",
@@ -158,23 +182,23 @@ export const GlobalUsinProductive = ({
               }}
             >
               <Grid item sm={12} lg={3}>
-                {loadingGraphData ? (
+                {isLoadingGraph ? (
                   <LoadingSkeletonBigNumbers />
                 ) : (
                   <BigNumber
                     title="Produção total"
-                    value={`${realGenerationFiltered}MWh`}
+                    value={`${realGenerationTotal}MWh`}
                     icon={<ElectricBolt />}
                   />
                 )}
               </Grid>
               <Grid item sm={12} lg={3}>
-                {loadingGraphData ? (
+                {isLoadingGraph ? (
                   <LoadingSkeletonBigNumbers />
                 ) : (
                   <BigNumber
                     title="Produtividade estimada"
-                    value={`${estimatedGenerationFiltered}MWh`}
+                    value={`${estimatedGenerationTotal}MWh`}
                     icon={<ElectricBolt />}
                   />
                 )}
@@ -186,9 +210,9 @@ export const GlobalUsinProductive = ({
                   <Info />
                 </ListItemAvatar>
                 <ListItemText>
-                  {loadingGraphData
+                  {isLoadingGraph
                     ? `Buscando dados...`
-                    : `Sua produtividade atual é de ${realGenerationFiltered}MWh`}
+                    : `Sua produtividade atual é de ${realGenerationTotal}MWh`}
                 </ListItemText>
               </ListItem>
               <ListItem>
@@ -196,9 +220,9 @@ export const GlobalUsinProductive = ({
                   <Info />
                 </ListItemAvatar>
                 <ListItemText>
-                  {loadingGraphData
+                  {isLoadingGraph
                     ? `Buscando dados...`
-                    : `A produtividade global atual está ${generationPercentState}`}
+                    : `A produtividade global atual está ${percentTotal}%`}
                 </ListItemText>
               </ListItem>
             </List>
@@ -207,11 +231,11 @@ export const GlobalUsinProductive = ({
                 <DatePicker
                   label="Data Inicial"
                   value={startDate}
-                  onChange={(startDate) =>
+                  onChange={(startDate) => {
                     setStartDate(
                       startDate ? moment(startDate).format("YYYY-MM-DD") : ""
-                    )
-                  }
+                    );
+                  }}
                   renderInput={(params) => <TextField {...params} />}
                 />
                 <DatePicker
@@ -225,7 +249,10 @@ export const GlobalUsinProductive = ({
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <ChartsDashboard dataDevices={graphData} />
+              <ChartsDashboard
+                dataDevices={graphData.data}
+                isLoading={isLoadingGraph}
+              />
             </Box>
             <Box
               component="main"
@@ -233,7 +260,7 @@ export const GlobalUsinProductive = ({
                 width: "100%",
               }}
             >
-              <Plants toptopDevicesKWp={topDevicesKWp} />
+              <Plants data={data} devicesTableRef={devicesTableRef} />
             </Box>
           </Card>
         </Box>

@@ -58,7 +58,6 @@ export const FormField = ({ name, label, helpText, error, fieldProps, fullWidth 
 					onChange={(item) => {
 						fieldProps.handleSelect(item);
 						fieldProps.setSelectedBrands(item);
-						console.log(item, 'log do select');
 					}}
 					closeMenuOnSelect={false}
 					className="basic-multi-select"

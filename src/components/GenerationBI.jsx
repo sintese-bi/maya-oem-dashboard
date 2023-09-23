@@ -68,7 +68,6 @@ export const GenerationBI = ({
   }, [generation]);
 
   useEffect(() => {
-    console.log(totalRealGeneration, totalEstimatedGeneration, generation);
     setProductivePercent(
       ((totalRealGeneration / totalEstimatedGeneration) * 100).toFixed("")
     );

@@ -127,7 +127,6 @@ export default function Register() {
 	// 	} catch (error) {}
 	// };
 	const onSubmit = (data) => {
-		console.log(data);
 	};
 	// SETAR VALORES DO OBJETO brand_login
 	// const handleSetBrandLogin = (e, index) => {
@@ -213,7 +212,6 @@ export default function Register() {
 
 	const handleStepChange = (step) => {
 		setActiveStep(step);
-		console.log(step, 'step change');
 	};
 
 	return (
@@ -680,7 +678,6 @@ export default function Register() {
 												onChange={(item) => {
 													handleSelect(item);
 													setSelectedBrands(item);
-													console.log(item, 'log do select');
 												}}
 												closeMenuOnSelect={false}
 												className="basic-multi-select"
