@@ -52,7 +52,7 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.requistionStartDate = startDateReport;
     reportClient.requisitionEndDate = endDateReport;
     reportClient.capacity = numbers(String(capacity.dev_capacity));
-    reportClient.lowLevel = estimatedGenerationNumber < realGenerationNumber
+    reportClient.lowLevel = estimatedGenerationNumber < realGenerationNumber ? false : true
     reportClient.address = address
 
     setIsLoadingReport(false);

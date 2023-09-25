@@ -48,10 +48,10 @@ export const BigNumberDashboard = (props) => {
     props;
 
   return (
-    <Card sx={{ width: 345 }}>
+    <Card sx={{ width: 285 }}>
       <CardActionArea>
-        <CardContent>
-          <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+        <CardContent sx={{ height: 120 }}>
+          <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
             <Grid item>
               <Typography color="textSecondary" gutterBottom variant="overline">
                 {title}
@@ -86,7 +86,10 @@ export const BigNumberDashboard = (props) => {
               fontWeight: 600,
               textDecoration: "none",
               underline: "none",
-              padding: "10px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
               cursor: "pointer",
             }}
           >

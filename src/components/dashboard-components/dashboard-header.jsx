@@ -24,12 +24,10 @@ export const DashboardHeader = ({
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         mt: 4,
         mb: 8,
-        ml: 3,
-        px: 2,
         width: "100%",
       }}
     >
@@ -45,6 +43,8 @@ export const DashboardHeader = ({
             display: "flex",
             justifyContent: "center",
             width: "220px",
+            position: "absolute",
+            right: 0,
           }}
         >
           <Button

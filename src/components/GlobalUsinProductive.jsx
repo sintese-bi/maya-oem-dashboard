@@ -145,7 +145,7 @@ export const GlobalUsinProductive = ({
             justifyContent: "center",
             flexDirection: "column",
             py: 4,
-            mt: 8,
+            mt: 4,
           }}
         >
           <Card
@@ -154,7 +154,7 @@ export const GlobalUsinProductive = ({
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-              width: "86%",
+              width: "96%",
               py: 4,
               px: 3,
             }}
@@ -199,7 +199,11 @@ export const GlobalUsinProductive = ({
                 width: "100%",
               }}
             >
-              <Plants data={data} devicesTableRef={devicesTableRef} />
+              <Plants
+                data={data}
+                devicesTableRef={devicesTableRef}
+                type={type}
+              />
             </Box>
           </Card>
         </Box>

@@ -493,11 +493,11 @@ export const ChartsLinear = (props) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: 560,
+          height: 640,
           width: "100%",
           flexDirection: "column",
           px: 1,
-          pb: 4,
+          pb: 2,
           pt: 2,
         }}
       >
@@ -507,12 +507,11 @@ export const ChartsLinear = (props) => {
             fontWeight: "bold",
             fontSize: "20px",
             textAlign: "center",
-            mb: "4",
           }}
         >
           Relação da geração real e geração estimada
         </Typography>
-        <Box sx={{ height: 400, width: "90%" }}>
+        <Box sx={{ height: 610, width: "90%", mt: 4 }}>
           <Line type="bar" options={options} data={data} ref={graphRef} />
         </Box>
       </Box>
@@ -967,6 +966,7 @@ export const ChartsGeneration = (props) => {
         },
       },
       y: {
+        stepSize: 60,
         grid: {
           display: false,
         },
