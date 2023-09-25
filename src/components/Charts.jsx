@@ -716,8 +716,12 @@ export const ChartsDashboard = (props) => {
   );
 
   // Mapear as datas para os valores correspondentes
-  const realValues = sortedDates.map((data) => realData[data] / 1000);
-  const estimatedValues = sortedDates.map((data) => estimatedData[data] / 1000);
+  const realValues = sortedDates.map((data) =>
+    (realData[data] / 1000).toFixed(2)
+  );
+  const estimatedValues = sortedDates.map((data) =>
+    (estimatedData[data] / 1000).toFixed(2)
+  );
 
   const labels = sortedDates.map((data) => moment(data).format("DD/MM"));
 
@@ -745,6 +749,7 @@ export const ChartsDashboard = (props) => {
         label: "Geração estimada",
         data: estimatedValues,
         backgroundColor: "#14B8A6",
+        type: "line",
       },
     ],
   };
@@ -811,7 +816,7 @@ export const ChartsDashboard = (props) => {
         color="textPrimary"
         sx={{ fontWeight: "bold", fontSize: "20px" }}
       >
-        Resumo da geração real vs estimada
+        Série histórica da produção de Usinas
       </Typography>
       <Box sx={{ height: 360, width: "100%" }}>
         <Chart type="bar" options={options} data={data} />

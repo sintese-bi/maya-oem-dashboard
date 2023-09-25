@@ -11,7 +11,7 @@ export const columnsDevices = [
     options: {
       display: false,
       viewColumns: false,
-      filter: false,
+      filter: true,
     },
   },
   {
@@ -20,7 +20,7 @@ export const columnsDevices = [
     options: {
       display: false,
       viewColumns: false,
-      filter: false,
+      filter: true,
     },
   },
   {
@@ -64,6 +64,11 @@ export const columnsDevices = [
   {
     name: "capacity",
     label: "Capacidade da usina",
+    options: {
+      filter: true,
+      sort: true,
+      sortDirection: "desc",
+    },
   },
   {
     name: "generationEstimatedDay",

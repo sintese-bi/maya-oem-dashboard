@@ -6,6 +6,7 @@ import { Box, Typography, Card } from "@mui/material";
 // formatação de números
 
 import { numbers } from "src/helpers/utils";
+import { meses } from "src/helpers/months";
 
 export const UserDevicesTotalInfo = ({
   useName,
@@ -45,7 +46,7 @@ export const UserDevicesTotalInfo = ({
             fontSize: "20px",
           }}
         >
-          Hoje, {moment().format("DD/MM/YYYY")}
+          {meses[moment().format("M")]}
         </Typography>
       </Box>
       <Typography sx={{ my: 4 }}>
@@ -55,8 +56,10 @@ export const UserDevicesTotalInfo = ({
       </Typography>
       <Card sx={{ p: 4 }}>
         <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
-          {`Para este mês suas usinas devem produzir ${estimatedGenerationTotal}MWh, 
-            no momento você produziu ${realGenerationTotal}MWh.
+          {`Para este mês suas usinas devem produzir ${numbers(
+            estimatedGenerationTotal
+          )}MWh, 
+            no momento você produziu ${numbers(realGenerationTotal)}MWh.
             Isto corresponde a um desempenho de ${percentTotal}% `}
         </Typography>
       </Card>

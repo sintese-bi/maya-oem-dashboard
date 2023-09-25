@@ -10,7 +10,7 @@ import { LoadingSkeletonBigNumbers } from "src/components/Loading";
 
 //icons
 
-import { ElectricBolt } from "@mui/icons-material";
+import { UserDevicesResume } from "./user-devices-resume";
 
 export const UserDivcesLastDayInfo = ({
   isLoading,
@@ -18,6 +18,14 @@ export const UserDivcesLastDayInfo = ({
   estimatedGeneration,
   percent,
   label,
+  type,
+  handleChangeColumns,
+  dataDevices,
+  brands,
+  capacityTotal,
+  online,
+  offline,
+  alerts,
 }) => {
   return (
     <Box
@@ -26,7 +34,7 @@ export const UserDivcesLastDayInfo = ({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        width: "80%",
+        width: "100%",
       }}
     >
       <Box
@@ -57,42 +65,23 @@ export const UserDivcesLastDayInfo = ({
           display: "flex",
           p: 4,
           width: "100%",
-          justifyContent: "space-between",
+          justifyContent: "center",
         }}
       >
-        <Grid item sm={12} lg={3}>
-          {isLoading ? (
-            <LoadingSkeletonBigNumbers />
-          ) : (
-            <BigNumber
-              title="Produzido (MWh)"
-              value={`${realGeneration}MWh`}
-              icon={<ElectricBolt />}
-            />
-          )}
-        </Grid>
-        <Grid item sm={12} lg={3}>
-          {isLoading ? (
-            <LoadingSkeletonBigNumbers />
-          ) : (
-            <BigNumber
-              title="Esperado (MWh)"
-              value={`${estimatedGeneration}MWh`}
-              icon={<ElectricBolt />}
-            />
-          )}
-        </Grid>
-        <Grid item sm={12} lg={3}>
-          {isLoading ? (
-            <LoadingSkeletonBigNumbers />
-          ) : (
-            <BigNumber
-              title="Desempenho (%)"
-              value={`${percent}%`}
-              icon={<ElectricBolt />}
-            />
-          )}
-        </Grid>
+        <UserDevicesResume
+          label={"Resumo de usinas"}
+          realGeneration={realGeneration}
+          estimatedGeneration={estimatedGeneration}
+          percent={percent}
+          type={type}
+          handleChangeColumns={handleChangeColumns}
+          dataDevices={dataDevices}
+          brands={brands}
+          capacityTotal={capacityTotal}
+          online={online}
+          offline={offline}
+          alerts={alerts}
+        />
       </Box>
     </Box>
   );
