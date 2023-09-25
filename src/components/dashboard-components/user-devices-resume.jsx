@@ -1,6 +1,6 @@
 // bibliotecas
 
-import { Box, Typography } from "@mui/material";
+import { Box, TextareaAutosize, Typography } from "@mui/material";
 import moment from "moment";
 
 //components
@@ -114,7 +114,7 @@ export const UserDevicesResume = ({
           value={numbers(realGeneration)}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={type === 1 ? true : false}
+          activeBtn={true}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -123,7 +123,7 @@ export const UserDevicesResume = ({
           value={numbers(estimatedGeneration)}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={type === 1 ? true : false}
+          activeBtn={true}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -132,7 +132,7 @@ export const UserDevicesResume = ({
           value={percent}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={type === 1 ? true : false}
+          activeBtn={TextareaAutosize}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
         <BigNumberDashboard

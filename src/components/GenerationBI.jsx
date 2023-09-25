@@ -35,6 +35,7 @@ export const GenerationBI = ({
   const [topValueDate, lowValueDate] = useState();
 
   useEffect(() => {
+    console.log(generation);
     setTotalRealGeneration(
       generation?.realGeneration
         ?.reduce((total, element) => total + Number(element?.value), 0)

@@ -18,10 +18,27 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { getDashboard } from "src/store/actions/users";
+import { getUserCookie } from "src/services/session";
 
 export default function Plants(props) {
-  const { data, devicesTableRef } = props;
+  const { type, devicesTableRef } = props;
+  const { useUuid } = getUserCookie();
 
+  //const transformedData = data.map((data) => {
+  //  return {
+  //    ...data,
+  //    capacity: data.capacity.replace(".", ","),
+  //    generationRealDay: data.generationRealDay.replace(".", ","),
+  //    generationRealWeek: data.generationRealWeek.replace(".", ","),
+  //    generationRealMonth: data.generationRealMonth.replace(".", ","),
+  //    generationEstimatedDay: data.generationEstimatedDay.replace(".", ","),
+  //    generationEstimatedlWeek: data.generationEstimatedlWeek.replace(".", ","),
+  //    generationEstimatedMonth: data.generationEstimatedlWeek.replace(".", ","),
+  //  };
+  //});
+
+  const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [startDate, setStartDate] = useState(
@@ -33,7 +50,7 @@ export default function Plants(props) {
   const {
     isLoading,
     brands,
-    blUuids,
+    dataDevices,
     generationBelowEstimated,
     alerts,
     offline,
@@ -61,6 +78,36 @@ export default function Plants(props) {
     dispatch(getAllDevicesGeneration(props));
   }
 
+  function handleChangeColumns(type) {
+    switch (type) {
+      case 1:
+        setData(dataDevices);
+        break;
+      case 2:
+        setData(
+          brands.map((data) => {
+            let brandItem = { brand: data };
+            return brandItem;
+          })
+        );
+        break;
+      case 3:
+        setData(generationBelowEstimated);
+        break;
+      case 4:
+        setData(alerts);
+        break;
+      case 5:
+        setData(offline);
+        break;
+      case 6:
+        setData(online);
+        break;
+      default:
+        break;
+    }
+  }
+
   useEffect(() => {
     if (selectedDevice) {
       dispatch(
@@ -73,6 +120,20 @@ export default function Plants(props) {
       );
     }
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    handleChangeColumns(type);
+  }, [type]);
+
+  useEffect(() => {
+    setData(dataDevices);
+  }, [dataDevices]);
+
+  useEffect(() => {
+    if (dataDevices.length == 0) {
+      dispatch(getDashboard(useUuid));
+    }
+  }, [useUuid]);
 
   function handleModalState() {
     setStartDate(moment().startOf("month").format("YYYY-MM-DD"));

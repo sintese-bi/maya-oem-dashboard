@@ -105,38 +105,6 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
 
-  function handleChangeColumns(type) {
-    setType(type);
-    switch (type) {
-      case 1:
-        setData(dataDevices);
-        break;
-      case 2:
-        setData(
-          brands.map((data) => {
-            let brandItem = { brand: data };
-            return brandItem;
-          })
-        );
-        break;
-      case 3:
-        setData(generationBelowEstimated);
-        break;
-      case 4:
-        setData(alerts);
-        break;
-      case 5:
-        setData(offline);
-        break;
-      case 6:
-        setData(online);
-        break;
-      default:
-        break;
-    }
-    devicesTableRef.current.scrollIntoView();
-  }
-
   function handleRealGenerationTotal(devices) {
     let generationRealMonth = devices.map((data) => {
       let generationRealValue = Number(
@@ -185,7 +153,7 @@ export default function Dashboard() {
           )
         )
       : dispatch(getDashboard(useUuid, "index.jsx - normal"));
-  }, []);
+  }, [useUuid]);
 
   useEffect(() => {
     dispatch(getCapacities(blUuids));
@@ -269,7 +237,7 @@ export default function Dashboard() {
           estimatedGeneration={estimatedGeneration}
           percent={percent}
           type={type}
-          handleChangeColumns={handleChangeColumns}
+          handleChangeColumns={setType}
           dataDevices={dataDevices}
           brands={brands}
           capacityTotal={capacityTotal}
@@ -280,6 +248,7 @@ export default function Dashboard() {
       </Box>
       <GlobalUsinProductive
         useName={useName}
+        type={type}
         realGenerationTotal={realGenerationTotal}
         estimatedGenerationTotal={estimatedGenerationTotal}
         percentTotal={percentTotal}
