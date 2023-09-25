@@ -16,10 +16,15 @@ import {
   Warning,
   ThumbUpOffAlt,
   ThumbDownOffAlt,
+  ElectricBolt,
 } from "@mui/icons-material";
+import { numbers } from "src/helpers/utils";
 
 export const UserDevicesResume = ({
   label,
+  realGeneration,
+  estimatedGeneration,
+  percent,
   type,
   handleChangeColumns,
   dataDevices,
@@ -31,7 +36,7 @@ export const UserDevicesResume = ({
 }) => {
   return (
     <Box>
-      <Box
+      {/*<Box
         sx={{
           display: "flex",
           width: "84%",
@@ -46,6 +51,7 @@ export const UserDevicesResume = ({
           {moment().format("DD/MM/YYYY")}
         </Typography>
       </Box>
+      */}
       <Box
         sx={{
           display: "flex",
@@ -54,39 +60,29 @@ export const UserDevicesResume = ({
         }}
       >
         <BigNumberDashboard
-          title="Dispositivos/usuário"
+          title="Usinas"
           value={dataDevices.length !== 0 ? dataDevices.length : 0}
           icon={<AccountCircle />}
           type={1}
           activeBtn={type === 1 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
-
         <BigNumberDashboard
-          title="Marcas"
+          title="Portal de inversor"
           value={brands.length !== 0 ? brands.length : 0}
           icon={<BrandingWatermark />}
           type={2}
           activeBtn={type === 2 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
-        <BigNumberDashboard
+        {/*<BigNumberDashboard
           title="Capacidade total Usinas"
           value={`${capacityTotal}MWp`}
           icon={<AlignVerticalTop />}
           type={3}
           activeBtn={type === 3 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 3,
-          mt: 3,
-        }}
-      >
+      />*/}
         <BigNumberDashboard
           title="Online"
           value={online.length !== 0 ? online.length : 0}
@@ -103,16 +99,59 @@ export const UserDevicesResume = ({
           activeBtn={type === 5 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 3,
+          mt: 3,
+        }}
+      >
+        <BigNumberDashboard
+          title="Produzido (MWh)"
+          value={numbers(realGeneration)}
+          icon={<ElectricBolt />}
+          type={1}
+          activeBtn={type === 1 ? true : false}
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
 
         <BigNumberDashboard
-          title="Plantas em Alerta"
+          title="Esperado (MWh)"
+          value={numbers(estimatedGeneration)}
+          icon={<ElectricBolt />}
+          type={1}
+          activeBtn={type === 1 ? true : false}
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
+
+        <BigNumberDashboard
+          title="Desempenho (%)"
+          value={percent}
+          icon={<ElectricBolt />}
+          type={1}
+          activeBtn={type === 1 ? true : false}
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
+        <BigNumberDashboard
+          title="Usinas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
           icon={<Warning />}
           type={4}
           activeBtn={type === 4 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
-
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 3,
+          mt: 3,
+        }}
+      >
         {/* <BigNumberDashboard
           title="Economia de carbono emitido"
           value={`${emittedCarbon} CO₂`}

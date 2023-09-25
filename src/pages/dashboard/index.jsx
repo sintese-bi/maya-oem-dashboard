@@ -268,16 +268,6 @@ export default function Dashboard() {
           realGeneration={realGeneration}
           estimatedGeneration={estimatedGeneration}
           percent={percent}
-        />
-        <UserDevicesTotalInfo
-          label={"Total produzido este mês"}
-          useName={useName}
-          realGenerationTotal={realGenerationTotal}
-          estimatedGenerationTotal={estimatedGenerationTotal}
-          percentTotal={percentTotal}
-        />
-        <UserDevicesResume
-          label={"Resumo de usinas"}
           type={type}
           handleChangeColumns={handleChangeColumns}
           dataDevices={dataDevices}
@@ -289,6 +279,7 @@ export default function Dashboard() {
         />
       </Box>
       <GlobalUsinProductive
+        useName={useName}
         realGenerationTotal={realGenerationTotal}
         estimatedGenerationTotal={estimatedGenerationTotal}
         percentTotal={percentTotal}

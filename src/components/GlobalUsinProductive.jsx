@@ -22,8 +22,11 @@ import Plants from "./Plants";
 import { useDispatch, useSelector } from "react-redux";
 import { getGraphData } from "src/store/actions/users";
 import { LoadingSkeletonBigNumbers } from "./Loading";
+import { numbers } from "src/helpers/utils";
+import { UserDevicesTotalInfo } from "./dashboard-components/user-devices-total-info";
 
 export const GlobalUsinProductive = ({
+  useName,
   realGenerationTotal,
   estimatedGenerationTotal,
   percentTotal,
@@ -145,23 +148,6 @@ export const GlobalUsinProductive = ({
             mt: 8,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              width: "84%",
-              my: 4,
-            }}
-          >
-            <Typography variant="h4">
-              Producão de todas as usinas do mês
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ lineHeight: "100%", py: 2, fontWeight: "bold", ml: 2 }}
-            >
-              {moment().format("DD/MM/YYYY")}
-            </Typography>
-          </Box>
           <Card
             sx={{
               display: "flex",
@@ -173,59 +159,12 @@ export const GlobalUsinProductive = ({
               px: 3,
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mb: 10,
-                width: "84%",
-              }}
-            >
-              <Grid item sm={12} lg={3}>
-                {isLoadingGraph ? (
-                  <LoadingSkeletonBigNumbers />
-                ) : (
-                  <BigNumber
-                    title="Produção total"
-                    value={`${realGenerationTotal}MWh`}
-                    icon={<ElectricBolt />}
-                  />
-                )}
-              </Grid>
-              <Grid item sm={12} lg={3}>
-                {isLoadingGraph ? (
-                  <LoadingSkeletonBigNumbers />
-                ) : (
-                  <BigNumber
-                    title="Produtividade estimada"
-                    value={`${estimatedGenerationTotal}MWh`}
-                    icon={<ElectricBolt />}
-                  />
-                )}
-              </Grid>
-            </Box>
-            <List sx={{ width: "100%", mb: 4 }}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Info />
-                </ListItemAvatar>
-                <ListItemText>
-                  {isLoadingGraph
-                    ? `Buscando dados...`
-                    : `Sua produtividade atual é de ${realGenerationTotal}MWh`}
-                </ListItemText>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Info />
-                </ListItemAvatar>
-                <ListItemText>
-                  {isLoadingGraph
-                    ? `Buscando dados...`
-                    : `A produtividade global atual está ${percentTotal}%`}
-                </ListItemText>
-              </ListItem>
-            </List>
+            <UserDevicesTotalInfo
+              useName={useName}
+              realGenerationTotal={realGenerationTotal}
+              estimatedGenerationTotal={estimatedGenerationTotal}
+              percentTotal={percentTotal}
+            />
             <Box sx={{ width: "100%", mt: 10, mb: 4 }}>
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
