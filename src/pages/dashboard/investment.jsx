@@ -21,7 +21,7 @@ import { getInvestment } from "src/store/actions/investment";
 import { getDevices } from "src/store/actions/devices";
 
 // COMPONENTS
-import { BigNumber } from "../../components/BigNumber";
+import { BigNumber } from "../../components/shared/BigNumber";
 import {
   LoadingInput,
   LoadingSkeletonInvestment,

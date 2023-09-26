@@ -6,8 +6,8 @@ import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // COMPONENTS
-import { DashboardNavbar } from "../components/Navbar";
-import { Side } from "../components/Side";
+import { DashboardNavbar } from "../components/navbar-components/Navbar";
+import { Side } from "../components/sidebar-components/Side";
 import { useEffect } from 'react'
 
 // STYLE
@@ -16,7 +16,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   flex: "1 1 auto",
   maxWidth: "100%",
   paddingTop: 64,
-  paddingLeft: '16%' 
+  paddingLeft: '16%'
 }));
 
 const LayoutDashboard = () => {

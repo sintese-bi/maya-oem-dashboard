@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { BigNumber } from "./BigNumber";
-import { LoadingSkeletonBigNumbers } from "./Loading";
+import { BigNumber } from "../shared/BigNumber";
+import { LoadingSkeletonBigNumbers } from "../Loading";
 import { numbers } from "src/helpers/utils";
 import { Box, Grid, Typography, MenuItem, TextField } from "@mui/material";
-import { ChartsLinear } from "src/components/Charts";
+import { ChartsLinear } from "src/components/shared/Charts";
 
 import {
   Bolt,

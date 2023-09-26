@@ -2,10 +2,10 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
-import AlertPercentageForm from "src/components/AlertPercentageForm";
-import { PaymentWarn } from "src/components/PaymentWarn";
-import { CreateDevice } from "src/components/CreateDevice";
-import { MayaWatchPro } from "src/components/MayaWatchPro";
+import AlertPercentageForm from "src/components/sidebar-components/side-components/AlertPercentageForm";
+import { PaymentWarn } from "src/components/shared/PaymentWarn";
+import { CreateDevice } from "src/components/sidebar-components/side-components/CreateDevice";
+import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
 // COMPONENTS
 import {
@@ -37,7 +37,7 @@ import {
   Info,
   Cancel,
 } from "@mui/icons-material";
-import { UserInfo } from "./UserInfo";
+import { UserInfo } from "./side-components/UserInfo";
 
 export const Side = () => {
   const [action, setAction] = useState("alertFrequency");

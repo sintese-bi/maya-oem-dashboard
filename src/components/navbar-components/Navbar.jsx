@@ -20,6 +20,7 @@ import {
   Warning,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 export const DashboardNavbar = () => {
   // PROPS DE CONTROLLER
@@ -198,14 +199,37 @@ export const DashboardNavbar = () => {
               {renderNavItems()}
             </Box>
           </Box>
-
-          <Button
-            onClick={() => handleLogOut()}
-            variant="outlined"
-            startIcon={<ExitToApp />}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "30%",
+            }}
           >
-            Sair
-          </Button>
+            <Typography
+              variant="body1"
+              sx={{
+                width: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                color: "black",
+                fontWeight: "700",
+                fontSize: "14px",
+              }}
+            >
+              <AccountCircle />
+              {`${useName} - ${moment().format("DD/MM/YYYY")}`}
+            </Typography>
+            <Button
+              onClick={() => handleLogOut()}
+              variant="outlined"
+              startIcon={<ExitToApp />}
+            >
+              Sair
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
     </>

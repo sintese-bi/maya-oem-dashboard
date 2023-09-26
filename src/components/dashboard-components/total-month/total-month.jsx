@@ -2,30 +2,16 @@ import { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {
-  Box,
-  Typography,
-  Card,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Box, Typography, Card, TextField, MenuItem } from "@mui/material";
 
-import { Info, ElectricBolt } from "@mui/icons-material";
-import { ChartsDashboard } from "src/components/Charts";
-import { BigNumber } from "./BigNumber";
+import { ChartsDashboard } from "src/components/shared/Charts";
 import moment from "moment";
-import Plants from "./Plants";
+import Plants from "./total-month-components/total-month-devices";
 import { useDispatch, useSelector } from "react-redux";
 import { getGraphData } from "src/store/actions/users";
-import { LoadingSkeletonBigNumbers } from "./Loading";
-import { numbers } from "src/helpers/utils";
-import { UserDevicesTotalInfo } from "./dashboard-components/user-devices-total-info";
+import { TotalMonthInfo } from "./total-month-components/total-month-info";
 
-export const GlobalUsinProductive = ({
+export const TotalMonth = ({
   useName,
   realGenerationTotal,
   estimatedGenerationTotal,
@@ -45,6 +31,7 @@ export const GlobalUsinProductive = ({
 }) => {
   const { graphData, isLoadingGraph } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const [optionFilter, setOptionFilter] = useState("days");
   const [generationPercentState, setGenerationPercentState] = useState(0);
   const [topDevicesKWp, setTopDevicesKWp] = useState([]);
   const [realGenerationFiltered, setRealGenerationFiltered] = useState(0);
@@ -95,7 +82,7 @@ export const GlobalUsinProductive = ({
         endDate: moment(endDate).format("YYYY-MM-DD"),
       })
     );
-  }, [startDate, endDate]);
+  }, [startDate, endDate, optionFilter]);
 
   useEffect(() => {
     handleTopDevicesKWp(dataDevices);
@@ -144,8 +131,6 @@ export const GlobalUsinProductive = ({
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
-            py: 4,
-            mt: 4,
           }}
         >
           <Card
@@ -159,7 +144,7 @@ export const GlobalUsinProductive = ({
               px: 3,
             }}
           >
-            <UserDevicesTotalInfo
+            <TotalMonthInfo
               useName={useName}
               realGenerationTotal={realGenerationTotal}
               estimatedGenerationTotal={estimatedGenerationTotal}
@@ -188,7 +173,23 @@ export const GlobalUsinProductive = ({
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
+              <TextField
+                sx={{ width: 200, backgroundColor: "transparent", ml: 4 }}
+                label="Filtrar por"
+                select
+                defaultValue="days"
+                variant="standard"
+                onChange={(e) => setOptionFilter(e.target.value)}
+              >
+                <MenuItem value="days">Dias</MenuItem>
+                <MenuItem value="weeks">Semanas</MenuItem>
+                <MenuItem value="biweek">Quinzena</MenuItem>
+                <MenuItem value="months">Mês</MenuItem>
+              </TextField>
               <ChartsDashboard
+                startDate={startDate}
+                endDate={endDate}
+                optionFilter={optionFilter}
                 dataDevices={graphData.data}
                 isLoading={isLoadingGraph}
               />

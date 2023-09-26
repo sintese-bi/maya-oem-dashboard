@@ -27,15 +27,17 @@ export const BigNumber = (props) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Avatar
-              sx={{
-                backgroundColor: "success.main",
-                height: 56,
-                width: 56,
-              }}
-            >
-              {icon}
-            </Avatar>
+            {icon ? (
+              <Avatar
+                sx={{
+                  backgroundColor: "success.main",
+                  height: 56,
+                  width: 56,
+                }}
+              >
+                {icon}
+              </Avatar>
+            ) : null}
           </Grid>
         </Grid>
       </CardContent>

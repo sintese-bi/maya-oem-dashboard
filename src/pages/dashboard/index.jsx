@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
-import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
+import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 
-import { GlobalUsinProductive } from "src/components/GlobalUsinProductive";
+import { TotalMonth } from "src/components/dashboard-components/total-month/total-month";
 
 // QUERYS
 import { columnsDevices } from "src/constants/columns";
@@ -16,37 +16,14 @@ import { getDashboard, getCapacities } from "src/store/actions/users";
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  Grid,
-  Button,
-  Typography,
-  Modal,
-  Card,
-} from "@mui/material";
-import { PaymentWarn } from "src/components/PaymentWarn";
-import { MayaWatchPro } from "src/components/MayaWatchPro";
-import { BigNumber, BigNumberDashboard } from "src/components/BigNumber";
+import { Backdrop, Box, CircularProgress, Modal } from "@mui/material";
+import { PaymentWarn } from "src/components/shared/PaymentWarn";
+import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
 // ASSETS
-import {
-  AccountCircle,
-  AlignVerticalTop,
-  BrandingWatermark,
-  ThumbDownOffAlt,
-  ThumbUpOffAlt,
-  Warning,
-  DownloadForOffline,
-  Cancel,
-  ElectricBolt,
-} from "@mui/icons-material";
+import { Cancel } from "@mui/icons-material";
 import moment from "moment";
-import { LoadingSkeletonBigNumbers } from "src/components/Loading";
-import { UserDivcesLastDayInfo } from "src/components/dashboard-components/user-devices-last-day-info";
-import { UserDevicesTotalInfo } from "src/components/dashboard-components/user-devices-total-info";
-import { UserDevicesResume } from "src/components/dashboard-components/user-devices-resume";
+import { MyDevices } from "src/components/dashboard-components/my-devices/my-devices";
 import { DashboardHeader } from "src/components/dashboard-components/dashboard-header";
 
 export default function Dashboard() {
@@ -78,32 +55,35 @@ export default function Dashboard() {
 
   const devicesTableRef = useRef(null);
 
-  const [open, setOpen] = useState(false);
+  const [type, setType] = useState(1);
 
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [action, setAction] = useState("");
   const [columns, setColumns] = useState([]);
-  const [type, setType] = useState(1);
   const [emittedCarbon, setEmittedCarbon] = useState(0);
   const [capacityTotal, setCapacityTotal] = useState(0);
-  const [action, setAction] = useState("");
-  const [isLoadingReport, setIsLoadingReport] = useState(true);
+  const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
+    useState(true);
 
   // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
 
+  const [percentTotal, setPercentTotal] = useState(0);
   const [realGenerationTotal, setRealGenerationTotal] = useState(0);
   const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0);
-  const [percentTotal, setPercentTotal] = useState(0);
 
   // valores de geração real, estimada e porcentagem, referentes ao - ÚLTIMO DIA -
 
+  const [percent, setPercent] = useState(0);
   const [realGeneration, setRealGeneration] = useState(0);
   const [estimatedGeneration, setEstimatedGeneration] = useState(0);
-  const [percent, setPercent] = useState(0);
 
   // datas para requisições com período de tempo
 
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+
+  // funções
 
   function handleRealGenerationTotal(devices) {
     let generationRealMonth = devices.map((data) => {
@@ -133,9 +113,18 @@ export default function Dashboard() {
     setEstimatedGenerationTotal(generationEstimatedMonthTotal);
   }
 
+  // função para capturar os valores do relatório administrador
+
   function handleReportGeneration(action) {
     if (useTypeMember) {
-      reportAdministratorRule(capacity, dataDevices, setIsLoadingReport);
+      reportAdministratorRule(
+        capacity,
+        realGeneration,
+        estimatedGeneration,
+        dataDevices,
+        percent,
+        setIsLoadingReportGeneration
+      );
     } else if (action) {
       setAction(action);
     } else {
@@ -143,6 +132,8 @@ export default function Dashboard() {
       setAction("");
     }
   }
+
+  // useEffects
 
   useEffect(() => {
     selectedUser.length != 0
@@ -202,6 +193,8 @@ export default function Dashboard() {
     type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
   }, [type]);
 
+  // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
+
   if (isLoading) {
     return (
       <Backdrop
@@ -215,13 +208,14 @@ export default function Dashboard() {
 
   return (
     <>
-      <DashboardHeader
+      {/*<DashboardHeader
         label={"Apresentção do usuário / botão para download de relatório"}
-        isLoadingReport={isLoadingReport}
+        isLoadingReportGeneration={isLoadingReportGeneration}
         useTypeMember={useTypeMember}
         useName={useName}
         handleReportGeneration={handleReportGeneration}
-      />
+  />
+  */}
       <Box
         sx={{
           display: "flex",
@@ -230,9 +224,9 @@ export default function Dashboard() {
           flexDirection: "column",
         }}
       >
-        <UserDivcesLastDayInfo
+        <MyDevices
           label={"Minhas Usinas"}
-          isLoading={isLoadingGraph}
+          isLoadingGraph={isLoadingGraph}
           realGeneration={realGeneration}
           estimatedGeneration={estimatedGeneration}
           percent={percent}
@@ -246,7 +240,7 @@ export default function Dashboard() {
           alerts={alerts}
         />
       </Box>
-      <GlobalUsinProductive
+      <TotalMonth
         useName={useName}
         type={type}
         realGenerationTotal={realGenerationTotal}

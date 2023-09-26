@@ -6,7 +6,7 @@ import moment from "moment";
 
 // Componentes
 
-import { ToolTipNoAccess } from "../ToolTipNoAccess";
+import { ToolTipNoAccess } from "../shared/ToolTipNoAccess";
 import { AdministratorReport } from "src/reports/AdministratorReport";
 
 // icons

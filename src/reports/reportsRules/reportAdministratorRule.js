@@ -14,7 +14,10 @@ export const reportAdministrator = {
 
 export function reportAdministratorRule(
   capacity,
+  realGeneration,
+  estimatedGeneration,
   dataDevices,
+  percent,
   setIsLoadingReport,
 ) {
   let generationRealMonth = dataDevices.map((data) => {
@@ -22,17 +25,17 @@ export function reportAdministratorRule(
     return generationRealValue;
   })
   let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed(2)
-  reportAdministrator.generationRealTotalValue = numbers(generationRealMonthTotal)
+  reportAdministrator.generationRealTotalValue = numbers(realGeneration)
 
   let generationEstimatedMonth = dataDevices.map((data) => {
     let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
     return generationEstimatedValue;
   })
   let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed(2)
-  reportAdministrator.generationEstimatedTotalValue = numbers(generationEstimatedMonthTotal)
+  reportAdministrator.generationEstimatedTotalValue = numbers(estimatedGeneration)
 
   let percentResult = (generationRealMonthTotal / generationEstimatedMonthTotal) * 100
-  reportAdministrator.percent = percentResult.toFixed()
+  reportAdministrator.percent = percent
 
   const { useName } = getUserCookie()
   reportAdministrator.useName = useName

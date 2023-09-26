@@ -1,13 +1,13 @@
 // IMPORTS
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ChartsDashboard } from "../components/Charts";
+import { ChartsDashboard } from "../../shared/Charts";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import * as Yup from "yup";
 
 import { AdministratorReport } from "src/reports/AdministratorReport";
-import { ToolTipNoAccess } from "src/components/ToolTipNoAccess";
+import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 
 import { getUserCookie } from "src/services/session";
 
