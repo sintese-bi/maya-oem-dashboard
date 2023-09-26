@@ -1,19 +1,19 @@
 // bibliotecas
 
 import moment from "moment";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 //components
 
-import { BigNumber, BigNumberDashboard } from "src/components/BigNumber";
+import { BigNumber, BigNumberDashboard } from "src/components/shared/BigNumber";
 import { LoadingSkeletonBigNumbers } from "src/components/Loading";
 
 //icons
 
-import { UserDevicesResume } from "./user-devices-resume";
+import { MyDevicesResume } from "./my-devices-components/my-devices-resume";
 
-export const UserDivcesLastDayInfo = ({
-  isLoading,
+export const MyDevices = ({
+  isLoadingGraph,
   realGeneration,
   estimatedGeneration,
   percent,
@@ -35,6 +35,7 @@ export const UserDivcesLastDayInfo = ({
         alignItems: "center",
         flexDirection: "column",
         width: "100%",
+        mt: 4,
       }}
     >
       <Box
@@ -68,7 +69,7 @@ export const UserDivcesLastDayInfo = ({
           justifyContent: "center",
         }}
       >
-        <UserDevicesResume
+        <MyDevicesResume
           label={"Resumo de usinas"}
           realGeneration={realGeneration}
           estimatedGeneration={estimatedGeneration}

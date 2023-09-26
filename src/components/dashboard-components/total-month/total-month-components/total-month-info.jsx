@@ -8,7 +8,7 @@ import { Box, Typography, Card } from "@mui/material";
 import { numbers } from "src/helpers/utils";
 import { meses } from "src/helpers/months";
 
-export const UserDevicesTotalInfo = ({
+export const TotalMonthInfo = ({
   useName,
   realGenerationTotal,
   estimatedGenerationTotal,
@@ -23,7 +23,7 @@ export const UserDevicesTotalInfo = ({
         alignItems: "center",
         flexDirection: "column",
         width: "80%",
-        my: 8,
+        my: 2,
       }}
     >
       <Box
@@ -36,20 +36,11 @@ export const UserDevicesTotalInfo = ({
           my: 2,
         }}
       >
-        <Typography variant="h4">Total produzido este mês</Typography>
-        <Typography
-          sx={{
-            lineHeight: "100%",
-            py: 2,
-            fontWeight: "bold",
-            ml: 2,
-            fontSize: "20px",
-          }}
-        >
-          {meses[moment().format("M")]}
-        </Typography>
+        <Typography variant="h4">{`Total produzido em ${
+          meses[moment().format("M")]
+        }`}</Typography>
       </Box>
-      <Typography sx={{ my: 4 }}>
+      <Typography sx={{ my: 2 }}>
         {`Prezado ${useName} sua produtivade este mês é ${numbers(
           realGenerationTotal
         )}MWh`}

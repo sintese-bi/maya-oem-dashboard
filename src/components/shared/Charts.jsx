@@ -6,7 +6,7 @@ import {
   handleQuinzenaFilter,
   handleWeekFilter,
   numbers,
-} from "../helpers/utils";
+} from "../../helpers/utils";
 
 // LIBS DE ESTILOS
 import { Bar, Chart, Line } from "react-chartjs-2";
@@ -34,12 +34,12 @@ import {
   LineController,
   BarController,
 } from "chart.js";
-import { LoadingSkeletonCharts } from "./Loading";
+import { LoadingSkeletonCharts } from "../Loading";
 
 //ASSETS
-import { TabPanel } from "./TabPanel";
+import { TabPanel } from "../TabPanel";
 import { Container } from "@mui/system";
-import NoData from "../assets/img/illustrations/no-data.svg";
+import NoData from "../../assets/img/illustrations/no-data.svg";
 
 ChartJS.register(
   CategoryScale,
@@ -314,11 +314,11 @@ export const ChartsLinear = (props) => {
       case "days":
         return {
           data: {
-            realGeneration: generation.realGeneration?.map(
-              (data) => data.value
+            realGeneration: generation.realGeneration?.map((data) =>
+              (Number(data.value) / 1000).toFixed(4)
             ),
-            estimatedGeneration: generation.estimatedGeneration?.map(
-              (data) => data
+            estimatedGeneration: generation.estimatedGeneration?.map((data) =>
+              (data / 1000).toFixed(4)
             ),
           },
           period: "Dias",
@@ -414,7 +414,7 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: "kWh",
+          text: "MWh",
           font: { size: 18, weight: "bold" },
         },
       },
@@ -458,7 +458,6 @@ export const ChartsLinear = (props) => {
           flexDirection: "column",
           bgcolor: "background.paper",
           px: 3,
-          pb: 6,
           pt: 4,
         }}
       >
@@ -497,7 +496,6 @@ export const ChartsLinear = (props) => {
           width: "100%",
           flexDirection: "column",
           px: 1,
-          pb: 2,
           pt: 2,
         }}
       >
@@ -525,11 +523,6 @@ export const chartsToGenerationReports = async (props) => {
   canvas.height = 300;
 
   const ctx = canvas.getContext("2d");
-
-  function done() {
-    alert("function done executed");
-    const graphURL = graph.toBase64Image();
-  }
 
   const graph = new ChartJS(ctx, {
     type: "bar",
@@ -657,7 +650,7 @@ export const ChartsDashboardHorizontal = (props) => {
 };
 
 export const ChartsDashboard = (props) => {
-  const { dataDevices, isLoading } = props;
+  const { startDate, endDate, dataDevices, isLoading, optionFilter } = props;
   const theme = useTheme();
 
   function dateOrder(dateA, dateB) {
@@ -674,38 +667,6 @@ export const ChartsDashboard = (props) => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <Card
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          height: 460,
-          flexDirection: "column",
-          bgcolor: "background.paper",
-          px: 3,
-          pb: 6,
-          pt: 4,
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          sx={{
-            fontWeight: "bold",
-            fontSize: "20px",
-            textAlign: "center",
-            mb: "4",
-          }}
-        >
-          Gerando gráfico
-        </Typography>
-        <Box sx={{ height: 300 }}>
-          <LoadingSkeletonCharts />
-        </Box>
-      </Card>
-    );
-  }
-
   const realData = dataDevices?.somaPorDiaReal || {};
   const estimatedData = dataDevices?.somaPorDiaEstimada || {};
 
@@ -718,14 +679,132 @@ export const ChartsDashboard = (props) => {
   const realValues = sortedDates.map((data) =>
     (realData[data] / 1000).toFixed(2)
   );
+  const realValuesTemp = sortedDates.map((data) => {
+    return { value: realData[data], date: moment(data).format("DD/MM/YYYY") };
+  });
   const estimatedValues = sortedDates.map((data) =>
     (estimatedData[data] / 1000).toFixed(2)
   );
+  const estimatedValuesTemp = sortedDates.map((data) => {
+    return estimatedData[data];
+  });
+
+  let filteredWeekValues = handleWeekFilter(
+    startDate,
+    endDate,
+    realValuesTemp,
+    estimatedValuesTemp
+  );
+
+  let filteredMonthValues = handleMonthFilter(
+    startDate,
+    endDate,
+    realValuesTemp,
+    estimatedValuesTemp
+  );
+
+  let filteredQuinzenasValues = handleQuinzenaFilter(
+    startDate,
+    endDate,
+    realValuesTemp,
+    estimatedValuesTemp
+  );
+
+  const filterPeriodData = () => {
+    switch (optionFilter) {
+      case "days":
+        return {
+          data: {
+            realGeneration: realValuesTemp.map((data) =>
+              (Number(data.value) / 1000).toFixed(4)
+            ),
+            estimatedGeneration: estimatedValuesTemp.map((data) =>
+              (data / 1000).toFixed(4)
+            ),
+          },
+          period: "Dias",
+        };
+        break;
+      case "weeks":
+        return {
+          data: {
+            realGeneration: filteredWeekValues.data.realGeneration.map(
+              (data) => data / 1000
+            ),
+            estimatedGeneration:
+              filteredWeekValues.data.estimatedGeneration.map(
+                (data) => data / 1000
+              ),
+          },
+          period: "Semanas",
+        };
+        break;
+      case "months":
+        return {
+          data: {
+            realGeneration: filteredMonthValues.data.realGeneration,
+            estimatedGeneration: filteredMonthValues.data.estimatedGeneration,
+          },
+          period: "Meses",
+        };
+        break;
+      case "biweek":
+        return {
+          data: {
+            realGeneration: filteredQuinzenasValues.data.realGeneration,
+            estimatedGeneration:
+              filteredQuinzenasValues.data.estimatedGeneration,
+          },
+          period: "Quinzenas",
+        };
+        break;
+      default:
+        break;
+    }
+  };
+
+  const filterPeriod = () => {
+    switch (optionFilter) {
+      case "days":
+        return realValuesTemp?.map((data) =>
+          moment(data.date, "DD/MM/YYYY").format("DD/MM")
+        );
+        break;
+      case "weeks":
+        return filteredWeekValues.weeks.map((data) => {
+          let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
+            data.endWeek
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      case "months":
+        return filteredMonthValues.months.map((data) => {
+          let date = `${moment(data.startMonth).format("DD/MM")} - ${moment(
+            data.endMonth
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      case "biweek":
+        return filteredQuinzenasValues.quinzenas.map((data) => {
+          let date = `${moment(data.startQuinzena).format("DD/MM")} - ${moment(
+            data.endQuinzena
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      default:
+        break;
+    }
+  };
 
   const labels = sortedDates.map((data) => moment(data).format("DD/MM"));
+  const labelsTemp = filterPeriod();
+  const periodData = filterPeriodData();
 
   const data = {
-    labels: labels,
+    labels: labelsTemp,
     datasets: [
       {
         barThickness: 20,
@@ -735,7 +814,7 @@ export const ChartsDashboard = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.8,
         label: "Geração real",
-        data: realValues,
+        data: periodData.data?.realGeneration,
         backgroundColor: "#5048E5",
       },
       {
@@ -746,7 +825,7 @@ export const ChartsDashboard = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.8,
         label: "Geração estimada",
-        data: estimatedValues,
+        data: periodData.data?.estimatedGeneration,
         backgroundColor: "#14B8A6",
         type: "line",
       },
@@ -791,12 +870,44 @@ export const ChartsDashboard = (props) => {
         },
         title: {
           display: true,
-          text: "MWp",
+          text: "MWh",
           font: { size: 18, weight: "bold" },
         },
       },
     },
   };
+
+  if (isLoading) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pb: 6,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box sx={{ height: 300 }}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  }
 
   return (
     <Card

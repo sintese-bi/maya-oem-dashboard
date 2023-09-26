@@ -2,7 +2,7 @@ import { Poll } from "@mui/icons-material";
 import { Cancel } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import moment from "moment-timezone";
-import { LoadingSkeletonBigNumbers } from "./Loading";
+import { LoadingSkeletonBigNumbers } from "../../../../Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -20,11 +20,11 @@ import {
 } from "@mui/material";
 import { Thermostat } from "@mui/icons-material";
 import { Link as LinkRouter } from "react-router-dom";
-import { BigNumber } from "./BigNumber";
+import { BigNumber } from "../../../../shared/BigNumber";
 import { listBrand } from "src/utils/list-brand";
 import { getAllDevicesGeneration } from "src/store/actions/devices";
 
-import { ChartsLinear } from "src/components/Charts";
+import { ChartsLinear } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
 
 export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
@@ -166,6 +166,60 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
             <MenuItem value="biweek">Quinzena</MenuItem>
             <MenuItem value="months">Mês</MenuItem>
           </TextField>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              mt: 2,
+            }}
+          >
+            <Grid item xs={4}>
+              {isLoadingDevicesGeneration ? (
+                <LoadingSkeletonBigNumbers />
+              ) : (
+                <BigNumber
+                  title="Produzido"
+                  value={
+                    devicesGeneration
+                      ? `${numbers((generationRealTotal / 1000).toFixed(2))}MWh`
+                      : `${100}MWh`
+                  }
+                  icon={false}
+                />
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              {isLoadingDevicesGeneration ? (
+                <LoadingSkeletonBigNumbers />
+              ) : (
+                <BigNumber
+                  title="Esperado"
+                  value={
+                    devicesGeneration
+                      ? `${numbers(
+                          (generationEstimatedTotal / 1000).toFixed(2)
+                        )}MWh`
+                      : `${100}MWh`
+                  }
+                  icon={false}
+                />
+              )}
+            </Grid>
+          </Box>
+          <Typography
+            sx={{
+              width: "full",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "18px",
+              py: 6,
+            }}
+          >
+            {`Desempenho: ${(
+              (generationRealTotal / generationEstimatedTotal) *
+              100
+            ).toFixed(2)}%`}
+          </Typography>
           <ChartsLinear
             startDate={startDate}
             endDate={endDate}
@@ -173,46 +227,6 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
             optionFilter={optionFilter}
             isLoading={isLoadingDevicesGeneration}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-            <Grid item xs={4}>
-              {isLoadingDevicesGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="Sua produção no periodo escolhido é"
-                  value={
-                    devicesGeneration
-                      ? `${generationRealTotal}KWp`
-                      : `${100}KWp`
-                  }
-                  icon={<Thermostat />}
-                />
-              )}
-            </Grid>
-            <Grid item xs={4}>
-              {isLoadingDevicesGeneration ? (
-                <LoadingSkeletonBigNumbers />
-              ) : (
-                <BigNumber
-                  title="sua produção estimada para o periodo escolhido é"
-                  value={
-                    devicesGeneration
-                      ? `${generationEstimatedTotal}KWp`
-                      : `${100}KWp`
-                  }
-                  icon={<Thermostat />}
-                />
-              )}
-            </Grid>
-          </Box>
-          <Typography
-            sx={{ fontWeight: "bold", fontSize: "18px", py: 6, ml: 8 }}
-          >
-            {`O percentual de producao é de: ${(
-              (generationRealTotal / generationEstimatedTotal) *
-              100
-            ).toFixed(2)}%`}
-          </Typography>
         </Box>
       </Modal>
     </Box>

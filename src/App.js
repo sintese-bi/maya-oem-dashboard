@@ -12,13 +12,12 @@ import Dashboard from "./pages/dashboard";
 import Generation from "./pages/dashboard/generation";
 import Investment from "./pages/dashboard/investment";
 import Alerts from "./pages/dashboard/alerts";
-import AlertDevices from 'src/components/AlertDevices';
-import Plants from "src/components/Plants";
+import AlertDevices from 'src/components/alerts-components/AlertDevices';
+import Plants from "src/components/dashboard-components/total-month/total-month-components/total-month-devices";
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
 import { HomePage, AdminCalculator, ClientCalculator } from "./components/calculator";
-import { ReportsTests } from "./components/development-components-tests.jsx/reports";
 
 export default function App() {
   return (
@@ -43,7 +42,6 @@ export default function App() {
             <Route path="calculator/client" element={<ClientCalculator />} />
             <Route path="calculator/admin" element={<AdminCalculator />} />
             <Route path="users" element={<ListUsers />} />
-            <Route path="development" element={<ReportsTests />} />
           </Route>
         </Route>
 

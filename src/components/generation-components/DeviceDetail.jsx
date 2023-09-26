@@ -8,7 +8,7 @@ import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDevices } from "src/store/actions/devices";
-import api, { configRequest } from "../services/api";
+import api, { configRequest } from "../../services/api";
 import Autocomplete from "@mui/material/Autocomplete";
 // COMPONETS
 
@@ -28,7 +28,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LoadingAccordion } from "./Loading";
+import { LoadingAccordion } from "../Loading";
 
 // ASSETS
 import { Edit, SaveAs } from "@mui/icons-material";

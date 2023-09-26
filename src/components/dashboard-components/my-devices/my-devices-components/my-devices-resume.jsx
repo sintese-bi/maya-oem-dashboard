@@ -5,7 +5,7 @@ import moment from "moment";
 
 //components
 
-import { BigNumberDashboard } from "src/components/BigNumber";
+import { BigNumberDashboard } from "src/components/shared/BigNumber";
 
 //icons
 
@@ -20,7 +20,7 @@ import {
 } from "@mui/icons-material";
 import { numbers } from "src/helpers/utils";
 
-export const UserDevicesResume = ({
+export const MyDevicesResume = ({
   label,
   realGeneration,
   estimatedGeneration,
@@ -114,7 +114,7 @@ export const UserDevicesResume = ({
           value={numbers(realGeneration)}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={true}
+          activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -123,7 +123,7 @@ export const UserDevicesResume = ({
           value={numbers(estimatedGeneration)}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={true}
+          activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
@@ -132,7 +132,7 @@ export const UserDevicesResume = ({
           value={percent}
           icon={<ElectricBolt />}
           type={1}
-          activeBtn={TextareaAutosize}
+          activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
         <BigNumberDashboard

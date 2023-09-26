@@ -1,8 +1,10 @@
 import { Avatar, Link, Stack, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
-import { ModalPlantsGraph } from "src/components/ModalPlantsGraph";
-import { DeleteDevice } from "src/components/deleteDevice";
+import { CheckBox, ReportProblem } from "@mui/icons-material";
+import { ModalPlantsGraph } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-generation-graph";
+import { DeleteDevice } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-delete-devices";
+import { SendEmail } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-send-email";
 
 export const columnsDevices = [
   {
@@ -68,6 +70,25 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       sortDirection: "desc",
+    },
+  },
+  {
+    name: "deviceSituation",
+    label: "Situação",
+    options: {
+      filter: true,
+      sort: true,
+      customBodyRender: (name, dataTable) => {
+        return (
+          <Stack direction="row" alignItems="center" gap={1}>
+            {Number(dataTable.rowData[12]) == 0 ? (
+              <CheckBox sx={{ color: "success.light" }} />
+            ) : (
+              <ReportProblem sx={{ color: "warning.light" }} />
+            )}
+          </Stack>
+        );
+      },
     },
   },
   {
@@ -171,6 +192,24 @@ export const columnsDevices = [
             <ModalPlantsGraph
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
+            />
+          </Stack>
+        );
+      },
+    },
+  },
+  {
+    name: "sendEmail",
+    label: "Envio de relatório",
+    options: {
+      filter: true,
+      sort: true,
+      customBodyRender: (name, dataTable) => {
+        return (
+          <Stack direction="row" alignItems="center" gap={1}>
+            <SendEmail
+              devUuid={dataTable.rowData[0]}
+              data={dataTable.rowData}
             />
           </Stack>
         );
