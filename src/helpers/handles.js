@@ -30,8 +30,8 @@ export const handlesGeneration = (data, type, day, label) => {
 
         if (dayBooleano)
           realGeneration[index] = gen.gen_real
-            ? { value: parseFloat(gen.gen_real).toFixed(2), date: moment(gen.gen_date).format("DD/MM/YYYY") }
-            : { value: 0, date: moment(gen.gen_date).format("DD/MM/YYYY") };
+            ? { value: parseFloat(gen.gen_real).toFixed(2), date: moment(gen.gen_date).format("MM/DD/YYYY") }
+            : { value: 0, date: moment(gen.gen_date).format("MM/DD/YYYY") };
         // realGeneration[index] = parseFloat(gen.gen_real / 1000).toFixed(2); // FOI DUVIDIDO POR 1000 POR CAUSA DA MARCA FRONUIS
       });
     });

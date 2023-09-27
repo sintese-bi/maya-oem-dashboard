@@ -492,7 +492,7 @@ export const ChartsLinear = (props) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: 640,
+          height: "80%",
           width: "100%",
           flexDirection: "column",
           px: 1,
@@ -509,7 +509,7 @@ export const ChartsLinear = (props) => {
         >
           Relação da geração real e geração estimada
         </Typography>
-        <Box sx={{ height: 610, width: "90%", mt: 4 }}>
+        <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
           <Line type="bar" options={options} data={data} ref={graphRef} />
         </Box>
       </Box>
@@ -680,7 +680,7 @@ export const ChartsDashboard = (props) => {
     (realData[data] / 1000).toFixed(2)
   );
   const realValuesTemp = sortedDates.map((data) => {
-    return { value: realData[data], date: moment(data).format("DD/MM/YYYY") };
+    return { value: realData[data], date: moment(data).format("MM/DD/YYYY") };
   });
   const estimatedValues = sortedDates.map((data) =>
     (estimatedData[data] / 1000).toFixed(2)
@@ -767,7 +767,7 @@ export const ChartsDashboard = (props) => {
     switch (optionFilter) {
       case "days":
         return realValuesTemp?.map((data) =>
-          moment(data.date, "DD/MM/YYYY").format("DD/MM")
+          moment(data.date, "MM/DD/YYYY").format("DD/MM")
         );
         break;
       case "weeks":
@@ -807,9 +807,6 @@ export const ChartsDashboard = (props) => {
     labels: labelsTemp,
     datasets: [
       {
-        barThickness: 20,
-        borderRadius: 2,
-        categoryPercentage: 0.5,
         label: "Geração real",
         maxBarThickness: 22,
         barPercentage: 0.8,

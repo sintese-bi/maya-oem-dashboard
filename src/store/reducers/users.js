@@ -36,6 +36,7 @@ const initialState = {
   sendingEmail: [],
   passwordRecovery: [],
   selectedUser: [],
+  userData: {}
 };
 
 export default function userReducer(state = initialState, action) {
@@ -48,6 +49,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        userData: [],
         brandListUser: [],
         profileLevel: [],
       };
@@ -56,6 +58,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        userData: result,
         brandListUser,
         profileLevel,
       };
@@ -64,6 +67,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        userData: [],
         brandListUser: [],
         profileLevel: [],
       };

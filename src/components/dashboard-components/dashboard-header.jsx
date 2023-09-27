@@ -15,7 +15,7 @@ import { DownloadForOffline } from "@mui/icons-material";
 
 export const DashboardHeader = ({
   handleReportGeneration,
-  isLoadingReport,
+  isLoadingReportGeneration,
   useTypeMember,
   useName,
   label,
@@ -24,27 +24,18 @@ export const DashboardHeader = ({
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "end",
         alignItems: "center",
-        mt: 4,
-        mb: 8,
+        my: 4,
         width: "100%",
       }}
     >
-      <Box sx={{ textAlign: "center" }}>
-        <Typography variant="h3">Usuário: {useName}</Typography>
-        <Typography sx={{ fontSize: "24px", fontWeight: "700" }}>
-          Data: {moment().format("DD/MM/YYYY")}
-        </Typography>
-      </Box>
       <ToolTipNoAccess useTypeMember={useTypeMember}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             width: "220px",
-            position: "absolute",
-            right: 0,
           }}
         >
           <Button
@@ -55,7 +46,7 @@ export const DashboardHeader = ({
               height: "40px",
             }}
           >
-            {isLoadingReport ? (
+            {isLoadingReportGeneration ? (
               "Preparar relatório"
             ) : (
               <PDFDownloadLink

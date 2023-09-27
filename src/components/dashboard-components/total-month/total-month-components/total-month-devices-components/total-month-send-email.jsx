@@ -22,12 +22,12 @@ export const SendEmail = ({ devUuid, data }) => {
     console.log({
       devUuid: devUuid,
       capacity: data[4],
-      generationEstimatedDay: data[5],
-      generationRealDay: data[6],
-      generationEstimatedWeek: data[7],
-      generationRealWeek: data[8],
-      generationEstimatedMonth: data[9],
-      generationRealMonth: data[10],
+      generationEstimatedDay: data[6],
+      generationRealDay: data[7],
+      generationEstimatedWeek: data[8],
+      generationRealWeek: data[9],
+      generationEstimatedMonth: data[10],
+      generationRealMonth: data[11],
     });
     setOpen(!open);
   }
