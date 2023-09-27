@@ -74,7 +74,7 @@ export const columnsDevices = [
   },
   {
     name: "deviceSituation",
-    label: "Situação",
+    label: "Alerta de geração",
     options: {
       filter: true,
       sort: true,

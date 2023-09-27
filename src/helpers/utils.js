@@ -343,7 +343,6 @@ export const handleWeekFilter = (startDate, endDate, realGeneration, estimatedGe
   }
 
   let filteredValues = { data: filterValuesByWeeks(realGeneration, estimatedGeneration, weeks), weeks }
-
   return filteredValues
 }
 
@@ -397,7 +396,7 @@ function filterValuesByQuinzenas(dataArray, estimatedGeneration, quinzenas) {
     const startQuinzena = new Date(quinzena.startQuinzena);
     const endQuinzena = new Date(quinzena.endQuinzena);
     const valuesInQuinzena = dataArray?.filter((item) => {
-      let date = moment(item.date, "DD/MM/YYYY");
+      let date = moment(item.date, "MM/DD/YYYY");
       const itemDate = new Date(date);
       return itemDate >= startQuinzena && itemDate <= endQuinzena;
     });
@@ -425,7 +424,7 @@ function filterValuesByMonths(dataArray, estimatedGeneration, months) {
     const startMonth = new Date(month.startMonth);
     const endMonth = new Date(month.endMonth);
     const valuesInMonth = dataArray?.filter((item) => {
-      let date = moment(item.date, "DD/MM/YYYY");
+      let date = moment(item.date, "MM/DD/YYYY");
       const itemDate = new Date(date);
       return itemDate >= startMonth && itemDate <= endMonth;
     });
@@ -447,13 +446,12 @@ function filterValuesByMonths(dataArray, estimatedGeneration, months) {
 
 function filterValuesByWeeks(dataArray, estimatedGeneration, weeks) {
   const filteredValues = [];
-
   for (const week of weeks) {
     const startWeek = new Date(week.startWeek);
     const endWeek = new Date(week.endWeek);
 
     const valuesInWeek = dataArray?.filter((item) => {
-      let date = moment(item.date, "MM/DD/YYYY").format("DD/MM/YYYY");
+      let date = moment(item.date, "MM/DD/YYYY")
       const itemDate = new Date(date);
       return itemDate >= startWeek && itemDate <= endWeek;
     });

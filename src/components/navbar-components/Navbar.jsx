@@ -210,7 +210,7 @@ export const DashboardNavbar = () => {
             <Typography
               variant="body1"
               sx={{
-                width: "50%",
+                width: 236,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",

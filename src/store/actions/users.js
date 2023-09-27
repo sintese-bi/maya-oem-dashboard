@@ -37,6 +37,14 @@ export const auth = (params) => (dispatch) => {
 
         dispatch({
           type: users.AUTH_SUCCESS,
+          result: {
+            token,
+            profileLevel: profile_level.pl_cod,
+            useUuid: use_uuid,
+            useName: use_name,
+            useEmail: use_email,
+            useTypeMember: use_type_member
+          },
           profileLevel: profile_level.pl_cod,
         });
 

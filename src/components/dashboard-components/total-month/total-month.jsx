@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, Typography, Card, TextField, MenuItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Card,
+  TextField,
+  MenuItem,
+  Button,
+} from "@mui/material";
 
 import { ChartsDashboard } from "src/components/shared/Charts";
 import moment from "moment";
@@ -40,6 +47,10 @@ export const TotalMonth = ({
 
   function handleTopDevicesKWp(devices) {
     setTopDevicesKWp(devices.sort((a, b) => b.capacity - a.capacity));
+  }
+
+  function handleSendAllReportByEmail() {
+    alert("Sending all report by email");
   }
 
   useEffect(() => {
@@ -198,8 +209,16 @@ export const TotalMonth = ({
               component="main"
               sx={{
                 width: "100%",
+                mt: 4,
               }}
             >
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSendAllReportByEmail}
+              >
+                Enviar email para todas as plantas
+              </Button>
               <Plants
                 data={data}
                 devicesTableRef={devicesTableRef}

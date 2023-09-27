@@ -50,7 +50,7 @@ export default function Dashboard() {
     online,
     capacity,
     selectedUser,
-    //useCodePagarMe
+    userData,
   } = useSelector((state) => state.users);
 
   const devicesTableRef = useRef(null);
@@ -93,7 +93,8 @@ export default function Dashboard() {
       return generationRealValue;
     });
     let generationRealMonthTotal = (
-      generationRealMonth.reduce((total, element) => total + element, 0) / 1000
+      generationRealMonth.reduce((total, element) => total + element, 0) /
+      1000000
     ).toFixed(2);
     setRealGenerationTotal(generationRealMonthTotal);
   }
@@ -107,7 +108,7 @@ export default function Dashboard() {
     });
     let generationEstimatedMonthTotal = (
       generationEstimatedMonth.reduce((total, element) => total + element, 0) /
-      1000
+      1000000
     ).toFixed(2);
 
     setEstimatedGenerationTotal(generationEstimatedMonthTotal);
@@ -208,14 +209,13 @@ export default function Dashboard() {
 
   return (
     <>
-      {/*<DashboardHeader
+      <DashboardHeader
         label={"Apresentção do usuário / botão para download de relatório"}
         isLoadingReportGeneration={isLoadingReportGeneration}
         useTypeMember={useTypeMember}
-        useName={useName}
         handleReportGeneration={handleReportGeneration}
-  />
-  */}
+      />
+
       <Box
         sx={{
           display: "flex",

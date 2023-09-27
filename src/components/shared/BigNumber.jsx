@@ -9,7 +9,6 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 
 export const BigNumber = (props) => {
   const { title, value, icon, btnTitle = false } = props;
