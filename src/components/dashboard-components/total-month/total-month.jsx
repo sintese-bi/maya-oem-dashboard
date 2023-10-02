@@ -11,7 +11,10 @@ import {
   Button,
 } from "@mui/material";
 
-import { ChartsDashboard } from "src/components/shared/Charts";
+import {
+  AdmnistratorGraph,
+  ChartsDashboard,
+} from "src/components/shared/Charts";
 import moment from "moment";
 import Plants from "./total-month-components/total-month-devices";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +38,7 @@ export const TotalMonth = ({
   type,
   data,
   devicesTableRef,
+  adminGraphRef,
 }) => {
   const { graphData, isLoadingGraph } = useSelector((state) => state.users);
   const dispatch = useDispatch();
@@ -197,13 +201,29 @@ export const TotalMonth = ({
                 <MenuItem value="biweek">Quinzena</MenuItem>
                 <MenuItem value="months">Mês</MenuItem>
               </TextField>
-              <ChartsDashboard
-                startDate={startDate}
-                endDate={endDate}
-                optionFilter={optionFilter}
-                dataDevices={graphData.data}
-                isLoading={isLoadingGraph}
-              />
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mt: 6,
+                }}
+              >
+                <ChartsDashboard
+                  startDate={startDate}
+                  endDate={endDate}
+                  optionFilter={optionFilter}
+                  dataDevices={graphData.data}
+                  isLoading={isLoadingGraph}
+                />
+                <AdmnistratorGraph
+                  dataDevices={graphData.data}
+                  isLoading={isLoadingGraph}
+                  adminGraphRef={adminGraphRef}
+                />
+              </Box>
+              {/* O gráfico abaixo não está sendo rederenizado, serve apenas para a construção do relatório administrador */}
             </Box>
             <Box
               component="main"

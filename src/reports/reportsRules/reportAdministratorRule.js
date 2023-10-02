@@ -9,7 +9,8 @@ export const reportAdministrator = {
   generationEstimatedTotalValue: "",
   percent: "",
   useName: "",
-  devicesLength: 0
+  devicesLength: 0,
+  adminGraphRef: ""
 }
 
 export function reportAdministratorRule(
@@ -19,6 +20,7 @@ export function reportAdministratorRule(
   dataDevices,
   percent,
   setIsLoadingReport,
+  adminGraphRef
 ) {
   let generationRealMonth = dataDevices.map((data) => {
     let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
@@ -43,6 +45,7 @@ export function reportAdministratorRule(
   reportAdministrator.capacityTotalValue = numbers(capacity.reduce((total, element) => element + total, 0).toFixed(2))
 
   reportAdministrator.devicesLength = dataDevices.length
+  reportAdministrator.adminGraphRef = adminGraphRef.current.toBase64Image('image/png', 2)
 
   setIsLoadingReport(false)
 }

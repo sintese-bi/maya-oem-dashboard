@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Cancel, Email } from "@mui/icons-material";
+import { reportgenerationEmai } from "src/store/actions/generation";
 export const SendEmail = ({ devUuid, data }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -19,16 +20,22 @@ export const SendEmail = ({ devUuid, data }) => {
   }
 
   function handleDeleteDevice() {
-    console.log({
-      devUuid: devUuid,
-      capacity: data[4],
-      generationEstimatedDay: data[6],
-      generationRealDay: data[7],
-      generationEstimatedWeek: data[8],
-      generationRealWeek: data[9],
-      generationEstimatedMonth: data[10],
-      generationRealMonth: data[11],
-    });
+    dispatch(
+      reportgenerationEmai(
+        {
+          dev_uuid: devUuid,
+          capacity: data[4],
+          gen_est_day: data[6],
+          gen_real_day: data[7],
+          gen_est_week: data[8],
+          gen_real_week: data[9],
+          gen_est_month: data[10],
+          gen_real_month: data[11],
+        },
+        devUuid
+      )
+    );
+
     setOpen(!open);
   }
 

@@ -64,3 +64,28 @@ export const getAlerts = (devUuid) => (dispatch) => {
       dispatch({ type: generation.GET_GENERATION_ALERTS_FAILURE, message });
     });
 };
+
+export const reportgenerationEmai = (data) => (dispatch) => {
+  dispatch({ type: generation.SEND_EMAIL_TO_DEVICE_REQUEST });
+
+  api
+    .get(`/sendgenerationemail?dev_uuid=${data.dev_uuid}`, data, configRequest())
+    .then(() => {
+      toast.success("Email enviado", {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: generation.SEND_EMAIL_TO_DEVICE_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: generation.SEND_EMAIL_TO_DEVICE_FAILURE, message });
+    });
+}

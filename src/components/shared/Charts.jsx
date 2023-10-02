@@ -361,7 +361,7 @@ export const ChartsLinear = (props) => {
     switch (optionFilter) {
       case "days":
         return generation?.realGeneration?.map((data) =>
-          moment(data.date, "DD/MM/YYYY").format("DD/MM")
+          moment(data.date, "MM/DD/YYYY").format("DD/MM")
         );
         break;
       case "weeks":
@@ -409,6 +409,7 @@ export const ChartsLinear = (props) => {
     },
     scales: {
       y: {
+        beginAtZero: true,
         grid: {
           display: false,
         },
@@ -439,11 +440,15 @@ export const ChartsLinear = (props) => {
         data: periodData.data?.realGeneration,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
+        cubicInterpolationMode: "monotone",
+        tension: 0.4,
       },
       {
         label: "Geração estimada",
         data: periodData.data?.estimatedGeneration,
         backgroundColor: "#14B8A6",
+        cubicInterpolationMode: "monotone",
+        tension: 0.4,
       },
     ],
   };
@@ -808,14 +813,14 @@ export const ChartsDashboard = (props) => {
     datasets: [
       {
         label: "Geração real",
-        maxBarThickness: 22,
+        maxBarThickness: 16,
         barPercentage: 0.8,
         label: "Geração real",
         data: periodData.data?.realGeneration,
         backgroundColor: "#5048E5",
       },
       {
-        barThickness: 20,
+        barThickness: 16,
         borderRadius: 2,
         categoryPercentage: 0.5,
         label: "Geração estimada",
@@ -916,6 +921,7 @@ export const ChartsDashboard = (props) => {
         px: 2,
         pb: 2,
         pt: 4,
+        width: "64%",
         height: 520,
       }}
     >
@@ -929,6 +935,142 @@ export const ChartsDashboard = (props) => {
         <Chart type="bar" options={options} data={data} />
       </Box>
     </Card>
+  );
+};
+
+export const AdmnistratorGraph = (props) => {
+  const { dataDevices, isLoading, adminGraphRef } = props;
+  const theme = useTheme();
+
+  const realData = dataDevices?.somaPorDiaReal || {};
+  const estimatedData = dataDevices?.somaPorDiaEstimada || {};
+
+  const sortedDates = Object.keys(realData).sort(
+    (a, b) => new Date(a) - new Date(b)
+  );
+  const labels = sortedDates.slice(
+    sortedDates.length - 1 - 9,
+    sortedDates.length - 1 + 1
+  );
+
+  const realValues = labels.map((data) => (realData[data] / 1000).toFixed(2));
+  const realValuesTemp = labels.map((data) => {
+    return { value: realData[data], date: moment(data).format("MM/DD/YYYY") };
+  });
+  const estimatedValues = labels.map((data) =>
+    (estimatedData[data] / 1000).toFixed(2)
+  );
+  const estimatedValuesTemp = sortedDates.map((data) => {
+    return estimatedData[data];
+  });
+
+  console.log(realValues, estimatedValues);
+
+  const data = {
+    labels: labels.map((data) => moment(data).format("DD/MM")),
+    datasets: [
+      {
+        barThickness: 8,
+        label: "Geração real",
+        maxBarThickness: 8,
+        barPercentage: 0.8,
+        label: "Geração real",
+        data: realValues,
+        backgroundColor: "#6CE5E8",
+      },
+      {
+        barThickness: 8,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        label: "Geração estimada",
+        maxBarThickness: 8,
+        barPercentage: 0.8,
+        label: "Geração estimada",
+        data: estimatedValues,
+        backgroundColor: "#2D8BBA",
+      },
+    ],
+  };
+
+  const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    indexAxis: "y",
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      customCanvasBackgroundColor: {
+        color: "white",
+      },
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "MWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+        bgcolor: "white",
+        px: 2,
+        pb: 2,
+        pt: 4,
+      }}
+    >
+      <Typography
+        color="textPrimary"
+        sx={{ fontWeight: "bold", fontSize: "20px" }}
+      >
+        Relação da geração nos 10 últimos dias.
+      </Typography>
+      <Box sx={{ height: "300px", width: "342px" }}>
+        <Chart
+          type="bar"
+          height="334px"
+          width="364px"
+          options={options}
+          data={data}
+          ref={adminGraphRef}
+        />
+      </Box>
+    </Box>
   );
 };
 

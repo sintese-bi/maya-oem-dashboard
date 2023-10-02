@@ -345,7 +345,7 @@ export default function userReducer(state = initialState, action) {
               brand: dev.dev_brand,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
-              capacity: `${(dev.dev_capacity / 1000).toFixed(2)}MWp`,
+              capacity: `${(dev.dev_capacity).toFixed(2)}KWp`,
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0

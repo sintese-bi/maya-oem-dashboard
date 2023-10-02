@@ -18,6 +18,7 @@ import Plants from "src/components/dashboard-components/total-month/total-month-
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
 import { HomePage, AdminCalculator, ClientCalculator } from "./components/calculator";
+import { ReportTest } from "./components/ReportTest";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="calculator/client" element={<ClientCalculator />} />
             <Route path="calculator/admin" element={<AdminCalculator />} />
             <Route path="users" element={<ListUsers />} />
+            <Route path="reportTest" element={<ReportTest />} />
           </Route>
         </Route>
 

@@ -107,7 +107,7 @@ export const GenerationBI = ({
             <LoadingSkeletonBigNumbers />
           ) : (
             <BigNumber
-              title="Geração Estimada"
+              title="Geração Estimada do dia"
               value={`${
                 deviceInfo?.generation?.gen_estimated
                   ? numbers(
