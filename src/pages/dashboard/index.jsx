@@ -57,6 +57,8 @@ export default function Dashboard() {
 
   const [type, setType] = useState(1);
 
+  const adminGraphRef = useRef(null);
+
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
@@ -93,9 +95,8 @@ export default function Dashboard() {
       return generationRealValue;
     });
     let generationRealMonthTotal = (
-      generationRealMonth.reduce((total, element) => total + element, 0) /
-      1000000
-    ).toFixed(2);
+      generationRealMonth.reduce((total, element) => total + element, 0) / 1000
+    ).toFixed(3);
     setRealGenerationTotal(generationRealMonthTotal);
   }
 
@@ -108,8 +109,8 @@ export default function Dashboard() {
     });
     let generationEstimatedMonthTotal = (
       generationEstimatedMonth.reduce((total, element) => total + element, 0) /
-      1000000
-    ).toFixed(2);
+      1000
+    ).toFixed(3);
 
     setEstimatedGenerationTotal(generationEstimatedMonthTotal);
   }
@@ -124,7 +125,8 @@ export default function Dashboard() {
         estimatedGeneration,
         dataDevices,
         percent,
-        setIsLoadingReportGeneration
+        setIsLoadingReportGeneration,
+        adminGraphRef
       );
     } else if (action) {
       setAction(action);
@@ -257,6 +259,7 @@ export default function Dashboard() {
         endDate={endDate}
         setEndDate={setEndDate}
         devicesTableRef={devicesTableRef}
+        adminGraphRef={adminGraphRef}
       />
       <Modal
         open={open}

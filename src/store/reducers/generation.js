@@ -8,6 +8,7 @@ const initialState = {
   generation: [],
   alerts: [],
   temperature: [],
+  isSendingEmail: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -152,6 +153,22 @@ export default function userReducer(state = initialState, action) {
         isLoadingGeneration: false,
         alerts: [],
       };
+
+    case generation.SEND_EMAIL_TO_DEVICE_REQUEST:
+      return {
+        ...state,
+        isSendingEmail: true
+      }
+    case generation.SEND_EMAIL_TO_DEVICE_SUCCESS:
+      return {
+        ...state,
+        isSendingEmail: false
+      }
+    case generation.SEND_EMAIL_TO_DEVICE_FAILURE:
+      return {
+        ...state,
+        isSendingEmail: false
+      }
 
     default:
       return state;
