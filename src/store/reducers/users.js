@@ -25,6 +25,7 @@ const initialState = {
   brands: [],
   blUuids: [],
   dataDevices: [],
+  allDevices: [],
   graphData: [],
   generationBelowEstimated: [],
   alerts: [],
@@ -288,19 +289,123 @@ export default function userReducer(state = initialState, action) {
       };
 
     // -------------------
-    case users.GET_DASHBOARD_REQUEST:
+
+    case users.GET_ALL_DEVICES_REQUEST:
       return {
         ...state,
-        isLoading: true,
         brands: [],
         blUuids: [],
-        dataDevices: [],
+        generationBelowEstimated: [],
+        alerts: [],
+        offline: [],
+        online: [],
+      }
+
+    case users.GET_ALL_DEVICES_SUCCESS:
+      const daysPassedAllDevices = moment().date();
+      const allDevices = brand_login
+        .map((item) => {
+          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
+          const res = devicesNotDeleted.map((dev) => {
+            const generationEstimatedDay = dev.generation.length !== 0
+              ? dev.generation[0].gen_estimated
+              : 0
+
+            let sumRealWeek = 0;
+            let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassedAllDevices);
+
+            let sumRealMonth = 0;
+            let sumEstimatedMonth = generationEstimatedDay * daysPassedAllDevices;
+
+
+            dev.generation.forEach((item) => {
+              if (
+                moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
+                moment(item.gen_date) <= moment()
+              ) {
+                sumRealWeek += item.gen_real;
+              }
+            });
+            dev.generation.forEach((item) => {
+              sumRealMonth += item.gen_real
+            });
+
+            const generationRealDay = dev.generation.filter(
+              (item) => item.gen_date === moment().format("YYYY-MM-DD")
+            );
+
+            const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
+              const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
+              const today = moment().format('YYYY-MM-DD');
+              return alertDate === today;
+            }) : []
+
+            return {
+              brand: dev.dev_brand,
+              blUuid: item.bl_uuid,
+              name: dev.dev_name,
+              capacity: `${(dev.dev_capacity).toFixed(2)}KWp`,
+              uuid: dev.dev_uuid,
+              generationRealDay:
+                generationRealDay.length !== 0
+                  ? generationRealDay[0].gen_real + "Kwh"
+                  : 0 + "Kwh",
+              generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
+              generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
+              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay + "Kwh" : 0 + "Kwh",
+              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
+              generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
+              alert: alerts.length,
+              staName: dev?.status ? dev?.status.sta_name : "Não informado!",
+              staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
+            };
+          });
+
+          return res;
+        })
+        .flat();
+
+      const brands = [...new Set(allDevices.map((item) => item.brand))];
+      const blUuids = [...new Set(allDevices.map((item) => item.blUuid))]
+
+      const generationBelowEstimated = allDevices.filter(
+        (item) => item.generationRealWeek < item.generationEstimatedlWeek
+      );
+      const alerts = allDevices.filter((item) => item.alert !== 0);
+
+      const offline = allDevices.filter((item) => item.staCode === "offline");
+      const online = allDevices.filter((item) => item.staCode === "online");
+      return {
+        ...state,
+        isLoading: false,
+        brands,
+        blUuids,
+        allDevices,
+        generationBelowEstimated,
+        alerts,
+        offline,
+        online,
+      };
+
+    case users.GET_ALL_DEVICES_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        brands: [],
+        blUuids: [],
+        allDevices: [],
         generationBelowEstimated: [],
         alerts: [],
         offline: [],
         online: [],
       };
 
+    case users.GET_DASHBOARD_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        dataDevices: [],
+      };
 
     case users.GET_DASHBOARD_SUCCESS:
       const daysPassed = moment().date();
@@ -366,27 +471,11 @@ export default function userReducer(state = initialState, action) {
         })
         .flat();
 
-      const brands = [...new Set(dataDevices.map((item) => item.brand))];
-      const blUuids = [...new Set(dataDevices.map((item) => item.blUuid))]
-
-      const generationBelowEstimated = dataDevices.filter(
-        (item) => item.generationRealWeek < item.generationEstimatedlWeek
-      );
-      const alerts = dataDevices.filter((item) => item.alert !== 0);
-
-      const offline = dataDevices.filter((item) => item.staCode === "offline");
-      const online = dataDevices.filter((item) => item.staCode === "online");
-
       return {
         ...state,
         isLoading: false,
-        brands,
-        blUuids,
         dataDevices,
-        generationBelowEstimated,
-        alerts,
-        offline,
-        online,
+
       };
 
     case users.GET_DASHBOARD_FAILURE:

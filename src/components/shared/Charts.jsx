@@ -315,10 +315,10 @@ export const ChartsLinear = (props) => {
         return {
           data: {
             realGeneration: generation.realGeneration?.map((data) =>
-              (Number(data.value) / 1000).toFixed(4)
+              Number(data.value)
             ),
-            estimatedGeneration: generation.estimatedGeneration?.map((data) =>
-              (data / 1000).toFixed(4)
+            estimatedGeneration: generation.estimatedGeneration?.map(
+              (data) => data
             ),
           },
           period: "Dias",
@@ -415,7 +415,7 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: "MWh",
+          text: "KWh",
           font: { size: 18, weight: "bold" },
         },
       },
@@ -655,7 +655,14 @@ export const ChartsDashboardHorizontal = (props) => {
 };
 
 export const ChartsDashboard = (props) => {
-  const { startDate, endDate, dataDevices, isLoading, optionFilter } = props;
+  const {
+    startDate,
+    endDate,
+    dataDevices,
+    isLoading,
+    optionFilter,
+    adminGraphRef,
+  } = props;
   const theme = useTheme();
 
   function dateOrder(dateA, dateB) {
@@ -817,7 +824,7 @@ export const ChartsDashboard = (props) => {
         barPercentage: 0.8,
         label: "Geração real",
         data: periodData.data?.realGeneration,
-        backgroundColor: "#5048E5",
+        backgroundColor: "#6CE5E8",
       },
       {
         barThickness: 16,
@@ -828,7 +835,7 @@ export const ChartsDashboard = (props) => {
         barPercentage: 0.8,
         label: "Geração estimada",
         data: periodData.data?.estimatedGeneration,
-        backgroundColor: "#14B8A6",
+        backgroundColor: "#2D8BBA",
         type: "line",
       },
     ],
@@ -932,7 +939,7 @@ export const ChartsDashboard = (props) => {
         Série histórica da produção de Usinas
       </Typography>
       <Box sx={{ height: 360, width: "100%" }}>
-        <Chart type="bar" options={options} data={data} />
+        <Chart type="bar" options={options} data={data} ref={adminGraphRef} />
       </Box>
     </Card>
   );
@@ -1003,9 +1010,6 @@ export const AdmnistratorGraph = (props) => {
       legend: {
         position: "top",
       },
-      customCanvasBackgroundColor: {
-        color: "white",
-      },
     },
     yAxes: [
       {
@@ -1060,11 +1064,11 @@ export const AdmnistratorGraph = (props) => {
       >
         Relação da geração nos 10 últimos dias.
       </Typography>
-      <Box sx={{ height: "300px", width: "342px" }}>
+      <Box sx={{ height: "300px", width: "342px", bgcolor: "white" }}>
         <Chart
           type="bar"
-          height="334px"
-          width="364px"
+          height="434px"
+          width="564px"
           options={options}
           data={data}
           ref={adminGraphRef}

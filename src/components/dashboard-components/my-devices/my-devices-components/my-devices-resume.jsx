@@ -28,6 +28,7 @@ export const MyDevicesResume = ({
   type,
   handleChangeColumns,
   dataDevices,
+  allDevices,
   brands,
   capacityTotal,
   online,
@@ -61,7 +62,7 @@ export const MyDevicesResume = ({
       >
         <BigNumberDashboard
           title="Usinas"
-          value={dataDevices.length !== 0 ? dataDevices.length : 0}
+          value={allDevices.length !== 0 ? allDevices.length : 0}
           icon={<AccountCircle />}
           type={1}
           activeBtn={type === 1 ? true : false}
@@ -111,27 +112,30 @@ export const MyDevicesResume = ({
       >
         <BigNumberDashboard
           title="Produzido (MWh)"
+          btn={true}
           value={numbers(realGeneration)}
           icon={<ElectricBolt />}
-          type={1}
+          type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
         <BigNumberDashboard
           title="Esperado (MWh)"
+          btn={true}
           value={numbers(estimatedGeneration)}
           icon={<ElectricBolt />}
-          type={1}
+          type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
 
         <BigNumberDashboard
           title="Desempenho (%)"
+          btn={true}
           value={percent}
           icon={<ElectricBolt />}
-          type={1}
+          type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />

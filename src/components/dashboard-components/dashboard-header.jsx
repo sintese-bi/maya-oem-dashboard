@@ -38,32 +38,40 @@ export const DashboardHeader = ({
             width: "220px",
           }}
         >
-          <Button
-            startIcon={<DownloadForOffline fontSize="small" />}
-            variant={useTypeMember ? "outlined" : ""}
-            onClick={() => handleReportGeneration()}
-            sx={{
-              height: "40px",
-            }}
-          >
-            {isLoadingReportGeneration ? (
-              "Preparar relatório"
+          {useTypeMember ? (
+            isLoadingReportGeneration ? (
+              <Button
+                startIcon={<DownloadForOffline fontSize="small" />}
+                variant={useTypeMember ? "outlined" : ""}
+                sx={{ width: "100%" }}
+                onClick={() => handleReportGeneration()}
+              >
+                Preparar relatório
+              </Button>
             ) : (
               <PDFDownloadLink
                 document={<AdministratorReport />}
-                fileName="relatório-integrador.pdf"
-                style={{ textDecoration: "none" }}
+                fileName="relatório-cliente.pdf"
+                style={{ textDecoration: "none", height: "100%" }}
               >
-                {({ blob, url, loading, _ }) =>
-                  useTypeMember
-                    ? loading
-                      ? "Carregando relatório..."
-                      : "Relatório Integrador"
-                    : "Relatório indisponível"
+                {({ blob, url, loading, error }) =>
+                  loading ? (
+                    "Carregando relatório..."
+                  ) : (
+                    <Button
+                      startIcon={<DownloadForOffline fontSize="small" />}
+                      variant={useTypeMember ? "outlined" : ""}
+                      sx={{ width: "100%" }}
+                    >
+                      Relatório Global
+                    </Button>
+                  )
                 }
               </PDFDownloadLink>
-            )}
-          </Button>
+            )
+          ) : (
+            "Relatório indisponível"
+          )}
         </Box>
       </ToolTipNoAccess>
     </Box>

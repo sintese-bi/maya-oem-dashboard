@@ -11,6 +11,7 @@ import {
   Thermostat,
   ElectricBolt,
 } from "@mui/icons-material";
+import moment from "moment";
 
 export const GenerationBI = ({
   startDate,
@@ -59,6 +60,7 @@ export const GenerationBI = ({
         return {
           ...data,
           value: numbers(data.value),
+          date: moment(data.date).format("DD/MM/YYYY"),
         };
       });
 

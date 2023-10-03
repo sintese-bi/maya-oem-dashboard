@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { PDFViewer } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
+import { ClientReport } from "src/reports/ClientReport";
 
 export const ReportTest = () => {
   return (
