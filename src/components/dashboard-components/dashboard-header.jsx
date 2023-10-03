@@ -51,7 +51,7 @@ export const DashboardHeader = ({
             ) : (
               <PDFDownloadLink
                 document={<AdministratorReport />}
-                fileName="relatório-cliente.pdf"
+                fileName="relatório-administrador.pdf"
                 style={{ textDecoration: "none", height: "100%" }}
               >
                 {({ blob, url, loading, error }) =>
