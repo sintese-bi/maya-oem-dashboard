@@ -169,8 +169,8 @@ export const AdministratorReport = () => {
             >
               <View
                 style={{
-                  height: "300px",
-                  width: "334px",
+                  height: "282px",
+                  width: "382px",
                 }}
               >
                 <Text
@@ -181,45 +181,12 @@ export const AdministratorReport = () => {
                     fontSize: "12px",
                   }}
                 >
-                  Comparação da geração real e estimada dos últimos 10 dias.
+                  Série histórica da produção de Usinas.
                 </Text>
                 <Image
                   style={{ width: "100%", height: "100%" }}
                   src={reportAdministrator.adminGraphRef}
                 ></Image>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingHorizontal: "8px",
-                  justifyContent: "space-around",
-                }}
-              >
-                <View style={styles.card}>
-                  <View>
-                    <Text style={styles.cardLabel}>EMISSÂO DE CARBONO</Text>
-                    <Text style={styles.cardNumber}>
-                      {reportAdministrator.percent} CO2
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.icon}
-                    src="https://ucarecdn.com/17b3e20c-e6a4-4807-90b2-024841485e69/-/gamma/0/-/preview/3000x3000/"
-                  ></Image>
-                </View>
-                <View style={styles.card}>
-                  <View>
-                    <Text style={styles.cardLabel}>ÁRVORES</Text>
-                    <Text style={styles.cardNumber}>
-                      {reportAdministrator.percent}
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.icon}
-                    src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
-                  ></Image>
-                </View>
               </View>
             </View>
             <View
@@ -296,15 +263,15 @@ export const AdministratorReport = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              height: "326px",
+              height: "374px",
               width: "600px",
               position: "absolute",
-              top: "416px",
+              top: "342px",
               zIndex: 2,
             }}
           >
             <Image
-              style={{ height: "100%", width: "84%", opacity: 0.5 }}
+              style={{ height: "80%", width: "84%", opacity: 0.3 }}
               src="https://ucarecdn.com/c8c3dec4-caa1-4614-84e6-fcb019555765/Desconto%20em%20conta%20macaqueira-04.jpg"
             ></Image>
             <View
@@ -329,6 +296,44 @@ export const AdministratorReport = () => {
               >
                 Parabéns usuário, por sua enorme contribuição ao mundo.
               </Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                paddingHorizontal: "8px",
+                justifyContent: "space-around",
+                width: "72%",
+              }}
+            >
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>
+                    EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
+                  </Text>
+                  <Text style={styles.cardNumber}>
+                    {reportAdministrator.percent} CO2
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/17b3e20c-e6a4-4807-90b2-024841485e69/-/gamma/0/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>
+                    ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
+                  </Text>
+                  <Text style={styles.cardNumber}>
+                    {reportAdministrator.percent}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
             </View>
           </View>
           <View style={styles.madeBy}>

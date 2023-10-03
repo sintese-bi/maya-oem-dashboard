@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
 import { ChartsLinear } from "src/components/shared/Charts";
@@ -25,6 +25,7 @@ export default function Plants(props) {
   const { type, devicesTableRef } = props;
   const { useUuid, profileLevel } = getUserCookie();
 
+  const devicesRef = useRef(null);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -42,6 +43,7 @@ export default function Plants(props) {
     alerts,
     offline,
     online,
+    allDevices,
   } = useSelector((state) => state.users);
 
   const [columns, setColumns] = useState(columnsDevices);
@@ -86,33 +88,43 @@ export default function Plants(props) {
   function handleChangeColumns(type) {
     switch (type) {
       case 1:
-        setData(handleTransformColumnData(dataDevices));
+        setData(handleTransformColumnData(allDevices));
+        devicesRef.current.scrollIntoView();
         break;
       case 2:
         setData(
-          handleTransformColumnData(
-            brands.map((data) => {
-              let brandItem = { brand: data };
-              return brandItem;
-            })
-          )
+          brands.map((data) => {
+            let brandItem = { brand: data };
+            return brandItem;
+          })
         );
+        devicesRef.current.scrollIntoView();
+
         break;
       case 3:
         setData(handleTransformColumnData(generationBelowEstimated));
+        devicesRef.current.scrollIntoView();
+
         break;
       case 4:
         setData(handleTransformColumnData(alerts));
+        devicesRef.current.scrollIntoView();
+
         break;
       case 5:
         setData(handleTransformColumnData(offline));
+        devicesRef.current.scrollIntoView();
+
         break;
       case 6:
         setData(handleTransformColumnData(online));
+        devicesRef.current.scrollIntoView();
+
         break;
       default:
         break;
     }
+    setColumns(type == 2 ? [columnsDevices[2]] : columnsDevices);
   }
 
   useEffect(() => {
@@ -133,8 +145,8 @@ export default function Plants(props) {
   }, [type]);
 
   useEffect(() => {
-    setData(handleTransformColumnData(dataDevices));
-  }, [dataDevices]);
+    setData(handleTransformColumnData(allDevices));
+  }, [allDevices]);
 
   useEffect(() => {
     if (profileLevel != "admin") {
@@ -170,7 +182,7 @@ export default function Plants(props) {
       }}
     >
       <Grid container spacing={3} sx={{ width: "100%" }} ref={devicesTableRef}>
-        <Grid item xs={12}>
+        <Grid item xs={12} ref={devicesRef}>
           <MUIDataTable
             title="Listagem de usinas"
             data={data}

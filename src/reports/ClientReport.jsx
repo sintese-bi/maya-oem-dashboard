@@ -14,23 +14,24 @@ const styles = StyleSheet.create({
     width: "500px",
   },
   page: {
-    backgroundColor: "#E4E4E4",
+    backgroundColor: "white",
   },
   main: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: "8px",
   },
   header: {
-    right: "-24px",
     width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: "20px",
+    paddingLeft: "20px",
+    backgroundColor: "#0097B2",
+    color: "white",
   },
   generationDateText: {
     fontSize: "6px",
@@ -61,9 +62,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "180px",
-    backgroundColor: "white",
+    backgroundColor: "#0097B2",
     borderRadius: "10px",
     padding: "20px",
+    color: "white",
   },
   cardLabel: {
     fontSize: "6px",
@@ -158,6 +160,60 @@ export const ClientReport = () => {
               ></Image>
             </View>
           </View>
+          <View
+            style={{
+              width: "94%",
+              backgroundColor: "white",
+              padding: "20px",
+              marginBottom: "20px",
+              marginTop: "10px",
+              borderRadius: "10px",
+              opacity: 0.9,
+            }}
+          >
+            <Text
+              style={{
+                marginBottom: "16px",
+                marginLeft: "16px",
+                fontWeight: "heavy",
+                fontSize: "12px",
+              }}
+            >
+              Comparação da geração real e estimada
+            </Text>
+            <Image
+              style={{
+                width: "100%",
+                height: "220px",
+              }}
+              src={`${
+                reportClient.graph
+                  ? reportClient.graph
+                  : `https://ucarecdn.com/
+              258f82dc-bf80-4b30-a4be-bcea7118f14a/
+              -/preview/500x500/
+              -/quality/smart_retina/
+              -/format/auto/`
+              }`}
+            ></Image>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "200px",
+              width: "600px",
+              position: "absolute",
+              top: "192px",
+              zIndex: 2,
+            }}
+          >
+            <Image
+              style={{ height: "100%", width: "80%" }}
+              src="https://ucarecdn.com/c8c3dec4-caa1-4614-84e6-fcb019555765/Desconto%20em%20conta%20macaqueira-04.jpg"
+            ></Image>
+          </View>
           <View style={styles.cardsRow}>
             <View style={styles.card}>
               <View>
@@ -168,7 +224,7 @@ export const ClientReport = () => {
               </View>
               <Image
                 style={styles.icon}
-                src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/"
+                src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
               ></Image>
             </View>
             <View style={styles.card}>
@@ -180,7 +236,7 @@ export const ClientReport = () => {
               </View>
               <Image
                 style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
               ></Image>
             </View>
             <View style={styles.card}>
@@ -188,8 +244,8 @@ export const ClientReport = () => {
                 <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
                 <Text style={styles.cardText}>
                   {reportClient.lowLevel
-                    ? "Produção dentro do esperado para o mês."
-                    : "Produção não está dentro do esperado para o mês."}
+                    ? "Produção não está dentro do esperado para o mês."
+                    : "Produção dentro do esperado para o mês."}
                 </Text>
               </View>
               <Image
@@ -208,7 +264,7 @@ export const ClientReport = () => {
               </View>
               <Image
                 style={styles.icon}
-                src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
               ></Image>
             </View>
             <View style={styles.card}>
@@ -220,7 +276,7 @@ export const ClientReport = () => {
               </View>
               <Image
                 style={styles.icon}
-                src="https://ucarecdn.com/1f249566-c5ca-4724-bbbe-6878d50b1814/"
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
               ></Image>
             </View>
             <View style={styles.card}>
@@ -237,7 +293,7 @@ export const ClientReport = () => {
           <View
             style={{
               width: "80%",
-              backgroundColor: "white",
+              backgroundColor: "#D9D9D9",
               paddingVertical: "24px",
               paddingHorizontal: "12px",
               marginBottom: "10px",
@@ -246,32 +302,6 @@ export const ClientReport = () => {
             }}
           >
             <Text style={{ fontSize: "12px" }}>{reportClient.situation}</Text>
-          </View>
-          <View
-            style={{
-              width: "94%",
-              backgroundColor: "white",
-              padding: "20px",
-              marginBottom: "20px",
-              marginTop: "10px",
-              borderRadius: "10px",
-            }}
-          >
-            <Image
-              style={{
-                width: "100%",
-                height: "220px",
-              }}
-              src={`${
-                reportClient.graph
-                  ? reportClient.graph
-                  : `https://ucarecdn.com/
-              258f82dc-bf80-4b30-a4be-bcea7118f14a/
-              -/preview/500x500/
-              -/quality/smart_retina/
-              -/format/auto/`
-              }`}
-            ></Image>
           </View>
           <View style={styles.madeBy}>
             <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>

@@ -27,6 +27,7 @@ export const TotalMonth = ({
   estimatedGenerationTotal,
   percentTotal,
   dataDevices,
+  allDevices,
   isLoading,
   setEstimatedGeneration,
   setRealGeneration,
@@ -39,6 +40,7 @@ export const TotalMonth = ({
   data,
   devicesTableRef,
   adminGraphRef,
+  setIsLoadingReportGeneration,
 }) => {
   const { graphData, isLoadingGraph } = useSelector((state) => state.users);
   const dispatch = useDispatch();
@@ -97,6 +99,7 @@ export const TotalMonth = ({
         endDate: moment(endDate).format("YYYY-MM-DD"),
       })
     );
+    setIsLoadingReportGeneration(true);
   }, [startDate, endDate, optionFilter]);
 
   useEffect(() => {
@@ -164,6 +167,8 @@ export const TotalMonth = ({
               realGenerationTotal={realGenerationTotal}
               estimatedGenerationTotal={estimatedGenerationTotal}
               percentTotal={percentTotal}
+              startDate={startDate}
+              endDate={endDate}
             />
             <Box sx={{ width: "100%", mt: 10, mb: 4 }}>
               <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -205,7 +210,7 @@ export const TotalMonth = ({
                 sx={{
                   width: "100%",
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   alignItems: "center",
                   mt: 6,
                 }}
@@ -214,10 +219,6 @@ export const TotalMonth = ({
                   startDate={startDate}
                   endDate={endDate}
                   optionFilter={optionFilter}
-                  dataDevices={graphData.data}
-                  isLoading={isLoadingGraph}
-                />
-                <AdmnistratorGraph
                   dataDevices={graphData.data}
                   isLoading={isLoadingGraph}
                   adminGraphRef={adminGraphRef}

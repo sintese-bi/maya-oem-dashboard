@@ -12,7 +12,11 @@ import { TotalMonth } from "src/components/dashboard-components/total-month/tota
 // QUERYS
 import { columnsDevices } from "src/constants/columns";
 import { getUserCookie } from "src/services/session";
-import { getDashboard, getCapacities } from "src/store/actions/users";
+import {
+  getDashboard,
+  getCapacities,
+  getAllDevices,
+} from "src/store/actions/users";
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
@@ -44,6 +48,7 @@ export default function Dashboard() {
     brands,
     blUuids,
     dataDevices,
+    allDevices,
     generationBelowEstimated,
     alerts,
     offline,
@@ -51,11 +56,12 @@ export default function Dashboard() {
     capacity,
     selectedUser,
     userData,
+    graphData,
   } = useSelector((state) => state.users);
 
   const devicesTableRef = useRef(null);
 
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(null);
 
   const adminGraphRef = useRef(null);
 
@@ -87,32 +93,26 @@ export default function Dashboard() {
 
   // funções
 
-  function handleRealGenerationTotal(devices) {
-    let generationRealMonth = devices.map((data) => {
-      let generationRealValue = Number(
-        data.generationRealMonth?.replace(/\Kwh/g, "")
-      );
-      return generationRealValue;
-    });
-    let generationRealMonthTotal = (
-      generationRealMonth.reduce((total, element) => total + element, 0) / 1000
-    ).toFixed(3);
-    setRealGenerationTotal(generationRealMonthTotal);
+  function handleRealGenerationTotal() {
+    let generationRealMonthTemp = Object.values(
+      graphData.data.somaPorDiaReal
+    ).reduce((total, element) => total + element, 0);
+    let generationRealMonthTotalTemp = (generationRealMonthTemp / 1000).toFixed(
+      3
+    );
+
+    setRealGenerationTotal(generationRealMonthTotalTemp);
   }
 
-  function handleEstimatedGenerationTotal(devices) {
-    let generationEstimatedMonth = devices.map((data) => {
-      let generationEstimatedValue = Number(
-        data.generationEstimatedMonth?.replace(/\Kwh/g, "")
-      );
-      return generationEstimatedValue;
-    });
-    let generationEstimatedMonthTotal = (
-      generationEstimatedMonth.reduce((total, element) => total + element, 0) /
-      1000
+  function handleEstimatedGenerationTotal() {
+    let generationEstimatedMonthTemp = Object.values(
+      graphData.data.somaPorDiaEstimada
+    ).reduce((total, element) => total + element, 0);
+    let generationEstimatedMonthTotalTemp = (
+      generationEstimatedMonthTemp / 1000
     ).toFixed(3);
 
-    setEstimatedGenerationTotal(generationEstimatedMonthTotal);
+    setEstimatedGenerationTotal(generationEstimatedMonthTotalTemp);
   }
 
   // função para capturar os valores do relatório administrador
@@ -147,6 +147,8 @@ export default function Dashboard() {
           )
         )
       : dispatch(getDashboard(useUuid, "index.jsx - normal"));
+
+    dispatch(getAllDevices(useUuid, "index.jsx - normal"));
   }, [useUuid]);
 
   useEffect(() => {
@@ -154,16 +156,13 @@ export default function Dashboard() {
   }, [blUuids]);
 
   useEffect(() => {
-    if (dataDevices.length !== 0) {
-      setData(dataDevices);
+    if (allDevices.length !== 0) {
+      setData(allDevices);
       setColumns(columnsDevices);
     }
-  }, [dataDevices]);
+  }, [allDevices]);
 
   useEffect(() => {
-    handleRealGenerationTotal(dataDevices);
-    handleEstimatedGenerationTotal(dataDevices);
-
     let realGenerationTempArray = dataDevices.map((data) => {
       let generationRealValue = Number(data.capacity.replace(/\MWp/g, ""));
       return generationRealValue;
@@ -185,6 +184,14 @@ export default function Dashboard() {
   }, [dataDevices]);
 
   useEffect(() => {
+    if (graphData.data !== undefined) {
+      handleRealGenerationTotal();
+      handleEstimatedGenerationTotal();
+    }
+  }, [graphData]);
+
+  useEffect(() => {
+    console.log(realGenerationTotal, estimatedGenerationTotal);
     let percentValue = (
       (realGenerationTotal / estimatedGenerationTotal) *
       100
@@ -235,6 +242,7 @@ export default function Dashboard() {
           type={type}
           handleChangeColumns={setType}
           dataDevices={dataDevices}
+          allDevices={allDevices}
           brands={brands}
           capacityTotal={capacityTotal}
           online={online}
@@ -249,6 +257,7 @@ export default function Dashboard() {
         estimatedGenerationTotal={estimatedGenerationTotal}
         percentTotal={percentTotal}
         dataDevices={dataDevices}
+        allDevices={allDevices}
         data={data}
         isLoading={isLoading}
         setEstimatedGeneration={setEstimatedGeneration}
@@ -260,6 +269,7 @@ export default function Dashboard() {
         setEndDate={setEndDate}
         devicesTableRef={devicesTableRef}
         adminGraphRef={adminGraphRef}
+        setIsLoadingReportGeneration={setIsLoadingReportGeneration}
       />
       <Modal
         open={open}

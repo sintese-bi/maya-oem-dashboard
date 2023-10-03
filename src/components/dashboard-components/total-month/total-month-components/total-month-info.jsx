@@ -5,7 +5,6 @@ import { Box, Typography, Card } from "@mui/material";
 
 // formatação de números
 
-import { numbers } from "src/helpers/utils";
 import { meses } from "src/helpers/months";
 
 export const TotalMonthInfo = ({
@@ -14,7 +13,24 @@ export const TotalMonthInfo = ({
   estimatedGenerationTotal,
   percentTotal,
   label,
+  startDate,
+  endDate,
 }) => {
+  function handleMonth() {
+    let isDifferent =
+      moment(startDate).format("M") != moment(endDate).format("M")
+        ? true
+        : false;
+
+    let month = isDifferent
+      ? `${meses[moment(startDate).format("M")]} até  ${
+          meses[moment(endDate).format("M")]
+        }`
+      : meses[moment(startDate).format("M")];
+
+    return month;
+  }
+
   return (
     <Box
       sx={{
@@ -36,16 +52,14 @@ export const TotalMonthInfo = ({
           my: 2,
         }}
       >
-        <Typography variant="h4">{`Total produzido em ${
-          meses[moment().format("M")]
-        }`}</Typography>
+        <Typography variant="h4">{`Total produzido em ${handleMonth()}`}</Typography>
       </Box>
       <Typography sx={{ my: 2 }}>
-        {`Prezado ${useName} sua produtivade este mês é ${realGenerationTotal}MWh`}
+        {`Prezado ${useName} sua produtivade este período é ${realGenerationTotal}MWh`}
       </Typography>
       <Card sx={{ p: 4 }}>
         <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
-          {`Para este mês suas usinas devem produzir ${estimatedGenerationTotal}MWh, 
+          {`Para este período suas usinas devem produzir ${estimatedGenerationTotal}MWh, 
             no momento você produziu ${realGenerationTotal}MWh.
             Isto corresponde a um desempenho de ${percentTotal}% `}
         </Typography>

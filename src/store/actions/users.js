@@ -250,11 +250,33 @@ export const alertFrequency = (uuid) => (dispatch) => {
     });
 };
 
+
+export const getAllDevices = (uuid, component) => (dispatch) => {
+  dispatch({ type: users.GET_ALL_DEVICES_REQUEST });
+  api
+    .get(`/dashboard/${uuid}`, configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({
+        type: users.GET_ALL_DEVICES_SUCCESS,
+        result: data,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevices";
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.GET_ALL_DEVICES_FAILURE, message });
+    });
+};
+
 // RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid, component) => (dispatch) => {
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
   api
-    .get(`/dashboard/${uuid}`, configRequest())
+    .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
       dispatch({

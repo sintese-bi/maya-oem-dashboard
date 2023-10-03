@@ -71,6 +71,7 @@ const Generation = () => {
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
+    console.log(datInfo);
     setDeviceInfo(datInfo[0]);
 
     dispatch(
@@ -139,6 +140,7 @@ const Generation = () => {
         })
       );
     }
+    setIsLoadingReport(true);
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
@@ -229,32 +231,40 @@ const Generation = () => {
                 width: "200px",
               }}
             >
-              <Button
-                startIcon={<DownloadForOffline fontSize="small" />}
-                variant={useTypeMember ? "outlined" : ""}
-                sx={{ width: "100%" }}
-                onClick={() => handleReportGeneration()}
-              >
-                {useTypeMember ? (
-                  isLoadingReport ? (
-                    "Preparar relatório"
-                  ) : (
-                    <PDFDownloadLink
-                      document={<ClientReport />}
-                      fileName="relatório-cliente.pdf"
-                      style={{ textDecoration: "none", height: "100%" }}
-                    >
-                      {({ blob, url, loading, error }) =>
-                        loading
-                          ? "Carregando relatório..."
-                          : "Relatório Cliente"
-                      }
-                    </PDFDownloadLink>
-                  )
+              {useTypeMember ? (
+                isLoadingReport ? (
+                  <Button
+                    startIcon={<DownloadForOffline fontSize="small" />}
+                    variant={useTypeMember ? "outlined" : ""}
+                    sx={{ width: "100%" }}
+                    onClick={() => handleReportGeneration()}
+                  >
+                    Preparar relatório
+                  </Button>
                 ) : (
-                  "Relatório indisponível"
-                )}
-              </Button>
+                  <PDFDownloadLink
+                    document={<ClientReport />}
+                    fileName="relatório-cliente.pdf"
+                    style={{ textDecoration: "none", height: "100%" }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? (
+                        "Carregando relatório..."
+                      ) : (
+                        <Button
+                          startIcon={<DownloadForOffline fontSize="small" />}
+                          variant={useTypeMember ? "outlined" : ""}
+                          sx={{ width: "100%" }}
+                        >
+                          Relatório Cliente
+                        </Button>
+                      )
+                    }
+                  </PDFDownloadLink>
+                )
+              ) : (
+                "Relatório indisponível"
+              )}
             </Box>
           </ToolTipNoAccess>
           <Tabs />

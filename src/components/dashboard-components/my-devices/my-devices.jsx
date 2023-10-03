@@ -21,6 +21,7 @@ export const MyDevices = ({
   type,
   handleChangeColumns,
   dataDevices,
+  allDevices,
   brands,
   capacityTotal,
   online,
@@ -77,6 +78,7 @@ export const MyDevices = ({
           type={type}
           handleChangeColumns={handleChangeColumns}
           dataDevices={dataDevices}
+          allDevices={allDevices}
           brands={brands}
           capacityTotal={capacityTotal}
           online={online}
