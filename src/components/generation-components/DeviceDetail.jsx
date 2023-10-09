@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { getUserCookie } from "src/services/session";
 import * as Yup from "yup";
@@ -54,6 +54,7 @@ export const DeviceDetail = (props) => {
     devUuid,
     blUuidState,
   } = props;
+  console.log(props);
   const [selectedCity, setSelectedCity] = useState(null);
   const { profileLevel } = getUserCookie() || null;
   const [isSaved, setIsSaved] = useState(false);
@@ -103,6 +104,13 @@ export const DeviceDetail = (props) => {
       setIsSaved(false);
     }, 2000);
   }
+
+  useEffect(() => {
+    setValue("name", contactNumber);
+    setValue("inverterPower", kwp);
+    setSelectedCity(null);
+  }, [devUuid]);
+
   function InputsDevices() {
     return (
       <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -192,6 +200,7 @@ export const DeviceDetail = (props) => {
                     </Avatar>
                   </ListItemAvatar>
                   <TextField
+                    defaultValue={kwp}
                     sx={{ width: 200 }}
                     label="Potência do Sistema (kWp)"
                     type="number"
@@ -199,7 +208,6 @@ export const DeviceDetail = (props) => {
                     error={!!errors.inverterPower}
                     // helperText={errors.inverterPower?.message}
                     variant="outlined"
-                    defaultValue={kwp}
                   />
                 </ListItem>
               </List>

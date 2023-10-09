@@ -20,7 +20,7 @@ export const reportClient = {
     portal: "",
     state: "",
     graph: "",
-    situation: ""
+    situation: "",
 }
 
 export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
@@ -42,17 +42,29 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
         }
     }
 
+    function handleSituationGeneration(percent) {
+        if (percent < 100) {
+            if (percent >= 80) {
+                return `A produção da sua usina esta dentro do esperado.`
+            } else {
+                return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a sua usina.`
+            }
+        } else {
+            return `Parabéns! A produção da sua usina esta dentro do esperado.`
+        }
+    }
+
     reportClient.useName = useName
     reportClient.estimatedGenerationTotal = numbers(estimatedGenerationNumber)
     reportClient.realGenerationTotal = numbers(realGenerationNumber)
     reportClient.percent = ((realGenerationNumber / estimatedGenerationNumber) * 100).toFixed()
     reportClient.brand = useNameState;
     reportClient.situation = handleSituation(reportClient.percent)
-    reportClient.graph = graphRef.current.toBase64Image();
+    reportClient.graph = graphRef.toBase64Image();
     reportClient.requistionStartDate = startDateReport;
     reportClient.requisitionEndDate = endDateReport;
-    reportClient.capacity = numbers(String(capacity.dev_capacity));
-    reportClient.lowLevel = estimatedGenerationNumber < realGenerationNumber ? false : true
+    reportClient.capacity = capacity
+    reportClient.lowLevel = handleSituationGeneration(reportClient.percent)
     reportClient.address = address
 
     setIsLoadingReport(false);

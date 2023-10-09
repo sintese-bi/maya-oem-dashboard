@@ -9,6 +9,7 @@ const initialState = {
   alerts: [],
   temperature: [],
   isSendingEmail: false,
+  emailDontExist: null,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -167,8 +168,27 @@ export default function userReducer(state = initialState, action) {
     case generation.SEND_EMAIL_TO_DEVICE_FAILURE:
       return {
         ...state,
-        isSendingEmail: false
+        isSendingEmail: false,
+        emailDontExist: true
       }
+
+    case generation.UPDATE_EMAIL_REQUEST:
+      return {
+        ...state,
+      }
+
+    case generation.UPDATE_EMAIL_SUCCESS:
+      return {
+        ...state,
+        emailDontExist: false
+      }
+
+    case generation.UPDATE_EMAIL_FAILURE:
+      return {
+        ...state,
+        emailDontExist: true
+      }
+
 
     default:
       return state;

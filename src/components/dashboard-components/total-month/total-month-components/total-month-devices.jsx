@@ -65,22 +65,7 @@ export default function Plants(props) {
 
   function handleTransformColumnData(data) {
     let transformedData = data.map((data) => {
-      return {
-        ...data,
-        capacity: data.capacity.replace(".", ","),
-        generationRealDay: data.generationRealDay.replace(".", ","),
-        generationRealWeek: data.generationRealWeek.replace(".", ","),
-        generationRealMonth: data.generationRealMonth.replace(".", ","),
-        generationEstimatedDay: data.generationEstimatedDay.replace(".", ","),
-        generationEstimatedlWeek: data.generationEstimatedlWeek.replace(
-          ".",
-          ","
-        ),
-        generationEstimatedMonth: data.generationEstimatedlWeek.replace(
-          ".",
-          ","
-        ),
-      };
+      return data;
     });
     return transformedData;
   }

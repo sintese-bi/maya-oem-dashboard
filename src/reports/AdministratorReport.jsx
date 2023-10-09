@@ -326,7 +326,7 @@ export const AdministratorReport = () => {
                     ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
                   </Text>
                   <Text style={styles.cardNumber}>
-                    {reportAdministrator.percent}
+                    {reportAdministrator.savedtree}
                   </Text>
                 </View>
                 <Image

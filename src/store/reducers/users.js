@@ -344,17 +344,18 @@ export default function userReducer(state = initialState, action) {
               brand: dev.dev_brand,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
-              capacity: `${(dev.dev_capacity).toFixed(2)}KWp`,
+              capacity: `${dev.dev_capacity < 10 ? "0" + (dev.dev_capacity).toFixed(2) : (dev.dev_capacity).toFixed(2)}KWp`,
+              address: dev.dev_address,
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real + "Kwh"
-                  : 0 + "Kwh",
-              generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
-              generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
-              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay + "Kwh" : 0 + "Kwh",
-              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
-              generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
+                  ? generationRealDay[0].gen_real < 100 ? "0" + generationRealDay[0].gen_real + "Kwh" : generationRealDay[0].gen_real + "Kwh"
+                  : "0" + 0 + "Kwh",
+              generationRealWeek: sumRealWeek < 1000 ? "0" + sumRealWeek.toFixed(2) + "Kwh" : sumRealWeek.toFixed(2) + "Kwh",
+              generationRealMonth: sumRealMonth < 1000 ? "0" + sumRealMonth.toFixed(2) + "Kwh" : sumRealMonth.toFixed(2) + "Kwh",
+              generationEstimatedDay: generationEstimatedDay < 10 ? "0" + generationEstimatedDay + "Kwh" : "0" + 0 + "Kwh",
+              generationEstimatedlWeek: sumEstimatedlWeek < 1000 ? "0" + sumEstimatedlWeek.toFixed(2) + "Kwh" : sumEstimatedlWeek.toFixed(2) + "Kwh",
+              generationEstimatedMonth: sumEstimatedMonth < 1000 ? "0" + sumEstimatedMonth.toFixed(2) + "Kwh" : sumEstimatedMonth.toFixed(2) + "Kwh",
               alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
