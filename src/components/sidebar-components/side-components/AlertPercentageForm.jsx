@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 
-import { getUserCookie } from "src/services/session";
+import { getUserCookie, setUserCookie } from "src/services/session";
 
 // LIBS DE ESTILOS
 import { Info, SaveAs, DownloadForOffline, Lock } from "@mui/icons-material";

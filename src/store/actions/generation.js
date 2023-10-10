@@ -69,7 +69,7 @@ export const reportgenerationEmai = (data) => (dispatch) => {
   dispatch({ type: generation.SEND_EMAIL_TO_DEVICE_REQUEST });
 
   api
-    .get(`/sendgenerationemail?dev_uuid=${data.dev_uuid}`, data, configRequest())
+    .post(`/emailpdf`, data, configRequest())
     .then(() => {
       toast.success("Email enviado", {
         duration: 5000,
@@ -88,4 +88,28 @@ export const reportgenerationEmai = (data) => (dispatch) => {
       });
       dispatch({ type: generation.SEND_EMAIL_TO_DEVICE_FAILURE, message });
     });
+}
+
+export const updateEmail = (data) => (dispatch) => {
+  dispatch({ type: generation.UPDATE_EMAIL_REQUEST })
+  console.log(data);
+  api.post('/updateemail', data, configRequest())
+    .then(() => {
+      toast.success("Email atualizado", {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: generation.UPDATE_EMAIL_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: generation.UPDATE_EMAIL_FAILURE, message });
+    })
 }

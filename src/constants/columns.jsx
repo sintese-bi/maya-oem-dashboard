@@ -45,6 +45,7 @@ export const columnsDevices = [
                 devUuidState: dataTable.rowData[0],
                 blUuidState: dataTable.rowData[1],
                 useNameState: dataTable.rowData[2],
+                capacity: dataTable.rowData[4],
               }}
               underline="hover"
             >
@@ -192,6 +193,7 @@ export const columnsDevices = [
             <ModalPlantsGraph
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
+              useNameState={dataTable.rowData[2]}
             />
           </Stack>
         );
@@ -200,7 +202,7 @@ export const columnsDevices = [
   },
   {
     name: "sendEmail",
-    label: "Envio de relatório",
+    label: "Relatório do mês",
     options: {
       filter: true,
       sort: true,
@@ -208,8 +210,12 @@ export const columnsDevices = [
         return (
           <Stack direction="row" alignItems="center" gap={1}>
             <SendEmail
-              devUuid={dataTable.rowData[0]}
+              devUuidState={dataTable.rowData[0]}
+              blUuidState={dataTable.rowData[1]}
               data={dataTable.rowData}
+              useNameState={dataTable.rowData[2]}
+              capacity={dataTable.rowData[4]}
+              address={dataTable.rowData[17]}
             />
           </Stack>
         );
@@ -229,6 +235,16 @@ export const columnsDevices = [
           </Stack>
         );
       },
+    },
+  },
+  {
+    name: "address",
+    label: "Endereço",
+    options: {
+      filter: true,
+      display: false,
+      viewColumns: false,
+      sort: true,
     },
   },
 ];

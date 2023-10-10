@@ -10,7 +10,8 @@ export const reportAdministrator = {
   percent: "",
   useName: "",
   devicesLength: 0,
-  adminGraphRef: ""
+  adminGraphRef: "",
+  savedtree: "",
 }
 
 export function reportAdministratorRule(
@@ -46,6 +47,8 @@ export function reportAdministratorRule(
 
   reportAdministrator.devicesLength = dataDevices.length
   reportAdministrator.adminGraphRef = adminGraphRef.current.toBase64Image('image/png', 2)
+
+  reportAdministrator.savedtree = (generationRealMonthTotal * 5.04 * (0.0001)).toFixed()
 
   setIsLoadingReport(false)
 }

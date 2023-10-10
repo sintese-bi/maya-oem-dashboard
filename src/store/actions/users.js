@@ -1,5 +1,5 @@
 import { users } from "../typesActions/types";
-import { setUserCookie } from "../../services/session";
+import { getUserCookie, setUserCookie } from "../../services/session";
 
 import api, { configRequest } from "../../services/api";
 
@@ -22,14 +22,28 @@ export const auth = (params) => (dispatch) => {
         const { data } = res;
         const { message, token, result } = data;
         const { profile_level, use_name, use_uuid, use_email, use_type_member } = result;
-        setUserCookie({
-          token,
-          profileLevel: profile_level.pl_cod,
-          useUuid: use_uuid,
-          useName: use_name,
-          useEmail: use_email,
-          useTypeMember: use_type_member,
-        });
+        if (!getUserCookie()) {
+          setUserCookie({
+            token,
+            profileLevel: profile_level.pl_cod,
+            useUuid: use_uuid,
+            useName: use_name,
+            useEmail: use_email,
+            useTypeMember: use_type_member,
+            firstTime: true
+          });
+        } else {
+          setUserCookie({
+            token,
+            profileLevel: profile_level.pl_cod,
+            useUuid: use_uuid,
+            useName: use_name,
+            useEmail: use_email,
+            useTypeMember: use_type_member,
+            firstTime: false
+          });
+        }
+
 
         toast.success(message, {
           duration: 5000,
@@ -398,5 +412,28 @@ export const passwordRecovery = (params) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: users.RECOVER_PASSWORD_FAILURE, message });
+    })
+}
+
+export const cancelUserPlan = (use_uuid) => (dispatch) => {
+  dispatch({ type: users.CANCEL_PLAN_REQUEST });
+  api.post('/cancelplan', { use_uuid }, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      dispatch({
+        type: users.CANCEL_PLAN_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.CANCEL_PLAN_FAILURE, message });
     })
 }

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "186px",
+    width: "182px",
     backgroundColor: "#0097B2",
     borderRadius: "10px",
     padding: "20px",
@@ -149,12 +149,13 @@ export const AdministratorReport = () => {
           <View
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               width: "100vw",
               height: "50vh",
               paddingHorizontal: "10px",
               paddingTop: "22px",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              alignItems: "center",
               zIndex: 1,
             }}
           >
@@ -163,14 +164,15 @@ export const AdministratorReport = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: "100%",
-                width: "68%",
+                height: "486px",
+                width: "100%",
+                marginBottom: "24px",
               }}
             >
               <View
                 style={{
-                  height: "282px",
-                  width: "382px",
+                  height: "100%",
+                  width: "100%",
                 }}
               >
                 <Text
@@ -192,69 +194,90 @@ export const AdministratorReport = () => {
             <View
               style={{
                 display: "flex",
-                justifyContent: "space-between",
+                alignItems: "center",
+                justifyContent: "center",
                 height: "100%",
+                width: "100%",
               }}
             >
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>DISPOSITIVOS/PLANTAS</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.devicesLength}
-                  </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "16px",
+                  justifyContent: "space-between",
+                  width: "98%",
+                }}
+              >
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>DISPOSITIVOS/PLANTAS</Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.devicesLength}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                  ></Image>
                 </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
-                ></Image>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>POTÊNCIA TOTAL</Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.capacityTotalValue} Kwp
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.generationRealTotalValue} MWh
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
               </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>POTÊNCIA TOTAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.capacityTotalValue} Kwp
-                  </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "68%",
+                }}
+              >
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.generationEstimatedTotalValue} MWh
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
                 </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.generationRealTotalValue} MWh
-                  </Text>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>PERCENTUAL</Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.percent} %
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
                 </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.generationEstimatedTotalValue} MWh
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>PERCENTUAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.percent} %
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
               </View>
             </View>
           </View>
@@ -326,7 +349,7 @@ export const AdministratorReport = () => {
                     ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
                   </Text>
                   <Text style={styles.cardNumber}>
-                    {reportAdministrator.percent}
+                    {reportAdministrator.savedtree}
                   </Text>
                 </View>
                 <Image

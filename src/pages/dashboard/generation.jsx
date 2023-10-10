@@ -45,18 +45,17 @@ import Tabs from "../../components/shared/Tabs";
 
 const Generation = () => {
   const location = useLocation();
-  const { blUuidState, devUuidState, useNameState } = location.state || {};
+  const { blUuidState, devUuidState, useNameState, capacity } =
+    location.state || {};
   const graphRef = useRef(null);
-  const [selectedDevUuid, setSelectedDevUuid] = useState(null);
+  const [selectedDevUuid, setSelectedDevUuid] = useState(devUuidState);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
   const dispatch = useDispatch();
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
   );
-  const { isLoadingDevices, devices, capacity } = useSelector(
-    (state) => state.devices
-  );
+  const { isLoadingDevices, devices } = useSelector((state) => state.devices);
 
   const { useTypeMember } = getUserCookie();
 
@@ -71,9 +70,8 @@ const Generation = () => {
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
-    console.log(datInfo);
+    console.log(datInfo, useUuid);
     setDeviceInfo(datInfo[0]);
-
     dispatch(
       getGeneration({
         startDate,
@@ -96,7 +94,7 @@ const Generation = () => {
         useNameState,
         capacity,
         setIsLoadingReport,
-        graphRef,
+        graphRef.current,
         startDateReport,
         endDateReport,
         address
@@ -111,8 +109,8 @@ const Generation = () => {
 
   useEffect(() => {
     if (devices.length !== 0) {
-      if (devUuidState) {
-        handleSelectDevices(devUuidState);
+      if (selectedDevUuid) {
+        handleSelectDevices(selectedDevUuid);
       } else {
         setDeviceInfo(devices[0]);
       }

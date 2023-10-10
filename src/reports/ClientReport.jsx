@@ -230,9 +230,7 @@ export const ClientReport = () => {
             <View style={styles.card}>
               <View>
                 <Text style={styles.cardLabel}>POTÊNCIA</Text>
-                <Text style={styles.cardNumber}>
-                  {reportClient.capacity} Kwp
-                </Text>
+                <Text style={styles.cardNumber}>{reportClient.capacity}</Text>
               </View>
               <Image
                 style={styles.icon}
@@ -242,11 +240,7 @@ export const ClientReport = () => {
             <View style={styles.card}>
               <View>
                 <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-                <Text style={styles.cardText}>
-                  {reportClient.lowLevel
-                    ? "Produção não está dentro do esperado para o mês."
-                    : "Produção dentro do esperado para o mês."}
-                </Text>
+                <Text style={styles.cardText}>{reportClient.lowLevel}</Text>
               </View>
               <Image
                 style={styles.icon}
