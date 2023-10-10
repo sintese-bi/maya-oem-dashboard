@@ -531,7 +531,6 @@ export const SendEmail = ({
     const { email } = values;
     try {
       dispatch(updateEmail({ dev_uuid: devUuidState, email }));
-      setOpen(false);
     } catch (error) {
       alert(error);
     }

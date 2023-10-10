@@ -100,7 +100,7 @@ export const updateEmail = (data) => (dispatch) => {
       });
 
       dispatch({
-        type: generation.SEND_EMAIL_TO_DEVICE_SUCCESS,
+        type: generation.UPDATE_EMAIL_SUCCESS,
       });
     })
     .catch((error) => {

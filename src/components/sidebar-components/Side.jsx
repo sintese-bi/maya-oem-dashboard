@@ -1,6 +1,10 @@
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { getUserCookie, removeUserCookie } from "src/services/session";
+import { useEffect, useState } from "react";
+import {
+  getUserCookie,
+  removeUserCookie,
+  setUserCookie,
+} from "src/services/session";
 
 import AlertPercentageForm from "src/components/sidebar-components/side-components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
@@ -40,11 +44,16 @@ import {
 import { UserInfo } from "./side-components/UserInfo";
 
 export const Side = () => {
+  const { useName, useTypeMember, useEmail, firstTime, useUuid } =
+    getUserCookie();
+
   const [action, setAction] = useState("alertFrequency");
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(true);
 
-  const { useName, useTypeMember, useEmail } = getUserCookie();
+  useEffect(() => {
+    setWelcome(firstTime);
+  }, [firstTime]);
 
   const ModalContent = () => {
     switch (action) {
@@ -79,7 +88,7 @@ export const Side = () => {
       case "userAccount":
         return (
           <Box>
-            <UserInfo useName={useName} useEmail={useEmail} />
+            <UserInfo useName={useName} useEmail={useEmail} useUuid={useUuid} />
           </Box>
         );
       default:
@@ -125,7 +134,6 @@ export const Side = () => {
       setOpen(true);
     } else {
       setAction(actionType);
-      setWelcome(false);
       setOpen(!open);
     }
   }
@@ -230,7 +238,13 @@ export const Side = () => {
           >
             <Cancel
               fontSize="large"
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                setUserCookie({
+                  ...getUserCookie(),
+                  firstTime: false,
+                });
+                setOpen(!open);
+              }}
               sx={{ cursor: "pointer" }}
             />
           </Box>

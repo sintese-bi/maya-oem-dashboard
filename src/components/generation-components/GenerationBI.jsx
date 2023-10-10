@@ -182,14 +182,14 @@ export const GenerationBI = ({
                 productivePercent > 100 ? "Parabéns!" : ""
               }A produção da sua usina esta dentro do esperado.
 							Sua produtividade no período escolhido é de ${numbers(
-                (totalRealGeneration / 1000).toFixed(2)
+                String(totalRealGeneration)
               )}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
 						`
             : `
 							Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua
 							usina.
 							Sua produtividade no período escolhido é de ${numbers(
-                (totalRealGeneration / 1000).toFixed(2)
+                String(totalRealGeneration)
               )}Mwh o que corresponde a ${productivePercent}% da produção estimada.
 						`}
         </Typography>

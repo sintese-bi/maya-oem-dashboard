@@ -577,6 +577,21 @@ export default function userReducer(state = initialState, action) {
         passwordRecovery: false,
       }
 
+    case users.CANCEL_PLAN_REQUEST:
+      return {
+        ...state
+      }
+
+    case users.CANCEL_PLAN_SUCCESS:
+      return {
+        ...state
+      }
+
+    case users.CANCEL_PLAN_FAILURE:
+      return {
+        ...state
+      }
+
     default:
       return state;
   }
