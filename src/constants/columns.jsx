@@ -216,6 +216,7 @@ export const columnsDevices = [
               useNameState={dataTable.rowData[2]}
               capacity={dataTable.rowData[4]}
               address={dataTable.rowData[17]}
+              email={dataTable.rowData[18]}
             />
           </Stack>
         );
@@ -240,6 +241,16 @@ export const columnsDevices = [
   {
     name: "address",
     label: "Endereço",
+    options: {
+      filter: true,
+      display: false,
+      viewColumns: false,
+      sort: true,
+    },
+  },
+  {
+    name: "email",
+    label: "Email",
     options: {
       filter: true,
       display: false,

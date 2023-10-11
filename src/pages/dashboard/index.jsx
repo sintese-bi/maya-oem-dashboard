@@ -97,8 +97,9 @@ export default function Dashboard() {
     let generationRealMonthTemp = Object.values(
       graphData.data.somaPorDiaReal
     ).reduce((total, element) => total + element, 0);
+    console.log(generationRealMonthTemp);
     let generationRealMonthTotalTemp = (generationRealMonthTemp / 1000).toFixed(
-      3
+      2
     );
 
     setRealGenerationTotal(generationRealMonthTotalTemp);
@@ -110,7 +111,7 @@ export default function Dashboard() {
     ).reduce((total, element) => total + element, 0);
     let generationEstimatedMonthTotalTemp = (
       generationEstimatedMonthTemp / 1000
-    ).toFixed(3);
+    ).toFixed(2);
 
     setEstimatedGenerationTotal(generationEstimatedMonthTotalTemp);
   }
@@ -118,13 +119,17 @@ export default function Dashboard() {
   // função para capturar os valores do relatório administrador
 
   function handleReportGeneration(action) {
+    let startDateReport = moment(startDate).format("DD/MM/YYYY");
+    let endDateReport = moment(endDate).format("DD/MM/YYYY");
     if (useTypeMember) {
       reportAdministratorRule(
         capacity,
-        realGeneration,
-        estimatedGeneration,
+        realGenerationTotal,
+        estimatedGenerationTotal,
         dataDevices,
         percent,
+        startDateReport,
+        endDateReport,
         setIsLoadingReportGeneration,
         adminGraphRef
       );

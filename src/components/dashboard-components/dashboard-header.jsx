@@ -1,6 +1,7 @@
 // Biblitecas
 import { reportAdministrator } from "../../reports/reportsRules/reportAdministratorRule";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Modal, Card, Input } from "@mui/material";
+import { Cancel } from "@mui/icons-material";
 import {
   PDFDownloadLink,
   BlobProvider,
@@ -128,6 +129,11 @@ export const DashboardHeader = ({
   useName,
   label,
 }) => {
+  const [open, setOpen] = useState(false);
+
+  function handleUploadLogo() {
+    setOpen(false);
+  }
   return (
     <Box
       sx={{
@@ -152,7 +158,10 @@ export const DashboardHeader = ({
                 startIcon={<DownloadForOffline fontSize="small" />}
                 variant={useTypeMember ? "outlined" : ""}
                 sx={{ width: "100%" }}
-                onClick={() => handleReportGeneration()}
+                onClick={() => {
+                  setOpen(true);
+                  handleReportGeneration();
+                }}
               >
                 Preparar relatório
               </Button>
@@ -182,6 +191,39 @@ export const DashboardHeader = ({
           )}
         </Box>
       </ToolTipNoAccess>
+      <Modal
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        open={open}
+      >
+        <Card sx={{ p: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              width: "100%",
+              mb: 2,
+            }}
+          >
+            <Cancel
+              fontSize="large"
+              onClick={() => {
+                setOpen(!open);
+              }}
+              sx={{ cursor: "pointer" }}
+            />
+          </Box>
+          <Button variant="contained" component="label" sx={{ width: 224 }}>
+            Fazer upload da sua logo
+            <Input
+              type="file"
+              onChange={(e) => {
+                console.log(e.target.result);
+              }}
+              sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
+            />
+          </Button>
+        </Card>
+      </Modal>
     </Box>
   );
 };

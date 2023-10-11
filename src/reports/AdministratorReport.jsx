@@ -116,28 +116,31 @@ export const AdministratorReport = () => {
       <Page size="A4" style={styles.page}>
         <View style={styles.main}>
           <View style={styles.header}>
-            <View style={styles.generationDate}>
-              <Text style={styles.generationDateText}>Data de geração</Text>
-              <Text style={styles.generationDateValue}>
-                {reportAdministrator.date.getDate() < 10 ? "0" : ""}
-                {reportAdministrator.date.getDate()}/
-                {reportAdministrator.date.getMonth() + 1 < 10 ? "0" : ""}
-                {reportAdministrator.date.getMonth() + 1}/
-                {reportAdministrator.date.getFullYear()}
-              </Text>
-              <Text
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "heavy",
-                  color: "white",
-                  marginLeft: "14px",
-                }}
-              >
-                {
-                  //reportAdministrator.useName
-                  "Maya Energy"
-                }
-              </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <View style={{ marginRight: "22px" }}>
+                <Text style={styles.generationDateText}>Data de geração</Text>
+                <Text style={styles.generationDateValue}>
+                  {reportAdministrator.date.getDate() < 10 ? "0" : ""}
+                  {reportAdministrator.date.getDate()}/
+                  {reportAdministrator.date.getMonth() + 1 < 10 ? "0" : ""}
+                  {reportAdministrator.date.getMonth() + 1}/
+                  {reportAdministrator.date.getFullYear()}
+                </Text>
+              </View>
+              <View style={styles.generationDate}>
+                <Text style={styles.generationDateText}>
+                  Data de aquisição dos dados
+                </Text>
+                <Text style={styles.generationDateValue}>
+                  {reportAdministrator.requistionStartDate} -
+                  {reportAdministrator.requisitionEndDate}
+                </Text>
+              </View>
             </View>
             <View style={styles.logo}>
               <Image
@@ -223,7 +226,9 @@ export const AdministratorReport = () => {
                 </View>
                 <View style={styles.card}>
                   <View>
-                    <Text style={styles.cardLabel}>POTÊNCIA TOTAL</Text>
+                    <Text style={styles.cardLabel}>
+                      POTÊNCIA TOTAL DAS USINAS
+                    </Text>
                     <Text style={styles.cardNumber}>
                       {reportAdministrator.capacityTotalValue} Kwp
                     </Text>

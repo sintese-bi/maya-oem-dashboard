@@ -416,7 +416,10 @@ export const ChartsLinear = (props) => {
         title: {
           display: true,
           text: "KWh",
-          font: { size: 18, weight: "bold" },
+          font: { size: 23, weight: "bold" },
+        },
+        ticks: {
+          font: { size: 22, weight: "bold" }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
         },
       },
       x: {
@@ -426,7 +429,10 @@ export const ChartsLinear = (props) => {
         title: {
           display: true,
           text: periodData.period,
-          font: { size: 18, weight: "bold" },
+          font: { size: 23, weight: "bold" },
+        },
+        ticks: {
+          font: { size: 22, weight: "bold" }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
         },
       },
     },

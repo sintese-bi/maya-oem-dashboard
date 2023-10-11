@@ -153,12 +153,13 @@ export const SendEmail = ({
   useNameState,
   capacity,
   address,
+  email,
 }) => {
   const dispatch = useDispatch();
 
   const [deviceInfo, setDeviceInfo] = useState({});
   const [open, setOpen] = useState(false);
-  const [emailDontExistState, setEmailDontExist] = useState(false);
+  const [emailIsUpdated, setEmailIsUpdated] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [optionFilter, setOptionFilter] = useState("days");
   const [generationRealTotal, setGenerationRealTotal] = useState("");
@@ -213,14 +214,6 @@ export const SendEmail = ({
       address
     );
   }
-
-  useEffect(() => {
-    if (emailDontExist) {
-      setEmailDontExist(true);
-    } else {
-      setEmailDontExist(false);
-    }
-  }, [emailDontExist]);
 
   useEffect(() => {
     if (selectedDevice) {
@@ -314,7 +307,7 @@ export const SendEmail = ({
           </View>
           <View
             style={{
-              width: "94%",
+              width: "100vw",
               backgroundColor: "white",
               padding: "20px",
               marginBottom: "20px",
@@ -531,6 +524,7 @@ export const SendEmail = ({
     const { email } = values;
     try {
       dispatch(updateEmail({ dev_uuid: devUuidState, email }));
+      setEmailIsUpdated(true);
     } catch (error) {
       alert(error);
     }
@@ -590,34 +584,12 @@ export const SendEmail = ({
           <div>
             <div id="acquisitions"></div>
           </div>
-          {emailDontExistState ? (
-            <FormProvider {...methods}>
-              <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-                <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
-                  Não detectamos nenhum email registrado, por favor insira um
-                  novo email, e tente realizar o envio do relatório por email
-                  novamente.
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <TextField
-                    margin="normal"
-                    label="Novo email"
-                    {...register("email")}
-                    error={!!errors.deviceLogin}
-                    helperText={errors.deviceLogin?.message}
-                  />
-                  <Button type="submit" variant="contained">
-                    Atualizar email
-                  </Button>
-                </Box>
-              </Box>
-            </FormProvider>
-          ) : (
-            <BlobProvider document={MyDoc}>
-              {({ blob, url, loading, error }) => {
-                return (
-                  <>
-                    {isLoadingGraph ? (
+          <BlobProvider document={MyDoc}>
+            {({ blob, url, loading, error }) => {
+              return (
+                <>
+                  {emailIsUpdated ? (
+                    isLoadingGraph ? (
                       <Button variant="contained" onClick={() => createChart()}>
                         Gerar gráfico
                       </Button>
@@ -642,12 +614,35 @@ export const SendEmail = ({
                       >
                         {loading ? "Finalizando" : "Enviar email"}
                       </Button>
-                    )}
-                  </>
-                );
-              }}
-            </BlobProvider>
-          )}
+                    )
+                  ) : (
+                    <FormProvider {...methods}>
+                      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+                        <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                          {email
+                            ? `Por favor, digite o email que deseja enviar o relatório.`
+                            : `Não encontramos nenhum email registrado, por favor, registre uma novo email.`}
+                        </Typography>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <TextField
+                            defaultValue={email}
+                            margin="normal"
+                            label="Novo email"
+                            {...register("email")}
+                            error={!!errors.deviceLogin}
+                            helperText={errors.deviceLogin?.message}
+                          />
+                          <Button type="submit" variant="contained">
+                            {email ? `Atualizar email` : "Registrar email"}
+                          </Button>
+                        </Box>
+                      </Box>
+                    </FormProvider>
+                  )}
+                </>
+              );
+            }}
+          </BlobProvider>
         </Box>
       </Modal>
     </>
