@@ -44,8 +44,15 @@ import {
 import { UserInfo } from "./side-components/UserInfo";
 
 export const Side = () => {
-  const { useName, useTypeMember, useEmail, firstTime, useUuid } =
-    getUserCookie();
+  const {
+    useName,
+    useTypeMember,
+    useEmail,
+    firstTime,
+    useUuid,
+    useCityState,
+    useTelephone,
+  } = getUserCookie();
 
   const [action, setAction] = useState("alertFrequency");
   const [welcome, setWelcome] = useState(true);
@@ -88,7 +95,13 @@ export const Side = () => {
       case "userAccount":
         return (
           <Box>
-            <UserInfo useName={useName} useEmail={useEmail} useUuid={useUuid} />
+            <UserInfo
+              useName={useName}
+              useEmail={useEmail}
+              useUuid={useUuid}
+              useCityState={useCityState}
+              useTelephone={useTelephone}
+            />
           </Box>
         );
       default:

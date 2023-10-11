@@ -21,7 +21,13 @@ const validateSchema = Yup.object().shape({
   usePhone: Yup.string().required("Campo é obrigatório."),
 });
 
-export const UserInfo = ({ useName, useEmail, useUuid }) => {
+export const UserInfo = ({
+  useName,
+  useEmail,
+  useUuid,
+  useCityState,
+  useTelephone,
+}) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -69,6 +75,7 @@ export const UserInfo = ({ useName, useEmail, useUuid }) => {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <TextField
+                  defaultValue={useName}
                   margin="normal"
                   label="Novo nome"
                   {...register("useName")}
@@ -76,6 +83,7 @@ export const UserInfo = ({ useName, useEmail, useUuid }) => {
                   helperText={errors.useName?.message}
                 />
                 <TextField
+                  defaultValue={useEmail}
                   margin="normal"
                   label="Novo email"
                   {...register("useEmail")}
@@ -86,6 +94,7 @@ export const UserInfo = ({ useName, useEmail, useUuid }) => {
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <TextField
+                  defaultValue={useCityState}
                   margin="normal"
                   label="Novo endereço"
                   {...register("useAddress")}
@@ -93,6 +102,7 @@ export const UserInfo = ({ useName, useEmail, useUuid }) => {
                   helperText={errors.useAddress?.message}
                 />
                 <TextField
+                  defaultValue={useTelephone}
                   margin="normal"
                   label="Novo telefone"
                   {...register("usePhone")}
@@ -139,11 +149,9 @@ export const UserInfo = ({ useName, useEmail, useUuid }) => {
             }}
           >
             <Typography variant="body" sx={{ mt: 2 }}>
-              {"Valor não retornado pela API"}
+              {useCityState}
             </Typography>
-            <Typography variant="body">
-              {"Valor não retornado pela API"}
-            </Typography>
+            <Typography variant="body">{useTelephone}</Typography>
           </Box>
         </Box>
       )}

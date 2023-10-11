@@ -21,6 +21,8 @@ export const reportClient = {
     state: "",
     graph: "",
     situation: "",
+    savedtree: "",
+
 }
 
 export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
@@ -38,25 +40,25 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
                     (realGenerationNumber / 1000).toFixed(2))}Mwh.`
             }
         } else {
-            return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((reportClient.realGenerationTotal / 1000).toFixed(2))}Mwh.`
+            return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers((realGenerationNumber / 1000).toFixed(2))}Mwh.`
         }
     }
 
     function handleSituationGeneration(percent) {
         if (percent < 100) {
             if (percent >= 80) {
-                return `A produção da sua usina esta dentro do esperado.`
+                return `Acima do esperado`
             } else {
-                return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a sua usina.`
+                return `Abaixo do esperado`
             }
         } else {
-            return `Parabéns! A produção da sua usina esta dentro do esperado.`
+            return `Parabéns! acima do esperado.`
         }
     }
 
     reportClient.useName = useName
-    reportClient.estimatedGenerationTotal = numbers(estimatedGenerationNumber)
-    reportClient.realGenerationTotal = numbers(realGenerationNumber)
+    reportClient.estimatedGenerationTotal = numbers((estimatedGenerationNumber / 1000).toFixed(2))
+    reportClient.realGenerationTotal = numbers((realGenerationNumber / 1000).toFixed(2))
     reportClient.percent = ((realGenerationNumber / estimatedGenerationNumber) * 100).toFixed()
     reportClient.brand = useNameState;
     reportClient.situation = handleSituation(reportClient.percent)
@@ -66,6 +68,8 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.capacity = capacity
     reportClient.lowLevel = handleSituationGeneration(reportClient.percent)
     reportClient.address = address
+    reportClient.savedtree = (realGenerationNumber * 5.04 * (0.0001)).toFixed(2)
+
 
     setIsLoadingReport(false);
 }

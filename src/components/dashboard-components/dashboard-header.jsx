@@ -1,6 +1,7 @@
 // Biblitecas
 import { reportAdministrator } from "../../reports/reportsRules/reportAdministratorRule";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Modal, Card, Input } from "@mui/material";
+import { Cancel } from "@mui/icons-material";
 import {
   PDFDownloadLink,
   BlobProvider,
@@ -128,6 +129,11 @@ export const DashboardHeader = ({
   useName,
   label,
 }) => {
+  const [open, setOpen] = useState(false);
+
+  function handleUploadLogo() {
+    setOpen(false);
+  }
   return (
     <Box
       sx={{
@@ -152,7 +158,10 @@ export const DashboardHeader = ({
                 startIcon={<DownloadForOffline fontSize="small" />}
                 variant={useTypeMember ? "outlined" : ""}
                 sx={{ width: "100%" }}
-                onClick={() => handleReportGeneration()}
+                onClick={() => {
+                  setOpen(true);
+                  handleReportGeneration();
+                }}
               >
                 Preparar relatório
               </Button>
@@ -182,6 +191,70 @@ export const DashboardHeader = ({
           )}
         </Box>
       </ToolTipNoAccess>
+      <Modal
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+        open={open}
+      >
+        <Card
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            p: 4,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              width: "100%",
+              mb: 2,
+            }}
+          >
+            <Cancel
+              fontSize="large"
+              onClick={() => {
+                setOpen(!open);
+              }}
+              sx={{ cursor: "pointer" }}
+            />
+          </Box>
+          <img
+            src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/maya-watch-logo.png"
+            alt="logo"
+            id="logo"
+            style={{ width: "140px", height: "80px" }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ width: 224, mt: 2 }}
+          >
+            Fazer upload da sua logo
+            <Input
+              type="file"
+              onChange={(e) => {
+                var reader = new FileReader();
+                reader.addEventListener("loadend", () => {
+                  document.getElementById("logo").src = reader.result;
+                  reportAdministrator.logo = reader.result;
+                });
+                reader.readAsDataURL(e.target.files[0]);
+              }}
+              sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
+            />
+          </Button>
+          <Button onClick={handleUploadLogo} variant="outlined" sx={{ mt: 2 }}>
+            Confirmar
+          </Button>
+        </Card>
+      </Modal>
     </Box>
   );
 };

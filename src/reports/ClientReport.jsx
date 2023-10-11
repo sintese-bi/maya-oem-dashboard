@@ -162,7 +162,7 @@ export const ClientReport = () => {
           </View>
           <View
             style={{
-              width: "94%",
+              width: "100vw",
               backgroundColor: "white",
               padding: "20px",
               marginBottom: "20px",
@@ -179,7 +179,7 @@ export const ClientReport = () => {
                 fontSize: "12px",
               }}
             >
-              Comparação da geração real e estimada
+              Série histórica da produção de Usinas.
             </Text>
             <Image
               style={{
@@ -229,7 +229,7 @@ export const ClientReport = () => {
             </View>
             <View style={styles.card}>
               <View>
-                <Text style={styles.cardLabel}>POTÊNCIA</Text>
+                <Text style={styles.cardLabel}>POTÊNCIA DA USINA</Text>
                 <Text style={styles.cardNumber}>{reportClient.capacity}</Text>
               </View>
               <Image
@@ -253,7 +253,7 @@ export const ClientReport = () => {
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.realGenerationTotal} Kwh
+                  {reportClient.realGenerationTotal}Mwh
                 </Text>
               </View>
               <Image
@@ -265,7 +265,7 @@ export const ClientReport = () => {
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.estimatedGenerationTotal} Kwh
+                  {reportClient.estimatedGenerationTotal}Mwh
                 </Text>
               </View>
               <Image
@@ -281,6 +281,20 @@ export const ClientReport = () => {
               <Image
                 style={styles.icon}
                 src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+              ></Image>
+            </View>
+          </View>
+          <View style={styles.cardsRow}>
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.cardLabel}>
+                  ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
+                </Text>
+                <Text style={styles.cardNumber}>{reportClient.savedtree}</Text>
+              </View>
+              <Image
+                style={styles.icon}
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
               ></Image>
             </View>
           </View>

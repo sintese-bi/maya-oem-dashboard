@@ -21,7 +21,7 @@ export const auth = (params) => (dispatch) => {
       .then((res) => {
         const { data } = res;
         const { message, token, result } = data;
-        const { profile_level, use_name, use_uuid, use_email, use_type_member } = result;
+        const { profile_level, use_name, use_uuid, use_email, use_type_member, use_city_state, use_telephone } = result;
         if (!getUserCookie()) {
           setUserCookie({
             token,
@@ -30,6 +30,8 @@ export const auth = (params) => (dispatch) => {
             useName: use_name,
             useEmail: use_email,
             useTypeMember: use_type_member,
+            useCityState: use_city_state,
+            useTelephone: use_telephone,
             firstTime: true
           });
         } else {
@@ -40,6 +42,8 @@ export const auth = (params) => (dispatch) => {
             useName: use_name,
             useEmail: use_email,
             useTypeMember: use_type_member,
+            useCityState: use_city_state,
+            useTelephone: use_telephone,
             firstTime: false
           });
         }
