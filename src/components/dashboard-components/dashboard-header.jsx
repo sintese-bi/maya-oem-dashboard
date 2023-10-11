@@ -192,10 +192,23 @@ export const DashboardHeader = ({
         </Box>
       </ToolTipNoAccess>
       <Modal
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
         open={open}
       >
-        <Card sx={{ p: 4 }}>
+        <Card
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            p: 4,
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -212,15 +225,33 @@ export const DashboardHeader = ({
               sx={{ cursor: "pointer" }}
             />
           </Box>
-          <Button variant="contained" component="label" sx={{ width: 224 }}>
+          <img
+            src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/maya-watch-logo.png"
+            alt="logo"
+            id="logo"
+            style={{ width: "140px", height: "80px" }}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ width: 224, mt: 2 }}
+          >
             Fazer upload da sua logo
             <Input
               type="file"
               onChange={(e) => {
-                console.log(e.target.result);
+                var reader = new FileReader();
+                reader.addEventListener("loadend", () => {
+                  document.getElementById("logo").src = reader.result;
+                  reportAdministrator.logo = reader.result;
+                });
+                reader.readAsDataURL(e.target.files[0]);
               }}
               sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
             />
+          </Button>
+          <Button onClick={handleUploadLogo} variant="outlined" sx={{ mt: 2 }}>
+            Confirmar
           </Button>
         </Card>
       </Modal>

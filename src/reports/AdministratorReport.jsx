@@ -145,7 +145,7 @@ export const AdministratorReport = () => {
             <View style={styles.logo}>
               <Image
                 style={{ width: "140px", height: "60px" }}
-                src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
+                src={reportAdministrator.logo}
               ></Image>
             </View>
           </View>

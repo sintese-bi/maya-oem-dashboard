@@ -14,6 +14,7 @@ export const reportAdministrator = {
   devicesLength: 0,
   adminGraphRef: "",
   savedtree: "",
+  logo: "",
 }
 
 export function reportAdministratorRule(
@@ -54,6 +55,7 @@ export function reportAdministratorRule(
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;
   reportAdministrator.savedtree = (realGeneration * 5.04 * (0.0001)).toFixed(2)
+  reportAdministrator.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/'
 
   setIsLoadingReport(false)
 }
