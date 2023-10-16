@@ -156,7 +156,7 @@ export const ClientReport = () => {
             <View style={styles.logo}>
               <Image
                 style={{ width: "160px", height: "62px" }}
-                src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
+                src={reportClient.logo}
               ></Image>
             </View>
           </View>

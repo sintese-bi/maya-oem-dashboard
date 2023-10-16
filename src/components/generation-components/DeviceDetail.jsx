@@ -54,7 +54,7 @@ export const DeviceDetail = (props) => {
     devUuid,
     blUuidState,
   } = props;
-  console.log(props);
+
   const [selectedCity, setSelectedCity] = useState(null);
   const { profileLevel } = getUserCookie() || null;
   const [isSaved, setIsSaved] = useState(false);

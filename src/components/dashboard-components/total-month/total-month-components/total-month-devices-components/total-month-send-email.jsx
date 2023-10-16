@@ -18,7 +18,7 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  PDFDownloadLink,
+  PDFViewer,
   BlobProvider,
   Document,
   Page,
@@ -40,6 +40,7 @@ import {
   getDevices,
 } from "src/store/actions/devices";
 import { getUserCookie } from "src/services/session";
+import { ClientReport } from "src/reports/ClientReport";
 
 const styles = StyleSheet.create({
   pdfViewer: {
@@ -469,6 +470,7 @@ export const SendEmail = ({
   const [opa, setOpa] = useState(false);
   const [isLoadingGraph, setIsLoadingGraph] = useState(true);
   const [isLoadingReport, setIsLoadingReport] = useState(true);
+  const [fileIsReadyToPreview, setFileIsReadyToPreview] = useState(false);
 
   function createChart() {
     // Crie um elemento canvas para o gráfico
@@ -581,10 +583,20 @@ export const SendEmail = ({
             Caro usuário, siga os passos seguintes para finalizar o envio do
             email !
           </Typography>
+          <Box sx={{ width: "100%", mb: 2 }}>
+            {fileIsReadyToPreview ? (
+              <PDFViewer style={{ width: "100%", height: 420 }}>
+                <ClientReport />
+              </PDFViewer>
+            ) : null}
+          </Box>
           <div>
             <div id="acquisitions"></div>
           </div>
           <BlobProvider document={MyDoc}>
+            <Typography>
+              Aguarde o carregamento da preview do relatório
+            </Typography>
             {({ blob, url, loading, error }) => {
               return (
                 <>
@@ -596,7 +608,10 @@ export const SendEmail = ({
                     ) : isLoadingReport ? (
                       <Button
                         variant="contained"
-                        onClick={() => handleReportGeneration()}
+                        onClick={() => {
+                          setFileIsReadyToPreview(true);
+                          handleReportGeneration();
+                        }}
                       >
                         Preparar para envio
                       </Button>
