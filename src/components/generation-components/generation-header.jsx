@@ -1,165 +1,121 @@
-// Biblitecas
-import { reportAdministrator } from "../../reports/reportsRules/reportAdministratorRule";
-import { Box, Typography, Button, Modal, Card, Input } from "@mui/material";
+import moment from "moment-timezone";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ClientReport } from "src/reports/ClientReport";
+import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 import { Cancel } from "@mui/icons-material";
 import {
-  PDFDownloadLink,
-  BlobProvider,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-} from "@react-pdf/renderer";
-import moment from "moment";
-
-// Componentes
-
-import { ToolTipNoAccess } from "../shared/ToolTipNoAccess";
-import { AdministratorReport } from "src/reports/AdministratorReport";
-
-// icons
-
+  Box,
+  FormControl,
+  InputLabel,
+  NativeSelect,
+  Select,
+  TextField,
+  Button,
+  Card,
+  Modal,
+  Input,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DownloadForOffline } from "@mui/icons-material";
-import { useEffect, useRef, useState } from "react";
 
-const styles = StyleSheet.create({
-  pdfViewer: {
-    height: "85vh",
-    width: "500px",
-  },
-  page: {
-    backgroundColor: "white",
-  },
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  header: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: "20px",
-    backgroundColor: "#0097B2",
-  },
-  generationDateText: {
-    fontSize: "12px",
-    fontWeight: "semibold",
-    color: "white",
-    marginBottom: "4px",
-    marginLeft: "14px",
-  },
-  generationDateValue: {
-    fontSize: "12px",
-    fontWeight: "semibold",
-    color: "white",
-    marginBottom: "14px",
-    marginLeft: "14px",
-  },
-  logo: {
-    padding: "20px",
-    backgroundColor: "white",
-    borderTopLeftRadius: "50px",
-    borderBottomLeftRadius: "50px",
-  },
-  cardsRow: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-evenly",
-    marginVertical: "3px",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "186px",
-    backgroundColor: "#0097B2",
-    borderRadius: "10px",
-    padding: "20px",
-    color: "white",
-  },
-  cardLabel: {
-    fontSize: "6px",
-    fontWeight: "ultrabold",
-    opacity: 0.8,
-    marginBottom: "8px",
-  },
-  cardNumber: {
-    fontSize: "14px",
-    fontWeight: "ultrabold",
-  },
-  icon: {
-    width: "36px",
-    height: "36px",
-    borderRadius: "50px",
-  },
-  madeBy: {
-    marginTop: "100px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "50%",
-    top: "100px",
-  },
-  light: {
-    height: "10px",
-    width: "10px",
-  },
-  pdfEndImg: {
-    height: "14px",
-    width: "80px",
-  },
-  madeByText: {
-    fontSize: "8px",
-    marginBottom: "8px",
-  },
-});
+import Tabs from "../../components/shared/Tabs";
+import { useState } from "react";
+import { reportClient } from "src/reports/reportsRules/reportClientRule";
 
-export const DashboardHeader = ({
+export const GenerationHeader = ({
+  deviceInfo,
+  handleSelectDevices,
   handleReportGeneration,
-  isLoadingReportGeneration,
+  devices,
+  startDate,
+  endDate,
   useTypeMember,
-  useName,
-  label,
+  isLoadingReport,
+  generation,
+  useNameState,
+  setAction,
+  setOpen,
+  setStartDate,
+  setEndDate,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [uploadImageModal, setUploadImageModal] = useState(false);
 
   function handleUploadLogo() {
-    setOpen(false);
+    setUploadImageModal(false);
   }
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "end",
         alignItems: "center",
-        my: 4,
-        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        mt: 3,
       }}
     >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <FormControl sx={{ mr: 1, width: 200 }}>
+          <InputLabel>Lista de Usuários</InputLabel>
+          <NativeSelect
+            label="Lista de Usuários"
+            id="dev_name"
+            value={deviceInfo?.dev_uuid || ""}
+            onChange={(evt) => handleSelectDevices(evt.target.value)}
+            input={<Select />}
+          >
+            {devices &&
+              devices.map((dev, index) => (
+                <option key={index} value={dev.dev_uuid}>
+                  {dev.dev_name}
+                </option>
+              ))}
+          </NativeSelect>
+        </FormControl>
+
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="Data Inicial"
+            value={startDate}
+            onChange={(startDate) =>
+              setStartDate(
+                startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+              )
+            }
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <DatePicker
+            label="Data Final"
+            value={endDate}
+            onChange={(endDate) =>
+              setEndDate(endDate ? moment(endDate).format("YYYY-MM-DD") : "")
+            }
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+      </Box>
       <ToolTipNoAccess useTypeMember={useTypeMember}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
-            width: "220px",
+            width: "200px",
           }}
         >
           {useTypeMember ? (
-            isLoadingReportGeneration ? (
+            isLoadingReport ? (
               <Button
                 startIcon={<DownloadForOffline fontSize="small" />}
                 variant={useTypeMember ? "outlined" : ""}
                 sx={{ width: "100%" }}
                 onClick={() => {
-                  setOpen(true);
+                  setUploadImageModal(true);
                   handleReportGeneration();
                 }}
               >
@@ -167,8 +123,8 @@ export const DashboardHeader = ({
               </Button>
             ) : (
               <PDFDownloadLink
-                document={<AdministratorReport />}
-                fileName="relatório-admnistrador.pdf"
+                document={<ClientReport />}
+                fileName="relatório-cliente.pdf"
                 style={{ textDecoration: "none", height: "100%" }}
               >
                 {({ blob, url, loading, error }) =>
@@ -180,7 +136,7 @@ export const DashboardHeader = ({
                       variant={useTypeMember ? "outlined" : ""}
                       sx={{ width: "100%" }}
                     >
-                      Relatório Administrador
+                      Relatório Cliente
                     </Button>
                   )
                 }
@@ -191,6 +147,7 @@ export const DashboardHeader = ({
           )}
         </Box>
       </ToolTipNoAccess>
+      <Tabs />
       <Modal
         sx={{
           display: "flex",
@@ -198,7 +155,7 @@ export const DashboardHeader = ({
           alignItems: "center",
           flexDirection: "column",
         }}
-        open={open}
+        open={uploadImageModal}
       >
         <Card
           sx={{
@@ -220,7 +177,7 @@ export const DashboardHeader = ({
             <Cancel
               fontSize="large"
               onClick={() => {
-                setOpen(!open);
+                setUploadImageModal(!uploadImageModal);
               }}
               sx={{ cursor: "pointer" }}
             />
@@ -244,7 +201,7 @@ export const DashboardHeader = ({
                   var reader = new FileReader();
                   reader.addEventListener("loadend", () => {
                     document.getElementById("logo").src = reader.result;
-                    reportAdministrator.logo = reader.result;
+                    reportClient.logo = reader.result;
                   });
                   reader.readAsDataURL(e.target.files[0]);
                 }

@@ -22,7 +22,7 @@ export const reportClient = {
     graph: "",
     situation: "",
     savedtree: "",
-
+    logo: "",
 }
 
 export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
@@ -47,12 +47,12 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     function handleSituationGeneration(percent) {
         if (percent < 100) {
             if (percent >= 80) {
-                return `Acima do esperado`
+                return `Dentro`
             } else {
-                return `Abaixo do esperado`
+                return `Abaixo`
             }
         } else {
-            return `Parabéns! acima do esperado.`
+            return `Acima`
         }
     }
 
@@ -69,7 +69,7 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.lowLevel = handleSituationGeneration(reportClient.percent)
     reportClient.address = address
     reportClient.savedtree = (realGenerationNumber * 5.04 * (0.0001)).toFixed(2)
-
+    reportClient.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/'
 
     setIsLoadingReport(false);
 }

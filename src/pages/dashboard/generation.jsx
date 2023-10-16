@@ -42,6 +42,7 @@ import { getGeneration } from "src/store/actions/generation";
 import { DeviceDetail } from "../../components/generation-components/DeviceDetail";
 import { GenerationBI } from "src/components/generation-components/GenerationBI";
 import Tabs from "../../components/shared/Tabs";
+import { GenerationHeader } from "src/components/generation-components/generation-header";
 
 const Generation = () => {
   const location = useLocation();
@@ -70,7 +71,6 @@ const Generation = () => {
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
-    console.log(datInfo, useUuid);
     setDeviceInfo(datInfo[0]);
     dispatch(
       getGeneration({
@@ -165,108 +165,22 @@ const Generation = () => {
       }}
     >
       <Container maxWidth={false}>
-        <Box
-          sx={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            mt: 3,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <FormControl sx={{ mr: 1, width: 200 }}>
-              <InputLabel>Lista de Usuários</InputLabel>
-              <NativeSelect
-                label="Lista de Usuários"
-                id="dev_name"
-                value={deviceInfo?.dev_uuid || ""}
-                onChange={(evt) => handleSelectDevices(evt.target.value)}
-                input={<Select />}
-              >
-                {devices &&
-                  devices.map((dev, index) => (
-                    <option key={index} value={dev.dev_uuid}>
-                      {dev.dev_name}
-                    </option>
-                  ))}
-              </NativeSelect>
-            </FormControl>
-
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <DatePicker
-                label="Data Inicial"
-                value={startDate}
-                onChange={(startDate) =>
-                  setStartDate(
-                    startDate ? moment(startDate).format("YYYY-MM-DD") : ""
-                  )
-                }
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <DatePicker
-                label="Data Final"
-                value={endDate}
-                onChange={(endDate) =>
-                  setEndDate(
-                    endDate ? moment(endDate).format("YYYY-MM-DD") : ""
-                  )
-                }
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </Box>
-          <ToolTipNoAccess useTypeMember={useTypeMember}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                width: "200px",
-              }}
-            >
-              {useTypeMember ? (
-                isLoadingReport ? (
-                  <Button
-                    startIcon={<DownloadForOffline fontSize="small" />}
-                    variant={useTypeMember ? "outlined" : ""}
-                    sx={{ width: "100%" }}
-                    onClick={() => handleReportGeneration()}
-                  >
-                    Preparar relatório
-                  </Button>
-                ) : (
-                  <PDFDownloadLink
-                    document={<ClientReport />}
-                    fileName="relatório-cliente.pdf"
-                    style={{ textDecoration: "none", height: "100%" }}
-                  >
-                    {({ blob, url, loading, error }) =>
-                      loading ? (
-                        "Carregando relatório..."
-                      ) : (
-                        <Button
-                          startIcon={<DownloadForOffline fontSize="small" />}
-                          variant={useTypeMember ? "outlined" : ""}
-                          sx={{ width: "100%" }}
-                        >
-                          Relatório Cliente
-                        </Button>
-                      )
-                    }
-                  </PDFDownloadLink>
-                )
-              ) : (
-                "Relatório indisponível"
-              )}
-            </Box>
-          </ToolTipNoAccess>
-          <Tabs />
-        </Box>
+        <GenerationHeader
+          deviceInfo={deviceInfo}
+          handleSelectDevices={handleSelectDevices}
+          handleReportGeneration={handleReportGeneration}
+          devices={devices}
+          startDate={startDate}
+          endDate={endDate}
+          useTypeMember={useTypeMember}
+          isLoadingReport={isLoadingReport}
+          generation={generation}
+          useNameState={useNameState}
+          setAction={setAction}
+          setOpen={setOpen}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
         <Box sx={{ my: 10 }}>
           <DeviceDetail
             loadingDevices={isLoadingDevices}
