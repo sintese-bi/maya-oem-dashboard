@@ -216,8 +216,8 @@ export default function userReducer(state = initialState, action) {
                 generationRealDay.length !== 0
                   ? generationRealDay[0].gen_real
                   : 0,
-              generationRealWeek: sumRealWeek.toFixed(2),
-              generationRealMonth: sumRealMonth.toFixed(2),
+              generationRealWeek: sumRealWeek,
+              generationRealMonth: sumRealMonth,
               generationEstimated:
                 dev.generation.length !== 0
                   ? dev.generation[0].gen_estimated
@@ -345,18 +345,18 @@ export default function userReducer(state = initialState, action) {
               blUuid: item.bl_uuid,
               name: dev.dev_name,
               email: dev.dev_email,
-              capacity: `${dev.dev_capacity < 10 ? "0" + (dev.dev_capacity).toFixed(2) : (dev.dev_capacity).toFixed(2)}KWp`,
+              capacity: parseFloat(dev.dev_capacity.toFixed(2)),
               address: dev.dev_address,
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real < 100 ? "0" + generationRealDay[0].gen_real + "Kwh" : generationRealDay[0].gen_real + "Kwh"
-                  : "0" + 0 + "Kwh",
-              generationRealWeek: sumRealWeek < 1000 ? "0" + sumRealWeek.toFixed(2) + "Kwh" : sumRealWeek.toFixed(2) + "Kwh",
-              generationRealMonth: sumRealMonth < 1000 ? "0" + sumRealMonth.toFixed(2) + "Kwh" : sumRealMonth.toFixed(2) + "Kwh",
-              generationEstimatedDay: generationEstimatedDay < 10 ? "0" + generationEstimatedDay + "Kwh" : generationEstimatedDay + "Kwh",
-              generationEstimatedlWeek: sumEstimatedlWeek < 1000 ? "0" + sumEstimatedlWeek.toFixed(2) + "Kwh" : sumEstimatedlWeek.toFixed(2) + "Kwh",
-              generationEstimatedMonth: sumEstimatedMonth < 1000 ? "0" + sumEstimatedMonth.toFixed(2) + "Kwh" : sumEstimatedMonth.toFixed(2) + "Kwh",
+                  ? parseFloat(generationRealDay[0].gen_real.toFixed(2))
+                  : 0,
+              generationRealWeek: parseFloat(sumRealWeek.toFixed(2)),
+              generationRealMonth: parseFloat(sumRealMonth.toFixed(2)),
+              generationEstimatedDay: parseFloat(generationEstimatedDay.toFixed(2)),
+              generationEstimatedlWeek: parseFloat(sumEstimatedlWeek.toFixed(2)),
+              generationEstimatedMonth: parseFloat(sumEstimatedMonth.toFixed(2)),
               alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
@@ -410,6 +410,7 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
+      console.log("Done requisition - ", brand_login);
       const daysPassed = moment().date();
       const dataDevices = brand_login
         .map((item) => {
@@ -452,17 +453,17 @@ export default function userReducer(state = initialState, action) {
               brand: dev.dev_brand,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
-              capacity: `${(dev.dev_capacity).toFixed(2)}KWp`,
+              capacity: dev.dev_capacity,
               uuid: dev.dev_uuid,
               generationRealDay:
                 generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real + "Kwh"
-                  : 0 + "Kwh",
-              generationRealWeek: sumRealWeek.toFixed(2) + "Kwh",
-              generationRealMonth: sumRealMonth.toFixed(2) + "Kwh",
-              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay + "Kwh" : 0 + "Kwh",
-              generationEstimatedlWeek: sumEstimatedlWeek.toFixed(2) + "Kwh",
-              generationEstimatedMonth: sumEstimatedMonth.toFixed(2) + "Kwh",
+                  ? generationRealDay[0].gen_real
+                  : 0,
+              generationRealWeek: sumRealWeek,
+              generationRealMonth: sumRealMonth,
+              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay : 0,
+              generationEstimatedlWeek: sumEstimatedlWeek,
+              generationEstimatedMonth: sumEstimatedMonth,
               alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
@@ -484,13 +485,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        brands: [],
-        blUuids: [],
         dataDevices: [],
-        generationBelowEstimated: [],
-        alerts: [],
-        offline: [],
-        online: [],
       };
 
     case users.GRAPH_REQUEST:
@@ -589,6 +584,21 @@ export default function userReducer(state = initialState, action) {
       }
 
     case users.CANCEL_PLAN_FAILURE:
+      return {
+        ...state
+      }
+
+    case users.UPDATE_USER_REQUEST:
+      return {
+        ...state
+      }
+
+    case users.UPDATE_USER_SUCCESS:
+      return {
+        ...state
+      }
+
+    case users.UPDATE_USER_FAILURE:
       return {
         ...state
       }

@@ -213,10 +213,14 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
               py: 6,
             }}
           >
-            {`Desempenho: ${(
-              (generationRealTotal / generationEstimatedTotal) *
-              100
-            ).toFixed(2)}%`}
+            {`Desempenho: ${
+              generationEstimatedTotal
+                ? (
+                    (generationRealTotal / generationEstimatedTotal) *
+                    100
+                  ).toFixed(2)
+                : 0
+            }%`}
           </Typography>
           <ChartsLinear
             startDate={startDate}

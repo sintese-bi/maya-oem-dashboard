@@ -56,7 +56,7 @@ export const Side = () => {
 
   const [action, setAction] = useState("alertFrequency");
   const [welcome, setWelcome] = useState(true);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(firstTime ? true : false);
 
   useEffect(() => {
     setWelcome(firstTime);
@@ -101,6 +101,7 @@ export const Side = () => {
               useUuid={useUuid}
               useCityState={useCityState}
               useTelephone={useTelephone}
+              setOpen={setOpen}
             />
           </Box>
         );

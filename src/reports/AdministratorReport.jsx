@@ -340,7 +340,7 @@ export const AdministratorReport = () => {
                     EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
                   </Text>
                   <Text style={styles.cardNumber}>
-                    {reportAdministrator.percent} CO2
+                    {reportAdministrator.carbon} CO2
                   </Text>
                 </View>
                 <Image

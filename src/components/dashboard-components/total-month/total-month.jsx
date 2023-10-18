@@ -20,6 +20,7 @@ import Plants from "./total-month-components/total-month-devices";
 import { useDispatch, useSelector } from "react-redux";
 import { getGraphData } from "src/store/actions/users";
 import { TotalMonthInfo } from "./total-month-components/total-month-info";
+import { getUserCookie } from "src/services/session";
 
 export const TotalMonth = ({
   useName,
@@ -42,7 +43,10 @@ export const TotalMonth = ({
   adminGraphRef,
   setIsLoadingReportGeneration,
 }) => {
-  const { graphData, isLoadingGraph } = useSelector((state) => state.users);
+  const { useUuid } = getUserCookie();
+  const { graphData, isLoadingGraph, selectedUser } = useSelector(
+    (state) => state.users
+  );
   const dispatch = useDispatch();
   const [optionFilter, setOptionFilter] = useState("days");
   const [generationPercentState, setGenerationPercentState] = useState(0);
@@ -93,14 +97,45 @@ export const TotalMonth = ({
     ) {
       return;
     }
-    dispatch(
-      getGraphData({
-        startDate: moment(startDate).format("YYYY-MM-DD"),
-        endDate: moment(endDate).format("YYYY-MM-DD"),
-      })
-    );
+    if (selectedUser.length != 0) {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: selectedUser[0]?.useUuidState,
+        })
+      );
+    } else {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: useUuid,
+        })
+      );
+    }
     setIsLoadingReportGeneration(true);
-  }, [startDate, endDate, optionFilter]);
+  }, [startDate, endDate, optionFilter, useUuid]);
+
+  useEffect(() => {
+    if (selectedUser.length != 0) {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: selectedUser[0]?.useUuidState,
+        })
+      );
+    } else {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: useUuid,
+        })
+      );
+    }
+  }, [useUuid]);
 
   useEffect(() => {
     handleTopDevicesKWp(dataDevices);

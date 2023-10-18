@@ -15,6 +15,7 @@ export const reportAdministrator = {
   adminGraphRef: "",
   savedtree: "",
   logo: "",
+  carbon: "",
 }
 
 export function reportAdministratorRule(
@@ -29,14 +30,14 @@ export function reportAdministratorRule(
   adminGraphRef
 ) {
   let generationRealMonth = dataDevices.map((data) => {
-    let generationRealValue = Number(data.generationRealMonth.replace(/\Kwh/g, ''))
+    let generationRealValue = data.generationRealMonth
     return generationRealValue;
   })
   let generationRealMonthTotal = generationRealMonth.reduce((total, element) => total + element, 0).toFixed(2)
   reportAdministrator.generationRealTotalValue = numbers(realGeneration)
 
   let generationEstimatedMonth = dataDevices.map((data) => {
-    let generationEstimatedValue = Number(data.generationEstimatedMonth.replace(/\Kwh/g, ''))
+    let generationEstimatedValue = data.generationEstimatedMonth
     return generationEstimatedValue;
   })
   let generationEstimatedMonthTotal = generationEstimatedMonth.reduce((total, element) => total + element, 0).toFixed(2)
@@ -55,7 +56,8 @@ export function reportAdministratorRule(
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;
   reportAdministrator.savedtree = (realGeneration * 5.04 * (0.0001)).toFixed(2)
-  reportAdministrator.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/'
+  reportAdministrator.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/';
+  reportAdministrator.carbon = (Number('0.4190') * realGeneration).toFixed(2)
 
   setIsLoadingReport(false)
 }

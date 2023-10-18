@@ -142,18 +142,19 @@ export default function Dashboard() {
   }
 
   // useEffects
-
   useEffect(() => {
-    selectedUser.length != 0
-      ? dispatch(
-          getDashboard(
-            selectedUser[0]?.useUuidState,
-            "index.jsx - selectedUser"
-          )
-        )
-      : dispatch(getDashboard(useUuid, "index.jsx - normal"));
-
-    dispatch(getAllDevices(useUuid, "index.jsx - normal"));
+    if (selectedUser.length != 0) {
+      dispatch(
+        getDashboard(selectedUser[0]?.useUuidState, "index.jsx - selectedUser")
+      );
+      dispatch(
+        getAllDevices(selectedUser[0]?.useUuidState, "index.jsx - normal")
+      );
+    } else {
+      console.log();
+      dispatch(getDashboard(useUuid, "index.jsx - normal"));
+      dispatch(getAllDevices(useUuid, "index.jsx - normal"));
+    }
   }, [useUuid]);
 
   useEffect(() => {
@@ -169,7 +170,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     let realGenerationTempArray = dataDevices.map((data) => {
-      let generationRealValue = Number(data.capacity.replace(/\MWp/g, ""));
+      let generationRealValue = data.capacity;
       return generationRealValue;
     });
     setCapacityTotal(
