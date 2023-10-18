@@ -1,10 +1,18 @@
-import { Avatar, Link, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Link,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
-import { CheckBox, ReportProblem } from "@mui/icons-material";
+import { CheckBox, ReportProblem, Info } from "@mui/icons-material";
 import { ModalPlantsGraph } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-generation-graph";
 import { DeleteDevice } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-delete-devices";
 import { SendEmail } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-send-email";
+import { Box } from "@mui/system";
 
 export const columnsDevices = [
   {
@@ -49,7 +57,9 @@ export const columnsDevices = [
               }}
               underline="hover"
             >
-              <Typography variant="body1">{name}</Typography>
+              <Typography sx={{ mr: 2 }} variant="body1">
+                {name}
+              </Typography>
             </Link>
           </Stack>
         );
@@ -66,7 +76,7 @@ export const columnsDevices = [
   },
   {
     name: "capacity",
-    label: "Capacidade da usina",
+    label: "Capacidade da usina (KWp)",
     options: {
       filter: true,
       sort: true,
@@ -79,6 +89,16 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: () => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ mr: 2 }}>Alerta de geração </Typography>
+            <Tooltip title="usinas que não produziram o esperado no dia anterior">
+              <Info sx={{ fontSize: "16px" }} />
+            </Tooltip>
+          </Box>
+        );
+      },
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
@@ -93,24 +113,16 @@ export const columnsDevices = [
     },
   },
   {
-    name: "generationEstimatedDay",
-    label: "Geração Estimada dia",
-    options: {
-      filter: true,
-      sort: true,
-    },
-  },
-  {
     name: "generationRealDay",
-    label: "Geração real dia",
+    label: "Produção real dia (KWh)",
     options: {
       filter: true,
       sort: true,
     },
   },
   {
-    name: "generationEstimatedlWeek",
-    label: "Geração Estimada semana",
+    name: "generationEstimatedDay",
+    label: "Produção Estimada dia (KWh)",
     options: {
       filter: true,
       sort: true,
@@ -118,15 +130,15 @@ export const columnsDevices = [
   },
   {
     name: "generationRealWeek",
-    label: "Geração real semana",
+    label: "Produção real semana (KWh)",
     options: {
       filter: true,
       sort: true,
     },
   },
   {
-    name: "generationEstimatedMonth",
-    label: "Geração Estimada mês",
+    name: "generationEstimatedlWeek",
+    label: "Produção Estimada semana (KWh)",
     options: {
       filter: true,
       sort: true,
@@ -134,7 +146,15 @@ export const columnsDevices = [
   },
   {
     name: "generationRealMonth",
-    label: "Geração real mês",
+    label: "Produção real mês (KWh)",
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+  {
+    name: "generationEstimatedMonth",
+    label: "Produção Estimada mês (KWh)",
     options: {
       filter: true,
       sort: true,
@@ -146,10 +166,22 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: () => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ mr: 2 }}>Quantidade de alertas</Typography>
+            <Tooltip title="alertas advindos do portal do inversor">
+              <Info sx={{ fontSize: "16px" }} />
+            </Tooltip>
+          </Box>
+        );
+      },
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
-            <Typography variant="body1">{name}</Typography>
+            <Typography sx={{ mr: 2 }} variant="body1">
+              {name}
+            </Typography>
 
             {/* {name !== 0 ? (
               <Button
@@ -179,6 +211,16 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: () => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ mr: 2 }}>Situação</Typography>
+            <Tooltip title="inapta são usinas com produção 0 kwh advindo do portal do inversor">
+              <Info sx={{ fontSize: "16px" }} />
+            </Tooltip>
+          </Box>
+        );
+      },
     },
   },
   {
@@ -202,10 +244,20 @@ export const columnsDevices = [
   },
   {
     name: "sendEmail",
-    label: "Relatório do mês",
+    label: "Relatório mensal",
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: () => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ mr: 2 }}>Relatório mensal</Typography>
+            <Tooltip title="enviar relatório do mês para cliente da planta">
+              <Info sx={{ fontSize: "16px" }} />
+            </Tooltip>
+          </Box>
+        );
+      },
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
@@ -229,6 +281,16 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: () => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography sx={{ mr: 2 }}>Deletar planta</Typography>
+            <Tooltip title="ao deletar planta ela apenas deixa de ser monitorada e não excluída do portal do inversor">
+              <Info sx={{ fontSize: "16px" }} />
+            </Tooltip>
+          </Box>
+        );
+      },
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>

@@ -1,12 +1,12 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Edit, Cancel } from "@mui/icons-material";
 
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { cancelUserPlan } from "src/store/actions/users";
+import { cancelUserPlan, updateUser } from "src/store/actions/users";
 import { useDispatch } from "react-redux";
 
 const validateSchema = Yup.object().shape({
@@ -27,7 +27,9 @@ export const UserInfo = ({
   useUuid,
   useCityState,
   useTelephone,
+  setOpen,
 }) => {
+  const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const {
     register,
@@ -47,7 +49,16 @@ export const UserInfo = ({
   async function onSubmit(values) {
     const { useName, useEmail, useAddress, usePhone } = values;
     try {
-      alert("Usuário atualizado com sucesso - simulação");
+      dispatch(
+        updateUser({
+          use_name: useName,
+          use_email: useEmail,
+          use_city_state: useAddress,
+          use_telephone: usePhone,
+          use_uuid: useUuid,
+        })
+      );
+      setOpen(false);
       setEditUserData(false);
       setValue("useName", "");
       setValue("useEmail", "");
@@ -62,6 +73,10 @@ export const UserInfo = ({
     dispatch(cancelUserPlan(useUuid));
   }
 
+  useEffect(() => {
+    setUserData({ useName, useEmail, useUuid, useCityState, useTelephone });
+  }, [useName, useEmail, useUuid, useCityState, useTelephone]);
+
   return (
     <Box sx={{}}>
       <Typography variant="h3">Dados do usuário</Typography>
@@ -75,7 +90,7 @@ export const UserInfo = ({
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <TextField
-                  defaultValue={useName}
+                  defaultValue={userData.useName}
                   margin="normal"
                   label="Novo nome"
                   {...register("useName")}
@@ -83,7 +98,7 @@ export const UserInfo = ({
                   helperText={errors.useName?.message}
                 />
                 <TextField
-                  defaultValue={useEmail}
+                  defaultValue={userData.useEmail}
                   margin="normal"
                   label="Novo email"
                   {...register("useEmail")}
@@ -94,7 +109,7 @@ export const UserInfo = ({
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <TextField
-                  defaultValue={useCityState}
+                  defaultValue={userData.useCityState}
                   margin="normal"
                   label="Novo endereço"
                   {...register("useAddress")}
@@ -102,7 +117,7 @@ export const UserInfo = ({
                   helperText={errors.useAddress?.message}
                 />
                 <TextField
-                  defaultValue={useTelephone}
+                  defaultValue={userData.useTelephone}
                   margin="normal"
                   label="Novo telefone"
                   {...register("usePhone")}
@@ -124,7 +139,7 @@ export const UserInfo = ({
             mb: 4,
             justifyContent: "space-between",
             alignItems: "center",
-            width: 460,
+            width: 512,
             mt: 6,
             mb: 8,
           }}
@@ -137,8 +152,8 @@ export const UserInfo = ({
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h4">{useName}</Typography>
-            <Typography variant="body">{useEmail}</Typography>
+            <Typography variant="h4">{userData.useName}</Typography>
+            <Typography variant="body">{userData.useEmail}</Typography>
           </Box>
           <Box
             sx={{
@@ -149,9 +164,9 @@ export const UserInfo = ({
             }}
           >
             <Typography variant="body" sx={{ mt: 2 }}>
-              {useCityState}
+              {userData.useCityState}
             </Typography>
-            <Typography variant="body">{useTelephone}</Typography>
+            <Typography variant="body">{userData.useTelephone}</Typography>
           </Box>
         </Box>
       )}

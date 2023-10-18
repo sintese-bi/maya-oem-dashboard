@@ -584,6 +584,9 @@ export const SendEmail = ({
             email !
           </Typography>
           <Box sx={{ width: "100%", mb: 2 }}>
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              Aguarde a geração do preview do relatório
+            </Typography>
             {fileIsReadyToPreview ? (
               <PDFViewer style={{ width: "100%", height: 420 }}>
                 <ClientReport />
@@ -594,9 +597,6 @@ export const SendEmail = ({
             <div id="acquisitions"></div>
           </div>
           <BlobProvider document={MyDoc}>
-            <Typography>
-              Aguarde o carregamento da preview do relatório
-            </Typography>
             {({ blob, url, loading, error }) => {
               return (
                 <>

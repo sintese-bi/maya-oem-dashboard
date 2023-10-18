@@ -87,7 +87,11 @@ export const auth = (params) => (dispatch) => {
 };
 
 export const selectedUser = (params) => (dispatch) => {
+  console.log(params);
   dispatch({ type: users.SELECT_USER, result: params })
+  toast.success("Usuário selecionado", {
+    duration: 5000,
+  });
 }
 
 // REGISTRAR DADOS DO USUARIO
@@ -297,6 +301,7 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(' --- ', component);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
         result: data,
@@ -312,16 +317,51 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     });
 };
 
+export const updateUser = (params) => (dispatch) => {
+  dispatch({ type: users.UPDATE_USER_REQUEST });
+  api.post('/updateuser', params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      console.log(data);
+      const { use_name, use_uuid, use_email, use_city_state, use_telephone } = data["Informações"];
+      setUserCookie({
+        ...getUserCookie(),
+        useUuid: use_uuid,
+        useName: use_name,
+        useEmail: use_email,
+        useCityState: use_city_state,
+        useTelephone: use_telephone,
+      })
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: users.UPDATE_USER_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.UPDATE_USER_FAILURE, message });
+    });
+}
+
 export const getGraphData = (params) => (dispatch) => {
   dispatch({ type: users.GRAPH_REQUEST })
   api
     .post(
       "/genrealday",
-      { startDate: params.startDate, endDate: params.endDate },
+      { startDate: params.startDate, endDate: params.endDate, use_uuid: params.uuid },
       configRequest()
     )
     .then((res) => {
       const { data } = res
+      console.log(data, params);
       dispatch({
         type: users.GRAPH_SUCCESS,
         result: { data: data, dates: { startDate: params.startDate, endDate: params.endDate } }
