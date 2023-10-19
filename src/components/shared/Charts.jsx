@@ -899,6 +899,7 @@ export const ChartsDashboard = (props) => {
           display: "flex",
           justifyContent: "space-between",
           height: 460,
+          width: "100%",
           flexDirection: "column",
           bgcolor: "background.paper",
           px: 3,
@@ -934,7 +935,7 @@ export const ChartsDashboard = (props) => {
         px: 2,
         pb: 2,
         pt: 4,
-        width: "64%",
+        width: "100%",
         height: 520,
       }}
     >

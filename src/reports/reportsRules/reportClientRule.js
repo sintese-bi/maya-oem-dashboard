@@ -23,6 +23,7 @@ export const reportClient = {
     situation: "",
     savedtree: "",
     logo: "",
+    carbon: ""
 }
 
 export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
@@ -70,6 +71,7 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.address = address
     reportClient.savedtree = (realGenerationNumber * 5.04 * (0.0001)).toFixed(2)
     reportClient.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/'
+    reportClient.carbon = (Number('0.4190') * (realGenerationNumber / 1000)).toFixed(2)
 
     setIsLoadingReport(false);
 }
