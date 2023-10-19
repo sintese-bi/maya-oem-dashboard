@@ -284,13 +284,33 @@ export const ClientReport = () => {
               ></Image>
             </View>
           </View>
-          <View style={styles.cardsRow}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "69%",
+              justifyContent: "space-around",
+              marginVertical: "8px",
+            }}
+          >
             <View style={styles.card}>
               <View>
                 <Text style={styles.cardLabel}>
                   ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
                 </Text>
                 <Text style={styles.cardNumber}>{reportClient.savedtree}</Text>
+              </View>
+              <Image
+                style={styles.icon}
+                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+              ></Image>
+            </View>
+            <View style={styles.card}>
+              <View>
+                <Text style={styles.cardLabel}>
+                  EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
+                </Text>
+                <Text style={styles.cardNumber}>{reportClient.carbon}</Text>
               </View>
               <Image
                 style={styles.icon}

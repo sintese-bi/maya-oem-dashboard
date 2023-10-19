@@ -244,10 +244,8 @@ export const TotalMonth = ({
               <Box
                 sx={{
                   width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                   mt: 6,
+                  bgcolor: "red",
                 }}
               >
                 <ChartsDashboard
