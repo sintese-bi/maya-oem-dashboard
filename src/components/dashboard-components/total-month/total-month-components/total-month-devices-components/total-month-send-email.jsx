@@ -155,6 +155,7 @@ export const SendEmail = ({
   capacity,
   address,
   email,
+  deviceName
 }) => {
   const dispatch = useDispatch();
 
@@ -204,16 +205,20 @@ export const SendEmail = ({
     let startDateTemp = moment(startDate).format("DD/MM/YYYY");
     let endDateTemp = moment(endDate).format("DD/MM/YYYY");
 
-    reportClientRule(
-      devicesGeneration,
-      useNameState,
-      capacity,
-      setIsLoadingReport,
-      opa,
-      startDateTemp,
-      endDateTemp,
-      address
-    );
+    if(devicesGeneration.realGeneration.length != 0 && devicesGeneration.estimatedGeneration.length != 0){
+      reportClientRule(
+        devicesGeneration,
+        useNameState,
+        capacity,
+        setIsLoadingReport,
+        opa,
+        startDateTemp,
+        endDateTemp,
+        address,
+        deviceName
+      );
+    }
+    
   }
 
   useEffect(() => {
@@ -291,6 +296,9 @@ export const SendEmail = ({
               <View>
                 <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
                   End. de instalação: {reportClient.address}
+                </Text>
+                <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
+                  Planta: {reportClient.deviceName}
                 </Text>
               </View>
               <View>
@@ -528,6 +536,9 @@ export const SendEmail = ({
                   <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
                     End. de instalação: {reportClient.address}
                   </Text>
+                  <Text style={{ fontSize: "8px", marginBottom: "10px" }}>
+                    Planta: {reportClient.deviceName}
+                  </Text>
                 </View>
                 <View>
                   <Text style={{ fontSize: "18px", marginRight: "20px" }}>
@@ -756,9 +767,9 @@ export const SendEmail = ({
 
     // Adicione o elemento canvas ao container desejado na sua página HTML
     document.getElementById("acquisitions").appendChild(canvas);
-
+    document.getElementById("acquisitions").style.height = '420px'
     // Crie o gráfico usando Chart.js
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d"); 
     const chart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -771,35 +782,41 @@ export const SendEmail = ({
             data: devicesGeneration.realGeneration?.map((data) =>
               Number(data.value)
             ),
-            barThickness: 12,
+            barThickness: 8,
             borderRadius: 2,
             categoryPercentage: 0.5,
-            maxBarThickness: 12,
+            maxBarThickness: 8,
             backgroundColor: "#6CE5E8",
-            borderWidth: 1,
           },
           {
             label: "Geração Estimada",
+            barThickness: 3,
             data: devicesGeneration.estimatedGeneration?.map((data) => data),
-
-            backgroundColor: "#2D8BBA",
-            borderWidth: 1,
+            borderColor: "#14B8A6",
+            backgroundColor: "#14B8A6",       
             type: "line",
+            borderWidth: 0.4,
           },
         ],
       },
       options: {
         scales: {
           y: {
+            grid: {
+              display: false
+            },
             beginAtZero: true,
             ticks: {
               font: { size: 8 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
             },
           },
           x: {
+            grid: {
+              display: false
+            },
             beginAtZero: true,
             ticks: {
-              font: { size: 8 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
+              font: { size: 6 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
             },
           },
         },

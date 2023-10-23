@@ -245,7 +245,6 @@ export const TotalMonth = ({
                 sx={{
                   width: "100%",
                   mt: 6,
-                  bgcolor: "red",
                 }}
               >
                 <ChartsDashboard

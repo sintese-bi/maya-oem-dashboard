@@ -269,6 +269,7 @@ export const columnsDevices = [
               capacity={dataTable.rowData[4]}
               address={dataTable.rowData[17]}
               email={dataTable.rowData[18]}
+              deviceName={dataTable.rowData[3]}
             />
           </Stack>
         );
