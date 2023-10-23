@@ -23,10 +23,11 @@ export const reportClient = {
     situation: "",
     savedtree: "",
     logo: "",
-    carbon: ""
+    carbon: "",
+    deviceName: ""
 }
 
-export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address) {
+export function reportClientRule(generation, useNameState, capacity, setIsLoadingReport, graphRef, startDateReport, endDateReport, address, deviceName) {
     const { useName } = getUserCookie()
     let estimatedGenerationNumber = generation.estimatedGeneration.reduce((total, element) => total + element, 0).toFixed(2)
     let realGenerationNumber = generation.realGeneration.reduce((total, element) => total + Number(element.value), 0).toFixed(2)
@@ -71,7 +72,8 @@ export function reportClientRule(generation, useNameState, capacity, setIsLoadin
     reportClient.address = address
     reportClient.savedtree = (realGenerationNumber * 5.04 * (0.0001)).toFixed(2)
     reportClient.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/'
-    reportClient.carbon = (Number('0.4190') * (realGenerationNumber / 1000)).toFixed(2)
+    reportClient.carbon = numbers((Number('0.4190') * realGenerationNumber).toFixed(2))
+    reportClient.deviceName = deviceName
 
     setIsLoadingReport(false);
 }
