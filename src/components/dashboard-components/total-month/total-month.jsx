@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import api, {configRequest} from "src/services/api";
+import worker_script from "src/services/work";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -9,6 +11,7 @@ import {
   TextField,
   MenuItem,
   Button,
+  Tooltip,
 } from "@mui/material";
 
 import {
@@ -43,7 +46,7 @@ export const TotalMonth = ({
   adminGraphRef,
   setIsLoadingReportGeneration,
 }) => {
-  const { useUuid } = getUserCookie();
+  const {useUuid, token} = getUserCookie();
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
     (state) => state.users
   );
@@ -59,8 +62,12 @@ export const TotalMonth = ({
     setTopDevicesKWp(devices.sort((a, b) => b.capacity - a.capacity));
   }
 
-  function handleSendAllReportByEmail() {
-    alert("Sending all report by email");
+  function handleSendAllReportByEmail() {  
+    const worker = new Worker(worker_script, {type: "module"});
+    worker.postMessage({use_uuid: useUuid, configRequest});
+    worker.onmessage = ({ data: { answer } }) => {
+      console.log(answer);
+    };
   }
 
   useEffect(() => {
@@ -265,13 +272,16 @@ export const TotalMonth = ({
                 mt: 4,
               }}
             >
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleSendAllReportByEmail}
-              >
-                Enviar email para todas as plantas
-              </Button>
+              <Tooltip title="Função disponível em breve">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleSendAllReportByEmail}
+                  disabled={true}
+                >
+                  Enviar email para todas as plantas
+                </Button>
+              </Tooltip>
               <Plants
                 data={data}
                 devicesTableRef={devicesTableRef}
