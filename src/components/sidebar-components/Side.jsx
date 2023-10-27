@@ -68,7 +68,7 @@ export const Side = () => {
         return (
           <Box>
             {useTypeMember ? (
-              <AlertPercentageForm welcome={welcome} />
+              <AlertPercentageForm welcome={welcome} setOpen={setOpen}/>
             ) : (
               <PaymentWarn
                 welcome={welcome}
@@ -250,17 +250,13 @@ export const Side = () => {
               py: 4,
             }}
           >
-            <Cancel
+            {!welcome ? <Cancel
               fontSize="large"
               onClick={() => {
-                setUserCookie({
-                  ...getUserCookie(),
-                  firstTime: false,
-                });
                 setOpen(!open);
               }}
               sx={{ cursor: "pointer" }}
-            />
+            /> : null}
           </Box>
 
           <ModalContent />
