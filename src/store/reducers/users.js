@@ -42,7 +42,8 @@ const initialState = {
 
 export default function userReducer(state = initialState, action) {
   const { payload, brandListUser, profileLevel, result } = action;
-  const { brand_login } = result || [];
+  const { brand_login } = result?.info || [];
+  const allBrands = result?.brands?.brand_login
 
   switch (action.type) {
     // AUTENTICAÇÃO DE USUARIO
@@ -303,6 +304,7 @@ export default function userReducer(state = initialState, action) {
 
     case users.GET_ALL_DEVICES_SUCCESS:
       const daysPassedAllDevices = moment().date();
+      console.log(brand_login);
       const allDevices = brand_login
         .map((item) => {
           const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
@@ -341,7 +343,7 @@ export default function userReducer(state = initialState, action) {
             }) : []
 
             return {
-              brand: dev.dev_brand,
+              brand: item.bl_name,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
               email: dev.dev_email,
@@ -367,8 +369,9 @@ export default function userReducer(state = initialState, action) {
         })
         .flat();
 
-      const brands = [...new Set(allDevices.map((item) => item.brand))];
-      const blUuids = [...new Set(allDevices.map((item) => item.blUuid))]
+      const brands = [...new Set(allBrands.map((item) => item.bl_name))];
+      console.log(brands)
+      const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))]
 
       const generationBelowEstimated = allDevices.filter(
         (item) => item.generationRealWeek < item.generationEstimatedlWeek

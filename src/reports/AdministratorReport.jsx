@@ -242,7 +242,7 @@ export const AdministratorReport = () => {
                   <View>
                     <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                     <Text style={styles.cardNumber}>
-                      {reportAdministrator.generationRealTotalValue} MWh
+                      {reportAdministrator.generationRealTotalValue}
                     </Text>
                   </View>
                   <Image
@@ -263,7 +263,7 @@ export const AdministratorReport = () => {
                   <View>
                     <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                     <Text style={styles.cardNumber}>
-                      {reportAdministrator.generationEstimatedTotalValue} MWh
+                      {reportAdministrator.generationEstimatedTotalValue}
                     </Text>
                   </View>
                   <Image

@@ -49,7 +49,7 @@ export function reportAdministratorRule(
   const { useName } = getUserCookie()
   reportAdministrator.useName = useName
 
-  reportAdministrator.capacityTotalValue = numbers(capacity.reduce((total, element) => element + total, 0).toFixed(2))
+  reportAdministrator.capacityTotalValue = capacity.reduce((total, element) => element + total, 0).toFixed(2)
 
   reportAdministrator.devicesLength = dataDevices.length
   reportAdministrator.adminGraphRef = adminGraphRef.current.toBase64Image('image/png', 2)
@@ -57,7 +57,7 @@ export function reportAdministratorRule(
   reportAdministrator.requisitionEndDate = endDateReport;
   reportAdministrator.savedtree = ((realGeneration*1000) * 5.04 * (0.0001)).toFixed(2)
   reportAdministrator.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/';
-  reportAdministrator.carbon = numbers(((Number('0.4190') * realGeneration) * 1000).toFixed(2))
+  reportAdministrator.carbon = ((Number('0.4190') * realGeneration) * 1000).toFixed(2)
 
   setIsLoadingReport(false)
 }

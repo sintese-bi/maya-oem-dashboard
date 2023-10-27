@@ -184,6 +184,7 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -279,9 +280,10 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
-        result: data,
+        result: {info: data.result, brands: data.brand},
       });
     })
     .catch((error) => {
@@ -301,7 +303,6 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(' --- ', component);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
         result: data,
