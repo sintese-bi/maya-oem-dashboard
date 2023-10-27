@@ -111,7 +111,7 @@ export const MyDevicesResume = ({
         }}
       >
         <BigNumberDashboard
-          title="Produzido (MWh)"
+          title="Produzido"
           btn={true}
           value={numbers(realGeneration)}
           icon={<ElectricBolt />}
@@ -121,7 +121,7 @@ export const MyDevicesResume = ({
         />
 
         <BigNumberDashboard
-          title="Esperado (MWh)"
+          title="Esperado"
           btn={true}
           value={numbers(estimatedGeneration)}
           icon={<ElectricBolt />}

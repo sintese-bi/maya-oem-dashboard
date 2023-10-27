@@ -302,22 +302,22 @@ export const selectPropsStyle = () => {
 export const numbers = (value) => {
   let number = value;
   if (number.length > 6 && number.length < 10) {
-    let numberToArray = number?.split('');
+    let stringToNumber = Number(number/1000).toFixed(2)
+    let numberToArray = stringToNumber?.split('');
     numberToArray.splice(-3, 1, ',')
-    numberToArray.splice(-6, 0, '.')
-    let transformedNumber = numberToArray.join('')
+    let transformedNumber = numberToArray.join('') + " MWh"
     return transformedNumber;
   } else if (number.length >= 10) {
-    let numberToArray = number?.split('');
+    let stringToNumber = Number(number/1000).toFixed(2)
+    let numberToArray = stringToNumber?.split('');
     numberToArray.splice(-3, 1, ',')
     numberToArray.splice(-6, 1, '.')
-    numberToArray.splice(-10, 0, '.')
-    let transformedNumber = numberToArray.join('')
+    let transformedNumber = numberToArray.join('') + " MWh"
     return transformedNumber;
   } else if (number.length <= 6) {
     let numberToArray = number?.split('');
     numberToArray.splice(-3, 1, ',')
-    let transformedNumber = numberToArray.join('')
+    let transformedNumber = numberToArray.join('') + " KWh"
     return transformedNumber;
   }
 }

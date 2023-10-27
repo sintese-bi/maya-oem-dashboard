@@ -47,7 +47,7 @@ export const DashboardNavbar = () => {
       label: "Clientes",
       to: "/dashboard/users",
       icon: <AccountCircle fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
+      disabled: profileLevel === "admin" && useName == "Maya Energy" ? true : false,
       active: location.pathname === "/dashboard/users" ? true : false,
     },
     {
@@ -68,7 +68,7 @@ export const DashboardNavbar = () => {
       label: "Proposta",
       to: "/dashboard/calculator",
       icon: <BrandingWatermark fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
+      disabled: profileLevel === "admin" && useName == "Maya Energy" ? true : false,
       active: location.pathname === "/dashboard/calculator" ? true : false,
     },
   ];

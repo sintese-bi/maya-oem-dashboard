@@ -98,9 +98,7 @@ export default function Dashboard() {
       graphData.data.somaPorDiaReal
     ).reduce((total, element) => total + element, 0);
     console.log(generationRealMonthTemp);
-    let generationRealMonthTotalTemp = (generationRealMonthTemp / 1000).toFixed(
-      2
-    );
+    let generationRealMonthTotalTemp = generationRealMonthTemp.toFixed(2);
 
     setRealGenerationTotal(generationRealMonthTotalTemp);
   }
@@ -109,9 +107,7 @@ export default function Dashboard() {
     let generationEstimatedMonthTemp = Object.values(
       graphData.data.somaPorDiaEstimada
     ).reduce((total, element) => total + element, 0);
-    let generationEstimatedMonthTotalTemp = (
-      generationEstimatedMonthTemp / 1000
-    ).toFixed(2);
+    let generationEstimatedMonthTotalTemp = generationEstimatedMonthTemp.toFixed(2)
 
     setEstimatedGenerationTotal(generationEstimatedMonthTotalTemp);
   }
