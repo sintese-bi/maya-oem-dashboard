@@ -298,6 +298,7 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
 
 // RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid, component) => (dispatch) => {
+  console.log(component)
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
   api
     .get(`/dashboard/${uuid}/yes`, configRequest())
@@ -305,12 +306,12 @@ export const getDashboard = (uuid, component) => (dispatch) => {
       const { data } = res;
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
-        result: data,
+        result: {info: data.result, brands: data.brand},
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard";
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard" + component;
       toast.error(message, {
         duration: 5000,
       });
