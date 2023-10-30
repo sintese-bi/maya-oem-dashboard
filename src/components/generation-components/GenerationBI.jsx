@@ -58,7 +58,7 @@ export const GenerationBI = ({
       ?.map((data) => {
         return {
           ...data,
-          value: numbers(data.value),
+          value: numbers(data.value, "KWh"),
           date: moment(data.date).format("DD/MM/YYYY"),
         };
       });
@@ -113,7 +113,7 @@ export const GenerationBI = ({
                 deviceInfo?.generation?.gen_estimated
                   ? numbers(
                       deviceInfo?.generation?.gen_estimated.toFixed("2")
-                    ) + "Kwh"
+                      , "KWh")
                   : "-"
               }`}
               icon={<Bolt />}
@@ -128,7 +128,7 @@ export const GenerationBI = ({
               title="Geração Real"
               value={`${
                 deviceInfo?.generation?.gen_real
-                  ? numbers(deviceInfo?.generation?.gen_real.toFixed("2")) +
+                  ? numbers(deviceInfo?.generation?.gen_real.toFixed("2"), "KWh") +
                     "Kwh"
                   : "-"
               }`}
@@ -149,7 +149,7 @@ export const GenerationBI = ({
                         (deviceInfo?.generation.gen_real /
                           deviceInfo?.generation.gen_estimated) *
                           100
-                      ).toFixed(2)
+                      ).toFixed(2), "KWh"
                     )
                   : 0
               } %`}
@@ -182,14 +182,14 @@ export const GenerationBI = ({
                 productivePercent > 100 ? "Parabéns!" : ""
               }A produção da sua usina esta dentro do esperado.
 							Sua produtividade no período escolhido é de ${numbers(
-                String(totalRealGeneration)
+                String(totalRealGeneration), "KWh"
               )}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
 						`
             : `
 							Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua
 							usina.
 							Sua produtividade no período escolhido é de ${numbers(
-                String(totalRealGeneration)
+                String(totalRealGeneration), "KWh"
               )}Mwh o que corresponde a ${productivePercent}% da produção estimada.
 						`}
         </Typography>
@@ -217,7 +217,7 @@ export const GenerationBI = ({
                             0
                           )
                           .toFixed(2)
-                      ) + "Kwh"
+                          , "KWh")
                     : "-"
                 }`}
                 icon={<Bolt />}
@@ -236,7 +236,7 @@ export const GenerationBI = ({
                         generation.estimatedGeneration
                           .reduce((total, element) => total + element, 0)
                           .toFixed(2)
-                      ) + "Kwh"
+                          , "KWh") + "Kwh"
                     : "-"
                 }`}
                 icon={<Bolt />}

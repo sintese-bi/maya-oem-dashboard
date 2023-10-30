@@ -174,13 +174,13 @@ export default function Dashboard() {
         realGenerationTempArray
           .reduce((total, element) => total + element, 0)
           .toFixed("2")
-      )
+          , "KWh")
     );
     setEmittedCarbon(
       numbers(
         realGenerationTempArray
           .reduce((total, element) => total + element, 0)
-          .toFixed("2")
+          .toFixed("2"), "KWh"
       )
     );
   }, [dataDevices]);

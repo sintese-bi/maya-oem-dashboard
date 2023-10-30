@@ -181,7 +181,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
                   title="Produzido"
                   value={
                     devicesGeneration
-                      ? `${numbers(String(generationRealTotal))}KWh`
+                      ? `${numbers(String(generationRealTotal), "KWh")}`
                       : `${100}KWh`
                   }
                   icon={false}
@@ -196,7 +196,7 @@ export const ModalPlantsGraph = ({ devUuidState, blUuidState }) => {
                   title="Esperado"
                   value={
                     devicesGeneration
-                      ? `${numbers(String(generationEstimatedTotal))}KWh`
+                      ? `${numbers(String(generationEstimatedTotal), "KWh")}`
                       : `${100}KWh`
                   }
                   icon={false}

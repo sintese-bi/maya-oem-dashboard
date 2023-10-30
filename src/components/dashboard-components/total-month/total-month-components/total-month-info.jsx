@@ -57,15 +57,15 @@ export const TotalMonthInfo = ({
       </Box>
       <Typography sx={{ my: 2 }}>
         {`Prezado ${useName} sua produtivade este período é ${numbers(
-          realGenerationTotal
+          realGenerationTotal, "KWh"
         )}`}
       </Typography>
       <Card sx={{ p: 4 }}>
         <Typography sx={{ fontWeight: "600", fontSize: "20px" }}>
           {`Para este período suas usinas devem produzir ${numbers(
-            estimatedGenerationTotal
+            estimatedGenerationTotal, "KWh"
           )}, 
-            no momento você produziu ${numbers(realGenerationTotal)}.
+            no momento você produziu ${numbers(realGenerationTotal, "KWh")}.
             Isto corresponde a um desempenho de ${percentTotal}% `}
         </Typography>
       </Card>
