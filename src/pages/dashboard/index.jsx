@@ -74,6 +74,15 @@ export default function Dashboard() {
   const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
     useState(true);
 
+  // valores de geração de dataDevices
+
+  const [realGenerationValueDataDevices, setRealGenerationValueDataDevices] =
+    useState(0);
+  const [
+    estimatedGenerationValueDataDevices,
+    setEstimatedGenerationValueDataDevices,
+  ] = useState(0);
+
   // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
 
   const [percentTotal, setPercentTotal] = useState(0);
@@ -107,7 +116,8 @@ export default function Dashboard() {
     let generationEstimatedMonthTemp = Object.values(
       graphData.data.somaPorDiaEstimada
     ).reduce((total, element) => total + element, 0);
-    let generationEstimatedMonthTotalTemp = generationEstimatedMonthTemp.toFixed(2)
+    let generationEstimatedMonthTotalTemp =
+      generationEstimatedMonthTemp.toFixed(2);
 
     setEstimatedGenerationTotal(generationEstimatedMonthTotalTemp);
   }
@@ -123,6 +133,7 @@ export default function Dashboard() {
         realGenerationTotal,
         estimatedGenerationTotal,
         dataDevices,
+        allDevices,
         percent,
         startDateReport,
         endDateReport,
@@ -165,22 +176,34 @@ export default function Dashboard() {
   }, [allDevices]);
 
   useEffect(() => {
+    setRealGenerationValueDataDevices(
+      dataDevices
+        .reduce((total, element) => total + element.generationRealMonth, 0)
+        .toFixed(2)
+    );
+    setEstimatedGenerationValueDataDevices(
+      dataDevices
+        .reduce((total, element) => total + element.generationEstimatedMonth, 0)
+        .toFixed(2)
+    );
     let realGenerationTempArray = dataDevices.map((data) => {
-      let generationRealValue = data.capacity;
+      let generationRealValue = data.generationRealMonth;
       return generationRealValue;
     });
     setCapacityTotal(
       numbers(
         realGenerationTempArray
           .reduce((total, element) => total + element, 0)
-          .toFixed("2")
-          , "KWh")
+          .toFixed("2"),
+        "KWh"
+      )
     );
     setEmittedCarbon(
       numbers(
         realGenerationTempArray
           .reduce((total, element) => total + element, 0)
-          .toFixed("2"), "KWh"
+          .toFixed("2"),
+        "KWh"
       )
     );
   }, [dataDevices]);
@@ -238,8 +261,10 @@ export default function Dashboard() {
         <MyDevices
           label={"Minhas Usinas"}
           isLoadingGraph={isLoadingGraph}
-          realGeneration={realGeneration}
-          estimatedGeneration={estimatedGeneration}
+          realGenerationValueDataDevices={realGenerationValueDataDevices}
+          estimatedGenerationValueDataDevices={
+            estimatedGenerationValueDataDevices
+          }
           percent={percent}
           type={type}
           handleChangeColumns={setType}

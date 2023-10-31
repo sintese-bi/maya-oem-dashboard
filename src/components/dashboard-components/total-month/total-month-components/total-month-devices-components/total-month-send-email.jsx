@@ -407,7 +407,7 @@ export const SendEmail = ({
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.realGenerationTotal} Kwh
+                  {reportClient.realGenerationTotal}
                 </Text>
               </View>
               <Image
@@ -419,7 +419,7 @@ export const SendEmail = ({
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.estimatedGenerationTotal} Kwh
+                  {reportClient.estimatedGenerationTotal}
                 </Text>
               </View>
               <Image
@@ -646,7 +646,7 @@ export const SendEmail = ({
                 <View>
                   <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                   <Text style={styles.cardNumber}>
-                    {reportClient.realGenerationTotal} Kwh
+                    {reportClient.realGenerationTotal} 
                   </Text>
                 </View>
                 <Image
@@ -658,7 +658,7 @@ export const SendEmail = ({
                 <View>
                   <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                   <Text style={styles.cardNumber}>
-                    {reportClient.estimatedGenerationTotal} Kwh
+                    {reportClient.estimatedGenerationTotal} 
                   </Text>
                 </View>
                 <Image

@@ -363,7 +363,7 @@ export const getGraphData = (params) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res
-      console.log(data, params);
+      console.log(data, params, 'graph');
       dispatch({
         type: users.GRAPH_SUCCESS,
         result: { data: data, dates: { startDate: params.startDate, endDate: params.endDate } }

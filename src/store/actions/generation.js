@@ -113,3 +113,24 @@ export const updateEmail = (data) => (dispatch) => {
       dispatch({ type: generation.UPDATE_EMAIL_FAILURE, message });
     })
 }
+
+export const generalReport = (use_uuid) => (dispatch) => {
+  dispatch({type: generation.GET_GENERAL_REPORT_REQUEST})
+  api.post("/generalreport", use_uuid, configRequest())
+    .then((res) => {
+      const {data} = res;
+      dispatch({
+        type: generation.GET_GENERAL_REPORT_SUCCESS,
+        result: data
+      })
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      const message = err && err.data ? err.data.message : "Erro desconhecido - generalReport";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: generation.GET_GENERAL_REPORT_FAILURE, message });
+    })
+}
