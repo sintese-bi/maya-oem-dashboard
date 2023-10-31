@@ -299,27 +299,54 @@ export const selectPropsStyle = () => {
 };
 
 // FORMATA UMA STRING PARA UM VALOR MONETÁRIO SEPARANDO OS MILHARES POR VIRGULA
-export const numbers = (value) => {
+export const numbers = (value, unity) => {
   let number = value;
-  if (number.length > 6 && number.length < 10) {
-    let numberToArray = number?.split('');
-    numberToArray.splice(-3, 1, ',')
-    numberToArray.splice(-6, 0, '.')
-    let transformedNumber = numberToArray.join('')
-    return transformedNumber;
-  } else if (number.length >= 10) {
-    let numberToArray = number?.split('');
-    numberToArray.splice(-3, 1, ',')
-    numberToArray.splice(-6, 1, '.')
-    numberToArray.splice(-10, 0, '.')
-    let transformedNumber = numberToArray.join('')
-    return transformedNumber;
-  } else if (number.length <= 6) {
-    let numberToArray = number?.split('');
-    numberToArray.splice(-3, 1, ',')
-    let transformedNumber = numberToArray.join('')
-    return transformedNumber;
+
+  if(unity != "CO2"){
+    if (number.length > 6 && number.length < 10) {
+      let stringToNumber = Number(number/1000).toFixed(2)
+      let numberToArray = stringToNumber?.split('');
+      numberToArray.splice(-3, 1, ',')
+      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`
+      return transformedNumber;
+    } else if (number.length >= 10) {
+      let stringToNumber = Number(number/1000).toFixed(2)
+      let numberToArray = stringToNumber?.split('');
+      numberToArray.splice(-3, 1, ',')
+      numberToArray.splice(-6, 0, '.')
+      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`
+      return transformedNumber;
+    } else if (number.length <= 6) {
+      let numberToArray = number?.split('');
+      numberToArray.splice(-3, 1, ',')
+      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "KWh" : unity == "KWp" ? "KWp" : ""}`
+      return transformedNumber;
+    }
+  } else {
+    if (number.length > 6 && number.length < 10) {
+      let stringToNumber = Number(number).toFixed(2)
+      let numberToArray = stringToNumber?.split('');
+      numberToArray.splice(-3, 1, ',')
+      numberToArray.splice(-6, 0, '.')
+      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      return transformedNumber;
+    } else if (number.length >= 10) {
+      let stringToNumber = Number(number).toFixed(2)
+      let numberToArray = stringToNumber?.split('');
+      numberToArray.splice(-3, 1, ',')
+      numberToArray.splice(-6, 0, '.')
+      numberToArray.splice(-10, 0, '.')
+      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      return transformedNumber;
+    } else if (number.length <= 6) {
+      let numberToArray = number?.split('');
+      numberToArray.splice(-3, 1, ',')
+      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      return transformedNumber;
+    }
   }
+
+ 
 }
 
 export const handleWeekFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {

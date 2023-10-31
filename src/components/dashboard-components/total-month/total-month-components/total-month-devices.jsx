@@ -18,7 +18,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { getDashboard } from "src/store/actions/users";
+import { getAllDevices, getDashboard } from "src/store/actions/users";
 import { getUserCookie } from "src/services/session";
 
 export default function Plants(props) {
@@ -135,7 +135,7 @@ export default function Plants(props) {
 
   useEffect(() => {
     if (profileLevel != "admin") {
-      dispatch(getDashboard(useUuid));
+      dispatch(getAllDevices(useUuid));
     }
   }, [useUuid]);
 

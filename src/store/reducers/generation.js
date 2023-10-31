@@ -10,6 +10,7 @@ const initialState = {
   temperature: [],
   isSendingEmail: false,
   emailDontExist: null,
+  generalReportData: []
 };
 
 export default function userReducer(state = initialState, action) {
@@ -189,6 +190,23 @@ export default function userReducer(state = initialState, action) {
         emailDontExist: true
       }
 
+    case generation.GET_GENERAL_REPORT_REQUEST:
+      return {
+        ...state,
+        generalReportData: []
+      }
+    
+    case generation.GET_GENERAL_REPORT_SUCCESS:
+    return {
+      ...state,
+      generalReportData: result
+    }
+
+    case generation.GET_GENERAL_REPORT_FAILURE:
+    return {
+      ...state,
+      generalReportData: []
+    }
 
     default:
       return state;

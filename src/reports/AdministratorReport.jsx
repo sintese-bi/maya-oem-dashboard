@@ -230,7 +230,7 @@ export const AdministratorReport = () => {
                       POTÊNCIA TOTAL DAS USINAS
                     </Text>
                     <Text style={styles.cardNumber}>
-                      {reportAdministrator.capacityTotalValue} Kwp
+                      {reportAdministrator.capacityTotalValue}
                     </Text>
                   </View>
                   <Image
@@ -242,7 +242,7 @@ export const AdministratorReport = () => {
                   <View>
                     <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                     <Text style={styles.cardNumber}>
-                      {reportAdministrator.generationRealTotalValue} MWh
+                      {reportAdministrator.generationRealTotalValue}
                     </Text>
                   </View>
                   <Image
@@ -263,7 +263,7 @@ export const AdministratorReport = () => {
                   <View>
                     <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                     <Text style={styles.cardNumber}>
-                      {reportAdministrator.generationEstimatedTotalValue} MWh
+                      {reportAdministrator.generationEstimatedTotalValue}
                     </Text>
                   </View>
                   <Image
@@ -340,7 +340,7 @@ export const AdministratorReport = () => {
                     EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
                   </Text>
                   <Text style={styles.cardNumber}>
-                    {reportAdministrator.carbon} CO2
+                    {reportAdministrator.carbon}
                   </Text>
                 </View>
                 <Image

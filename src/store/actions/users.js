@@ -184,6 +184,7 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -279,9 +280,10 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
-        result: data,
+        result: {info: data.result, brands: data.brand},
       });
     })
     .catch((error) => {
@@ -296,20 +298,20 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
 
 // RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid, component) => (dispatch) => {
+  console.log(component)
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
   api
     .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(' --- ', component);
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
-        result: data,
+        result: {info: data.result, brands: data.brand},
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard";
+      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard" + component;
       toast.error(message, {
         duration: 5000,
       });
@@ -361,7 +363,7 @@ export const getGraphData = (params) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res
-      console.log(data, params);
+      console.log(data, params, 'graph');
       dispatch({
         type: users.GRAPH_SUCCESS,
         result: { data: data, dates: { startDate: params.startDate, endDate: params.endDate } }

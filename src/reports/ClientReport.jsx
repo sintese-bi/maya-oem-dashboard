@@ -253,7 +253,7 @@ export const ClientReport = () => {
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.realGenerationTotal}Mwh
+                  {reportClient.realGenerationTotal}
                 </Text>
               </View>
               <Image
@@ -265,7 +265,7 @@ export const ClientReport = () => {
               <View>
                 <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                 <Text style={styles.cardNumber}>
-                  {reportClient.estimatedGenerationTotal}Mwh
+                  {reportClient.estimatedGenerationTotal}
                 </Text>
               </View>
               <Image

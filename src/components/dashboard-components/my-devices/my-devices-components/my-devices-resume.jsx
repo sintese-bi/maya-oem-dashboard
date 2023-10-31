@@ -22,8 +22,8 @@ import { numbers } from "src/helpers/utils";
 
 export const MyDevicesResume = ({
   label,
-  realGeneration,
-  estimatedGeneration,
+  realGenerationValueDataDevices,
+  estimatedGenerationValueDataDevices,
   percent,
   type,
   handleChangeColumns,
@@ -111,9 +111,9 @@ export const MyDevicesResume = ({
         }}
       >
         <BigNumberDashboard
-          title="Produzido (MWh)"
+          title="Produzido"
           btn={true}
-          value={numbers(realGeneration)}
+          value={numbers(realGenerationValueDataDevices, "KWh")}
           icon={<ElectricBolt />}
           type={0}
           activeBtn={false}
@@ -121,9 +121,9 @@ export const MyDevicesResume = ({
         />
 
         <BigNumberDashboard
-          title="Esperado (MWh)"
+          title="Esperado"
           btn={true}
-          value={numbers(estimatedGeneration)}
+          value={numbers(estimatedGenerationValueDataDevices, "KWh")}
           icon={<ElectricBolt />}
           type={0}
           activeBtn={false}

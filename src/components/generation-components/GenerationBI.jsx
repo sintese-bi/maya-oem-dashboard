@@ -58,7 +58,7 @@ export const GenerationBI = ({
       ?.map((data) => {
         return {
           ...data,
-          value: numbers(data.value),
+          value: numbers(data.value, "KWh"),
           date: moment(data.date).format("DD/MM/YYYY"),
         };
       });
@@ -87,7 +87,7 @@ export const GenerationBI = ({
           ) : (
             <BigNumber
               title={`Melhor dia - ${topAndLowValue?.topValue?.date || ""}`}
-              value={`${topAndLowValue?.topValue?.value || 0}Kwh`}
+              value={`${topAndLowValue?.topValue?.value || 0}`}
               icon={<Bolt />}
             />
           )}
@@ -98,7 +98,7 @@ export const GenerationBI = ({
           ) : (
             <BigNumber
               title={`Pior dia - ${topAndLowValue?.lowValue?.date || ""}`}
-              value={`${topAndLowValue?.lowValue?.value || 0}Kwh`}
+              value={`${topAndLowValue?.lowValue?.value || 0}`}
               icon={<Bolt />}
             />
           )}
@@ -112,8 +112,9 @@ export const GenerationBI = ({
               value={`${
                 deviceInfo?.generation?.gen_estimated
                   ? numbers(
-                      deviceInfo?.generation?.gen_estimated.toFixed("2")
-                    ) + "Kwh"
+                      deviceInfo?.generation?.gen_estimated.toFixed("2"),
+                      "KWh"
+                    )
                   : "-"
               }`}
               icon={<Bolt />}
@@ -125,11 +126,13 @@ export const GenerationBI = ({
             <LoadingSkeletonBigNumbers />
           ) : (
             <BigNumber
-              title="Geração Real"
+              title="Geração Real do dia"
               value={`${
                 deviceInfo?.generation?.gen_real
-                  ? numbers(deviceInfo?.generation?.gen_real.toFixed("2")) +
-                    "Kwh"
+                  ? numbers(
+                      deviceInfo?.generation?.gen_real.toFixed("2"),
+                      "KWh"
+                    )
                   : "-"
               }`}
               icon={<ElectricBolt />}
@@ -144,13 +147,11 @@ export const GenerationBI = ({
               title="Geração percentual"
               value={`${
                 deviceInfo?.generation?.gen_real
-                  ? numbers(
-                      parseFloat(
-                        (deviceInfo?.generation.gen_real /
-                          deviceInfo?.generation.gen_estimated) *
-                          100
-                      ).toFixed(2)
-                    )
+                  ? parseFloat(
+                      (deviceInfo?.generation.gen_real /
+                        deviceInfo?.generation.gen_estimated) *
+                        100
+                    ).toFixed(2)
                   : 0
               } %`}
               icon={<OfflineBolt />}
@@ -182,14 +183,16 @@ export const GenerationBI = ({
                 productivePercent > 100 ? "Parabéns!" : ""
               }A produção da sua usina esta dentro do esperado.
 							Sua produtividade no período escolhido é de ${numbers(
-                String(totalRealGeneration)
+                String(totalRealGeneration),
+                "KWh"
               )}Mwh, o que corresponde a ${productivePercent}% da produção estimada.
 						`
             : `
 							Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua
 							usina.
 							Sua produtividade no período escolhido é de ${numbers(
-                String(totalRealGeneration)
+                String(totalRealGeneration),
+                "KWh"
               )}Mwh o que corresponde a ${productivePercent}% da produção estimada.
 						`}
         </Typography>
@@ -216,8 +219,9 @@ export const GenerationBI = ({
                             (total, element) => total + Number(element.value),
                             0
                           )
-                          .toFixed(2)
-                      ) + "Kwh"
+                          .toFixed(2),
+                        "KWh"
+                      )
                     : "-"
                 }`}
                 icon={<Bolt />}
@@ -235,8 +239,9 @@ export const GenerationBI = ({
                     ? numbers(
                         generation.estimatedGeneration
                           .reduce((total, element) => total + element, 0)
-                          .toFixed(2)
-                      ) + "Kwh"
+                          .toFixed(2),
+                        "KWh"
+                      )
                     : "-"
                 }`}
                 icon={<Bolt />}
