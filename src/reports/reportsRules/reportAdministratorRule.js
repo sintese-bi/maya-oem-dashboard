@@ -23,6 +23,7 @@ export function reportAdministratorRule(
   realGeneration,
   estimatedGeneration,
   dataDevices,
+  allDevices,
   percent,
   startDateReport,
   endDateReport,
@@ -51,11 +52,11 @@ export function reportAdministratorRule(
 
   reportAdministrator.capacityTotalValue = numbers(capacity.reduce((total, element) => element + total, 0).toFixed(2), "KWp")
 
-  reportAdministrator.devicesLength = dataDevices.length
+  reportAdministrator.devicesLength = allDevices.length
   reportAdministrator.adminGraphRef = adminGraphRef.current.toBase64Image('image/png', 2)
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;
-  reportAdministrator.savedtree = numbers(((realGeneration*1000) * 5.04 * (0.0001)).toFixed(2), "")
+  reportAdministrator.savedtree = numbers(((realGeneration*1000) * 5.04 * (0.0001) * 1000).toFixed(2), "")
   reportAdministrator.logo = 'https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/';
   reportAdministrator.carbon = numbers((Number('0.4190') * realGeneration).toFixed(2), "CO2")
 

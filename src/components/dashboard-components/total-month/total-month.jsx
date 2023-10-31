@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api, {configRequest} from "src/services/api";
+import api, { configRequest } from "src/services/api";
 import worker_script from "src/services/work";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -24,6 +24,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getGraphData } from "src/store/actions/users";
 import { TotalMonthInfo } from "./total-month-components/total-month-info";
 import { getUserCookie } from "src/services/session";
+import { generalReport } from "src/store/actions/generation";
+import {
+  BlobProvider,
+  Document,
+  Page,
+  Text,
+  usePDF,
+} from "@react-pdf/renderer";
+
+const myDoc = (
+  <Document>
+    <Page size="A4">
+      <Text>Hello World!</Text>
+    </Page>
+  </Document>
+);
 
 export const TotalMonth = ({
   useName,
@@ -46,10 +62,13 @@ export const TotalMonth = ({
   adminGraphRef,
   setIsLoadingReportGeneration,
 }) => {
-  const {useUuid, token} = getUserCookie();
+  const { useUuid, token } = getUserCookie();
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
     (state) => state.users
   );
+  const [file, setFile] = usePDF({ document: myDoc });
+  const files = [];
+  const { generalReportData } = useSelector((state) => state.generation);
   const dispatch = useDispatch();
   const [optionFilter, setOptionFilter] = useState("days");
   const [generationPercentState, setGenerationPercentState] = useState(0);
@@ -58,17 +77,23 @@ export const TotalMonth = ({
   const [estimatedGenerationFiltered, setEstimatedGenerationFiltered] =
     useState(0);
 
+  useEffect(() => {
+    dispatch(generalReport({ use_uuid: useUuid }));
+  }, [useUuid]);
+
   function handleTopDevicesKWp(devices) {
     setTopDevicesKWp(devices.sort((a, b) => b.capacity - a.capacity));
   }
 
-  function handleSendAllReportByEmail() {  
-    const worker = new Worker(worker_script, {type: "module"});
-    worker.postMessage({use_uuid: useUuid, configRequest});
-    worker.onmessage = ({ data: { answer } }) => {
-      console.log(answer);
-    };
+  function handleSendAllReportByEmail() {
+    generalReportData?.reportData?.map((data, index) => {
+      files.push([{ blob: data.dev_uuid }]);
+    });
   }
+
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
 
   useEffect(() => {
     const somaPorDiaReal = graphData.somaPorDiaReal
