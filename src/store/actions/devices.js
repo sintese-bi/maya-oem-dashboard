@@ -17,6 +17,8 @@ export const getDevices = (blUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
+
       const message = err && err.data ? err.data.message : "Erro desconhecido - getDevices";
 
       toast.error(`${message} getDevices`, {
@@ -39,6 +41,8 @@ export const getAllDevices = (blUuids) => (dispatch) => {
       })
       .catch((error) => {
         const { response: err } = error;
+        console.log(error)
+
         const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevices";
 
         toast.error(`${message} getAllDevices`, {
@@ -76,6 +80,8 @@ export const createDevice = (params) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
+
       const message = err && err.data ? err.data.message : "Erro desconhecido - createDevice";
 
       toast.error(message, {
@@ -102,6 +108,8 @@ export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
       })
       .catch((error) => {
         const { response: err } = error;
+        console.log(error)
+
         const message = err && err.data ? err.data.message : "Erro desconhecido";
 
         toast.error(message, {
@@ -129,6 +137,8 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
+
       const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevicesGeneration";
 
       toast.error(message, {
@@ -153,6 +163,8 @@ export const deleteDevice = (devUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(`${message} deleteDevices`, {
@@ -175,6 +187,7 @@ export const getCapacities = (devUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
       const message = err && err.data ? err.data.message : "Erro desconhecido - capacity";
 
       toast.error(`${message} getCapacities`, {

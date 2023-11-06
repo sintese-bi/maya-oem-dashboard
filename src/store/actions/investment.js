@@ -20,6 +20,8 @@ export const getInvestment = (date, devUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error)
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
