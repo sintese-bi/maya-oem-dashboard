@@ -61,17 +61,7 @@ export const BigNumberDashboard = (props) => {
                 {value}
               </Typography>
             </Grid>
-            <Grid item>
-              <Avatar
-                sx={{
-                  backgroundColor: "success.main",
-                  height: 56,
-                  width: 56,
-                }}
-              >
-                {icon}
-              </Avatar>
-            </Grid>
+            <Grid item>{icon}</Grid>
           </Grid>
         </CardContent>
       </CardActionArea>

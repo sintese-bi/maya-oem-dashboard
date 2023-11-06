@@ -1,6 +1,6 @@
 // bibliotecas
 
-import { Box, TextareaAutosize, Typography } from "@mui/material";
+import { Avatar, Box, TextareaAutosize, Typography } from "@mui/material";
 import moment from "moment";
 
 //components
@@ -63,7 +63,17 @@ export const MyDevicesResume = ({
         <BigNumberDashboard
           title="Usinas"
           value={allDevices.length !== 0 ? allDevices.length : 0}
-          icon={<AccountCircle />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <AccountCircle />
+            </Avatar>
+          }
           type={1}
           activeBtn={type === 1 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -71,7 +81,17 @@ export const MyDevicesResume = ({
         <BigNumberDashboard
           title="Portal de inversor"
           value={brands.length !== 0 ? brands.length : 0}
-          icon={<BrandingWatermark />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <BrandingWatermark />
+            </Avatar>
+          }
           type={2}
           activeBtn={type === 2 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -87,7 +107,17 @@ export const MyDevicesResume = ({
         <BigNumberDashboard
           title="Online"
           value={online.length !== 0 ? online.length : 0}
-          icon={<ThumbUpOffAlt />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <ThumbUpOffAlt />
+            </Avatar>
+          }
           type={6}
           activeBtn={type === 6 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -95,7 +125,17 @@ export const MyDevicesResume = ({
         <BigNumberDashboard
           title="Offline"
           value={offline.length !== 0 ? offline.length : 0}
-          icon={<ThumbDownOffAlt />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <ThumbDownOffAlt />
+            </Avatar>
+          }
           type={5}
           activeBtn={type === 5 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -114,7 +154,17 @@ export const MyDevicesResume = ({
           title="Produzido"
           btn={true}
           value={numbers(realGenerationValueDataDevices, "KWh")}
-          icon={<ElectricBolt />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 38,
+                width: 38,
+              }}
+            >
+              <ElectricBolt />
+            </Avatar>
+          }
           type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -124,7 +174,17 @@ export const MyDevicesResume = ({
           title="Esperado"
           btn={true}
           value={numbers(estimatedGenerationValueDataDevices, "KWh")}
-          icon={<ElectricBolt />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 38,
+                width: 38,
+              }}
+            >
+              <ElectricBolt />
+            </Avatar>
+          }
           type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -134,7 +194,17 @@ export const MyDevicesResume = ({
           title="Desempenho (%)"
           btn={true}
           value={percent}
-          icon={<ElectricBolt />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <ElectricBolt />
+            </Avatar>
+          }
           type={0}
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
@@ -142,7 +212,17 @@ export const MyDevicesResume = ({
         <BigNumberDashboard
           title="Usinas em Alerta"
           value={alerts.length !== 0 ? alerts.length : 0}
-          icon={<Warning />}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <Warning />
+            </Avatar>
+          }
           type={4}
           activeBtn={type === 4 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}

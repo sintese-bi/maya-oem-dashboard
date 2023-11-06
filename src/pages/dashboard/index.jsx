@@ -106,7 +106,6 @@ export default function Dashboard() {
     let generationRealMonthTemp = Object.values(
       graphData.data.somaPorDiaReal
     ).reduce((total, element) => total + element, 0);
-    console.log(generationRealMonthTemp);
     let generationRealMonthTotalTemp = generationRealMonthTemp.toFixed(2);
 
     setRealGenerationTotal(generationRealMonthTotalTemp);
@@ -158,7 +157,6 @@ export default function Dashboard() {
         getAllDevices(selectedUser[0]?.useUuidState, "index.jsx - normal")
       );
     } else {
-      console.log();
       dispatch(getDashboard(useUuid, "index.jsx - normal"));
       dispatch(getAllDevices(useUuid, "index.jsx - normal"));
     }
@@ -216,7 +214,6 @@ export default function Dashboard() {
   }, [graphData]);
 
   useEffect(() => {
-    console.log(realGenerationTotal, estimatedGenerationTotal);
     let percentValue = (
       (realGenerationTotal / estimatedGenerationTotal) *
       100

@@ -21,7 +21,15 @@ export const auth = (params) => (dispatch) => {
       .then((res) => {
         const { data } = res;
         const { message, token, result } = data;
-        const { profile_level, use_name, use_uuid, use_email, use_type_member, use_city_state, use_telephone } = result;
+        const {
+          profile_level,
+          use_name,
+          use_uuid,
+          use_email,
+          use_type_member,
+          use_city_state,
+          use_telephone,
+        } = result;
         if (!getUserCookie()) {
           setUserCookie({
             token,
@@ -32,7 +40,7 @@ export const auth = (params) => (dispatch) => {
             useTypeMember: use_type_member,
             useCityState: use_city_state,
             useTelephone: use_telephone,
-            firstTime: true
+            firstTime: true,
           });
         } else {
           setUserCookie({
@@ -44,10 +52,9 @@ export const auth = (params) => (dispatch) => {
             useTypeMember: use_type_member,
             useCityState: use_city_state,
             useTelephone: use_telephone,
-            firstTime: false
+            firstTime: false,
           });
         }
-
 
         toast.success(message, {
           duration: 5000,
@@ -61,7 +68,7 @@ export const auth = (params) => (dispatch) => {
             useUuid: use_uuid,
             useName: use_name,
             useEmail: use_email,
-            useTypeMember: use_type_member
+            useTypeMember: use_type_member,
           },
           profileLevel: profile_level.pl_cod,
         });
@@ -73,6 +80,8 @@ export const auth = (params) => (dispatch) => {
       })
       .catch((error) => {
         const { response: err } = error;
+        console.log(error);
+
         const message =
           err && err.data ? err.data.message : "Erro desconhecido";
 
@@ -87,12 +96,11 @@ export const auth = (params) => (dispatch) => {
 };
 
 export const selectedUser = (params) => (dispatch) => {
-  console.log(params);
-  dispatch({ type: users.SELECT_USER, result: params })
+  dispatch({ type: users.SELECT_USER, result: params });
   toast.success("Usuário selecionado", {
     duration: 5000,
   });
-}
+};
 
 // REGISTRAR DADOS DO USUARIO
 export const registerUser = (params) => (dispatch) => {
@@ -117,6 +125,8 @@ export const registerUser = (params) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -140,6 +150,8 @@ export const show = (uuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -184,7 +196,7 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data)
+      console.log(data);
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -192,6 +204,8 @@ export const getUsers = () => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -216,6 +230,8 @@ export const getUserBrands = (uuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
       toast.error(message, {
         duration: 5000,
@@ -242,6 +258,8 @@ export const patchAlertFrequency = (params) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
       toast.error(message, {
         duration: 5000,
@@ -259,11 +277,13 @@ export const alertFrequency = (uuid) => (dispatch) => {
       const { data } = res;
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
-        result: data
+        result: data,
       });
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -273,22 +293,24 @@ export const alertFrequency = (uuid) => (dispatch) => {
     });
 };
 
-
 export const getAllDevices = (uuid, component) => (dispatch) => {
   dispatch({ type: users.GET_ALL_DEVICES_REQUEST });
   api
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
-        result: {info: data.result, brands: data.brand},
+        result: { info: data.result, brands: data.brand },
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getAllDevices";
+      console.log(error);
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - getAllDevices";
       toast.error(message, {
         duration: 5000,
       });
@@ -298,7 +320,6 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
 
 // RETORNA OS DADOS DA DASHBOARD
 export const getDashboard = (uuid, component) => (dispatch) => {
-  console.log(component)
   dispatch({ type: users.GET_DASHBOARD_REQUEST });
   api
     .get(`/dashboard/${uuid}/yes`, configRequest())
@@ -306,12 +327,16 @@ export const getDashboard = (uuid, component) => (dispatch) => {
       const { data } = res;
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
-        result: {info: data.result, brands: data.brand},
+        result: { info: data.result, brands: data.brand },
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getDashboard" + component;
+      console.log(error);
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - getDashboard" + component;
       toast.error(message, {
         duration: 5000,
       });
@@ -321,11 +346,13 @@ export const getDashboard = (uuid, component) => (dispatch) => {
 
 export const updateUser = (params) => (dispatch) => {
   dispatch({ type: users.UPDATE_USER_REQUEST });
-  api.post('/updateuser', params, configRequest())
+  api
+    .post("/updateuser", params, configRequest())
     .then((res) => {
       const { data } = res;
       console.log(data);
-      const { use_name, use_uuid, use_email, use_city_state, use_telephone } = data["Informações"];
+      const { use_name, use_uuid, use_email, use_city_state, use_telephone } =
+        data["Informações"];
       setUserCookie({
         ...getUserCookie(),
         useUuid: use_uuid,
@@ -333,7 +360,7 @@ export const updateUser = (params) => (dispatch) => {
         useEmail: use_email,
         useCityState: use_city_state,
         useTelephone: use_telephone,
-      })
+      });
       toast.success(data.message, {
         duration: 5000,
       });
@@ -344,6 +371,8 @@ export const updateUser = (params) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -351,26 +380,34 @@ export const updateUser = (params) => (dispatch) => {
       });
       dispatch({ type: users.UPDATE_USER_FAILURE, message });
     });
-}
+};
 
 export const getGraphData = (params) => (dispatch) => {
-  dispatch({ type: users.GRAPH_REQUEST })
+  dispatch({ type: users.GRAPH_REQUEST });
   api
     .post(
       "/genrealday",
-      { startDate: params.startDate, endDate: params.endDate, use_uuid: params.uuid },
+      {
+        startDate: params.startDate,
+        endDate: params.endDate,
+        use_uuid: params.uuid,
+      },
       configRequest()
     )
     .then((res) => {
-      const { data } = res
-      console.log(data, params, 'graph');
+      const { data } = res;
       dispatch({
         type: users.GRAPH_SUCCESS,
-        result: { data: data, dates: { startDate: params.startDate, endDate: params.endDate } }
-      })
+        result: {
+          data: data,
+          dates: { startDate: params.startDate, endDate: params.endDate },
+        },
+      });
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -378,35 +415,41 @@ export const getGraphData = (params) => (dispatch) => {
       });
       dispatch({ type: users.POST_REGISTER_FAILURE, message });
     });
-}
+};
 
 export const getCapacities = (blUuids) => (dispatch) => {
-  let capacities = []
-  dispatch({ type: users.GET_CAPACITY_REQUEST })
+  let capacities = [];
+  dispatch({ type: users.GET_CAPACITY_REQUEST });
   blUuids?.map((data) => {
     api
       .get(`/report/${data}`)
       .then((res) => {
         const { data } = res;
-        capacities.push(data.sumOfDevCapacities)
+        capacities.push(data.sumOfDevCapacities);
       })
       .catch((error) => {
         const { response: err } = error;
-        const message = err && err.data ? err.data.message : "Erro desconhecido - user-capacity";
+        console.log(error);
+
+        const message =
+          err && err.data
+            ? err.data.message
+            : "Erro desconhecido - user-capacity";
         toast.error(message, {
           duration: 5000,
         });
         dispatch({
-          type: users.GET_CAPACITY_FAILURE, message
-        })
-      })
-  })
+          type: users.GET_CAPACITY_FAILURE,
+          message,
+        });
+      });
+  });
 
   dispatch({
     type: users.GET_CAPACITY_SUCCESS,
-    result: capacities
-  })
-}
+    result: capacities,
+  });
+};
 
 export const sendEmail = (data) => (dispatch) => {
   dispatch({ type: users.SEND_EMAIL_REQUEST });
@@ -425,6 +468,8 @@ export const sendEmail = (data) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -432,38 +477,45 @@ export const sendEmail = (data) => (dispatch) => {
       });
       dispatch({ type: users.SEND_EMAIL_FAILURE, message });
     });
-}
+};
 
 export const passwordRecovery = (params) => (dispatch) => {
-  dispatch({ type: users.RECOVER_PASSWORD_REQUEST })
-  const { new_password, use_token, use_email, navigate } = params
+  dispatch({ type: users.RECOVER_PASSWORD_REQUEST });
+  const { new_password, use_token, use_email, navigate } = params;
   api
-    .post(`/passrecover?use_token=${use_token}&use_email=${use_email}`, { use_password: new_password }, configRequest())
+    .post(
+      `/passrecover?use_token=${use_token}&use_email=${use_email}`,
+      { use_password: new_password },
+      configRequest()
+    )
     .then((res) => {
       const { data } = res;
 
       toast.success(data.message, {
         duration: 5000,
       });
-      navigate("/")
+      navigate("/");
       dispatch({
         type: users.RECOVER_PASSWORD_SUCCESS,
       });
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
         duration: 5000,
       });
       dispatch({ type: users.RECOVER_PASSWORD_FAILURE, message });
-    })
-}
+    });
+};
 
 export const cancelUserPlan = (use_uuid) => (dispatch) => {
   dispatch({ type: users.CANCEL_PLAN_REQUEST });
-  api.post('/cancelplan', { use_uuid }, configRequest())
+  api
+    .post("/cancelplan", { use_uuid }, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {
@@ -475,11 +527,74 @@ export const cancelUserPlan = (use_uuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - cancelUserPlan";
 
       toast.error(message, {
         duration: 5000,
       });
       dispatch({ type: users.CANCEL_PLAN_FAILURE, message });
+    });
+};
+
+export const portalemailLogins = (params) => (dispatch) => {
+  dispatch({ type: users.UPDATE_USER_EMAIL_REQUEST });
+  api
+    .post("/emaildash", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      dispatch({
+        type: users.UPDATE_USER_EMAIL_SUCCESS,
+      });
     })
-}
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - portalemailLogins";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.UPDATE_USER_EMAIL_FAILURE, message });
+    });
+};
+
+export const getAllDevicesFromUser = (params) => (dispatch) => {
+  dispatch({ type: users.GET_ALL_DEVICES_FROM_USER_REQUEST });
+  api
+    .post("/deviceinfo", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      dispatch({
+        type: users.GET_ALL_DEVICES_FROM_USER_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - getAllDevicesFromUser";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.GET_ALL_DEVICES_FROM_USER_FAILURE, message });
+    });
+};
