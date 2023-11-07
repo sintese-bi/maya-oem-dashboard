@@ -31,33 +31,37 @@ import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 
 const validateSchema = Yup.object().shape({
-    percentage: Yup.number()
-      .when("frequencyName", {
-        is: "day",
-        then: Yup.number()
-          .typeError("Insira um número")
-          .min(0, "O valor mínimo é 0")
-          .max(20, "O valor máximo é 20")
-          .nullable()
-          .transform((value, originalValue) =>
-            originalValue === "" ? null : value
-          ),
-        otherwise: Yup.number()
-          .min(80, "O valor mínimo é 80")
-          .nullable()
-          .transform((value, originalValue) =>
-            originalValue === "" ? null : value
-          ),
-      })
-      .nullable(),
-    frequencyName: Yup.string().required("Campo é obrigatório."),
-  });
+  percentage: Yup.number()
+    .when("frequencyName", {
+      is: "day",
+      then: Yup.number()
+        .typeError("Insira um número")
+        .min(0, "O valor mínimo é 0")
+        .max(20, "O valor máximo é 20")
+        .nullable()
+        .transform((value, originalValue) =>
+          originalValue === "" ? null : value
+        ),
+      otherwise: Yup.number()
+        .min(80, "O valor mínimo é 80")
+        .nullable()
+        .transform((value, originalValue) =>
+          originalValue === "" ? null : value
+        ),
+    })
+    .nullable(),
+  frequencyName: Yup.string().required("Campo é obrigatório."),
+});
 
-export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, currentPage}) {
-
-    const [freePlan, setFreePlan] = useState(true);
+export function AlertsDefineComponent({
+  welcome,
+  setOpen,
+  setCurrentPage,
+  currentPage,
+}) {
+  const [freePlan, setFreePlan] = useState(true);
   const dispatch = useDispatch();
-  
+
   const { useUuid, useName, profileLevel, useTypeMember } = getUserCookie();
 
   const {
@@ -101,8 +105,7 @@ export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, current
     }
   }, [percentage, frequencyName]);
 
-
-    return (
+  return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
       <Card
         sx={{
@@ -118,7 +121,6 @@ export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, current
         ) : null}
 
         <Box sx={{ display: "flex", flexDirection: "column", pb: 6 }}>
-
           <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
             <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
               Definição de frequência dos alertas
@@ -134,8 +136,8 @@ export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, current
             {`Prezado usuário, definir a frequência e o limite mínimo de produtividade
               das suas plantas. Essa definição controla o envio de alerta das plantas
               para seu email todas as vezes que suas plantas produzirem ${watch(
-              "percentage"
-            )}%
+                "percentage"
+              )}%
               abaixo do definido enviaremos um alerta para você.`}
           </Typography>
         </Box>
@@ -213,7 +215,7 @@ export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, current
                       variant="standard"
                       disabled={
                         isLoadingAlertFrequency == false &&
-                          useTypeMember != false
+                        useTypeMember != false
                           ? false
                           : true
                       }
@@ -265,5 +267,6 @@ export function AlertsDefineComponent({welcome, setOpen, setCurrentPage, current
           )}
         </Grid>
       </Card>
-    </Box>)
-  }
+    </Box>
+  );
+}

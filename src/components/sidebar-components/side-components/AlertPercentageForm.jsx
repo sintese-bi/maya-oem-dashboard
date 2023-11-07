@@ -4,7 +4,7 @@ import { ChartsDashboard } from "../../shared/Charts";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Carousel from 'react-material-ui-carousel';
+import Carousel from "react-material-ui-carousel";
 import * as Yup from "yup";
 
 import { AdministratorReport } from "src/reports/AdministratorReport";
@@ -42,32 +42,42 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 
-
 export default function AlertPercentageForm({ welcome, setOpen }) {
-
   const [currentPage, setCurrentPage] = useState(0);
-
 
   return (
     <Box>
       {welcome ? (
-        <Carousel 
-        navButtonsAlwaysInvisible={true}
-        activeIndicatorIconButtonProps={{
-          style:{
-            color:"#14B8A6"
-          }
-        }} indicatorIconButtonProps={{style: {
-          color: "#D1D5DB"
-        }}} index={currentPage} autoPlay={false}  sx={{width: 512}}>
-          <AlertsDefineComponent welcome={welcome} setCurrentPage={setCurrentPage} currentPage={currentPage} />
-          <DefineAlertEmail setCurrentPage={setCurrentPage} currentPage={currentPage} />
+        <Carousel
+          navButtonsAlwaysInvisible={true}
+          activeIndicatorIconButtonProps={{
+            style: {
+              color: "#14B8A6",
+            },
+          }}
+          indicatorIconButtonProps={{
+            style: {
+              color: "#D1D5DB",
+            },
+          }}
+          index={currentPage}
+          autoPlay={false}
+          sx={{ width: 512 }}
+        >
+          <AlertsDefineComponent
+            welcome={welcome}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+          <DefineAlertEmail
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
           <DefineCapacityAndDevicesEmails setOpen={setOpen} />
         </Carousel>
-        ) : (
+      ) : (
         <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
-        )
-      }
+      )}
     </Box>
   );
 }

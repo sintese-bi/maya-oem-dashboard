@@ -37,13 +37,14 @@ const initialState = {
   sendingEmail: [],
   passwordRecovery: [],
   selectedUser: [],
-  userData: {}
+  userData: {},
+  allDevicesFromUser: [],
 };
 
 export default function userReducer(state = initialState, action) {
   const { payload, brandListUser, profileLevel, result } = action;
   const { brand_login } = result?.info || [];
-  const allBrands = result?.brands?.brand_login
+  const allBrands = result?.brands?.brand_login;
 
   switch (action.type) {
     // AUTENTICAÇÃO DE USUARIO
@@ -77,8 +78,8 @@ export default function userReducer(state = initialState, action) {
     case users.SELECT_USER:
       return {
         ...state,
-        selectedUser: [result]
-      }
+        selectedUser: [result],
+      };
 
     // REGISTRAR DADOS DO USUARIO
     case users.POST_REGISTER_REQUEST:
@@ -118,7 +119,7 @@ export default function userReducer(state = initialState, action) {
         loadingShow: false,
         useEmail: use_email,
         useName: use_name,
-        useCodePagarMe: use_code_pagar_me
+        useCodePagarMe: use_code_pagar_me,
       };
 
     case users.GET_SHOW_FAILURE:
@@ -205,7 +206,9 @@ export default function userReducer(state = initialState, action) {
             dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
 
             const generationRealDay = dev.generation.filter(
-              (item) => item.gen_date === moment().subtract(1, 'day').format('YYYY-MM-DD')
+              (item) =>
+                item.gen_date ===
+                moment().subtract(1, "day").format("YYYY-MM-DD")
             );
 
             return {
@@ -300,25 +303,26 @@ export default function userReducer(state = initialState, action) {
         alerts: [],
         offline: [],
         online: [],
-      }
+      };
 
     case users.GET_ALL_DEVICES_SUCCESS:
       const daysPassedAllDevices = moment().date();
-      console.log(brand_login);
       const allDevices = brand_login
         .map((item) => {
-          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
+          const devicesNotDeleted = item.devices.filter(
+            (dev) => dev.dev_deleted !== true
+          );
           const res = devicesNotDeleted.map((dev) => {
-            const generationEstimatedDay = dev.generation.length !== 0
-              ? dev.generation[0].gen_estimated
-              : 0
+            const generationEstimatedDay =
+              dev.generation.length !== 0 ? dev.generation[0].gen_estimated : 0;
 
             let sumRealWeek = 0;
-            let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassedAllDevices);
+            let sumEstimatedlWeek =
+              generationEstimatedDay * Math.min(7, daysPassedAllDevices);
 
             let sumRealMonth = 0;
-            let sumEstimatedMonth = generationEstimatedDay * daysPassedAllDevices;
-
+            let sumEstimatedMonth =
+              generationEstimatedDay * daysPassedAllDevices;
 
             dev.generation.forEach((item) => {
               if (
@@ -329,18 +333,23 @@ export default function userReducer(state = initialState, action) {
               }
             });
             dev.generation.forEach((item) => {
-              sumRealMonth += item.gen_real
+              sumRealMonth += item.gen_real;
             });
 
             const generationRealDay = dev.generation.filter(
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
             );
 
-            const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
-              const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
-              const today = moment().format('YYYY-MM-DD');
-              return alertDate === today;
-            }) : []
+            const alerts =
+              dev.alerts.length !== 0
+                ? dev.alerts.filter((item) => {
+                    const alertDate = moment(item.alert_created_at).format(
+                      "YYYY-MM-DD"
+                    );
+                    const today = moment().format("YYYY-MM-DD");
+                    return alertDate === today;
+                  })
+                : [];
 
             return {
               brand: item.bl_name,
@@ -356,9 +365,15 @@ export default function userReducer(state = initialState, action) {
                   : 0,
               generationRealWeek: parseFloat(sumRealWeek.toFixed(2)),
               generationRealMonth: parseFloat(sumRealMonth.toFixed(2)),
-              generationEstimatedDay: parseFloat(generationEstimatedDay.toFixed(2)),
-              generationEstimatedlWeek: parseFloat(sumEstimatedlWeek.toFixed(2)),
-              generationEstimatedMonth: parseFloat(sumEstimatedMonth.toFixed(2)),
+              generationEstimatedDay: parseFloat(
+                generationEstimatedDay.toFixed(2)
+              ),
+              generationEstimatedlWeek: parseFloat(
+                sumEstimatedlWeek.toFixed(2)
+              ),
+              generationEstimatedMonth: parseFloat(
+                sumEstimatedMonth.toFixed(2)
+              ),
               alert: alerts.length,
               staName: dev?.status ? dev?.status.sta_name : "Não informado!",
               staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
@@ -370,8 +385,7 @@ export default function userReducer(state = initialState, action) {
         .flat();
 
       const brands = [...new Set(allBrands.map((item) => item.bl_name))];
-      console.log(brands)
-      const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))]
+      const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))];
 
       const generationBelowEstimated = allDevices.filter(
         (item) => item.generationRealWeek < item.generationEstimatedlWeek
@@ -413,22 +427,24 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
-      console.log("Done requisition - ", brand_login);
       const daysPassed = moment().date();
       const dataDevices = brand_login
         .map((item) => {
-          const devicesNotDeleted = item.devices.filter((dev) => dev.dev_deleted !== true)
+          const devicesNotDeleted = item.devices.filter(
+            (dev) => dev.dev_deleted !== true
+          );
           const res = devicesNotDeleted.map((dev) => {
-            const generationEstimatedDay = dev.generation.length !== 0
-              ? dev.generation[0].gen_estimated
-              : 0
+            const generationEstimatedDay =
+              dev.generation.length !== 0 && dev.generation[0].gen_real != 0
+                ? dev.generation[0].gen_estimated
+                : 0;
 
             let sumRealWeek = 0;
-            let sumEstimatedlWeek = generationEstimatedDay * Math.min(7, daysPassed);
+            let sumEstimatedlWeek =
+              generationEstimatedDay * Math.min(7, daysPassed);
 
             let sumRealMonth = 0;
             let sumEstimatedMonth = generationEstimatedDay * daysPassed;
-
 
             dev.generation.forEach((item) => {
               if (
@@ -439,18 +455,23 @@ export default function userReducer(state = initialState, action) {
               }
             });
             dev.generation.forEach((item) => {
-              sumRealMonth += item.gen_real
+              sumRealMonth += item.gen_real;
             });
 
             const generationRealDay = dev.generation.filter(
               (item) => item.gen_date === moment().format("YYYY-MM-DD")
             );
 
-            const alerts = dev.alerts.length !== 0 ? dev.alerts.filter(item => {
-              const alertDate = moment(item.alert_created_at).format('YYYY-MM-DD');
-              const today = moment().format('YYYY-MM-DD');
-              return alertDate === today;
-            }) : []
+            const alerts =
+              dev.alerts.length !== 0
+                ? dev.alerts.filter((item) => {
+                    const alertDate = moment(item.alert_created_at).format(
+                      "YYYY-MM-DD"
+                    );
+                    const today = moment().format("YYYY-MM-DD");
+                    return alertDate === today;
+                  })
+                : [];
 
             return {
               brand: dev.dev_brand,
@@ -464,7 +485,9 @@ export default function userReducer(state = initialState, action) {
                   : 0,
               generationRealWeek: sumRealWeek,
               generationRealMonth: sumRealMonth,
-              generationEstimatedDay: generationEstimatedDay ? generationEstimatedDay : 0,
+              generationEstimatedDay: generationEstimatedDay
+                ? generationEstimatedDay
+                : 0,
               generationEstimatedlWeek: sumEstimatedlWeek,
               generationEstimatedMonth: sumEstimatedMonth,
               alert: alerts.length,
@@ -481,7 +504,6 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         dataDevices,
-
       };
 
     case users.GET_DASHBOARD_FAILURE:
@@ -495,116 +517,148 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isLoadingGraph: true,
-        graphData: []
-      }
+        graphData: [],
+      };
 
     case users.GRAPH_SUCCESS:
       return {
         ...state,
         isLoadingGraph: false,
-        graphData: result
-      }
+        graphData: result,
+      };
 
     case users.GRAPH_FAILURE:
       return {
         ...state,
         isLoadingGraph: false,
-        graphData: []
-      }
-
+        graphData: [],
+      };
 
     case users.GET_CAPACITY_REQUEST:
       return {
         ...state,
         isLoadingCapacity: true,
         capacity: [],
-      }
+      };
 
     case users.GET_CAPACITY_SUCCESS:
       return {
         ...state,
         isLoadingCapacity: false,
-        capacity: result
-      }
+        capacity: result,
+      };
 
     case users.GET_CAPACITY_FAILURE:
       return {
         ...state,
         isLoadingCapacity: false,
         capacity: [],
-      }
+      };
 
     case users.SEND_EMAIL_REQUEST:
       return {
         ...state,
         loadingSendingEmail: true,
         sendingEmail: false,
-      }
+      };
 
     case users.SEND_EMAIL_REQUEST:
       return {
         ...state,
         loadingSendingEmail: false,
         sendingEmail: true,
-      }
+      };
 
     case users.SEND_EMAIL_REQUEST:
       return {
         ...state,
         loadingSendingEmail: false,
         sendingEmail: false,
-      }
+      };
 
     case users.RECOVER_PASSWORD_REQUEST:
       return {
         ...state,
         loadingPasswordRecovery: true,
         passwordRecovery: false,
-      }
+      };
 
     case users.RECOVER_PASSWORD_SUCCESS:
       return {
         ...state,
         loadingPasswordRecovery: false,
         passwordRecovery: true,
-      }
+      };
 
     case users.RECOVER_PASSWORD_FAILURE:
       return {
         ...state,
         loadingPasswordRecovery: false,
         passwordRecovery: false,
-      }
+      };
 
     case users.CANCEL_PLAN_REQUEST:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     case users.CANCEL_PLAN_SUCCESS:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     case users.CANCEL_PLAN_FAILURE:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     case users.UPDATE_USER_REQUEST:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     case users.UPDATE_USER_SUCCESS:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     case users.UPDATE_USER_FAILURE:
       return {
-        ...state
-      }
+        ...state,
+      };
+
+    case users.UPDATE_USER_EMAIL_REQUEST:
+      return {
+        ...state,
+      };
+
+    case users.UPDATE_USER_EMAIL_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case users.UPDATE_USER_EMAIL_FAILURE:
+      return {
+        ...state,
+      };
+
+    case users.GET_ALL_DEVICES_FROM_USER_REQUEST:
+      return {
+        ...state,
+        allDevicesFromUser: [],
+      };
+
+    case users.GET_ALL_DEVICES_FROM_USER_SUCCESS:
+      return {
+        ...state,
+        allDevicesFromUser: result,
+      };
+
+    case users.GET_ALL_DEVICES_FROM_USER_FAILURE:
+      return {
+        ...state,
+        allDevicesFromUser: [],
+      };
 
     default:
       return state;

@@ -28,12 +28,17 @@ export const getGeneration = (params) => async (dispatch) => {
       dispatch({
         type: generation.GET_GENERATION_SUCCESS,
         result: data,
-        args: { type: 'month', date: params.date },
+        args: { type: "month", date: params.date },
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - getGeneration";
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - getGeneration";
 
       toast.error(message, {
         duration: 5000,
@@ -56,6 +61,8 @@ export const getAlerts = (devUuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -81,6 +88,8 @@ export const reportgenerationEmai = (data) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
@@ -88,12 +97,12 @@ export const reportgenerationEmai = (data) => (dispatch) => {
       });
       dispatch({ type: generation.SEND_EMAIL_TO_DEVICE_FAILURE, message });
     });
-}
+};
 
 export const updateEmail = (data) => (dispatch) => {
-  dispatch({ type: generation.UPDATE_EMAIL_REQUEST })
-  console.log(data);
-  api.post('/updateemail', data, configRequest())
+  dispatch({ type: generation.UPDATE_EMAIL_REQUEST });
+  api
+    .post("/updateemail", data, configRequest())
     .then(() => {
       toast.success("Email atualizado", {
         duration: 5000,
@@ -105,32 +114,40 @@ export const updateEmail = (data) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
+      console.log(error);
+
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
         duration: 5000,
       });
       dispatch({ type: generation.UPDATE_EMAIL_FAILURE, message });
-    })
-}
+    });
+};
 
 export const generalReport = (use_uuid) => (dispatch) => {
-  dispatch({type: generation.GET_GENERAL_REPORT_REQUEST})
-  api.post("/generalreport", use_uuid, configRequest())
+  dispatch({ type: generation.GET_GENERAL_REPORT_REQUEST });
+  api
+    .post("/generalreport", use_uuid, configRequest())
     .then((res) => {
-      const {data} = res;
+      const { data } = res;
       dispatch({
         type: generation.GET_GENERAL_REPORT_SUCCESS,
-        result: data
-      })
+        result: data,
+      });
     })
     .catch((error) => {
       const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido - generalReport";
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - generalReport";
 
       toast.error(message, {
         duration: 5000,
       });
       dispatch({ type: generation.GET_GENERAL_REPORT_FAILURE, message });
-    })
-}
+    });
+};

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api, { configRequest } from "src/services/api";
+import ReactDOMServer from "react-dom/server";
 import worker_script from "src/services/work";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -12,6 +13,7 @@ import {
   MenuItem,
   Button,
   Tooltip,
+  Modal,
 } from "@mui/material";
 
 import {
@@ -26,20 +28,117 @@ import { TotalMonthInfo } from "./total-month-components/total-month-info";
 import { getUserCookie } from "src/services/session";
 import { generalReport } from "src/store/actions/generation";
 import {
+  PDFViewer,
   BlobProvider,
   Document,
   Page,
   Text,
+  View,
+  StyleSheet,
+  Image,
   usePDF,
+  pdf,
 } from "@react-pdf/renderer";
-
-const myDoc = (
-  <Document>
-    <Page size="A4">
-      <Text>Hello World!</Text>
-    </Page>
-  </Document>
-);
+const styles = StyleSheet.create({
+  pdfViewer: {
+    height: "85vh",
+    width: "500px",
+  },
+  page: {
+    backgroundColor: "white",
+  },
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: "20px",
+    paddingLeft: "20px",
+    backgroundColor: "#0097B2",
+    color: "white",
+  },
+  generationDateText: {
+    fontSize: "6px",
+    opacity: 0.8,
+    marginBottom: "4px",
+  },
+  generationDateValue: {
+    fontSize: "8px",
+    fontWeight: "ultrabold",
+    marginBottom: "14px",
+  },
+  logo: {
+    padding: "22px",
+    backgroundColor: "white",
+    borderTopLeftRadius: "50px",
+    borderBottomLeftRadius: "50px",
+  },
+  cardsRow: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-evenly",
+    marginVertical: "8px",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "180px",
+    backgroundColor: "#0097B2",
+    borderRadius: "10px",
+    padding: "20px",
+    color: "white",
+  },
+  cardLabel: {
+    fontSize: "6px",
+    fontWeight: "ultrabold",
+    opacity: 0.8,
+    marginBottom: "8px",
+  },
+  cardNumber: {
+    fontSize: "16px",
+    fontWeight: "ultrabold",
+  },
+  cardText: {
+    fontSize: "10px",
+    fontWeight: "ultrabold",
+    width: "86px",
+  },
+  icon: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "50px",
+  },
+  madeBy: {
+    marginTop: "30px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+  },
+  light: {
+    height: "10px",
+    width: "10px",
+  },
+  pdfEndImg: {
+    height: "14px",
+    width: "80px",
+  },
+  madeByText: {
+    fontSize: "8px",
+    marginBottom: "8px",
+  },
+});
 
 export const TotalMonth = ({
   useName,
@@ -66,8 +165,7 @@ export const TotalMonth = ({
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
     (state) => state.users
   );
-  const [file, setFile] = usePDF({ document: myDoc });
-  const files = [];
+  const [open, setOpen] = useState(false);
   const { generalReportData } = useSelector((state) => state.generation);
   const dispatch = useDispatch();
   const [optionFilter, setOptionFilter] = useState("days");
@@ -77,23 +175,293 @@ export const TotalMonth = ({
   const [estimatedGenerationFiltered, setEstimatedGenerationFiltered] =
     useState(0);
 
-  useEffect(() => {
-    dispatch(generalReport({ use_uuid: useUuid }));
-  }, [useUuid]);
-
   function handleTopDevicesKWp(devices) {
     setTopDevicesKWp(devices.sort((a, b) => b.capacity - a.capacity));
   }
 
   function handleSendAllReportByEmail() {
-    generalReportData?.reportData?.map((data, index) => {
-      files.push([{ blob: data.dev_uuid }]);
+    setOpen(true);
+  }
+
+  function ReportItem(data) {
+    const files = [];
+
+    const MyDoc = (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <View style={styles.main}>
+            <View style={styles.header}>
+              <View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View style={{ marginRight: "22px" }}>
+                    <Text style={styles.generationDateText}>
+                      Data de geração
+                    </Text>
+                    <Text style={styles.generationDateValue}></Text>
+                  </View>
+                </View>
+                <View>
+                  <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
+                    Planta: {data.dev_name}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.logo}>
+                <Image
+                  style={{ width: "160px", height: "62px" }}
+                  src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
+                ></Image>
+              </View>
+            </View>
+            <View
+              style={{
+                width: "100vw",
+                backgroundColor: "white",
+                padding: "20px",
+                marginBottom: "20px",
+                marginTop: "10px",
+                borderRadius: "10px",
+                opacity: 0.9,
+              }}
+            >
+              <Text
+                style={{
+                  marginBottom: "16px",
+                  marginLeft: "16px",
+                  fontWeight: "heavy",
+                  fontSize: "12px",
+                }}
+              >
+                Comparação da geração real e estimada
+              </Text>
+              <Image
+                style={{
+                  width: "100%",
+                  height: "220px",
+                }}
+                src={`https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/-/preview/500x500/-/quality/smart_retina/-/format/auto/`}
+              ></Image>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "200px",
+                width: "600px",
+                position: "absolute",
+                top: "192px",
+                zIndex: 2,
+              }}
+            >
+              <Image
+                style={{ height: "100%", width: "80%" }}
+                src="https://ucarecdn.com/4e2bca57-c558-47ca-b01e-c0a62ca8d23a/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
+              ></Image>
+            </View>
+            <View style={styles.cardsRow}>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>MARCA</Text>
+                  <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
+                    {data.dev_brand}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>POTÊNCIA</Text>
+                  <Text style={styles.cardNumber}>{data.dev_capacity}</Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
+                  <Text style={styles.cardText}>
+                    {(data.sumData.gen_real / data.sumData.gen_estimated) *
+                      100 >
+                    100
+                      ? "Acima"
+                      : (data.sumData.gen_real / data.sumData.gen_estimated) *
+                          100 >=
+                        80
+                      ? "Dentro"
+                      : "Abaixo"}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                ></Image>
+              </View>
+            </View>
+            <View style={styles.cardsRow}>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
+                  <Text style={styles.cardNumber}>
+                    {data.sumData.gen_real.toFixed(2)}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
+                  <Text style={styles.cardNumber}>
+                    {data.sumData.gen_estimated.toFixed(2)}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>PERCENTUAL</Text>
+                  <Text style={styles.cardNumber}>
+                    {(
+                      (data.sumData.gen_real / data.sumData.gen_estimated) *
+                      100
+                    ).toFixed()}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                ></Image>
+              </View>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "69%",
+                justifyContent: "space-around",
+                marginVertical: "8px",
+              }}
+            >
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>
+                    ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
+                  </Text>
+                  <Text style={styles.cardNumber}></Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+              <View style={styles.card}>
+                <View>
+                  <Text style={styles.cardLabel}>
+                    EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
+                  </Text>
+                  <Text style={styles.cardNumber}></Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                ></Image>
+              </View>
+            </View>
+            <View
+              style={{
+                width: "80%",
+                backgroundColor: "#D9D9D9",
+                paddingVertical: "24px",
+                paddingHorizontal: "12px",
+                marginBottom: "10px",
+                marginTop: "10px",
+                borderRadius: "10px",
+              }}
+            >
+              <Text style={{ fontSize: "12px" }}></Text>
+            </View>
+            <View style={styles.madeBy}>
+              <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
+              <Image
+                style={{ width: "60px", height: "24px" }}
+                src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
+              ></Image>
+            </View>
+          </View>
+        </Page>
+      </Document>
+    );
+
+    const renderPDFToBlob = async () => {
+      const blob = await pdf(MyDoc).toBlob();
+      console.log(blob);
+      //const reader = new FileReader();
+      //reader.addEventListener("loadend", () => {
+      //  files.push({ dev_uuid: data.dev_uuid, base64: reader.result });
+      //});
+      //reader.readAsDataURL(blob);
+    };
+
+    renderPDFToBlob();
+
+    return files;
+  }
+
+  function MassiveEmailModal() {
+    let generatedReports = [];
+    const dataToGeneratePDF = () => {
+      let timesToSlice = generalReportData.reportData.length / 10;
+      let index = 0;
+      let test = [];
+      for (let i = 0; i <= timesToSlice; i++) {
+        test.push(generalReportData.reportData.slice(index, index + 10));
+        index += 10;
+      }
+      return test;
+    };
+
+    const data = dataToGeneratePDF();
+
+    data[0]?.map((data) => {
+      ReportItem(data);
     });
+
+    return (
+      <Box sx={{ bgcolor: "background.paper", width: 300, height: 300 }}>
+        <Button
+          onClick={() => {
+            console.log();
+          }}
+        >
+          opa
+        </Button>
+      </Box>
+    );
+  }
+
+  function handleMassiveEmailModal() {
+    setOpen(false);
   }
 
   useEffect(() => {
-    console.log(files);
-  }, [files]);
+    dispatch(generalReport({ use_uuid: useUuid }));
+  }, [useUuid]);
 
   useEffect(() => {
     const somaPorDiaReal = graphData.somaPorDiaReal
@@ -314,6 +682,17 @@ export const TotalMonth = ({
               />
             </Box>
           </Card>
+          <Modal
+            open={open}
+            onClose={handleMassiveEmailModal}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <MassiveEmailModal />
+          </Modal>
         </Box>
       )}
     </>
