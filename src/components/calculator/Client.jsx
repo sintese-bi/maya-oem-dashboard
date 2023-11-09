@@ -369,7 +369,7 @@ function ClientCalculator({ onPreviousStep }) {
     const json = JSON.stringify(formData);
     const segPlanGigaValue = String(selectedPlan);
     axios
-      .post("https://calc.mayaoem.com.br/api/v2/cal-mrkp/", formData)
+      .post("http://159.65.42.225:3002/calmarkp", formData)
       .then((response) => {
         // Manipule a resposta da API conforme necessário
         let apiResponse = response.data;
