@@ -158,8 +158,8 @@ export const MyDevicesResume = ({
             <Avatar
               sx={{
                 backgroundColor: "success.main",
-                height: 38,
-                width: 38,
+                height: 0,
+                width: 0,
               }}
             >
               <ElectricBolt />
@@ -178,8 +178,8 @@ export const MyDevicesResume = ({
             <Avatar
               sx={{
                 backgroundColor: "success.main",
-                height: 38,
-                width: 38,
+                height: 0,
+                width: 0,
               }}
             >
               <ElectricBolt />

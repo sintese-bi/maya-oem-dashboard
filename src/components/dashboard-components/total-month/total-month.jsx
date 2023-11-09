@@ -5,6 +5,7 @@ import worker_script from "src/services/work";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Chart } from "chart.js";
 import {
   Box,
   Typography,
@@ -14,6 +15,7 @@ import {
   Button,
   Tooltip,
   Modal,
+  LinearProgress,
 } from "@mui/material";
 
 import {
@@ -39,6 +41,8 @@ import {
   usePDF,
   pdf,
 } from "@react-pdf/renderer";
+import toast from "react-hot-toast";
+import { numbers } from "src/helpers/utils";
 const styles = StyleSheet.create({
   pdfViewer: {
     height: "85vh",
@@ -165,6 +169,10 @@ export const TotalMonth = ({
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
     (state) => state.users
   );
+  const [generatedReports, setGeneratedReports] = useState([]);
+  const [opa, setOpa] = useState();
+  const [progress, setProgress] = useState(0);
+  const [cancelGeneration, setCancelGeneration] = useState(true);
   const [open, setOpen] = useState(false);
   const { generalReportData } = useSelector((state) => state.generation);
   const dispatch = useDispatch();
@@ -183,250 +191,371 @@ export const TotalMonth = ({
     setOpen(true);
   }
 
-  function ReportItem(data) {
-    const files = [];
+  async function generateBlob(doc) {
+    const blob = await pdf(doc).toBlob();
+    return blob;
+  }
 
-    const MyDoc = (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.main}>
-            <View style={styles.header}>
-              <View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <View style={{ marginRight: "22px" }}>
-                    <Text style={styles.generationDateText}>
-                      Data de geração
+  function reportGenerationCompleted() {
+    setOpen(false);
+    toast.success("Processo de envio massivo de email completo!", {
+      duration: 1000,
+    });
+  }
+
+  function createChart(props) {
+    // Crie um elemento canvas para o gráfico
+    const canvasContainer = document.getElementById("acquisitions");
+
+    let canvas = canvasContainer.querySelector("canvas");
+
+    if (canvas) {
+      document.getElementById("canvas").remove();
+    } else {
+      canvas = document.createElement("canvas");
+      canvas.setAttribute("id", "canvas");
+      canvasContainer.appendChild(canvas);
+    }
+
+    const ctx = canvas.getContext("2d");
+
+    const chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["a", "b", "c", "d", "e", "f"],
+        datasets: [
+          {
+            label: "Geração Real",
+            data: [10, 10, 10, 10, 10, 10],
+            barThickness: 8,
+            borderRadius: 2,
+            categoryPercentage: 0.5,
+            maxBarThickness: 8,
+            backgroundColor: "#6CE5E8",
+          },
+          {
+            label: "Geração Estimada",
+            barThickness: 3,
+            data: [20, 10, 20, 20, 10, 40],
+            borderColor: "#14B8A6",
+            backgroundColor: "#14B8A6",
+            type: "line",
+            borderWidth: 0.4,
+          },
+        ],
+      },
+      options: {
+        animation: {
+          onComplete: async (animation) => {
+            props.map((data) => {
+              const labels = Object.keys(data.currentDayData);
+
+              animation.chart.data.labels = labels;
+              animation.chart.update();
+              console.log(animation.chart.toBase64Image());
+            });
+          },
+        },
+        scales: {
+          y: {
+            grid: {
+              display: false,
+            },
+            beginAtZero: true,
+            ticks: {
+              font: { size: 8 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
+            },
+          },
+          x: {
+            grid: {
+              display: false,
+            },
+            beginAtZero: true,
+            ticks: {
+              font: { size: 6 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async function reportItem(props, graphURL) {
+    const files = [];
+    for (const data of props) {
+      const MyDoc = (
+        <Document>
+          <Page size="A4" style={styles.page}>
+            <View style={styles.main}>
+              <View style={styles.header}>
+                <View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View style={{ marginRight: "22px" }}>
+                      <Text style={styles.generationDateText}>
+                        Data de geração
+                      </Text>
+                      <Text style={styles.generationDateValue}></Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
+                      Planta: {data.dev_name}
                     </Text>
-                    <Text style={styles.generationDateValue}></Text>
                   </View>
                 </View>
-                <View>
-                  <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
-                    Planta: {data.dev_name}
-                  </Text>
+                <View style={styles.logo}>
+                  <Image
+                    style={{ width: "160px", height: "62px" }}
+                    src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
+                  ></Image>
                 </View>
               </View>
-              <View style={styles.logo}>
-                <Image
-                  style={{ width: "160px", height: "62px" }}
-                  src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                width: "100vw",
-                backgroundColor: "white",
-                padding: "20px",
-                marginBottom: "20px",
-                marginTop: "10px",
-                borderRadius: "10px",
-                opacity: 0.9,
-              }}
-            >
-              <Text
+              <View
                 style={{
-                  marginBottom: "16px",
-                  marginLeft: "16px",
-                  fontWeight: "heavy",
-                  fontSize: "12px",
+                  width: "100vw",
+                  backgroundColor: "white",
+                  padding: "20px",
+                  marginBottom: "20px",
+                  marginTop: "10px",
+                  borderRadius: "10px",
+                  opacity: 0.9,
                 }}
               >
-                Comparação da geração real e estimada
-              </Text>
-              <Image
+                <Text
+                  style={{
+                    marginBottom: "16px",
+                    marginLeft: "16px",
+                    fontWeight: "heavy",
+                    fontSize: "12px",
+                  }}
+                >
+                  Comparação da geração real e estimada
+                </Text>
+                <Image
+                  style={{
+                    width: "100%",
+                    height: "220px",
+                  }}
+                  src={`${
+                    graphURL
+                      ? graphURL
+                      : `https://ucarecdn.com/
+                258f82dc-bf80-4b30-a4be-bcea7118f14a/
+                -/preview/500x500/
+                -/quality/smart_retina/
+                -/format/auto/`
+                  }`}
+                ></Image>
+              </View>
+              <View
                 style={{
-                  width: "100%",
-                  height: "220px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "200px",
+                  width: "600px",
+                  position: "absolute",
+                  top: "192px",
+                  zIndex: 2,
                 }}
-                src={`https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/-/preview/500x500/-/quality/smart_retina/-/format/auto/`}
-              ></Image>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "200px",
-                width: "600px",
-                position: "absolute",
-                top: "192px",
-                zIndex: 2,
-              }}
-            >
-              <Image
-                style={{ height: "100%", width: "80%" }}
-                src="https://ucarecdn.com/4e2bca57-c558-47ca-b01e-c0a62ca8d23a/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
-              ></Image>
-            </View>
-            <View style={styles.cardsRow}>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>MARCA</Text>
-                  <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-                    {data.dev_brand}
-                  </Text>
-                </View>
+              >
                 <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                  style={{ height: "100%", width: "80%" }}
+                  src="https://ucarecdn.com/4e2bca57-c558-47ca-b01e-c0a62ca8d23a/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
                 ></Image>
               </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>POTÊNCIA</Text>
-                  <Text style={styles.cardNumber}>{data.dev_capacity}</Text>
+              <View style={styles.cardsRow}>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>MARCA</Text>
+                    <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
+                      {data.dev_brand}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                  ></Image>
                 </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-                  <Text style={styles.cardText}>
-                    {(data.sumData.gen_real / data.sumData.gen_estimated) *
-                      100 >
-                    100
-                      ? "Acima"
-                      : (data.sumData.gen_real / data.sumData.gen_estimated) *
-                          100 >=
-                        80
-                      ? "Dentro"
-                      : "Abaixo"}
-                  </Text>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>POTÊNCIA</Text>
+                    <Text style={styles.cardNumber}>{data.dev_capacity}</Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
                 </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-                ></Image>
-              </View>
-            </View>
-            <View style={styles.cardsRow}>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {data.sumData.gen_real.toFixed(2)}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-                  <Text style={styles.cardNumber}>
-                    {data.sumData.gen_estimated.toFixed(2)}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>PERCENTUAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {(
-                      (data.sumData.gen_real / data.sumData.gen_estimated) *
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
+                    <Text style={styles.cardText}>
+                      {(data.sumData.gen_real / data.sumData.gen_estimated) *
+                        100 >
                       100
-                    ).toFixed()}
-                  </Text>
+                        ? "Acima"
+                        : (data.sumData.gen_real / data.sumData.gen_estimated) *
+                            100 >=
+                          80
+                        ? "Dentro"
+                        : "Abaixo"}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                  ></Image>
                 </View>
+              </View>
+              <View style={styles.cardsRow}>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
+                    <Text style={styles.cardNumber}>
+                      {data.sumData.gen_real}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
+                    <Text style={styles.cardNumber}>
+                      {data.sumData.gen_estimated}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>PERCENTUAL</Text>
+                    <Text style={styles.cardNumber}>
+                      {(data.sumData.gen_real / data.sumData.gen_estimated) *
+                        100}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                  ></Image>
+                </View>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "69%",
+                  justifyContent: "space-around",
+                  marginVertical: "8px",
+                }}
+              >
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>
+                      ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
+                    </Text>
+                    <Text style={styles.cardNumber}>
+                      {numbers(
+                        data.sumData.gen_real * 1000 * 5.04 * 0.0001 * 1000,
+                        ""
+                      )}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>
+                      EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
+                    </Text>
+                    <Text style={styles.cardNumber}>
+                      {numbers(Number("0.4190") * data.sumData.gen_real, "CO2")}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: "80%",
+                  backgroundColor: "#D9D9D9",
+                  paddingVertical: "24px",
+                  paddingHorizontal: "12px",
+                  marginBottom: "10px",
+                  marginTop: "10px",
+                  borderRadius: "10px",
+                }}
+              >
+                <Text style={{ fontSize: "12px" }}>
+                  {(data.sumData.gen_real / data.sumData.gen_estimated) * 100 >
+                  100
+                    ? `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
+                        data.sumData.gen_real
+                      )}KWh.`
+                    : (data.sumData.gen_real / data.sumData.gen_estimated) *
+                        100 >=
+                      80
+                    ? `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
+                        data.sumData.gen_real
+                      )}kWh.`
+                    : `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${numbers(
+                        data.sumData.gen_real
+                      )}KWh.`}
+                </Text>
+              </View>
+              <View style={styles.madeBy}>
+                <Text style={styles.madeByText}>
+                  POWERED BY: MAYA TECH S.A{" "}
+                </Text>
                 <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
+                  style={{ width: "60px", height: "24px" }}
+                  src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
                 ></Image>
               </View>
             </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "69%",
-                justifyContent: "space-around",
-                marginVertical: "8px",
-              }}
-            >
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
-                  </Text>
-                  <Text style={styles.cardNumber}></Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
-                  </Text>
-                  <Text style={styles.cardNumber}></Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                width: "80%",
-                backgroundColor: "#D9D9D9",
-                paddingVertical: "24px",
-                paddingHorizontal: "12px",
-                marginBottom: "10px",
-                marginTop: "10px",
-                borderRadius: "10px",
-              }}
-            >
-              <Text style={{ fontSize: "12px" }}></Text>
-            </View>
-            <View style={styles.madeBy}>
-              <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
-              <Image
-                style={{ width: "60px", height: "24px" }}
-                src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-          </View>
-        </Page>
-      </Document>
-    );
+          </Page>
+        </Document>
+      );
 
-    const renderPDFToBlob = async () => {
-      const blob = await pdf(MyDoc).toBlob();
-      console.log(blob);
-      //const reader = new FileReader();
-      //reader.addEventListener("loadend", () => {
-      //  files.push({ dev_uuid: data.dev_uuid, base64: reader.result });
-      //});
-      //reader.readAsDataURL(blob);
-    };
+      const blob = await generateBlob(MyDoc);
 
-    renderPDFToBlob();
+      const reader = new FileReader();
+      reader.addEventListener("loadend", () => {
+        console.log(reader.result);
+        files.push({ dev_uuid: data.dev_uuid, base64: reader.result });
+        setProgress((prevProgress) =>
+          prevProgress >= 100
+            ? reportGenerationCompleted()
+            : prevProgress + 100 / props.length
+        );
+      });
+      reader.readAsDataURL(blob);
+    }
 
     return files;
   }
 
   function MassiveEmailModal() {
-    let generatedReports = [];
     const dataToGeneratePDF = () => {
-      let timesToSlice = generalReportData.reportData.length / 10;
+      let timesToSlice = generalReportData?.reportData.length / 10;
       let index = 0;
       let test = [];
       for (let i = 0; i <= timesToSlice; i++) {
@@ -436,21 +565,64 @@ export const TotalMonth = ({
       return test;
     };
 
-    const data = dataToGeneratePDF();
+    useEffect(() => {
+      const generatedReports = async () => {
+        const data = dataToGeneratePDF();
+        createChart(data[data.length - 1]);
+      };
 
-    data[0]?.map((data) => {
-      ReportItem(data);
-    });
+      generatedReports();
+    }, [cancelGeneration]);
+
+    const normalise = (value) =>
+      ((value - 0) * 100) / (generalReportData?.reportData.length - 0);
 
     return (
-      <Box sx={{ bgcolor: "background.paper", width: 300, height: 300 }}>
-        <Button
-          onClick={() => {
-            console.log();
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          bgcolor: "background.paper",
+          width: 500,
+          height: 400,
+          py: 8,
+        }}
+      >
+        <div>
+          <div id="acquisitions"></div>
+        </div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "90%",
           }}
         >
-          opa
-        </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setCancelGeneration(false);
+            }}
+          >
+            Iniciar envio
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Encerrar envio
+          </Button>
+        </Box>
+        <LinearProgress
+          variant="determinate"
+          {...{ value: progress }}
+          sx={{ width: "90%" }}
+        />
       </Box>
     );
   }
@@ -667,10 +839,17 @@ export const TotalMonth = ({
             >
               <Tooltip title="Função disponível em breve">
                 <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleSendAllReportByEmail}
-                  disabled={true}
+                  variant="outlined"
+                  color="inherit"
+                  sx={{ opacity: 0.4 }}
+                  onClick={() => {
+                    toast.success(
+                      "Em breve nosso sistema implementará o envio massivo de email para todas as plantas registradas do usuário!",
+                      {
+                        duration: 4000,
+                      }
+                    );
+                  }}
                 >
                   Enviar email para todas as plantas
                 </Button>
