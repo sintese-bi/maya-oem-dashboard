@@ -6,14 +6,10 @@ import { SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllDevicesFromUser } from "src/store/actions/users";
-
-const validateSchema = Yup.object().shape({
-  email: Yup.string().required("Campo é obrigatório."),
-  capacity: Yup.number()
-    .min(1, "Por favor insira um valor acima de 0")
-    .required("Campo é obrigatório."),
-});
+import {
+  getAllDevicesFromUser,
+  updateEmailAndCapacity,
+} from "src/store/actions/users";
 
 export function DefineCapacityAndDevicesEmails({ setOpen }) {
   const dispatch = useDispatch();
@@ -29,15 +25,19 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    resolver: yupResolver(validateSchema),
   });
 
   async function onSubmit(values) {
+    let arraydevices = [];
     alert("Inputando email e potência...");
-    setUserCookie({
-      ...getUserCookie(),
-      firstTime: false,
+    data?.map((_, index) => {
+      arraydevices.push({
+        dev_uuid: values[`dev_uuid_${index}`],
+        dev_email: values[`dev_email_${index}`],
+        dev_capacity: values[`dev_capacity_${index}`],
+      });
     });
+    dispatch(updateEmailAndCapacity({ arraydevices }));
     setOpen(false);
   }
 
@@ -48,6 +48,10 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
   useEffect(() => {
     setData(allDevicesFromUser);
   }, [allDevicesFromUser]);
+
+  useEffect(() => {
+    console.log(data.filter((data) => data.dev_uuid === "null"));
+  }, [data]);
 
   return (
     <Box
@@ -61,41 +65,69 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
         p: 2,
       }}
     >
-      <Typography sx={{ fontWeight: "bold", fontSize: "20px", mb: 8 }}>
+      <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
         Por favor, define o email e a potência de cada planta!
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 4, opacity: 0.7 }}>
+        Precisamos desses dados para o envio de alertas <strong>MAYA</strong>, e
+        para cálcularmos valores como a geração estimada da sua usina. Seus
+        dados estão seguros conosco!
       </Typography>
       <Box
         sx={{
           display: "grid",
-          justifyContent: "center",
-          gridTemplateColumns: "repeat(4, 340px)",
-          gap: 2,
+          justifyContent: "space-around",
+          gridTemplateColumns: "repeat(3, 340px)",
+          gap: 3,
           width: "100%",
           height: 362,
           overflow: "auto",
           mb: 6,
+          borderBottom: "1px",
         }}
       >
         {data?.map((data, index) => (
           <Box key={index}>
-            <Typography variant="body2">Plant name</Typography>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Typography variant="body2">{data.dev_name}</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <TextField
-                sx={{ width: "100%" }}
+                value={data.dev_uuid}
+                {...register(`dev_uuid_${index}`)}
+                sx={{ display: "none" }}
                 margin="normal"
-                label="Email"
-                type="email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
+                label="ID"
+                type="text"
               />
+              <Box sx={{ mr: 2 }}>
+                <TextField
+                  value={data.dev_email}
+                  {...register(`dev_email_${index}`)}
+                  sx={{ width: "100%" }}
+                  margin="normal"
+                  label="Email"
+                  type="email"
+                />
+                <TextField
+                  sx={{ width: "90%" }}
+                  {...register(`dev_end_${index}`)}
+                  margin="normal"
+                  label="End. de instalação"
+                  type="email"
+                />
+              </Box>
               <TextField
-                defaultValue={0}
+                value={data.dev_capacity}
+                {...register(`dev_capacity_${index}`)}
                 sx={{ width: "26%" }}
                 margin="normal"
                 label="Potência"
                 type="number"
-                error={!!errors.capacity}
-                helperText={errors.capacity?.message}
               />
             </Box>
           </Box>
@@ -105,7 +137,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
         startIcon={<SaveAs fontSize="small" />}
         type="submit"
         variant="contained"
-        sx={{ color: "primary", variant: "contained", mb: 4, width: 200 }}
+        sx={{ color: "primary", variant: "contained", width: 200 }}
       >
         Salvar
       </Button>

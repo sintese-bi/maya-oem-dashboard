@@ -649,6 +649,7 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_ALL_DEVICES_FROM_USER_SUCCESS:
+      console.log(result);
       return {
         ...state,
         allDevicesFromUser: result,
@@ -658,6 +659,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         allDevicesFromUser: [],
+      };
+
+    case users.UPDATE_EMAIL_CAPACITY_DEVICE:
+      return {
+        ...state,
       };
 
     default:

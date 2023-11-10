@@ -86,7 +86,11 @@ export function AlertsDefineComponent({
 
   async function onSubmit(values) {
     //dispatch(patchAlertFrequency({ values, useUuid }));
-    welcome ? setCurrentPage(currentPage + 1) : setOpen(false);
+    welcome
+      ? currentPage < 3 && currentPage >= 0
+        ? setCurrentPage(currentPage + 1)
+        : null
+      : setOpen(false);
   }
 
   useEffect(() => {

@@ -214,6 +214,13 @@ export default function Dashboard() {
   }, [graphData]);
 
   useEffect(() => {
+    console.log(
+      realGenerationValueDataDevices,
+      estimatedGenerationValueDataDevices
+    );
+  }, [realGenerationValueDataDevices, estimatedGenerationValueDataDevices]);
+
+  useEffect(() => {
     let percentValue = (
       (realGenerationTotal / estimatedGenerationTotal) *
       100
