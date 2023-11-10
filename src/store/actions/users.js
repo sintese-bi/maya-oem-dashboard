@@ -382,6 +382,29 @@ export const updateUser = (params) => (dispatch) => {
     });
 };
 
+export const updateEmailAndCapacity = (params) => (dispatch) => {
+  api
+    .post("/updateemaildevice", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE });
+      toast.success(data.message, {
+        duration: 3000,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.POST_REGISTER_FAILURE, message });
+    });
+};
+
 export const getGraphData = (params) => (dispatch) => {
   dispatch({ type: users.GRAPH_REQUEST });
   api
@@ -573,7 +596,7 @@ export const portalemailLogins = (params) => (dispatch) => {
 export const getAllDevicesFromUser = (params) => (dispatch) => {
   dispatch({ type: users.GET_ALL_DEVICES_FROM_USER_REQUEST });
   api
-    .post("/deviceinfo", params, configRequest())
+    .post(`/deviceinfo/yes`, params, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {
@@ -581,6 +604,7 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
       });
       dispatch({
         type: users.GET_ALL_DEVICES_FROM_USER_SUCCESS,
+        result: data,
       });
     })
     .catch((error) => {

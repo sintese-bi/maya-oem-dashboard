@@ -30,7 +30,9 @@ export function DefineAlertEmail({ setCurrentPage, currentPage }) {
 
   async function onSubmit(values) {
     const { email } = values;
-    setCurrentPage(currentPage + 1);
+    currentPage < 3 && currentPage >= 0
+      ? setCurrentPage(currentPage + 1)
+      : null;
     dispatch(portalemailLogins({ use_uuid: useUuid, use_email: email }));
   }
 
