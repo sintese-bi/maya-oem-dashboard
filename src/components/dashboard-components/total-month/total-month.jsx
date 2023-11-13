@@ -721,13 +721,6 @@ export const TotalMonth = ({
       1000
     ).toFixed(2);
     setEstimatedGeneration(generationEstimatedMonthTotal);
-
-    setPercent(
-      (
-        (generationRealMonthTotal / generationEstimatedMonthTotal) *
-        100
-      ).toFixed()
-    );
   }, [graphData]);
 
   useEffect(() => {
