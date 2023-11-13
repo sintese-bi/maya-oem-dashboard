@@ -174,16 +174,17 @@ export default function Dashboard() {
   }, [allDevices]);
 
   useEffect(() => {
-    setRealGenerationValueDataDevices(
-      dataDevices
-        .reduce((total, element) => total + element.generationRealMonth, 0)
-        .toFixed(2)
-    );
-    setEstimatedGenerationValueDataDevices(
-      dataDevices
-        .reduce((total, element) => total + element.generationEstimatedMonth, 0)
-        .toFixed(2)
-    );
+    let realGeneration = dataDevices
+      .reduce((total, element) => total + element.generationRealMonth, 0)
+      .toFixed(2);
+    let estimatedGeneration = dataDevices
+      .reduce((total, element) => total + element.generationEstimatedMonth, 0)
+      .toFixed(2);
+
+    setRealGenerationValueDataDevices(realGeneration);
+    setEstimatedGenerationValueDataDevices(estimatedGeneration);
+    setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
+
     let realGenerationTempArray = dataDevices.map((data) => {
       let generationRealValue = data.generationRealMonth;
       return generationRealValue;

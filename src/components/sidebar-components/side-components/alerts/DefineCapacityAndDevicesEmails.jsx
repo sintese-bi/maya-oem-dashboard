@@ -14,7 +14,6 @@ import {
 
 export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
   const dispatch = useDispatch();
-
   const {
     register,
     handleSubmit,
@@ -26,7 +25,18 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
     mode: "onChange",
   });
 
-  function autoComplete(value, index) {}
+  function autoComplete(value, index) {
+    const locationFiltered = location.filter((data) =>
+      data.ic_city.includes(value)
+    );
+
+    if (locationFiltered.length == 1) {
+      setValue(
+        `dev_address_${index}`,
+        `${locationFiltered[0].ic_city}-${locationFiltered[0].ic_states}`
+      );
+    }
+  }
 
   async function onSubmit(values) {
     let arraydevices = [];
@@ -39,6 +49,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
       });
     });
 
+    setUserCookie({ ...getUserCookie(), firstTime: false });
     dispatch(updateEmailAndCapacity(arraydevices));
     setOpen(false);
   }
@@ -110,9 +121,11 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
                   onChange={(e) => {
                     autoComplete(e.currentTarget.value, index);
                   }}
+                  placeholder="Cidade-Estado"
                   margin="normal"
                   label="End. de instalação"
                   type="email"
+                  aria-description="Por favor siga o exemplo Cidade-Estado, para evitar processamento de infomarções."
                 />
               </Box>
               <TextField
