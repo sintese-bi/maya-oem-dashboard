@@ -1,8 +1,9 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
+import location from "src/services/municipios";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { SaveAs } from "@mui/icons-material";
+import { JoinFull, SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,11 +12,9 @@ import {
   updateEmailAndCapacity,
 } from "src/store/actions/users";
 
-export function DefineCapacityAndDevicesEmails({ setOpen }) {
+export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
   const dispatch = useDispatch();
-  const { allDevicesFromUser } = useSelector((state) => state.users);
-  const [data, setData] = useState(Array(20).fill(10));
-  const { useUuid } = getUserCookie();
+
   const {
     register,
     handleSubmit,
@@ -27,31 +26,22 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
     mode: "onChange",
   });
 
+  function autoComplete(value, index) {}
+
   async function onSubmit(values) {
     let arraydevices = [];
-    alert("Inputando email e potência...");
-    data?.map((_, index) => {
+    data.map((_, index) => {
       arraydevices.push({
         dev_uuid: values[`dev_uuid_${index}`],
         dev_email: values[`dev_email_${index}`],
         dev_capacity: values[`dev_capacity_${index}`],
+        dev_address: values[`dev_address_${index}`],
       });
     });
-    dispatch(updateEmailAndCapacity({ arraydevices }));
+
+    dispatch(updateEmailAndCapacity(arraydevices));
     setOpen(false);
   }
-
-  useEffect(() => {
-    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
-  }, []);
-
-  useEffect(() => {
-    setData(allDevicesFromUser);
-  }, [allDevicesFromUser]);
-
-  useEffect(() => {
-    console.log(data.filter((data) => data.dev_uuid === "null"));
-  }, [data]);
 
   return (
     <Box
@@ -86,7 +76,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
           borderBottom: "1px",
         }}
       >
-        {data?.map((data, index) => (
+        {data.map((data, index) => (
           <Box key={index}>
             <Typography variant="body2">{data.dev_name}</Typography>
             <Box
@@ -106,7 +96,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
               />
               <Box sx={{ mr: 2 }}>
                 <TextField
-                  value={data.dev_email}
+                  value={data.dev_email || null}
                   {...register(`dev_email_${index}`)}
                   sx={{ width: "100%" }}
                   margin="normal"
@@ -114,15 +104,19 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
                   type="email"
                 />
                 <TextField
+                  value={data.dev_address || null}
                   sx={{ width: "90%" }}
-                  {...register(`dev_end_${index}`)}
+                  {...register(`dev_address_${index}`)}
+                  onChange={(e) => {
+                    autoComplete(e.currentTarget.value, index);
+                  }}
                   margin="normal"
                   label="End. de instalação"
                   type="email"
                 />
               </Box>
               <TextField
-                value={data.dev_capacity}
+                value={data.dev_capacity || 0}
                 {...register(`dev_capacity_${index}`)}
                 sx={{ width: "26%" }}
                 margin="normal"

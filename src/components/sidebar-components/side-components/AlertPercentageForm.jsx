@@ -40,9 +40,14 @@ import {
   Divider,
   Typography,
   Paper,
+  Backdrop,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
+import {
+  alertFrequency,
+  getAllDevicesFromUser,
+  patchAlertFrequency,
+} from "src/store/actions/users";
 import { display, style } from "@mui/system";
 import { AlertsDefineComponent } from "./alerts/AlertsDefineComponent";
 import { DefineAlertEmail } from "./alerts/DefineAlertEmail";
@@ -51,10 +56,17 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 
 export default function AlertPercentageForm({ welcome, setOpen }) {
+  const dispatch = useDispatch();
+
   const { allDevicesFromUser } = useSelector((state) => state.users);
   const [data, setData] = useState([]);
+  const { useUuid } = getUserCookie();
   const [currentPage, setCurrentPage] = useState(0);
   const [carouselWidth, setCarouselWidth] = useState(512);
+
+  useEffect(() => {
+    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
+  }, []);
 
   useEffect(() => {
     setData(allDevicesFromUser);
@@ -63,6 +75,8 @@ export default function AlertPercentageForm({ welcome, setOpen }) {
   useEffect(() => {
     if (currentPage == 2) {
       setCarouselWidth("94vw");
+    } else {
+      setCarouselWidth(512);
     }
   }, [currentPage]);
 
@@ -71,12 +85,6 @@ export default function AlertPercentageForm({ welcome, setOpen }) {
       {welcome ? (
         <>
           <Carousel
-            next={() => {
-              setCurrentPage(currentPage + 1);
-            }}
-            prev={() => {
-              setCurrentPage(currentPage - 1);
-            }}
             navButtonsAlwaysInvisible={true}
             indicators={false}
             indicatorIconButtonProps={{
@@ -97,7 +105,7 @@ export default function AlertPercentageForm({ welcome, setOpen }) {
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
             />
-            <DefineCapacityAndDevicesEmails setOpen={setOpen} />
+            <DefineCapacityAndDevicesEmails setOpen={setOpen} data={data} />
           </Carousel>
           <Box
             sx={{
@@ -112,18 +120,15 @@ export default function AlertPercentageForm({ welcome, setOpen }) {
               fontSize="small"
               sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
               onClick={() =>
-                currentPage < 3 && currentPage >= 0
-                  ? setCurrentPage(currentPage - 1)
-                  : null
+                currentPage > 0 ? setCurrentPage(currentPage - 1) : null
               }
             />
+
             <ArrowForwardIos
               fontSize="small"
               sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
               onClick={() =>
-                currentPage < 3 && currentPage >= 0
-                  ? setCurrentPage(currentPage + 1)
-                  : null
+                currentPage < 2 ? setCurrentPage(currentPage + 1) : null
               }
             />
           </Box>
