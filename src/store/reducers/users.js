@@ -666,6 +666,11 @@ export default function userReducer(state = initialState, action) {
         ...state,
       };
 
+    case users.DELETE_USER:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

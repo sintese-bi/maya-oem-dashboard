@@ -1,24 +1,30 @@
 import { Route, Routes } from "react-router-dom";
 
-//LAYOUTS 
+//LAYOUTS
 import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
 // PAGINAS
-import PasswordRecovery from './pages/passwordRecovery';
+import PasswordRecovery from "./pages/passwordRecovery";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/dashboard";
 import Generation from "./pages/dashboard/generation";
 import Investment from "./pages/dashboard/investment";
 import Alerts from "./pages/dashboard/alerts";
-import AlertDevices from 'src/components/alerts-components/AlertDevices';
+import AlertDevices from "src/components/alerts-components/AlertDevices";
 import Plants from "src/components/dashboard-components/total-month/total-month-components/total-month-devices";
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
-import { HomePage, AdminCalculator, ClientCalculator } from "./components/calculator";
+import {
+  HomePage,
+  AdminCalculator,
+  ClientCalculator,
+} from "./components/calculator";
 import { ReportTest } from "./components/ReportTest";
+import { getUserCookie } from "./services/session";
+import { UpdateNote } from "./pages/dashboard/UpdateNote";
 
 export default function App() {
   return (
@@ -46,7 +52,6 @@ export default function App() {
             <Route path="reportTest" element={<ReportTest />} />
           </Route>
         </Route>
-
       </Route>
 
       <Route path="*" element={<Login />} />

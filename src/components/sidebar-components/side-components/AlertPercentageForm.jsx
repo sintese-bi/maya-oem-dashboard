@@ -21,6 +21,7 @@ import {
   Home,
   ArrowBackIos,
   ArrowForwardIos,
+  Cancel,
 } from "@mui/icons-material";
 import {
   Box,
@@ -55,26 +56,15 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 
-export default function AlertPercentageForm({ welcome, setOpen }) {
+export default function AlertPercentageForm({ welcome, setOpen, open }) {
   const dispatch = useDispatch();
 
-  const { allDevicesFromUser } = useSelector((state) => state.users);
-  const [data, setData] = useState([]);
-  const { useUuid } = getUserCookie();
   const [currentPage, setCurrentPage] = useState(0);
   const [carouselWidth, setCarouselWidth] = useState(512);
 
   useEffect(() => {
-    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
-  }, []);
-
-  useEffect(() => {
-    setData(allDevicesFromUser);
-  }, [allDevicesFromUser]);
-
-  useEffect(() => {
     if (currentPage == 2) {
-      setCarouselWidth("94vw");
+      setCarouselWidth("86vw");
     } else {
       setCarouselWidth(512);
     }
@@ -105,7 +95,7 @@ export default function AlertPercentageForm({ welcome, setOpen }) {
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
             />
-            <DefineCapacityAndDevicesEmails setOpen={setOpen} data={data} />
+            <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
           </Carousel>
           <Box
             sx={{

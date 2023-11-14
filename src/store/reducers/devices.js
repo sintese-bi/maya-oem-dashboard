@@ -16,6 +16,7 @@ const initialState = {
   devicesALerts: [],
   devicesGeneration: [],
   deviceDelete: true,
+  bignumbersumValues: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -49,55 +50,55 @@ export default function userReducer(state = initialState, action) {
     case devices.GET_ALL_DEVICES_REQUEST:
       return {
         ...state,
-        allDevices: []
-      }
+        allDevices: [],
+      };
 
     case devices.GET_ALL_DEVICES_SUCCESS:
       return {
         ...state,
-        allDevices: result
-      }
+        allDevices: result,
+      };
 
     case devices.GET_ALL_DEVICES_FAILURE:
       return {
         ...state,
-        allDevices: []
-      }
+        allDevices: [],
+      };
 
     case devices.GET_DEVICES_ALERTS_REQUEST:
       return {
         ...state,
         isLoadingAlerts: true,
-        devicesALerts: []
-      }
+        devicesALerts: [],
+      };
 
     case devices.GET_DEVICES_ALERTS_SUCCESS:
       return {
         ...state,
         isLoadingAlerts: false,
-        devicesALerts: [...state.devicesALerts, result]
-      }
+        devicesALerts: [...state.devicesALerts, result],
+      };
 
     case devices.GET_DEVICES_ALERTS_FAILURE:
       return {
         ...state,
         isLoadingAlerts: false,
-        devicesALerts: []
-      }
+        devicesALerts: [],
+      };
 
     case devices.GET_ALL_DEVICES_GENERATION_REQUEST:
       return {
         ...state,
         isLoadingDevicesGeneration: true,
-        devicesGeneration: []
-      }
+        devicesGeneration: [],
+      };
 
     case devices.GET_ALL_DEVICES_GENERATION_SUCCESS:
       const { deviceData, latestTemp, deviceName } = result;
       const { date, type } = args;
 
       function dateOrder(dateA, dateB) {
-        const form = 'DD/MM';
+        const form = "DD/MM";
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
@@ -111,7 +112,7 @@ export default function userReducer(state = initialState, action) {
       }
 
       function monthOrder(dateA, dateB) {
-        const form = 'MM/YYYY';
+        const form = "MM/YYYY";
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
@@ -125,21 +126,34 @@ export default function userReducer(state = initialState, action) {
       }
 
       let datesInfo = deviceData[0].generation.map((gen) => {
-        return moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM")
-      })
+        return (
+          moment(gen.gen_date).format("DD") +
+          "/" +
+          moment(gen.gen_date).format("MM")
+        );
+      });
 
-      let monthsInfo = []
+      let monthsInfo = [];
       deviceData[0].generation.map((gen) => {
-        let monthAlreadyCount = monthsInfo.filter((data) => data == moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+        let monthAlreadyCount = monthsInfo.filter(
+          (data) =>
+            data ==
+            moment(gen.gen_date).format("MM") +
+              "/" +
+              moment(gen.gen_date).format("YYYY")
+        );
 
         if (monthAlreadyCount.length == 0) {
-          monthsInfo.push(moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+          monthsInfo.push(
+            moment(gen.gen_date).format("MM") +
+              "/" +
+              moment(gen.gen_date).format("YYYY")
+          );
         }
+      });
 
-      })
-
-      datesInfo.sort(dateOrder)
-      monthsInfo.sort(monthOrder)
+      datesInfo.sort(dateOrder);
+      monthsInfo.sort(monthOrder);
 
       const month = parseInt(moment(date).format("MM"));
       const year = parseInt(moment(date).format("YYYY"));
@@ -150,117 +164,136 @@ export default function userReducer(state = initialState, action) {
         type === "month"
           ? datesInfo
           : [
-            "Jan",
-            "Fev",
-            "Mar",
-            "Abr",
-            "Mai",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Set",
-            "Out",
-            "Nov",
-            "Dez",
-          ];
+              "Jan",
+              "Fev",
+              "Mar",
+              "Abr",
+              "Mai",
+              "Jun",
+              "Jul",
+              "Ago",
+              "Set",
+              "Out",
+              "Nov",
+              "Dez",
+            ];
 
       return {
         ...state,
         isLoadingDevicesGeneration: false,
         devicesGeneration:
           deviceData.length !== 0
-            ? Object.assign(handlesGeneration(deviceData[0], type, day, label), { deviceName: deviceName })
+            ? Object.assign(
+                handlesGeneration(deviceData[0], type, day, label),
+                { deviceName: deviceName }
+              )
             : {
-              label,
-              realGeneration: [],
-              estimatedGeneration: [],
-              percentMax: [],
-              percentMin: [],
-              realGenerationTotal: 0,
-              estimatedGenerationTotal: 0,
-              generationPercentageTotal: 0,
-              generationPercentage: [],
-            }
+                label,
+                realGeneration: [],
+                estimatedGeneration: [],
+                percentMax: [],
+                percentMin: [],
+                realGenerationTotal: 0,
+                estimatedGenerationTotal: 0,
+                generationPercentageTotal: 0,
+                generationPercentage: [],
+              },
       };
 
+    case devices.GET_ALL_DEVICES_GENERATION_FAILURE:
+      return {
+        ...state,
+        isLoadingDevicesGeneration: false,
+        devicesGeneration: [],
+      };
 
     case devices.GET_ALL_DEVICES_GENERATION_FAILURE:
       return {
         ...state,
         isLoadingDevicesGeneration: false,
-        devicesGeneration: []
-      }
-
-
-    case devices.GET_ALL_DEVICES_GENERATION_FAILURE:
-      return {
-        ...state,
-        isLoadingDevicesGeneration: false,
-        devicesGeneration: []
-      }
+        devicesGeneration: [],
+      };
 
     case devices.POST_DEVICE_REQUEST:
       return {
         ...state,
         loadingCreateDevice: true,
         deviceCreated: false,
-      }
+      };
 
     case devices.POST_DEVICE_SUCCESS:
       return {
         ...state,
         loadingCreateDevice: false,
         deviceCreated: true,
-      }
+      };
 
     case devices.POST_DEVICE_FAILURE:
       return {
         ...state,
         loadingCreateDevice: false,
         deviceCreated: false,
-      }
+      };
 
     case devices.GET_CAPACITY_DEVICE_REQUEST:
       return {
         ...state,
         isLoadingCapacity: true,
-        capacity: []
-      }
+        capacity: [],
+      };
 
     case devices.GET_CAPACITY_DEVICE_SUCCESS:
       return {
         ...state,
         isLoadingCapacity: false,
-        capacity: result
-      }
+        capacity: result,
+      };
 
     case devices.GET_CAPACITY_DEVICE_FAILURE:
       return {
         ...state,
         isLoadingCapacity: false,
-        capacity: []
-      }
+        capacity: [],
+      };
 
     case devices.DELETE_DEVICE_REQUEST:
       return {
         ...state,
         loadingDeleteDevice: true,
         deviceDelete: false,
-      }
+      };
 
     case devices.DELETE_DEVICE_SUCCESS:
       return {
         ...state,
         loadingDeleteDevice: false,
         deviceDelete: true,
-      }
+      };
 
     case devices.DELETE_DEVICE_FAILURE:
       return {
         ...state,
         loadingDeleteDevice: false,
         deviceDelete: false,
-      }
+      };
+
+    case devices.GET_BIG_NUMBER_REQUEST:
+      return {
+        ...state,
+        bignumbersumValues: [],
+      };
+
+    case devices.GET_BIG_NUMBER_SUCCESS:
+      return {
+        ...state,
+        bignumbersumValues: result,
+      };
+
+    case devices.GET_BIG_NUMBER_FAILURE:
+      return {
+        ...state,
+        bignumbersumValues: [],
+      };
 
     default:
       return state;
