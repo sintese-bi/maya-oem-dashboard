@@ -40,8 +40,10 @@ import {
   Error,
   Info,
   Cancel,
+  Settings,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
+import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
 
 export const Side = () => {
   const {
@@ -68,7 +70,11 @@ export const Side = () => {
         return (
           <Box>
             {useTypeMember ? (
-              <AlertPercentageForm welcome={welcome} setOpen={setOpen} />
+              <AlertPercentageForm
+                welcome={welcome}
+                setOpen={setOpen}
+                open={open}
+              />
             ) : (
               <PaymentWarn
                 welcome={welcome}
@@ -105,6 +111,14 @@ export const Side = () => {
             />
           </Box>
         );
+
+      case "configSetup":
+        return (
+          <Box>
+            <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
+          </Box>
+        );
+
       default:
         break;
     }
@@ -130,6 +144,11 @@ export const Side = () => {
       icon: <Info fontSize="small" />,
       disabled: true,
       action: "alertFrequency",
+    },
+    {
+      label: "Configurar plantas",
+      icon: <Settings fontSize="small" />,
+      action: "configSetup",
     },
   ];
 

@@ -11,7 +11,7 @@ import { TotalMonth } from "src/components/dashboard-components/total-month/tota
 
 // QUERYS
 import { columnsDevices } from "src/constants/columns";
-import { getUserCookie } from "src/services/session";
+import { getUserCookie, removeUserCookie } from "src/services/session";
 import {
   getDashboard,
   getCapacities,
@@ -20,7 +20,15 @@ import {
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
-import { Backdrop, Box, CircularProgress, Modal } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
@@ -29,12 +37,14 @@ import { Cancel } from "@mui/icons-material";
 import moment from "moment";
 import { MyDevices } from "src/components/dashboard-components/my-devices/my-devices";
 import { DashboardHeader } from "src/components/dashboard-components/dashboard-header";
+import { bigNumberSum } from "src/store/actions/devices";
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   // PROPS DE CONTROLLER
-  const { useUuid, useName, profileLevel, useTypeMember } = getUserCookie();
+  const { useUuid, useName, profileLevel, useTypeMember, firstTime } =
+    getUserCookie();
 
   if (profileLevel !== "admin") {
     navigate("/dashboard/devices");
@@ -58,6 +68,8 @@ export default function Dashboard() {
     userData,
     graphData,
   } = useSelector((state) => state.users);
+
+  const { bignumbersumValues } = useSelector((state) => state.devices);
 
   const devicesTableRef = useRef(null);
 
@@ -150,6 +162,7 @@ export default function Dashboard() {
   // useEffects
   useEffect(() => {
     if (selectedUser.length != 0) {
+      dispatch(bigNumberSum(selectedUser[0]?.useUuidState));
       dispatch(
         getDashboard(selectedUser[0]?.useUuidState, "index.jsx - selectedUser")
       );
@@ -157,6 +170,7 @@ export default function Dashboard() {
         getAllDevices(selectedUser[0]?.useUuidState, "index.jsx - normal")
       );
     } else {
+      dispatch(bigNumberSum(useUuid));
       dispatch(getDashboard(useUuid, "index.jsx - normal"));
       dispatch(getAllDevices(useUuid, "index.jsx - normal"));
     }
@@ -174,16 +188,20 @@ export default function Dashboard() {
   }, [allDevices]);
 
   useEffect(() => {
-    let realGeneration = dataDevices
-      .reduce((total, element) => total + element.generationRealMonth, 0)
-      .toFixed(2);
-    let estimatedGeneration = dataDevices
-      .reduce((total, element) => total + element.generationEstimatedMonth, 0)
-      .toFixed(2);
+    if (bignumbersumValues.somaPorDiaReal !== undefined) {
+      let realGeneration = Object.values(bignumbersumValues.somaPorDiaReal)
+        .reduce((total, element) => total + element, 0)
+        .toFixed(2);
+      let estimatedGeneration = Object.values(
+        bignumbersumValues.somaPorDiaEstimada
+      )
+        .reduce((total, element) => total + element, 0)
+        .toFixed(2);
 
-    setRealGenerationValueDataDevices(realGeneration);
-    setEstimatedGenerationValueDataDevices(estimatedGeneration);
-    setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
+      setRealGenerationValueDataDevices(realGeneration);
+      setEstimatedGenerationValueDataDevices(estimatedGeneration);
+      setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
+    }
 
     let realGenerationTempArray = dataDevices.map((data) => {
       let generationRealValue = data.generationRealMonth;
@@ -205,7 +223,7 @@ export default function Dashboard() {
         "KWh"
       )
     );
-  }, [dataDevices]);
+  }, [dataDevices, bignumbersumValues]);
 
   useEffect(() => {
     if (graphData.data !== undefined) {

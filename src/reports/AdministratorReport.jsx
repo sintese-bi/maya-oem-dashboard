@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: "20px",
-    backgroundColor: "#0097B2",
+    backgroundColor: reportAdministrator.color,
   },
   generationDateText: {
     fontSize: "12px",

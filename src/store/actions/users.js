@@ -599,7 +599,7 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
     .post(`/deviceinfo/yes`, params, configRequest())
     .then((res) => {
       const { data } = res;
-      toast.success(data.message, {
+      toast.success("Plantas carregadas com sucesso", {
         duration: 5000,
       });
       dispatch({
@@ -620,5 +620,30 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: users.GET_ALL_DEVICES_FROM_USER_FAILURE, message });
+    });
+};
+
+export const deleteUser = (params) => (dispatch) => {
+  api
+    .post("/deleteuser", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({ type: users.DELETE_USER });
+      toast.success(data.message, {
+        duration: 5000,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - getAllDevicesFromUser";
+
+      toast.error(message, {
+        duration: 5000,
+      });
     });
 };

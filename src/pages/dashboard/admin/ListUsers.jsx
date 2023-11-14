@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link as LinkRouter, useNavigate } from "react-router-dom";
 
 // QUERIES
-import { getUsers, selectedUser } from "src/store/actions/users";
+import { deleteUser, getUsers, selectedUser } from "src/store/actions/users";
 
 // COMPONENTS / LIBS DE ESTILOS
 import {
@@ -26,12 +26,17 @@ import MUIDataTable from "mui-datatables";
 
 //ASSETS
 import { listBrand } from "src/utils/list-brand";
+import { Delete } from "@mui/icons-material";
 
 export default function ListUsers() {
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, data } = useSelector((state) => state.users);
+
+  function handleDeleteUser(use_uuid) {
+    dispatch(deleteUser({ use_uuid }));
+  }
 
   const columns = [
     {
@@ -111,6 +116,19 @@ export default function ListUsers() {
         sort: true,
         customBodyRender: (itens) => {
           return itens.length !== 0 ? "Ativo" : "Em processo";
+        },
+      },
+    },
+    {
+      name: "delete_user",
+      label: "Deletar usuário",
+      options: {
+        customBodyRender: (name, dataTable) => {
+          return (
+            <Box>
+              <Delete onClick={() => handleDeleteUser(dataTable.rowData[0])} />
+            </Box>
+          );
         },
       },
     },

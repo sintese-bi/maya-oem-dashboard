@@ -3,7 +3,7 @@ import location from "src/services/municipios";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { JoinFull, SaveAs } from "@mui/icons-material";
+import { ArrowDownward, JoinFull, SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +11,14 @@ import {
   getAllDevicesFromUser,
   updateEmailAndCapacity,
 } from "src/store/actions/users";
+import { DeviceItem } from "./DeviceItem";
+import toast from "react-hot-toast";
 
-export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
+export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
+  const [firstIndex, setFirstIndex] = useState(0);
+  const [lastIndex, setLastIndex] = useState(50);
+  const { useUuid } = getUserCookie();
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const {
     register,
@@ -24,6 +30,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
   } = useForm({
     mode: "onChange",
   });
+  const { allDevicesFromUser } = useSelector((state) => state.users);
 
   function autoComplete(value, index) {
     const locationFiltered = location.filter((data) =>
@@ -38,6 +45,36 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
     }
   }
 
+  async function saveSetupData(values) {
+    let arraydevices = [];
+    data.map((_, index) => {
+      arraydevices.push({
+        dev_name: values[`dev_name_${index}`],
+        dev_uuid: values[`dev_uuid_${index}`],
+        dev_email: values[`dev_email_${index}`],
+        dev_capacity: values[`dev_capacity_${index}`],
+        dev_address: values[`dev_address_${index}`],
+        gen_estimated: values[`gen_estimated_${index}`],
+      });
+    });
+
+    localStorage.setItem("setupData", JSON.stringify(arraydevices));
+    setUserCookie({ ...getUserCookie(), firstTime: false });
+    setOpen(false);
+
+    toast.success(
+      "Dados salvos com sucesso, caso queria prosseguir, vá até a opção de configurar plantas, preencha os campos e atualize os dados.",
+      {
+        duration: 5000,
+      }
+    );
+  }
+
+  function handleFirstAndLastIndex() {
+    setFirstIndex(50 + 1);
+    setLastIndex(50 + 1);
+  }
+
   async function onSubmit(values) {
     let arraydevices = [];
     data.map((_, index) => {
@@ -46,13 +83,28 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
         dev_email: values[`dev_email_${index}`],
         dev_capacity: values[`dev_capacity_${index}`],
         dev_address: values[`dev_address_${index}`],
+        gen_estimated: values[`gen_estimated_${index}`],
       });
     });
 
-    setUserCookie({ ...getUserCookie(), firstTime: false });
+    localStorage.setItem("setupData", JSON.stringify(arraydevices));
     dispatch(updateEmailAndCapacity(arraydevices));
     setOpen(false);
   }
+
+  useEffect(() => {
+    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
+  }, []);
+
+  useEffect(() => {
+    const setupData = JSON.parse(localStorage.getItem("setupData"));
+    if (setupData !== null) {
+      setData(setupData);
+    } else {
+      setData(allDevicesFromUser.slice(0, 50));
+      handleFirstAndLastIndex();
+    }
+  }, [allDevicesFromUser]);
 
   return (
     <Box
@@ -78,7 +130,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
         sx={{
           display: "grid",
           justifyContent: "space-around",
-          gridTemplateColumns: "repeat(3, 340px)",
+          gridTemplateColumns: "repeat(3, 380px)",
           gap: 3,
           width: "100%",
           height: 362,
@@ -88,66 +140,45 @@ export function DefineCapacityAndDevicesEmails({ setOpen, data }) {
         }}
       >
         {data.map((data, index) => (
-          <Box key={index}>
-            <Typography variant="body2">{data.dev_name}</Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <TextField
-                value={data.dev_uuid}
-                {...register(`dev_uuid_${index}`)}
-                sx={{ display: "none" }}
-                margin="normal"
-                label="ID"
-                type="text"
-              />
-              <Box sx={{ mr: 2 }}>
-                <TextField
-                  value={data.dev_email || null}
-                  {...register(`dev_email_${index}`)}
-                  sx={{ width: "100%" }}
-                  margin="normal"
-                  label="Email"
-                  type="email"
-                />
-                <TextField
-                  value={data.dev_address || null}
-                  sx={{ width: "90%" }}
-                  {...register(`dev_address_${index}`)}
-                  onChange={(e) => {
-                    autoComplete(e.currentTarget.value, index);
-                  }}
-                  placeholder="Cidade-Estado"
-                  margin="normal"
-                  label="End. de instalação"
-                  type="email"
-                  aria-description="Por favor siga o exemplo Cidade-Estado, para evitar processamento de infomarções."
-                />
-              </Box>
-              <TextField
-                value={data.dev_capacity || 0}
-                {...register(`dev_capacity_${index}`)}
-                sx={{ width: "26%" }}
-                margin="normal"
-                label="Potência"
-                type="number"
-              />
-            </Box>
-          </Box>
+          <DeviceItem
+            key={index}
+            data={data}
+            index={index}
+            register={register}
+            autoComplete={autoComplete}
+            setValue={setValue}
+          />
         ))}
       </Box>
-      <Button
-        startIcon={<SaveAs fontSize="small" />}
-        type="submit"
-        variant="contained"
-        sx={{ color: "primary", variant: "contained", width: 200 }}
-      >
-        Salvar
-      </Button>
+      <Box sx={{ width: "100%", textAlign: "center", py: 1 }}>
+        <ArrowDownward
+          fontSize="small"
+          onClick={() => {
+            toast.success("Função de paginamento (lazy loading) em breve");
+            //setData([...data, allDevicesFromUser.slice(firstIndex, lastIndex)]);
+            //handleFirstAndLastIndex();
+          }}
+        />
+      </Box>
+
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Button
+          startIcon={<SaveAs fontSize="small" />}
+          type="submit"
+          variant="contained"
+          sx={{ color: "primary", variant: "contained", width: 200 }}
+        >
+          Atualizar dados
+        </Button>
+        <Button
+          onClick={handleSubmit(saveSetupData)}
+          startIcon={<SaveAs fontSize="small" />}
+          variant="outlined"
+          color="success"
+        >
+          Salvar dados inputados
+        </Button>
+      </Box>
     </Box>
   );
 }
