@@ -367,7 +367,7 @@ function AdminCalculator({ onPreviousStep }) {
     const json = JSON.stringify(formData);
     const segPlanGigaValue = String(selectedPlan);
     axios
-      .post("http://159.65.42.225:3002/calmarkp", formData)
+      .post("https://calculadora.mayawatch.com.br/calmarkp", formData)
       .then((response) => {
         // Manipule a resposta da API conforme necessário
         let apiResponse = response.data;
