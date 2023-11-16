@@ -14,6 +14,8 @@ import { MyDevicesResume } from "./my-devices-components/my-devices-resume";
 
 export const MyDevices = ({
   isLoadingGraph,
+  realGeneration,
+  estimatedGeneration,
   realGenerationValueDataDevices,
   estimatedGenerationValueDataDevices,
   percent,
@@ -72,6 +74,8 @@ export const MyDevices = ({
       >
         <MyDevicesResume
           label={"Resumo de usinas"}
+          realGeneration={realGeneration}
+          estimatedGeneration={estimatedGeneration}
           realGenerationValueDataDevices={realGenerationValueDataDevices}
           estimatedGenerationValueDataDevices={
             estimatedGenerationValueDataDevices

@@ -94,6 +94,7 @@ export default function Dashboard() {
     estimatedGenerationValueDataDevices,
     setEstimatedGenerationValueDataDevices,
   ] = useState(0);
+  const [percentFromDevices, setPercentFromDevices] = useState(0);
 
   // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
 
@@ -200,7 +201,9 @@ export default function Dashboard() {
 
       setRealGenerationValueDataDevices(realGeneration);
       setEstimatedGenerationValueDataDevices(estimatedGeneration);
-      setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
+      setPercentFromDevices(
+        ((realGeneration / estimatedGeneration) * 100).toFixed()
+      );
     }
 
     let realGenerationTempArray = dataDevices.map((data) => {
@@ -224,6 +227,10 @@ export default function Dashboard() {
       )
     );
   }, [dataDevices, bignumbersumValues]);
+
+  useEffect(() => {
+    setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
+  }, [realGeneration, estimatedGeneration]);
 
   useEffect(() => {
     if (graphData.data !== undefined) {
@@ -284,6 +291,8 @@ export default function Dashboard() {
         <MyDevices
           label={"Minhas Usinas"}
           isLoadingGraph={isLoadingGraph}
+          realGeneration={realGeneration}
+          estimatedGeneration={estimatedGeneration}
           realGenerationValueDataDevices={realGenerationValueDataDevices}
           estimatedGenerationValueDataDevices={
             estimatedGenerationValueDataDevices
