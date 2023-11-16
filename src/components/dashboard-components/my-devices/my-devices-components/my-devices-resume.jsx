@@ -22,6 +22,8 @@ import { numbers } from "src/helpers/utils";
 
 export const MyDevicesResume = ({
   label,
+  realGeneration,
+  estimatedGeneration,
   realGenerationValueDataDevices,
   estimatedGenerationValueDataDevices,
   percent,
@@ -151,9 +153,9 @@ export const MyDevicesResume = ({
         }}
       >
         <BigNumberDashboard
-          title="Produzido"
+          title="Produzido hoje"
           btn={true}
-          value={numbers(realGenerationValueDataDevices, "KWh")}
+          value={numbers(realGeneration, "KWh")}
           icon={
             <Avatar
               sx={{
@@ -171,9 +173,9 @@ export const MyDevicesResume = ({
         />
 
         <BigNumberDashboard
-          title="Esperado"
+          title="Esperado hoje"
           btn={true}
-          value={numbers(estimatedGenerationValueDataDevices, "KWh")}
+          value={numbers(estimatedGeneration, "KWh")}
           icon={
             <Avatar
               sx={{
@@ -191,7 +193,7 @@ export const MyDevicesResume = ({
         />
 
         <BigNumberDashboard
-          title="Desempenho (%)"
+          title="Desempenho(%) hoje"
           btn={true}
           value={percent}
           icon={
