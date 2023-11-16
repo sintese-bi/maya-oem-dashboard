@@ -972,7 +972,10 @@ function AdminCalculator({ onPreviousStep }) {
             label="Valor do kWh(R$)"
             variant="outlined"
             // fullWidth
-            {...register("valorDoKwh")}
+            {...register("valorDoKwh", {
+              required: "Este campo é obrigatório", // Mensagem de erro se o campo estiver vazio
+              validate: (value) => !isNaN(value) || "Digite um valor numérico válido", // Mensagem de erro se o valor não for numérico
+            })}
             onChange={(e) => setValorDoKwh(e.target.value)}
             value={valorDoKwh}
             // defaultValue="0.8"
