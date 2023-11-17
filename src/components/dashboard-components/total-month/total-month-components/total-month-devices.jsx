@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import * as XLSX from "xlsx";
 import moment from "moment-timezone";
 import MUIDataTable from "mui-datatables";
 import { ChartsLinear } from "src/components/shared/Charts";
@@ -10,6 +11,7 @@ import { columnsDevices } from "src/constants/columns";
 import {
   Backdrop,
   Box,
+  Button,
   CircularProgress,
   Grid,
   Modal,
@@ -61,6 +63,52 @@ export default function Plants(props) {
     filterType: "dropdown",
     responsive: "simple",
     selectableRows: "none",
+  };
+
+  const exportToXLSX = () => {
+    const transformedData = data.map((data) => {
+      let {
+        brand,
+        name,
+        generationEstimatedDay,
+        generationEstimatedMonth,
+        generationEstimatedWeek,
+        generationRealDay,
+        generationRealMonth,
+        generationRealWeek,
+        capacity,
+        alert,
+      } = data;
+      return {
+        brand,
+        name,
+        generationEstimatedDay,
+        generationEstimatedMonth,
+        generationEstimatedWeek,
+        generationRealDay,
+        generationRealMonth,
+        generationRealWeek,
+        capacity,
+        alert,
+      };
+    });
+    transformedData.unshift([
+      "Marca",
+      "Nome do device",
+      "Geração Estimada do dia",
+      "Geração Estimada da mês",
+      "Geração Estimada do semana",
+      "Geração Real do dia",
+      "Geração Real da mês",
+      "Geração Real do semana",
+      "Capacidade",
+      "Alertas",
+    ]);
+    const formattedData = transformedData.map((row) => Object.values(row));
+    const worksheet = XLSX.utils.aoa_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet 1");
+    XLSX.writeFile(workbook, "table_data.xlsx");
   };
 
   function handleTransformColumnData(data) {
@@ -174,6 +222,9 @@ export default function Plants(props) {
             columns={columns}
             options={options}
           />
+          <Button variant="contained" onClick={exportToXLSX}>
+            Download XLSX
+          </Button>
         </Grid>
       </Grid>
       <Modal

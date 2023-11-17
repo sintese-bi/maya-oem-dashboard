@@ -88,7 +88,7 @@ export function reportClientRule(
   ).toFixed();
   reportClient.brand = useNameState;
   reportClient.situation = handleSituation(reportClient.percent);
-  reportClient.graph = graphRef.toBase64Image();
+  reportClient.graph = graphRef?.toBase64Image();
   reportClient.requistionStartDate = startDateReport;
   reportClient.requisitionEndDate = endDateReport;
   reportClient.capacity = numbers(capacity, "KWp");

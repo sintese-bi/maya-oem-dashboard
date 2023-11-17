@@ -624,11 +624,12 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
 };
 
 export const deleteUser = (params) => (dispatch) => {
+  dispatch({ type: users.DELETE_USER_REQUEST });
   api
     .post("/deleteuser", params, configRequest())
     .then((res) => {
       const { data } = res;
-      dispatch({ type: users.DELETE_USER });
+      dispatch({ type: users.DELETE_USER_SUCCESS });
       toast.success(data.message, {
         duration: 5000,
       });
@@ -637,6 +638,7 @@ export const deleteUser = (params) => (dispatch) => {
       const { response: err } = error;
       console.log(error);
 
+      dispatch({ type: users.DELETE_USER_FAILURE });
       const message =
         err && err.data
           ? err.data.message

@@ -190,6 +190,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (bignumbersumValues.somaPorDiaReal !== undefined) {
+      console.log(bignumbersumValues);
+      setRealGeneration(
+        bignumbersumValues.somaPorDiaReal[
+          `${moment().format("YYYY-MM-DD")}`
+        ].toFixed(2)
+      );
+      setEstimatedGeneration(
+        bignumbersumValues.somaPorDiaEstimada[
+          `${moment().format("YYYY-MM-DD")}`
+        ].toFixed(2)
+      );
       let realGeneration = Object.values(bignumbersumValues.somaPorDiaReal)
         .reduce((total, element) => total + element, 0)
         .toFixed(2);

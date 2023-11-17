@@ -39,6 +39,7 @@ const initialState = {
   selectedUser: [],
   userData: {},
   allDevicesFromUser: [],
+  isDeletingUser: null,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -163,14 +164,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        data: result.map((item) => {
-          return {
-            use_uuid: item.use_uuid,
-            use_name: item.use_name,
-            use_email: item.use_email,
-            brand_login: item.brand_login,
-          };
-        }),
+        data: result.filter((data) => data.use_deleted == false),
       };
 
     case users.GET_USERS_FAILURE:
@@ -666,9 +660,23 @@ export default function userReducer(state = initialState, action) {
         ...state,
       };
 
-    case users.DELETE_USER:
+    case users.DELETE_USER_REQUEST:
       return {
         ...state,
+        isDeletingUser: true,
+      };
+
+    case users.DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        isDeletingUser: false,
+      };
+
+    case users.DELETE_USER_FAILURE:
+      return {
+        ...state,
+
+        isDeletingUser: false,
       };
 
     default:
