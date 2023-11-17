@@ -714,13 +714,11 @@ export const TotalMonth = ({
     let generationRealMonthTotal = (
       graphData?.data?.somaPorDiaReal?.[moment().format("YYYY-MM-DD")] / 1000
     ).toFixed(2);
-    setRealGeneration(generationRealMonthTotal);
 
     let generationEstimatedMonthTotal = (
       graphData?.data?.somaPorDiaEstimada?.[moment().format("YYYY-MM-DD")] /
       1000
     ).toFixed(2);
-    setEstimatedGeneration(generationEstimatedMonthTotal);
   }, [graphData]);
 
   useEffect(() => {

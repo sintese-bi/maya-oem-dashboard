@@ -1,5 +1,5 @@
 // IMPORTS
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as LinkRouter, useNavigate } from "react-router-dom";
 
@@ -32,11 +32,20 @@ export default function ListUsers() {
   // ESTADOS DE QUERIES
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, data } = useSelector((state) => state.users);
+  const { isLoading, data, isDeletingUser } = useSelector(
+    (state) => state.users
+  );
+  const [clients, setClients] = useState([]);
 
   function handleDeleteUser(use_uuid) {
     dispatch(deleteUser({ use_uuid }));
   }
+
+  useEffect(() => {
+    if (isDeletingUser == false) {
+      dispatch(getUsers());
+    }
+  }, [isDeletingUser]);
 
   const columns = [
     {
@@ -126,7 +135,10 @@ export default function ListUsers() {
         customBodyRender: (name, dataTable) => {
           return (
             <Box>
-              <Delete onClick={() => handleDeleteUser(dataTable.rowData[0])} />
+              <Delete
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleDeleteUser(dataTable.rowData[0])}
+              />
             </Box>
           );
         },
@@ -200,6 +212,10 @@ export default function ListUsers() {
     dispatch(getUsers());
   }, []);
 
+  useEffect(() => {
+    setClients(data);
+  }, [data]);
+
   if (isLoading) {
     return (
       <Backdrop
@@ -225,7 +241,7 @@ export default function ListUsers() {
             <Grid item xs={12}>
               <MUIDataTable
                 title={"Listagem de Clientes  suas marcas"}
-                data={data}
+                data={clients}
                 columns={columns}
                 options={options}
               />

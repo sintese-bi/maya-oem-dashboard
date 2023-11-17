@@ -150,16 +150,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
           />
         ))}
       </Box>
-      <Box sx={{ width: "100%", textAlign: "center", py: 1 }}>
-        <ArrowDownward
-          fontSize="small"
-          onClick={() => {
-            toast.success("Função de paginamento (lazy loading) em breve");
-            //setData([...data, allDevicesFromUser.slice(firstIndex, lastIndex)]);
-            //handleFirstAndLastIndex();
-          }}
-        />
-      </Box>
+      <Box sx={{ width: "100%", textAlign: "center", py: 1 }}></Box>
 
       <Box sx={{ display: "flex", gap: 2 }}>
         <Button

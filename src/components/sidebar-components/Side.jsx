@@ -41,6 +41,7 @@ import {
   Info,
   Cancel,
   Settings,
+  Delete,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
@@ -150,6 +151,11 @@ export const Side = () => {
       icon: <Settings fontSize="small" />,
       action: "configSetup",
     },
+    {
+      label: "Deletar plantas",
+      icon: <Delete fontSize="small" />,
+      action: "deletePlants",
+    },
   ];
 
   const bottomItems = [
@@ -166,6 +172,7 @@ export const Side = () => {
       setAction(actionType);
       setOpen(true);
     } else {
+      setUserCookie({ ...getUserCookie(), firstTime: false });
       setAction(actionType);
       setOpen(!open);
     }
@@ -216,8 +223,12 @@ export const Side = () => {
                 startIcon={data?.icon}
                 variant="contained"
                 onClick={() => {
-                  setAction(data?.action);
-                  handleModalState(data?.action);
+                  if (data?.action == "deletePlants") {
+                    window.scrollTo(0, 2000);
+                  } else {
+                    setAction(data?.action);
+                    handleModalState(data?.action);
+                  }
                 }}
               >
                 {data?.label}

@@ -63,7 +63,7 @@ export function reportAdministratorRule(
   );
 
   reportAdministrator.devicesLength = allDevices.length;
-  reportAdministrator.adminGraphRef = adminGraphRef.current.toBase64Image(
+  reportAdministrator.adminGraphRef = adminGraphRef?.current?.toBase64Image(
     "image/png",
     2
   );

@@ -698,7 +698,10 @@ export const ChartsDashboard = (props) => {
     (realData[data] / 1000).toFixed(2)
   );
   const realValuesTemp = sortedDates.map((data) => {
-    return { value: realData[data], date: moment(data).format("MM/DD/YYYY") };
+    return {
+      value: realData[data],
+      date: moment(data).format("MM/DD/YYYY"),
+    };
   });
   const estimatedValues = sortedDates.map((data) =>
     (estimatedData[data] / 1000).toFixed(2)
