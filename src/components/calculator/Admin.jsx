@@ -974,7 +974,7 @@ function AdminCalculator({ onPreviousStep }) {
             // fullWidth
             {...register("valorDoKwh", {
               required: "Este campo é obrigatório", // Mensagem de erro se o campo estiver vazio
-              validate: (value) => !isNaN(value) || "Digite um valor numérico válido", // Mensagem de erro se o valor não for numérico
+             
             })}
             onChange={(e) => setValorDoKwh(e.target.value)}
             value={valorDoKwh}
