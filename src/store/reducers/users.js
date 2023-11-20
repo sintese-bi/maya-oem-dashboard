@@ -384,10 +384,21 @@ export default function userReducer(state = initialState, action) {
       const generationBelowEstimated = allDevices.filter(
         (item) => item.generationRealWeek < item.generationEstimatedlWeek
       );
+
+      console.log(allDevices.filter((item) => item.staCode === "offline"));
+
       const alerts = allDevices.filter((item) => item.alert !== 0);
 
-      const offline = allDevices.filter((item) => item.staCode === "offline");
+      const offline = allDevices.filter(
+        (item) =>
+          item.staCode === "offline" ||
+          item.staCode === "Não informado!" ||
+          item.staName === "Inativo"
+      );
       const online = allDevices.filter((item) => item.staCode === "online");
+
+      console.log(offline);
+
       return {
         ...state,
         isLoading: false,
