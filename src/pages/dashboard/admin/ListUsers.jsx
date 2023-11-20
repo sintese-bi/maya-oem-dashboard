@@ -42,10 +42,8 @@ export default function ListUsers() {
   }
 
   useEffect(() => {
-    if (isDeletingUser == false) {
-      dispatch(getUsers());
-    }
-  }, [isDeletingUser]);
+    dispatch(getUsers());
+  }, []);
 
   const columns = [
     {
