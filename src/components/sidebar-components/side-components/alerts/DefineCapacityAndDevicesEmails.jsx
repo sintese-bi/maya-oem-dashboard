@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 
 export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   const containerRef = useRef(null);
+  const [prevScrollPosition, setPrevScrollPosition] = useState(0);
   const [page, setPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(50);
@@ -77,19 +78,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
     setLastIndex(lastIndex + 51);
   }
 
-  function handleScroll() {
-    const container = containerRef.current;
-
-    const scrollPercent = (
-      (container.scrollTop /
-        (container.scrollHeight - container.clientHeight)) *
-      100
-    ).toFixed();
-
-    if (Number(scrollPercent) == 100) {
-      console.log("scroll ending");
-    }
-  }
+  function handleScroll() {}
 
   containerRef.current?.addEventListener("scroll", handleScroll);
 
