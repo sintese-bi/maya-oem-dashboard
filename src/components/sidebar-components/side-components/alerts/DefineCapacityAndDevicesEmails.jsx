@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ArrowDownward, JoinFull, SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllDevicesFromUser,
@@ -15,10 +15,12 @@ import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
 
 export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
+  const containerRef = useRef(null);
+  const [page, setPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(50);
   const { useUuid } = getUserCookie();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(["1"]);
   const dispatch = useDispatch();
   const {
     register,
@@ -71,9 +73,25 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   }
 
   function handleFirstAndLastIndex() {
-    setFirstIndex(50 + 1);
-    setLastIndex(50 + 1);
+    setFirstIndex(firstIndex + 51);
+    setLastIndex(lastIndex + 51);
   }
+
+  function handleScroll() {
+    const container = containerRef.current;
+
+    const scrollPercent = (
+      (container.scrollTop /
+        (container.scrollHeight - container.clientHeight)) *
+      100
+    ).toFixed();
+
+    if (Number(scrollPercent) == 100) {
+      console.log("scroll ending");
+    }
+  }
+
+  containerRef.current?.addEventListener("scroll", handleScroll);
 
   async function onSubmit(values) {
     let arraydevices = [];
@@ -101,7 +119,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
     if (setupData !== null) {
       setData(setupData);
     } else {
-      setData(allDevicesFromUser.slice(0, 50));
+      setData(allDevicesFromUser.slice(firstIndex, lastIndex));
       handleFirstAndLastIndex();
     }
   }, [allDevicesFromUser]);
@@ -138,6 +156,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
           mb: 6,
           borderBottom: "1px",
         }}
+        ref={containerRef}
       >
         {data.map((data, index) => (
           <DeviceItem

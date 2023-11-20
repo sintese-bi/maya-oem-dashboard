@@ -78,6 +78,7 @@ export default function Plants(props) {
         generationRealWeek,
         capacity,
         alert,
+        staName,
       } = data;
       return {
         brand,
@@ -90,6 +91,7 @@ export default function Plants(props) {
         generationRealWeek,
         capacity,
         alert,
+        staName,
       };
     });
     transformedData.unshift([
@@ -103,6 +105,7 @@ export default function Plants(props) {
       "Geração Real do semana",
       "Capacidade",
       "Alertas",
+      "Situação",
     ]);
     const formattedData = transformedData.map((row) => Object.values(row));
     const worksheet = XLSX.utils.aoa_to_sheet(formattedData);
