@@ -15,7 +15,12 @@ import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
 
 export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
+  var scrolled = false;
   const containerRef = useRef(null);
+  const allDevicesFromUserRef = useRef([]);
+  const dataRef = useRef([]);
+  const firstIndexRef = useRef(0);
+  const lastIndexRef = useRef(10);
   const [prevScrollPosition, setPrevScrollPosition] = useState(0);
   const [page, setPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
@@ -73,14 +78,42 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
     );
   }
 
-  function handleFirstAndLastIndex() {
-    setFirstIndex(firstIndex + 51);
-    setLastIndex(lastIndex + 51);
+  function handleScroll() {
+    const container = containerRef.current;
+    if (scrolled != container.scrollTop) {
+      scrolled = container.scrollTop;
+      const scrollPercent = (
+        (container.scrollTop /
+          (container.scrollHeight - container.clientHeight)) *
+        100
+      ).toFixed(2);
+
+      if (parseFloat(scrollPercent) > 99.9) {
+        firstIndexRef.current = firstIndexRef.current + 11;
+        lastIndexRef.current = lastIndexRef.current + 11;
+        setData(
+          dataRef.current.concat(
+            allDevicesFromUserRef.current.slice(
+              firstIndexRef.current,
+              lastIndexRef.current
+            )
+          )
+        );
+      }
+    }
   }
 
-  function handleScroll() {}
+  useEffect(() => {
+    containerRef.current?.addEventListener("scroll", handleScroll);
 
-  containerRef.current?.addEventListener("scroll", handleScroll);
+    return () => {
+      containerRef.current?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   async function onSubmit(values) {
     let arraydevices = [];
@@ -104,12 +137,14 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   }, []);
 
   useEffect(() => {
+    allDevicesFromUserRef.current = allDevicesFromUser;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
       setData(setupData);
     } else {
-      setData(allDevicesFromUser.slice(firstIndex, lastIndex));
-      handleFirstAndLastIndex();
+      setData(
+        allDevicesFromUser.slice(firstIndexRef.current, lastIndexRef.current)
+      );
     }
   }, [allDevicesFromUser]);
 
