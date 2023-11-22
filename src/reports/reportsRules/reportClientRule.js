@@ -25,6 +25,7 @@ export const reportClient = {
   logo: "",
   carbon: "",
   deviceName: "",
+  color: "",
 };
 
 export function reportClientRule(
@@ -105,6 +106,7 @@ export function reportClientRule(
     "CO2"
   );
   reportClient.deviceName = deviceName;
+  reportClient.color = "#0097B2";
 
   setIsLoadingReport(false);
 }

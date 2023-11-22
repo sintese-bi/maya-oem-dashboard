@@ -15,7 +15,7 @@ export const reportAdministrator = {
   savedtree: "",
   logo: "",
   carbon: "",
-  color: "#0097B2",
+  color: "",
 };
 
 export function reportAdministratorRule(
@@ -79,7 +79,7 @@ export function reportAdministratorRule(
     (Number("0.4190") * realGeneration).toFixed(2),
     "CO2"
   );
-  reportAdministrator.color = "#005C53";
+  reportAdministrator.color = "#0097B2";
 
   setIsLoadingReport(false);
 }
