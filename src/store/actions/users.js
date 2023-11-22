@@ -29,7 +29,7 @@ export const auth = (params) => (dispatch) => {
           use_type_member,
           use_city_state,
           use_telephone,
-        } = result;
+        } = result.use_data;
         if (!getUserCookie()) {
           setUserCookie({
             token,
@@ -63,12 +63,15 @@ export const auth = (params) => (dispatch) => {
         dispatch({
           type: users.AUTH_SUCCESS,
           result: {
-            token,
-            profileLevel: profile_level.pl_cod,
-            useUuid: use_uuid,
-            useName: use_name,
-            useEmail: use_email,
-            useTypeMember: use_type_member,
+            use_data: {
+              token,
+              profileLevel: profile_level.pl_cod,
+              useUuid: use_uuid,
+              useName: use_name,
+              useEmail: use_email,
+              useTypeMember: use_type_member,
+            },
+            use_devices_amount: result.use_devices_amount,
           },
           profileLevel: profile_level.pl_cod,
         });

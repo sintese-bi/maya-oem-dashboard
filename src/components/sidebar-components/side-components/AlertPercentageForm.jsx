@@ -64,7 +64,7 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
 
   useEffect(() => {
     if (currentPage == 2) {
-      setCarouselWidth("86vw");
+      setCarouselWidth("92vw");
     } else {
       setCarouselWidth(512);
     }

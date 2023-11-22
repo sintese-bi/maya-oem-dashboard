@@ -40,6 +40,7 @@ const initialState = {
   userData: {},
   allDevicesFromUser: [],
   isDeletingUser: null,
+  userDevicesIsReady: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -59,10 +60,12 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.AUTH_SUCCESS:
+      console.log(result);
       return {
         ...state,
         loading: false,
-        userData: result,
+        userData: result.use_data,
+        userDevicesIsReady: result.use_devices_amount != 0 ? true : false,
         brandListUser,
         profileLevel,
       };

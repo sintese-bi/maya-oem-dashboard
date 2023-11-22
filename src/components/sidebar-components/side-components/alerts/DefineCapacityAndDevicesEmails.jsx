@@ -26,7 +26,7 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(50);
   const { useUuid } = getUserCookie();
-  const [data, setData] = useState(["1"]);
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const {
     register,
@@ -88,17 +88,19 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
         100
       ).toFixed(2);
 
-      if (parseFloat(scrollPercent) > 99.9) {
-        firstIndexRef.current = firstIndexRef.current + 11;
-        lastIndexRef.current = lastIndexRef.current + 11;
-        setData(
-          dataRef.current.concat(
-            allDevicesFromUserRef.current.slice(
-              firstIndexRef.current,
-              lastIndexRef.current
+      if (parseFloat(scrollPercent) > 99) {
+        if (dataRef.current.length != allDevicesFromUserRef.current.length) {
+          firstIndexRef.current = firstIndexRef.current + 10;
+          lastIndexRef.current = lastIndexRef.current + 10;
+          setData(
+            dataRef.current.concat(
+              allDevicesFromUserRef.current.slice(
+                firstIndexRef.current,
+                lastIndexRef.current
+              )
             )
-          )
-        );
+          );
+        }
       }
     }
   }

@@ -115,7 +115,7 @@ export const Side = () => {
 
       case "configSetup":
         return (
-          <Box>
+          <Box sx={{ width: "92vw" }}>
             <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
           </Box>
         );
