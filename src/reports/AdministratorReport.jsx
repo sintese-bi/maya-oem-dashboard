@@ -12,105 +12,105 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const styles = StyleSheet.create({
-  pdfViewer: {
-    height: "85vh",
-    width: "500px",
-  },
-  page: {
-    backgroundColor: "white",
-  },
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  header: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: "20px",
-    backgroundColor: reportAdministrator.color,
-  },
-  generationDateText: {
-    fontSize: "12px",
-    fontWeight: "semibold",
-    color: "white",
-    marginBottom: "4px",
-    marginLeft: "14px",
-  },
-  generationDateValue: {
-    fontSize: "12px",
-    fontWeight: "semibold",
-    color: "white",
-    marginBottom: "14px",
-    marginLeft: "14px",
-  },
-  logo: {
-    padding: "20px",
-    backgroundColor: "white",
-    borderTopLeftRadius: "50px",
-    borderBottomLeftRadius: "50px",
-  },
-  cardsRow: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-evenly",
-    marginVertical: "3px",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "182px",
-    backgroundColor: "#0097B2",
-    borderRadius: "10px",
-    padding: "20px",
-    color: "white",
-  },
-  cardLabel: {
-    fontSize: "6px",
-    fontWeight: "ultrabold",
-    opacity: 0.8,
-    marginBottom: "8px",
-  },
-  cardNumber: {
-    fontSize: "14px",
-    fontWeight: "ultrabold",
-  },
-  icon: {
-    width: "36px",
-    height: "36px",
-    borderRadius: "50px",
-  },
-  madeBy: {
-    marginTop: "100px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "50%",
-    top: "100px",
-  },
-  light: {
-    height: "10px",
-    width: "10px",
-  },
-  pdfEndImg: {
-    height: "14px",
-    width: "80px",
-  },
-  madeByText: {
-    fontSize: "8px",
-    marginBottom: "8px",
-  },
-});
-
 export const AdministratorReport = () => {
+  const styles = StyleSheet.create({
+    pdfViewer: {
+      height: "85vh",
+      width: "500px",
+    },
+    page: {
+      backgroundColor: "white",
+    },
+    main: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    header: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: "20px",
+      backgroundColor: reportAdministrator.color,
+    },
+    generationDateText: {
+      fontSize: "12px",
+      fontWeight: "semibold",
+      color: "white",
+      marginBottom: "4px",
+      marginLeft: "14px",
+    },
+    generationDateValue: {
+      fontSize: "12px",
+      fontWeight: "semibold",
+      color: "white",
+      marginBottom: "14px",
+      marginLeft: "14px",
+    },
+    logo: {
+      padding: "20px",
+      backgroundColor: "white",
+      borderTopLeftRadius: "50px",
+      borderBottomLeftRadius: "50px",
+    },
+    cardsRow: {
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      justifyContent: "space-evenly",
+      marginVertical: "3px",
+    },
+    card: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: "182px",
+      backgroundColor: reportAdministrator.color,
+      borderRadius: "10px",
+      padding: "20px",
+      color: "white",
+    },
+    cardLabel: {
+      fontSize: "6px",
+      fontWeight: "ultrabold",
+      opacity: 0.8,
+      marginBottom: "8px",
+    },
+    cardNumber: {
+      fontSize: "14px",
+      fontWeight: "ultrabold",
+    },
+    icon: {
+      width: "36px",
+      height: "36px",
+      borderRadius: "50px",
+    },
+    madeBy: {
+      marginTop: "100px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "50%",
+      top: "100px",
+    },
+    light: {
+      height: "10px",
+      width: "10px",
+    },
+    pdfEndImg: {
+      height: "14px",
+      width: "80px",
+    },
+    madeByText: {
+      fontSize: "8px",
+      marginBottom: "8px",
+    },
+  });
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
