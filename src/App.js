@@ -29,39 +29,7 @@ import { Box, Card, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import BackgroundLogin from "src/assets/img/illustrations/background-login.svg";
 
-const NoDevicesWarning = () => {
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundImage: `url(${BackgroundLogin})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <Card sx={{ width: "40%", p: 2 }}>
-        <Typography variant="h2" sx={{ mb: 2 }}>
-          Querido usuário!
-        </Typography>
-        <Typography variant="body2">
-          Prezado cliente estamos ingerindo seus dados na plataforma, gentileza
-          aguardar. Entraremos em contato em breve com suas usinas prontas para
-          serem monitoradas
-        </Typography>
-      </Card>
-    </Box>
-  );
-};
-
 export default function App() {
-  const { userDevicesIsReady } = useSelector((state) => state.users);
-
   return (
     <Routes>
       <Route path="/" element={<Login />} />
@@ -70,12 +38,7 @@ export default function App() {
       <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
 
       <Route element={<PrivateRoute />}>
-        <Route
-          path="dashboard"
-          element={
-            userDevicesIsReady ? <LayoutDashboard /> : <NoDevicesWarning />
-          }
-        >
+        <Route path="dashboard" element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
           {/* <Route index path="devices" element={<Devices />} /> */}
           <Route path="generation/:brand" element={<Generation />} />

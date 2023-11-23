@@ -58,9 +58,24 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 
 export default function AlertPercentageForm({ welcome, setOpen, open }) {
   const dispatch = useDispatch();
-
+  const { userDevicesIsReady } = useSelector((state) => state.users);
   const [currentPage, setCurrentPage] = useState(0);
   const [carouselWidth, setCarouselWidth] = useState(512);
+
+  const NoDevicesWarning = () => {
+    return (
+      <Card sx={{ p: 2, width: "30vw" }}>
+        <Typography variant="h2" sx={{ mb: 2 }}>
+          Prezado usuário!
+        </Typography>
+        <Typography variant="body2" sx={{}}>
+          Prezado cliente estamos ingerindo seus dados na plataforma, gentileza
+          aguardar. Entraremos em contato em breve com suas usinas prontas para
+          serem monitoradas!
+        </Typography>
+      </Card>
+    );
+  };
 
   useEffect(() => {
     if (currentPage == 2) {
@@ -70,61 +85,69 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
     }
   }, [currentPage]);
 
+  useEffect(() => {
+    console.log(userDevicesIsReady);
+  }, [userDevicesIsReady]);
+
   return (
     <Box>
-      {welcome ? (
-        <>
-          <Carousel
-            navButtonsAlwaysInvisible={true}
-            indicators={false}
-            indicatorIconButtonProps={{
-              style: {
-                color: "#14B8A6",
-              },
-            }}
-            index={currentPage}
-            autoPlay={false}
-            sx={{ width: carouselWidth }}
-          >
-            <AlertsDefineComponent
-              welcome={welcome}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-            />
-            <DefineAlertEmail
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-            />
-            <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
-          </Carousel>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              mt: 2,
-            }}
-          >
-            <ArrowBackIos
-              fontSize="small"
-              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-              onClick={() =>
-                currentPage > 0 ? setCurrentPage(currentPage - 1) : null
-              }
-            />
+      {userDevicesIsReady ? (
+        welcome ? (
+          <>
+            <Carousel
+              navButtonsAlwaysInvisible={true}
+              indicators={false}
+              indicatorIconButtonProps={{
+                style: {
+                  color: "#14B8A6",
+                },
+              }}
+              index={currentPage}
+              autoPlay={false}
+              sx={{ width: carouselWidth }}
+            >
+              <AlertsDefineComponent
+                welcome={welcome}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+              <DefineAlertEmail
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+              <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
+            </Carousel>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 2,
+              }}
+            >
+              <ArrowBackIos
+                fontSize="small"
+                sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
+                onClick={() =>
+                  currentPage > 0 ? setCurrentPage(currentPage - 1) : null
+                }
+              />
 
-            <ArrowForwardIos
-              fontSize="small"
-              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-              onClick={() =>
-                currentPage < 2 ? setCurrentPage(currentPage + 1) : null
-              }
-            />
-          </Box>
-        </>
+              <ArrowForwardIos
+                fontSize="small"
+                sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
+                onClick={() =>
+                  currentPage < 2 ? setCurrentPage(currentPage + 1) : null
+                }
+              />
+            </Box>
+          </>
+        ) : (
+          <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
+        )
       ) : (
-        <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
+        <NoDevicesWarning />
       )}
     </Box>
   );

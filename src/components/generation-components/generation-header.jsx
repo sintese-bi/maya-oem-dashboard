@@ -34,6 +34,12 @@ const colors = [
   "#5d548c",
   "#01796f",
   "#8da399",
+  "#0a0c0d",
+  "#213635",
+  "#1c5052",
+  "#348e91",
+  "#3d8d90",
+  "#454545",
 ];
 
 export const GenerationHeader = ({
@@ -260,7 +266,7 @@ export const GenerationHeader = ({
                 display: "grid",
                 justifyContent: "center",
                 alignItems: "center",
-                gridTemplateColumns: "repeat(3, auto)",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 gap: 2,
                 p: 2,
               }}
@@ -279,8 +285,8 @@ export const GenerationHeader = ({
                       alignItems: "center",
                       justifyContent: "center",
                       backgroundColor: data,
-                      height: "50px",
-                      width: "50px",
+                      height: "42px",
+                      width: "42px",
                       borderRadius: "10px",
                       cursor: "pointer",
                     }}

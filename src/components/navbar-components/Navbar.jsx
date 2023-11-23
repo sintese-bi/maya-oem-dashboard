@@ -18,11 +18,13 @@ import {
   House,
   ContentPaste,
   Warning,
+  Menu,
+  Close,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
-export const DashboardNavbar = () => {
+export const DashboardNavbar = ({ sideState, setSideState }) => {
   // PROPS DE CONTROLLER
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,7 +49,8 @@ export const DashboardNavbar = () => {
       label: "Clientes",
       to: "/dashboard/users",
       icon: <AccountCircle fontSize="small" />,
-      disabled: profileLevel === "admin" && useName == "Maya Energy" ? true : false,
+      disabled:
+        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
       active: location.pathname === "/dashboard/users" ? true : false,
     },
     {
@@ -68,7 +71,8 @@ export const DashboardNavbar = () => {
       label: "Proposta",
       to: "/dashboard/calculator",
       icon: <BrandingWatermark fontSize="small" />,
-      disabled: profileLevel === "admin" && useName == "Maya Energy" ? true : false,
+      disabled:
+        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
       active: location.pathname === "/dashboard/calculator" ? true : false,
     },
   ];
@@ -191,11 +195,42 @@ export const DashboardNavbar = () => {
 
             <Box
               sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
                 borderLeft: `1px solid ${theme.palette.divider}`,
                 display: "flex",
                 ml: 3,
               }}
             >
+              {sideState ? (
+                <Close
+                  sx={{
+                    ml: 4,
+                    mr: 12,
+                    color: "black",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setSideState(!sideState);
+                  }}
+                />
+              ) : (
+                <Menu
+                  sx={{
+                    ml: 4,
+                    mr: 12,
+                    color: "black",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setSideState(!sideState);
+                  }}
+                />
+              )}
+
+              <Close />
+
               {renderNavItems()}
             </Box>
           </Box>

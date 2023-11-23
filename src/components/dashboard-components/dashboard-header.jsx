@@ -138,6 +138,12 @@ const colors = [
   "#5d548c",
   "#01796f",
   "#8da399",
+  "#0a0c0d",
+  "#213635",
+  "#1c5052",
+  "#348e91",
+  "#3d8d90",
+  "#454545",
 ];
 
 export const DashboardHeader = ({
@@ -307,7 +313,7 @@ export const DashboardHeader = ({
               sx={{
                 display: "grid",
                 justifyContent: "space-around",
-                gridTemplateColumns: "1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 gap: 2,
                 p: 2,
               }}
@@ -316,14 +322,18 @@ export const DashboardHeader = ({
                 return (
                   <div
                     key={data}
-                    onClick={() => setSelectedColor(data)}
+                    onClick={() => {
+                      selectedColor == data
+                        ? setSelectedColor("")
+                        : setSelectedColor(data);
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       backgroundColor: data,
-                      height: "50px",
-                      width: "50px",
+                      height: "42px",
+                      width: "42px",
                       borderRadius: "10px",
                       cursor: "pointer",
                     }}

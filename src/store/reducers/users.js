@@ -1,3 +1,4 @@
+import { getUserCookie } from "src/services/session";
 import { users } from "../typesActions/types";
 
 import moment from "moment-timezone";
@@ -60,12 +61,17 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.AUTH_SUCCESS:
+      const { firstTime } = getUserCookie();
       console.log(result);
       return {
         ...state,
         loading: false,
         userData: result.use_data,
-        userDevicesIsReady: result.use_devices_amount != 0 ? true : false,
+        userDevicesIsReady: firstTime
+          ? result.use_devices_amount != 0
+            ? true
+            : false
+          : true,
         brandListUser,
         profileLevel,
       };
