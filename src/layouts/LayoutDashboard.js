@@ -8,35 +8,22 @@ import { styled } from "@mui/material/styles";
 // COMPONENTS
 import { DashboardNavbar } from "../components/navbar-components/Navbar";
 import { Side } from "../components/sidebar-components/Side";
-import { useEffect } from 'react'
+import { useEffect, useState } from "react";
 
 // STYLE
-const DashboardLayoutRoot = styled("div")(({ theme }) => ({
-  display: "flex",
-  flex: "1 1 auto",
-  maxWidth: "100%",
-  paddingTop: 64,
-  paddingLeft: '16%'
-}));
 
 const LayoutDashboard = () => {
+  const [sideState, setSideState] = useState(false);
+
   return (
     <>
-      <DashboardNavbar />
-      <Side />
-      <DashboardLayoutRoot>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: 'space-between',
-            flex: "1 1 auto",
-            flexDirection: "column",
-            width: "100%",
-          }}
-        >
+      <DashboardNavbar sideState={sideState} setSideState={setSideState} />
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
+        <Side sideState={sideState} setSideState={setSideState} />
+        <Box sx={{ width: "84%", marginTop: 10 }}>
           <Outlet />
         </Box>
-      </DashboardLayoutRoot>
+      </Box>
     </>
   );
 };

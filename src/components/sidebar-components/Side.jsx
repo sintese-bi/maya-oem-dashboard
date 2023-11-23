@@ -46,7 +46,7 @@ import {
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
 
-export const Side = () => {
+export const Side = ({ sideState, setSideState }) => {
   const {
     useName,
     useTypeMember,
@@ -60,6 +60,17 @@ export const Side = () => {
   const [action, setAction] = useState("alertFrequency");
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(firstTime ? true : false);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setSideState(open);
+  };
 
   useEffect(() => {
     setWelcome(firstTime);
@@ -180,7 +191,9 @@ export const Side = () => {
 
   return (
     <Drawer
-      variant="permanent"
+      anchor={"left"}
+      open={sideState}
+      onClose={toggleDrawer(false)}
       sx={{
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[3],
@@ -280,15 +293,13 @@ export const Side = () => {
               py: 4,
             }}
           >
-            {!welcome ? (
-              <Cancel
-                fontSize="large"
-                onClick={() => {
-                  setOpen(!open);
-                }}
-                sx={{ cursor: "pointer" }}
-              />
-            ) : null}
+            <Cancel
+              fontSize="large"
+              onClick={() => {
+                setOpen(!open);
+              }}
+              sx={{ cursor: "pointer" }}
+            />
           </Box>
 
           <ModalContent />
