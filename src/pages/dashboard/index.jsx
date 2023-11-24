@@ -6,7 +6,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
-
+import ReactDOMServer from "react-dom/server";
 import { TotalMonth } from "src/components/dashboard-components/total-month/total-month";
 
 // QUERYS
@@ -38,6 +38,7 @@ import moment from "moment";
 import { MyDevices } from "src/components/dashboard-components/my-devices/my-devices";
 import { DashboardHeader } from "src/components/dashboard-components/dashboard-header";
 import { bigNumberSum } from "src/store/actions/devices";
+import { readFile } from "xlsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();

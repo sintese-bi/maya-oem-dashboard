@@ -257,7 +257,23 @@ export const GenerationHeader = ({
               Confirmar
             </Button>
           </Card>
-          <Card sx={{ p: 4 }}>
+          <Card sx={{ p: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                width: "100%",
+                mb: 2,
+              }}
+            >
+              <Cancel
+                fontSize="large"
+                onClick={() => {
+                  setUploadImageModal(!uploadImageModal);
+                }}
+                sx={{ cursor: "pointer" }}
+              />
+            </Box>
             <Typography variant="body2" sx={{ my: 2, ml: 2 }}>
               Escolha a cor do tema de seu relatório
             </Typography>
@@ -306,7 +322,6 @@ export const GenerationHeader = ({
                 }
                 handleUploadLogo();
               }}
-              sx={{ mt: 2 }}
             >
               Confirmar escolha
             </Button>

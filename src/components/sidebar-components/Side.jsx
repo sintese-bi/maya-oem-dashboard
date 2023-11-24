@@ -194,9 +194,9 @@ export const Side = ({ sideState, setSideState }) => {
       anchor={"left"}
       open={sideState}
       onClose={toggleDrawer(false)}
-      sx={{
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[3],
+      ModalProps={{
+        container: document.getElementById("root"), // Substitua 'root' pelo id do seu elemento principal
+        style: { pointerEvents: "auto" }, // Garante que os eventos de clique são passados para o conteúdo subjacente
       }}
     >
       <Toolbar />
@@ -268,6 +268,7 @@ export const Side = ({ sideState, setSideState }) => {
           </List>
         </Box>
       </Box>
+
       <Modal
         open={open}
         onClose={handleModalState}
