@@ -111,6 +111,23 @@ export const AdministratorReport = () => {
     },
   });
 
+  const data1 = [10, 20, 10, 20, 10, 20, 10, 20, 10, 20, 10, 10, 20, 10];
+  const data2 = [10, 30, 10, 52, 10, 30, 10, 30, 30, 10, 30, 30, 10, 30];
+  const yAxis =
+    Math.max(...data2) > Math.max(...data1)
+      ? Math.max(...data2)
+      : Math.max(...data1);
+
+  let division = Math.floor(yAxis / 10);
+  let result = [];
+  for (let i = 0; i <= division; i++) {
+    if (i == division) {
+      result.push(yAxis);
+    } else {
+      result.push(i * 10);
+    }
+  }
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

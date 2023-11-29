@@ -30,6 +30,10 @@ export const auth = (params) => (dispatch) => {
           use_city_state,
           use_telephone,
         } = result.use_data;
+        localStorage.setItem(
+          "userDevicesIsReady",
+          result.use_devices_amount != 0 ? true : false
+        );
         if (!getUserCookie()) {
           setUserCookie({
             token,
@@ -387,7 +391,7 @@ export const updateUser = (params) => (dispatch) => {
 
 export const updateEmailAndCapacity = (params) => (dispatch) => {
   api
-    .post("/updateemaildevice", params, configRequest())
+    .post("/updateplants", params, configRequest())
     .then((res) => {
       const { data } = res;
       dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE });

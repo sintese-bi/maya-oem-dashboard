@@ -142,6 +142,7 @@ export default function Dashboard() {
     let endDateReport = moment(endDate).format("DD/MM/YYYY");
     if (useTypeMember) {
       reportAdministratorRule(
+        graphData,
         capacity,
         realGenerationTotal,
         estimatedGenerationTotal,
@@ -191,7 +192,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (bignumbersumValues.somaPorDiaReal !== undefined) {
-      console.log(bignumbersumValues);
       setRealGeneration(
         bignumbersumValues.somaPorDiaReal[
           `${moment().format("YYYY-MM-DD")}`
@@ -250,13 +250,6 @@ export default function Dashboard() {
       handleEstimatedGenerationTotal();
     }
   }, [graphData]);
-
-  useEffect(() => {
-    console.log(
-      realGenerationValueDataDevices,
-      estimatedGenerationValueDataDevices
-    );
-  }, [realGenerationValueDataDevices, estimatedGenerationValueDataDevices]);
 
   useEffect(() => {
     let percentValue = (

@@ -42,6 +42,8 @@ import {
   Cancel,
   Settings,
   Delete,
+  Person,
+  ShoppingCart,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
@@ -139,7 +141,7 @@ export const Side = ({ sideState, setSideState }) => {
   const topItems = [
     {
       label: "Usuário",
-      icon: <Info fontSize="small" />,
+      icon: <Person fontSize="small" />,
       action: "userAccount",
     },
   ];
@@ -172,7 +174,7 @@ export const Side = ({ sideState, setSideState }) => {
   const bottomItems = [
     {
       label: "MAYA WATCH PRO",
-      icon: <CheckCircle fontSize="small" />,
+      icon: <ShoppingCart fontSize="small" />,
       disabled: true,
       action: "assignPlan",
     },
@@ -190,15 +192,7 @@ export const Side = ({ sideState, setSideState }) => {
   }
 
   return (
-    <Drawer
-      anchor={"left"}
-      open={sideState}
-      onClose={toggleDrawer(false)}
-      ModalProps={{
-        container: document.getElementById("root"), // Substitua 'root' pelo id do seu elemento principal
-        style: { pointerEvents: "auto" }, // Garante que os eventos de clique são passados para o conteúdo subjacente
-      }}
-    >
+    <Drawer variant="permanent" anchor="left">
       <Toolbar />
       <Box
         sx={{
@@ -207,23 +201,44 @@ export const Side = ({ sideState, setSideState }) => {
           justifyContent: "start",
           overflow: "auto",
           height: "100%",
-          width: "240px",
+          width: sideState ? 236 : 100,
         }}
       >
         <Box>
           <List>
             {topItems.map((data, index) => (
               <ListItem key={data?.label}>
-                <Button
-                  startIcon={data?.icon}
-                  variant="outlined"
-                  onClick={() => {
-                    setAction(data?.action);
-                    handleModalState(data?.action);
-                  }}
-                >
-                  {data?.label}
-                </Button>
+                {sideState ? (
+                  <Button
+                    startIcon={data?.icon}
+                    variant="outlined"
+                    onClick={() => {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }}
+                  >
+                    {data?.label}
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{
+                      color: "neutral.700",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }}
+                  >
+                    {data?.icon}
+                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                      {data?.label}
+                    </Typography>
+                  </Button>
+                )}
               </ListItem>
             ))}
           </List>
@@ -232,20 +247,45 @@ export const Side = ({ sideState, setSideState }) => {
         <List>
           {mainItems.map((data, index) => (
             <ListItem key={data?.label}>
-              <Button
-                startIcon={data?.icon}
-                variant="contained"
-                onClick={() => {
-                  if (data?.action == "deletePlants") {
-                    window.scrollTo(0, 2000);
-                  } else {
-                    setAction(data?.action);
-                    handleModalState(data?.action);
-                  }
-                }}
-              >
-                {data?.label}
-              </Button>
+              {sideState ? (
+                <Button
+                  startIcon={data?.icon}
+                  variant="contained"
+                  onClick={() => {
+                    if (data?.action == "deletePlants") {
+                      window.scrollTo(0, 2000);
+                    } else {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }
+                  }}
+                >
+                  {data?.label}
+                </Button>
+              ) : (
+                <Button
+                  sx={{
+                    color: "neutral.700",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onClick={() => {
+                    if (data?.action == "deletePlants") {
+                      window.scrollTo(0, 2000);
+                    } else {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }
+                  }}
+                >
+                  {data?.icon}
+                  <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                    {data?.label}
+                  </Typography>
+                </Button>
+              )}
             </ListItem>
           ))}
         </List>
@@ -253,16 +293,37 @@ export const Side = ({ sideState, setSideState }) => {
           <List>
             {bottomItems.map((data, index) => (
               <ListItem key={data?.label}>
-                <Button
-                  startIcon={data?.icon}
-                  variant="outlined"
-                  onClick={() => {
-                    handleModalState(data?.action);
-                    setAction(data?.action);
-                  }}
-                >
-                  {data?.label}
-                </Button>
+                {sideState ? (
+                  <Button
+                    startIcon={data?.icon}
+                    variant="outlined"
+                    onClick={() => {
+                      handleModalState(data?.action);
+                      setAction(data?.action);
+                    }}
+                  >
+                    {data?.label}
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{
+                      color: "success.main",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      handleModalState(data?.action);
+                      setAction(data?.action);
+                    }}
+                  >
+                    {data?.icon}
+                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                      {data?.label}
+                    </Typography>
+                  </Button>
+                )}
               </ListItem>
             ))}
           </List>

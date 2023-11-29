@@ -56,12 +56,14 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   async function saveSetupData(values) {
     let arraydevices = [];
     data.map((_, index) => {
+      let adress = values[`dev_address_${index}`].split("-");
       arraydevices.push({
         dev_name: values[`dev_name_${index}`],
         dev_uuid: values[`dev_uuid_${index}`],
         dev_email: values[`dev_email_${index}`],
         dev_capacity: values[`dev_capacity_${index}`],
-        dev_address: values[`dev_address_${index}`],
+        ic_city: adress[0],
+        ic_states: adress[1],
         gen_estimated: values[`gen_estimated_${index}`],
       });
     });
@@ -118,20 +120,26 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
   }, [data]);
 
   async function onSubmit(values) {
-    let arraydevices = [];
+    let arrayplants = [];
+
     data.map((_, index) => {
-      arraydevices.push({
+      let adress =
+        values[`dev_address_${index}`] != ""
+          ? values[`dev_address_${index}`].split("-")
+          : "-".split("-");
+      arrayplants.push({
         dev_uuid: values[`dev_uuid_${index}`],
         dev_email: values[`dev_email_${index}`],
         dev_capacity: values[`dev_capacity_${index}`],
-        dev_address: values[`dev_address_${index}`],
+        ic_city: adress[0],
+        ic_states: adress[1],
         gen_estimated: values[`gen_estimated_${index}`],
       });
     });
 
-    localStorage.setItem("setupData", JSON.stringify(arraydevices));
-    dispatch(updateEmailAndCapacity(arraydevices));
-    setOpen(false);
+    localStorage.setItem("setupData", JSON.stringify(arrayplants));
+    dispatch(updateEmailAndCapacity({ arrayplants }));
+    //setOpen(false);
   }
 
   useEffect(() => {

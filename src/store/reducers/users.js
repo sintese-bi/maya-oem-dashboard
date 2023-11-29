@@ -61,17 +61,12 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.AUTH_SUCCESS:
-      const { firstTime } = getUserCookie();
       console.log(result);
       return {
         ...state,
         loading: false,
         userData: result.use_data,
-        userDevicesIsReady: firstTime
-          ? result.use_devices_amount != 0
-            ? true
-            : false
-          : true,
+        userDevicesIsReady: localStorage.getItem("userDevicesIsReady"),
         brandListUser,
         profileLevel,
       };
@@ -393,8 +388,6 @@ export default function userReducer(state = initialState, action) {
       const generationBelowEstimated = allDevices.filter(
         (item) => item.generationRealWeek < item.generationEstimatedlWeek
       );
-
-      console.log(allDevices.filter((item) => item.staCode === "offline"));
 
       const alerts = allDevices.filter((item) => item.alert !== 0);
 
