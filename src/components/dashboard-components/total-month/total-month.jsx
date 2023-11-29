@@ -252,7 +252,6 @@ export const TotalMonth = ({
 
               animation.chart.data.labels = labels;
               animation.chart.update();
-              console.log(animation.chart.toBase64Image());
             });
           },
         },
@@ -539,7 +538,6 @@ export const TotalMonth = ({
 
       const reader = new FileReader();
       reader.addEventListener("loadend", () => {
-        console.log(reader.result);
         files.push({ dev_uuid: data.dev_uuid, base64: reader.result });
         setProgress((prevProgress) =>
           prevProgress >= 100

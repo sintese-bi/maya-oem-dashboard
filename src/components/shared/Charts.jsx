@@ -850,6 +850,21 @@ export const ChartsDashboard = (props) => {
     ],
   };
 
+  const plugin = {
+    id: "customCanvasBackgroundColor",
+    beforeDraw: (chart, args, options) => {
+      const { ctx } = chart;
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-over";
+      ctx.fillStyle = options.color || "#99ffff";
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    },
+    legend: {
+      position: "top",
+    },
+  };
+
   const options = {
     animation: true,
     cornerRadius: 20,
@@ -857,8 +872,8 @@ export const ChartsDashboard = (props) => {
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
-      legend: {
-        position: "top",
+      customCanvasBackgroundColor: {
+        color: "white",
       },
     },
     yAxes: [
@@ -949,7 +964,13 @@ export const ChartsDashboard = (props) => {
         Série histórica da produção de Usinas
       </Typography>
       <Box sx={{ height: 360, width: "100%" }}>
-        <Chart type="bar" options={options} data={data} ref={adminGraphRef} />
+        <Chart
+          type="bar"
+          options={options}
+          data={data}
+          ref={adminGraphRef}
+          plugins={[plugin]}
+        />
       </Box>
     </Card>
   );

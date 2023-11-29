@@ -20,7 +20,7 @@ const LayoutDashboard = () => {
       <DashboardNavbar sideState={sideState} setSideState={setSideState} />
       <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
         <Side sideState={sideState} setSideState={setSideState} />
-        <Box sx={{ width: "84%", marginTop: 10 }}>
+        <Box sx={{ width: "84%", marginTop: 10 }} id={"root"}>
           <Outlet />
         </Box>
       </Box>

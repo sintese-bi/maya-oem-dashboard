@@ -6,6 +6,7 @@ export const reportAdministrator = {
   capacityTotalValue: "",
   generationRealTotalValue: "",
   generationEstimatedTotalValue: "",
+  graphData: {},
   requistionStartDate: "",
   requisitionEndDate: "",
   percent: "",
@@ -19,6 +20,7 @@ export const reportAdministrator = {
 };
 
 export function reportAdministratorRule(
+  graphData,
   capacity,
   realGeneration,
   estimatedGeneration,
@@ -30,22 +32,26 @@ export function reportAdministratorRule(
   setIsLoadingReport,
   adminGraphRef
 ) {
-  let generationRealMonth = dataDevices.map((data) => {
-    let generationRealValue = data.generationRealMonth;
+  let realGenerationDay = dataDevices.map((data) => {
+    let generationRealValue = data.generationRealDay;
     return generationRealValue;
   });
-  let generationRealMonthTotal = generationRealMonth
-    .reduce((total, element) => total + element, 0)
-    .toFixed(2);
+
+  console.log(graphData);
+
+  reportAdministrator.graphData["realGeneration"] =
+    graphData.data.somaPorDiaReal;
+
   reportAdministrator.generationRealTotalValue = numbers(realGeneration, "KWh");
 
-  let generationEstimatedMonth = dataDevices.map((data) => {
-    let generationEstimatedValue = data.generationEstimatedMonth;
+  let estimatedGenerationDay = dataDevices.map((data) => {
+    let generationEstimatedValue = data.generationEstimatedDay;
     return generationEstimatedValue;
   });
-  let generationEstimatedMonthTotal = generationEstimatedMonth
-    .reduce((total, element) => total + element, 0)
-    .toFixed(2);
+
+  reportAdministrator.graphData["estimatedGeneration"] =
+    graphData.data.somaPorDiaEstimada;
+
   reportAdministrator.generationEstimatedTotalValue = numbers(
     estimatedGeneration,
     "KWh"
@@ -64,9 +70,10 @@ export function reportAdministratorRule(
 
   reportAdministrator.devicesLength = allDevices.length;
   reportAdministrator.adminGraphRef = adminGraphRef?.current?.toBase64Image(
-    "image/png",
-    2
+    "image/jpeg",
+    1
   );
+
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;
   reportAdministrator.savedtree = numbers(

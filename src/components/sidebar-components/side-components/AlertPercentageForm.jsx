@@ -85,10 +85,6 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
     }
   }, [currentPage]);
 
-  useEffect(() => {
-    console.log(userDevicesIsReady);
-  }, [userDevicesIsReady]);
-
   return (
     <Box>
       {userDevicesIsReady ? (
@@ -144,7 +140,24 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
             </Box>
           </>
         ) : (
-          <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
+          <Carousel
+            navButtonsAlwaysInvisible={true}
+            indicators={false}
+            indicatorIconButtonProps={{
+              style: {
+                color: "#14B8A6",
+              },
+            }}
+            index={currentPage}
+            autoPlay={false}
+            sx={{ width: 500 }}
+          >
+            <DefineAlertEmail
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
+            <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
+          </Carousel>
         )
       ) : (
         <NoDevicesWarning />

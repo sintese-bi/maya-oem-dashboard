@@ -18,5 +18,6 @@ export const getUserCookie = () => {
 
 // LIMPA O COOKIE DO USUARIO
 export const removeUserCookie = () => {
+  localStorage.clear();
   Cookies.remove("maya_energy_userCookie");
 };
