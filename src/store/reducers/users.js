@@ -354,7 +354,9 @@ export default function userReducer(state = initialState, action) {
               blUuid: item.bl_uuid,
               name: dev.dev_name,
               email: dev.dev_email,
-              capacity: parseFloat(dev.dev_capacity.toFixed(2)),
+              capacity: parseFloat(
+                dev.dev_capacity !== null ? dev.dev_capacity.toFixed(2) : 0
+              ),
               address: dev.dev_address,
               uuid: dev.dev_uuid,
               generationRealDay:
