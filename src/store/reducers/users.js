@@ -6,6 +6,8 @@ import moment from "moment-timezone";
 const initialState = {
   message: "",
   isLoading: false,
+  isDashboardDataLoading: false,
+  isAllDevicesDataLoading: false,
   isLoadingGraph: false,
   loading: false,
   loadingRegister: false,
@@ -295,6 +297,7 @@ export default function userReducer(state = initialState, action) {
     case users.GET_ALL_DEVICES_REQUEST:
       return {
         ...state,
+        isAllDevicesDataLoading: true,
         brands: [],
         blUuids: [],
         generationBelowEstimated: [],
@@ -354,7 +357,9 @@ export default function userReducer(state = initialState, action) {
               blUuid: item.bl_uuid,
               name: dev.dev_name,
               email: dev.dev_email,
-              capacity: parseFloat(dev.dev_capacity.toFixed(2)),
+              capacity: parseFloat(
+                dev.dev_capacity !== null ? dev.dev_capacity.toFixed(2) : 0
+              ),
               address: dev.dev_address,
               uuid: dev.dev_uuid,
               generationRealDay:
@@ -399,11 +404,9 @@ export default function userReducer(state = initialState, action) {
       );
       const online = allDevices.filter((item) => item.staCode === "online");
 
-      console.log(offline);
-
       return {
         ...state,
-        isLoading: false,
+        isAllDevicesDataLoading: false,
         brands,
         blUuids,
         allDevices,
@@ -416,7 +419,7 @@ export default function userReducer(state = initialState, action) {
     case users.GET_ALL_DEVICES_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isAllDevicesDataLoading: false,
         brands: [],
         blUuids: [],
         allDevices: [],
@@ -429,7 +432,7 @@ export default function userReducer(state = initialState, action) {
     case users.GET_DASHBOARD_REQUEST:
       return {
         ...state,
-        isLoading: true,
+        isDashboardDataLoading: true,
         dataDevices: [],
       };
 
@@ -509,14 +512,14 @@ export default function userReducer(state = initialState, action) {
 
       return {
         ...state,
-        isLoading: false,
+        isDashboardDataLoading: false,
         dataDevices,
       };
 
     case users.GET_DASHBOARD_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isDashboardDataLoading: false,
         dataDevices: [],
       };
 

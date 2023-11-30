@@ -55,6 +55,8 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const {
     isLoading,
+    isAllDevicesDataLoading,
+    isDashboardDataLoading,
     isLoadingGraph,
     brands,
     blUuids,
@@ -265,11 +267,11 @@ export default function Dashboard() {
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
 
-  if (isLoading) {
+  if (isAllDevicesDataLoading) {
     return (
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}
+        open={isAllDevicesDataLoading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

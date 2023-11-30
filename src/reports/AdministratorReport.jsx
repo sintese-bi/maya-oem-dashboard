@@ -1,3 +1,4 @@
+import moment from "moment";
 import { reportAdministrator } from "./reportsRules/reportAdministratorRule";
 import {
   Page,
@@ -111,22 +112,39 @@ export const AdministratorReport = () => {
     },
   });
 
-  const data1 = [10, 20, 10, 20, 10, 20, 10, 20, 10, 20, 10, 10, 20, 10];
-  const data2 = [10, 30, 10, 52, 10, 30, 10, 30, 30, 10, 30, 30, 10, 30];
+  const realData = reportAdministrator.graphData.realGeneration;
+  const estimatedData = reportAdministrator.graphData.estimatedGeneration;
+
+  const sortedDates = Object.keys(
+    reportAdministrator.graphData.realGeneration
+  ).sort((a, b) => new Date(a) - new Date(b));
+
+  // Mapear as datas para os valores correspondentes
+  const realValues = sortedDates.map((data) => {
+    return {
+      value: realData[data] / 1000,
+      date: moment(data).format("DD"),
+    };
+  });
+  const estimatedValues = sortedDates.map((data) => estimatedData[data] / 1000);
+
   const yAxis =
-    Math.max(...data2) > Math.max(...data1)
-      ? Math.max(...data2)
-      : Math.max(...data1);
+    Math.max(...estimatedValues) >
+    Math.max(...realValues.map((data) => data.value))
+      ? Math.max(...estimatedValues)
+      : Math.max(...realValues.map((data) => data.value));
 
   let division = Math.floor(yAxis / 10);
   let result = [];
   for (let i = 0; i <= division; i++) {
     if (i == division) {
-      result.push(yAxis);
+      result.push(Number(yAxis.toFixed()));
     } else {
       result.push(i * 10);
     }
   }
+
+  console.log(realValues, estimatedValues, reportAdministrator.graphData);
 
   return (
     <Document>
@@ -203,12 +221,110 @@ export const AdministratorReport = () => {
                     fontSize: "12px",
                   }}
                 >
-                  Série histórica da produção de Usinas.
+                  Série histórica da produção de Usinas. (MWh)
                 </Text>
-                <Image
-                  style={{ width: "100%", height: "100%" }}
-                  src={reportAdministrator.adminGraphRef}
-                ></Image>
+                <View
+                  style={{
+                    width: "100%",
+                    height: "140px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 1,
+                    flexDirection: "column",
+                  }}
+                >
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100px",
+                      display: "flex",
+                      justifyContent: "space-around",
+                      gap: 1,
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "4%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        marginTop: "auto",
+                        height: `${yAxis + 42}px`,
+                      }}
+                    >
+                      {result.reverse().map((data, index) => (
+                        <Text key={index} style={{ fontSize: "8px" }}>
+                          {data}
+                        </Text>
+                      ))}
+                    </View>
+                    <View
+                      style={{
+                        width: "96%",
+                        height: "120px",
+                        display: "flex",
+                        gap: 8,
+                        flexDirection: "row",
+                      }}
+                    >
+                      {realValues.map((realValue, index) => {
+                        return (
+                          <View
+                            key={realValue.value}
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 1,
+                              marginTop: "auto",
+                            }}
+                          >
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-around",
+                                gap: 1,
+                                marginTop: "auto",
+                              }}
+                            >
+                              <View
+                                style={{
+                                  width: "8px",
+                                  height: `${42 + realValue.value}px`,
+                                  backgroundColor: "#6CE5E8",
+                                  marginTop: "auto",
+                                }}
+                              ></View>
+                              <View
+                                style={{
+                                  width: "8px",
+                                  height: `${42 + estimatedValues[index]}px`,
+                                  backgroundColor: "#2D8BBA",
+                                  marginTop: "auto",
+                                }}
+                              ></View>
+                            </View>
+                            <Text style={{ fontSize: "8px" }}>
+                              {realValue.date}
+                            </Text>
+                          </View>
+                        );
+                      })}
+                    </View>
+                  </View>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "10px",
+                      marginTop: "26px",
+                    }}
+                  >
+                    Days
+                  </Text>
+                </View>
               </View>
             </View>
             <View
