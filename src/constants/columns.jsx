@@ -9,9 +9,9 @@ import {
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
 import { CheckBox, ReportProblem, Info } from "@mui/icons-material";
-import { ModalPlantsGraph } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-generation-graph";
-import { DeleteDevice } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-delete-devices";
-import { SendEmail } from "src/components/dashboard-components/total-month/total-month-components/total-month-devices-components/total-month-send-email";
+import { ModalPlantsGraph } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-generation-graph";
+import { DeleteDevice } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-delete-devices";
+import { SendEmail } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-send-email";
 import { Box } from "@mui/system";
 
 export const columnsDevices = [

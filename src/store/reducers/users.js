@@ -1,4 +1,3 @@
-import { getUserCookie } from "src/services/session";
 import { users } from "../typesActions/types";
 
 import moment from "moment-timezone";
@@ -32,6 +31,8 @@ const initialState = {
   graphData: [],
   generationBelowEstimated: [],
   alerts: [],
+  notDefined: [],
+  unactived: [],
   offline: [],
   online: [],
   percentage: [],
@@ -396,12 +397,11 @@ export default function userReducer(state = initialState, action) {
 
       const alerts = allDevices.filter((item) => item.alert !== 0);
 
-      const offline = allDevices.filter(
-        (item) =>
-          item.staCode === "offline" ||
-          item.staCode === "Não informado!" ||
-          item.staName === "Inativo"
+      const offline = allDevices.filter((item) => item.staCode === "offline");
+      const notDefined = allDevices.filter(
+        (item) => item.staCode === "Não informado!"
       );
+      const unactived = allDevices.filter((item) => item.staName === "Inativo");
       const online = allDevices.filter((item) => item.staCode === "online");
 
       return {
@@ -412,6 +412,8 @@ export default function userReducer(state = initialState, action) {
         allDevices,
         generationBelowEstimated,
         alerts,
+        notDefined,
+        unactived,
         offline,
         online,
       };

@@ -10,7 +10,7 @@ const initialState = {
   temperature: [],
   isSendingEmail: false,
   emailDontExist: null,
-  generalReportData: []
+  generalReportData: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -28,10 +28,10 @@ export default function userReducer(state = initialState, action) {
 
     case generation.GET_GENERATION_SUCCESS:
       const { deviceData, latestTemp } = result;
-      const { date, type } = args;
+      const { type } = args;
 
       function dateOrder(dateA, dateB) {
-        const form = 'DD/MM';
+        const form = "DD/MM";
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
@@ -45,7 +45,7 @@ export default function userReducer(state = initialState, action) {
       }
 
       function monthOrder(dateA, dateB) {
-        const form = 'MM/YYYY';
+        const form = "MM/YYYY";
         const date1 = moment(dateA, form);
         const date2 = moment(dateB, form);
 
@@ -58,45 +58,56 @@ export default function userReducer(state = initialState, action) {
         }
       }
 
-      let datesInfo = deviceData[0].generation.map((gen) => {
-        return moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM")
-      })
+      let datesInfo = deviceData[0]?.generation.map((gen) => {
+        return (
+          moment(gen.gen_date).format("DD") +
+          "/" +
+          moment(gen.gen_date).format("MM")
+        );
+      });
 
-      let monthsInfo = []
-      deviceData[0].generation.map((gen) => {
-        let monthAlreadyCount = monthsInfo.filter((data) => data == moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+      let monthsInfo = [];
+      deviceData[0]?.generation.map((gen) => {
+        let monthAlreadyCount = monthsInfo.filter(
+          (data) =>
+            data ==
+            moment(gen.gen_date).format("MM") +
+              "/" +
+              moment(gen.gen_date).format("YYYY")
+        );
 
         if (monthAlreadyCount.length == 0) {
-          monthsInfo.push(moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY"))
+          monthsInfo.push(
+            moment(gen.gen_date).format("MM") +
+              "/" +
+              moment(gen.gen_date).format("YYYY")
+          );
         }
+      });
 
-      })
+      datesInfo?.sort(dateOrder);
+      monthsInfo.sort(monthOrder);
 
-      datesInfo.sort(dateOrder)
-      monthsInfo.sort(monthOrder)
-
-      const month = parseInt(moment(date).format("MM"));
-      const year = parseInt(moment(date).format("YYYY"));
-      const day = type === "month" ? datesInfo.length : 12;
+      const day = type === "month" ? datesInfo?.length : 12;
 
       // LABEL DO GRAFICO
       const label =
         type === "month"
           ? datesInfo
           : [
-            "Jan",
-            "Fev",
-            "Mar",
-            "Abr",
-            "Mai",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Set",
-            "Out",
-            "Nov",
-            "Dez",
-          ];
+              "Jan",
+              "Fev",
+              "Mar",
+              "Abr",
+              "Mai",
+              "Jun",
+              "Jul",
+              "Ago",
+              "Set",
+              "Out",
+              "Nov",
+              "Dez",
+            ];
 
       return {
         isLoadingGeneration: false,
@@ -104,16 +115,16 @@ export default function userReducer(state = initialState, action) {
           deviceData.length !== 0
             ? handlesGeneration(deviceData[0], type, day, label)
             : {
-              label,
-              realGeneration: [],
-              estimatedGeneration: [],
-              percentMax: [],
-              percentMin: [],
-              realGenerationTotal: 0,
-              estimatedGenerationTotal: 0,
-              generationPercentageTotal: 0,
-              generationPercentage: [],
-            },
+                label,
+                realGeneration: [],
+                estimatedGeneration: [],
+                percentMax: [],
+                percentMin: [],
+                realGenerationTotal: 0,
+                estimatedGenerationTotal: 0,
+                generationPercentageTotal: 0,
+                generationPercentage: [],
+              },
         temperature: latestTemp?.[0]?.temperature[0]?.temp_temperature,
       };
 
@@ -136,12 +147,12 @@ export default function userReducer(state = initialState, action) {
       const alerts =
         result.length !== 0
           ? result.alerts.map((item) => {
-            return {
-              devName: result.dev_name,
-              alInv: item.al_inv,
-              alAlert: item.al_alerts,
-            };
-          })
+              return {
+                devName: result.dev_name,
+                alInv: item.al_inv,
+                alAlert: item.al_alerts,
+              };
+            })
           : [];
       return {
         ...state,
@@ -159,54 +170,54 @@ export default function userReducer(state = initialState, action) {
     case generation.SEND_EMAIL_TO_DEVICE_REQUEST:
       return {
         ...state,
-        isSendingEmail: true
-      }
+        isSendingEmail: true,
+      };
     case generation.SEND_EMAIL_TO_DEVICE_SUCCESS:
       return {
         ...state,
-        isSendingEmail: false
-      }
+        isSendingEmail: false,
+      };
     case generation.SEND_EMAIL_TO_DEVICE_FAILURE:
       return {
         ...state,
         isSendingEmail: false,
-        emailDontExist: true
-      }
+        emailDontExist: true,
+      };
 
     case generation.UPDATE_EMAIL_REQUEST:
       return {
         ...state,
-      }
+      };
 
     case generation.UPDATE_EMAIL_SUCCESS:
       return {
         ...state,
-        emailDontExist: false
-      }
+        emailDontExist: false,
+      };
 
     case generation.UPDATE_EMAIL_FAILURE:
       return {
         ...state,
-        emailDontExist: true
-      }
+        emailDontExist: true,
+      };
 
     case generation.GET_GENERAL_REPORT_REQUEST:
       return {
         ...state,
-        generalReportData: []
-      }
-    
+        generalReportData: [],
+      };
+
     case generation.GET_GENERAL_REPORT_SUCCESS:
-    return {
-      ...state,
-      generalReportData: result
-    }
+      return {
+        ...state,
+        generalReportData: result,
+      };
 
     case generation.GET_GENERAL_REPORT_FAILURE:
-    return {
-      ...state,
-      generalReportData: []
-    }
+      return {
+        ...state,
+        generalReportData: [],
+      };
 
     default:
       return state;

@@ -6,9 +6,9 @@ import {
   setUserCookie,
 } from "src/services/session";
 
-import AlertPercentageForm from "src/components/sidebar-components/side-components/AlertPercentageForm";
+import AlertPercentageForm from "src/components/sidebar/side-components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
-import { CreateDevice } from "src/components/sidebar-components/side-components/CreateDevice";
+import { CreateDevice } from "src/components/sidebar/side-components/CreateDevice";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
 // COMPONENTS

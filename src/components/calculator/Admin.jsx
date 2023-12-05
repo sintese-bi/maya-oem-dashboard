@@ -1,46 +1,35 @@
-import React, { useState, useEffect } from "react";
-import * as yup from "yup";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import estadosBrasileiros from "src/services/estados";
-import { Autocomplete } from "@mui/material";
+import * as yup from "yup";
 
-import citiesData from "src/services/municipios";
-import { CircularProgress } from "@mui/material";
 import {
   Box,
   Button,
+  CircularProgress,
+  FormControlLabel,
   Grid,
-  TextField,
-  Typography,
+  MenuItem,
   Radio,
   RadioGroup,
-  FormControlLabel,
-  MenuItem,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import citiesData from "src/services/municipios";
 
-import InputMask from "react-input-mask";
-
-function AdminCalculator({ onPreviousStep }) {
+function AdminCalculator() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm({
     mode: "onChange",
   });
   const [responseData, setResponseData] = useState(null);
   const [userAddress, setUserAddress] = useState("");
-  const user_check = watch("user_check");
-  const [message, setMessage] = useState("");
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const handlePrevious = () => {
-    onPreviousStep();
-  };
-  const [showSecondButton, setShowSecondButton] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,11 +40,6 @@ function AdminCalculator({ onPreviousStep }) {
             `https://viacep.com.br/ws/${input}/json`
           );
           setUserAddress(response.data);
-          if (response.data && response.data.cep) {
-            setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
-          } else {
-            setMessage("CEP não encontrado");
-          }
         } catch (error) {
           console.error(error);
         }
@@ -71,9 +55,6 @@ function AdminCalculator({ onPreviousStep }) {
     event.target.value = event.target.value.replace(/[^0-9.]/g, "");
   };
 
-  //Use state  do CEP
-  const [cepInput, setCepInput] = useState("");
-
   //Construindo o "usestate" do tipo de plano
   const [selectedPlan, setSelectedPlan] = useState("");
   const handlePlanChange = (event) => {
@@ -83,11 +64,6 @@ function AdminCalculator({ onPreviousStep }) {
   const [selectedHeight, setselectedHeight] = useState("");
   const heightCHange = (event) => {
     setselectedHeight(event.target.value);
-  };
-  //Construindo o "usestate" da quantidade de módulos e potência
-  const [modQuant, setmodQuant] = useState("");
-  const modChange = (event) => {
-    setmodQuant(event.target.value);
   };
   //Inserção
   const [uniqueCities, setUniqueCities] = useState([]);
@@ -364,7 +340,6 @@ function AdminCalculator({ onPreviousStep }) {
         siafi: userAddress.siafi,
       },
     };
-    const json = JSON.stringify(formData);
     const segPlanGigaValue = String(selectedPlan);
     axios
       .post("https://calculadora.mayawatch.com.br/calmarkp", formData)
@@ -974,7 +949,6 @@ function AdminCalculator({ onPreviousStep }) {
             // fullWidth
             {...register("valorDoKwh", {
               required: "Este campo é obrigatório", // Mensagem de erro se o campo estiver vazio
-             
             })}
             onChange={(e) => setValorDoKwh(e.target.value)}
             value={valorDoKwh}

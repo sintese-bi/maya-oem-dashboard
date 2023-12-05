@@ -58,7 +58,7 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 
 export default function AlertPercentageForm({ welcome, setOpen, open }) {
   const dispatch = useDispatch();
-  const { userDevicesIsReady } = useSelector((state) => state.users);
+  const userDevicesIsReady = localStorage.getItem("userDevicesIsReady");
   const [currentPage, setCurrentPage] = useState(0);
   const [carouselWidth, setCarouselWidth] = useState(512);
 

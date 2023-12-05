@@ -2,16 +2,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { AdministratorReport } from "src/reports/AdministratorReport";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
-import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
-import ReactDOMServer from "react-dom/server";
-import { TotalMonth } from "src/components/dashboard-components/total-month/total-month";
+import { TotalMonth } from "src/components/dashboard/total-month/total-month";
 
 // QUERYS
-import { columnsDevices } from "src/constants/columns";
-import { getUserCookie, removeUserCookie } from "src/services/session";
+import { getUserCookie } from "src/services/session";
 import {
   getDashboard,
   getCapacities,
@@ -20,32 +15,22 @@ import {
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
-import {
-  Backdrop,
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Modal,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Box, CircularProgress, Modal } from "@mui/material";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
 // ASSETS
 import { Cancel } from "@mui/icons-material";
 import moment from "moment";
-import { MyDevices } from "src/components/dashboard-components/my-devices/my-devices";
-import { DashboardHeader } from "src/components/dashboard-components/dashboard-header";
+import { MyDevices } from "src/components/dashboard/my-devices/my-devices";
+import { DashboardHeader } from "src/components/dashboard/dashboard-header/dashboard-header";
 import { bigNumberSum } from "src/store/actions/devices";
-import { readFile } from "xlsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   // PROPS DE CONTROLLER
-  const { useUuid, useName, profileLevel, useTypeMember, firstTime } =
-    getUserCookie();
+  const { useUuid, useName, profileLevel, useTypeMember } = getUserCookie();
 
   if (profileLevel !== "admin") {
     navigate("/dashboard/devices");
@@ -56,19 +41,18 @@ export default function Dashboard() {
   const {
     isLoading,
     isAllDevicesDataLoading,
-    isDashboardDataLoading,
     isLoadingGraph,
     brands,
     blUuids,
     dataDevices,
     allDevices,
-    generationBelowEstimated,
     alerts,
     offline,
     online,
+    notDefined,
+    unactived,
     capacity,
     selectedUser,
-    userData,
     graphData,
   } = useSelector((state) => state.users);
 
@@ -83,8 +67,6 @@ export default function Dashboard() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
-  const [columns, setColumns] = useState([]);
-  const [emittedCarbon, setEmittedCarbon] = useState(0);
   const [capacityTotal, setCapacityTotal] = useState(0);
   const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
     useState(true);
@@ -97,7 +79,6 @@ export default function Dashboard() {
     estimatedGenerationValueDataDevices,
     setEstimatedGenerationValueDataDevices,
   ] = useState(0);
-  const [percentFromDevices, setPercentFromDevices] = useState(0);
 
   // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
 
@@ -115,6 +96,7 @@ export default function Dashboard() {
 
   const [startDate, setStartDate] = useState(moment().startOf("month"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+  const [optionFilter, setOptionFilter] = useState("days");
 
   // funções
 
@@ -140,8 +122,8 @@ export default function Dashboard() {
   // função para capturar os valores do relatório administrador
 
   function handleReportGeneration(action) {
-    let startDateReport = moment(startDate).format("DD/MM/YYYY");
-    let endDateReport = moment(endDate).format("DD/MM/YYYY");
+    let startDateReport = moment(startDate).format("YYYY-MM-DD");
+    let endDateReport = moment(endDate).format("YYYY-MM-DD");
     if (useTypeMember) {
       reportAdministratorRule(
         graphData,
@@ -153,6 +135,7 @@ export default function Dashboard() {
         percent,
         startDateReport,
         endDateReport,
+        optionFilter,
         setIsLoadingReportGeneration,
         adminGraphRef
       );
@@ -188,7 +171,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (allDevices.length !== 0) {
       setData(allDevices);
-      setColumns(columnsDevices);
     }
   }, [allDevices]);
 
@@ -196,11 +178,6 @@ export default function Dashboard() {
     if (bignumbersumValues.somaPorDiaReal !== undefined) {
       setRealGeneration(
         bignumbersumValues.somaPorDiaReal[
-          `${moment().format("YYYY-MM-DD")}`
-        ].toFixed(2)
-      );
-      setEstimatedGeneration(
-        bignumbersumValues.somaPorDiaEstimada[
           `${moment().format("YYYY-MM-DD")}`
         ].toFixed(2)
       );
@@ -215,9 +192,6 @@ export default function Dashboard() {
 
       setRealGenerationValueDataDevices(realGeneration);
       setEstimatedGenerationValueDataDevices(estimatedGeneration);
-      setPercentFromDevices(
-        ((realGeneration / estimatedGeneration) * 100).toFixed()
-      );
     }
 
     let realGenerationTempArray = dataDevices.map((data) => {
@@ -225,14 +199,6 @@ export default function Dashboard() {
       return generationRealValue;
     });
     setCapacityTotal(
-      numbers(
-        realGenerationTempArray
-          .reduce((total, element) => total + element, 0)
-          .toFixed("2"),
-        "KWh"
-      )
-    );
-    setEmittedCarbon(
       numbers(
         realGenerationTempArray
           .reduce((total, element) => total + element, 0)
@@ -260,10 +226,6 @@ export default function Dashboard() {
     ).toFixed();
     setPercentTotal(percentValue);
   }, [realGenerationTotal, estimatedGenerationTotal]);
-
-  useEffect(() => {
-    type == 2 ? setColumns([columnsDevices[2]]) : setColumns(columnsDevices);
-  }, [type]);
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
 
@@ -311,12 +273,16 @@ export default function Dashboard() {
           allDevices={allDevices}
           brands={brands}
           capacityTotal={capacityTotal}
+          notDefined={notDefined}
+          unactived={unactived}
           online={online}
           offline={offline}
           alerts={alerts}
         />
       </Box>
       <TotalMonth
+        optionFilter={optionFilter}
+        setOptionFilter={setOptionFilter}
         useName={useName}
         type={type}
         realGenerationTotal={realGenerationTotal}

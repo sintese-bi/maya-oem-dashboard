@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import { RecoveryPassword } from "src/components/recoveryPassword";
+import { RecoveryPassword } from "src/components/recovery-password/recoveryPassword";
 
 // LIBS DE ESTILOS
 import {

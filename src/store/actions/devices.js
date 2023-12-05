@@ -100,12 +100,13 @@ export const createDevice = (params) => (dispatch) => {
 
   api
     .post(`/deviceLogin`, format, configRequest())
-    .then((res) => {
-      const { data } = res;
-
-      toast.success(data.message, {
-        duration: 5000,
-      });
+    .then(() => {
+      toast.success(
+        "Prezado cliente, parabens por monitorar suas usinas conosco, estamos trazendo os dados da suas plantas, em breve seu monitoramento será centralizado no Maya Watch!",
+        {
+          duration: 5000,
+        }
+      );
 
       dispatch({
         type: devices.POST_DEVICE_SUCCESS,

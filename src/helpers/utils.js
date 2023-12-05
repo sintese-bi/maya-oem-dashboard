@@ -1,6 +1,5 @@
 import toast from "react-hot-toast";
 import moment from "moment";
-import { generation } from "src/store/typesActions/types";
 
 //FORMATA DATA TIME = 00:00
 export const formatTime = (date) => {
@@ -69,22 +68,22 @@ export const realVsEstimatedGeneration = (data, type, day, month, year) => {
   const label =
     type === "month"
       ? Array(day)
-        .fill(null)
-        .map((_, i) => i + 1)
+          .fill(null)
+          .map((_, i) => i + 1)
       : [
-        "Jan",
-        "Fev",
-        "Mar",
-        "Abr",
-        "Mai",
-        "Jun",
-        "Jul",
-        "Ago",
-        "Set",
-        "Out",
-        "Nov",
-        "Dez",
-      ];
+          "Jan",
+          "Fev",
+          "Mar",
+          "Abr",
+          "Mai",
+          "Jun",
+          "Jul",
+          "Ago",
+          "Set",
+          "Out",
+          "Nov",
+          "Dez",
+        ];
 
   if (type === "month") {
     data.aggregated.map((generation) => {
@@ -295,61 +294,71 @@ export const selectPropsStyle = () => {
         width: 250,
       },
     },
-  }
+  };
 };
 
 // FORMATA UMA STRING PARA UM VALOR MONETÁRIO SEPARANDO OS MILHARES POR VIRGULA
 export const numbers = (value, unity) => {
   let number = value;
 
-  if(unity != "CO2"){
+  if (unity != "CO2") {
     if (number.length > 6 && number.length < 10) {
-      let stringToNumber = Number(number/1000).toFixed(2)
-      let numberToArray = stringToNumber?.split('');
-      numberToArray.splice(-3, 1, ',')
-      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`
+      let stringToNumber = Number(number / 1000).toFixed(2);
+      let numberToArray = stringToNumber?.split("");
+      numberToArray.splice(-3, 1, ",");
+      let transformedNumber =
+        numberToArray.join("") +
+        ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`;
       return transformedNumber;
     } else if (number.length >= 10) {
-      let stringToNumber = Number(number/1000).toFixed(2)
-      let numberToArray = stringToNumber?.split('');
-      numberToArray.splice(-3, 1, ',')
-      numberToArray.splice(-6, 0, '.')
-      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`
+      let stringToNumber = Number(number / 1000).toFixed(2);
+      let numberToArray = stringToNumber?.split("");
+      numberToArray.splice(-3, 1, ",");
+      numberToArray.splice(-6, 0, ".");
+      let transformedNumber =
+        numberToArray.join("") +
+        ` ${unity == "KWh" ? "MWh" : unity == "KWp" ? "MWp" : ""}`;
       return transformedNumber;
     } else if (number.length <= 6) {
-      let numberToArray = number?.split('');
-      numberToArray.splice(-3, 1, ',')
-      let transformedNumber = numberToArray.join('') + ` ${unity == "KWh" ? "KWh" : unity == "KWp" ? "KWp" : ""}`
+      let numberToArray = number?.split("");
+      numberToArray.splice(-3, 1, ",");
+      let transformedNumber =
+        numberToArray.join("") +
+        ` ${unity == "KWh" ? "KWh" : unity == "KWp" ? "KWp" : ""}`;
       return transformedNumber;
     }
   } else {
     if (number.length > 6 && number.length < 10) {
-      let stringToNumber = Number(number).toFixed(2)
-      let numberToArray = stringToNumber?.split('');
-      numberToArray.splice(-3, 1, ',')
-      numberToArray.splice(-6, 0, '.')
-      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      let stringToNumber = Number(number).toFixed(2);
+      let numberToArray = stringToNumber?.split("");
+      numberToArray.splice(-3, 1, ",");
+      numberToArray.splice(-6, 0, ".");
+      let transformedNumber = numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length >= 10) {
-      let stringToNumber = Number(number).toFixed(2)
-      let numberToArray = stringToNumber?.split('');
-      numberToArray.splice(-3, 1, ',')
-      numberToArray.splice(-6, 0, '.')
-      numberToArray.splice(-10, 0, '.')
-      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      let stringToNumber = Number(number).toFixed(2);
+      let numberToArray = stringToNumber?.split("");
+      numberToArray.splice(-3, 1, ",");
+      numberToArray.splice(-6, 0, ".");
+      numberToArray.splice(-10, 0, ".");
+      let transformedNumber = numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length <= 6) {
-      let numberToArray = number?.split('');
-      numberToArray.splice(-3, 1, ',')
-      let transformedNumber = numberToArray.join('') + ` ${unity}`
+      let numberToArray = number?.split("");
+      numberToArray.splice(-3, 1, ",");
+      let transformedNumber = numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     }
   }
+};
 
- 
-}
-
-export const handleWeekFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
+export const handleWeekFilter = (
+  startDate,
+  endDate,
+  realGeneration,
+  estimatedGeneration
+) => {
+  console.log(startDate, endDate, realGeneration, estimatedGeneration);
   const weeks = [];
   let recentDate = moment(startDate).startOf("week");
   let endOfInterval = moment(endDate);
@@ -369,14 +378,21 @@ export const handleWeekFilter = (startDate, endDate, realGeneration, estimatedGe
     recentDate.add(1, "week");
   }
 
-  let filteredValues = { data: filterValuesByWeeks(realGeneration, estimatedGeneration, weeks), weeks }
-  return filteredValues
-}
+  let filteredValues = {
+    data: filterValuesByWeeks(realGeneration, estimatedGeneration, weeks),
+    weeks,
+  };
+  return filteredValues;
+};
 
-export const handleMonthFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
+export const handleMonthFilter = (
+  startDate,
+  endDate,
+  realGeneration,
+  estimatedGeneration
+) => {
   const months = [];
   let recentDate = moment(startDate).startOf("month");
-  let endOfInterval = moment(endDate);
 
   while (recentDate.isBefore(endDate) || recentDate.isSame(endDate)) {
     let startMonth = recentDate.clone().startOf("month");
@@ -388,33 +404,45 @@ export const handleMonthFilter = (startDate, endDate, realGeneration, estimatedG
     });
     recentDate.add(1, "month");
   }
-  let filteredValues = { data: filterValuesByMonths(realGeneration, estimatedGeneration, months), months }
+  let filteredValues = {
+    data: filterValuesByMonths(realGeneration, estimatedGeneration, months),
+    months,
+  };
 
-  return filteredValues
-}
+  return filteredValues;
+};
 
-export const handleQuinzenaFilter = (startDate, endDate, realGeneration, estimatedGeneration) => {
+export const handleQuinzenaFilter = (
+  startDate,
+  endDate,
+  realGeneration,
+  estimatedGeneration
+) => {
   const quinzenas = [];
   let recentDate = moment(startDate).startOf("month");
-  let endOfInterval = recentDate.clone().endOf("month");
 
   while (recentDate.isBefore(endDate) || recentDate.isSame(endDate)) {
     let startQuinzena = recentDate.clone();
     let endQuinzena = recentDate.add(14, "days");
 
-
     quinzenas.push({
-      startQuinzena: moment(startQuinzena).format('MM/DD/YYYY'),
+      startQuinzena: moment(startQuinzena).format("MM/DD/YYYY"),
       endQuinzena: moment(endQuinzena).format("MM/DD/YYYY"),
     });
 
-
-    recentDate.add(1, 'days')
+    recentDate.add(1, "days");
   }
-  let filteredValues = { data: filterValuesByQuinzenas(realGeneration, estimatedGeneration, quinzenas), quinzenas }
+  let filteredValues = {
+    data: filterValuesByQuinzenas(
+      realGeneration,
+      estimatedGeneration,
+      quinzenas
+    ),
+    quinzenas,
+  };
 
-  return filteredValues
-}
+  return filteredValues;
+};
 
 function filterValuesByQuinzenas(dataArray, estimatedGeneration, quinzenas) {
   const filteredValues = [];
@@ -438,8 +466,10 @@ function filterValuesByQuinzenas(dataArray, estimatedGeneration, quinzenas) {
       );
       return totalValue?.toFixed(2);
     }),
-    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 15)
-  }
+    estimatedGeneration: Array(filteredValues.length).fill(
+      estimatedGeneration?.[0] * 15
+    ),
+  };
 
   return finalResult;
 }
@@ -466,8 +496,10 @@ function filterValuesByMonths(dataArray, estimatedGeneration, months) {
       );
       return totalValue?.toFixed(2);
     }),
-    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 30)
-  }
+    estimatedGeneration: Array(filteredValues.length).fill(
+      estimatedGeneration?.[0] * 30
+    ),
+  };
   return finalResult;
 }
 
@@ -478,7 +510,7 @@ function filterValuesByWeeks(dataArray, estimatedGeneration, weeks) {
     const endWeek = new Date(week.endWeek);
 
     const valuesInWeek = dataArray?.filter((item) => {
-      let date = moment(item.date, "MM/DD/YYYY")
+      let date = moment(item.date, "MM/DD/YYYY");
       const itemDate = new Date(date);
       return itemDate >= startWeek && itemDate <= endWeek;
     });
@@ -493,8 +525,10 @@ function filterValuesByWeeks(dataArray, estimatedGeneration, weeks) {
       );
       return totalValue?.toFixed(2);
     }),
-    estimatedGeneration: Array(filteredValues.length).fill(estimatedGeneration?.[0] * 7)
-  }
+    estimatedGeneration: Array(filteredValues.length).fill(
+      estimatedGeneration?.[0] * 7
+    ),
+  };
 
   return finalResult;
 }

@@ -1,15 +1,13 @@
 // IMPORTS
-import { useState, useEffect, useRef } from "react";
 import moment from "moment-timezone";
+import { useEffect, useState } from "react";
 import {
   handleMonthFilter,
   handleQuinzenaFilter,
   handleWeekFilter,
-  numbers,
 } from "../../helpers/utils";
 
 // LIBS DE ESTILOS
-import { Bar, Chart, Line } from "react-chartjs-2";
 import {
   Box,
   Card,
@@ -22,24 +20,25 @@ import {
   useTheme,
 } from "@mui/material";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
+  BarController,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
-  PointElement,
-  LineElement,
-  LineController,
-  BarController,
 } from "chart.js";
+import { Bar, Chart, Line } from "react-chartjs-2";
 import { LoadingSkeletonCharts } from "../Loading";
 
 //ASSETS
-import { TabPanel } from "../TabPanel";
 import { Container } from "@mui/system";
 import NoData from "../../assets/img/illustrations/no-data.svg";
+import { TabPanel } from "../TabPanel";
 
 ChartJS.register(
   CategoryScale,
@@ -60,7 +59,6 @@ const TABS = {
 };
 
 export const ChartsGenerationBITopAndLowValue = (props) => {
-  const canvas = useRef(null);
   const { topAndLowValue } = props;
   const theme = useTheme();
 
@@ -163,14 +161,12 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
 export const ChartsGenerationBIProductive = (props) => {
   const { startDate, endDate, optionFilter, generation, isLoading } = props;
 
-  const canvas = useRef(null);
   const theme = useTheme();
 
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
 
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, "days") + 1;
-  const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
   const labels =
     optionFilter == "month"
@@ -276,10 +272,8 @@ export const ChartsGenerationBIProductive = (props) => {
 export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter, graphRef } =
     props;
-  const theme = useTheme();
 
   // ESTADOS DE CONTROLE DO FILTRO
-  const [valueTabs, setValueTabs] = useState(0);
 
   if (isLoading || !generation) return <LoadingSkeletonCharts />;
 
@@ -304,9 +298,6 @@ export const ChartsLinear = (props) => {
     generation?.estimatedGeneration
   );
 
-  // Obter número total de dias entre as datas de início e fim
-  const totalDays = moment(endDate).diff(startDate, "days") + 1;
-  const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
 
   const filterPeriodData = () => {
@@ -528,14 +519,14 @@ export const ChartsLinear = (props) => {
   );
 };
 
-export const chartsToGenerationReports = async (props) => {
+export const chartsToGenerationReports = async () => {
   const canvas = document.createElement("canvas");
   canvas.width = 400; // Defina a largura e altura conforme necessário
   canvas.height = 300;
 
   const ctx = canvas.getContext("2d");
 
-  const graph = new ChartJS(ctx, {
+  new ChartJS(ctx, {
     type: "bar",
     data: {
       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -671,20 +662,6 @@ export const ChartsDashboard = (props) => {
   } = props;
   const theme = useTheme();
 
-  function dateOrder(dateA, dateB) {
-    const form = "DD/MM";
-    const date1 = moment(dateA, form);
-    const date2 = moment(dateB, form);
-
-    if (date1.isBefore(date2)) {
-      return -1;
-    } else if (date1.isAfter(date2)) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-
   const realData = dataDevices?.somaPorDiaReal || {};
   const estimatedData = dataDevices?.somaPorDiaEstimada || {};
 
@@ -694,18 +671,14 @@ export const ChartsDashboard = (props) => {
   );
 
   // Mapear as datas para os valores correspondentes
-  const realValues = sortedDates.map((data) =>
-    (realData[data] / 1000).toFixed(2)
-  );
+
   const realValuesTemp = sortedDates.map((data) => {
     return {
       value: realData[data],
       date: moment(data).format("MM/DD/YYYY"),
     };
   });
-  const estimatedValues = sortedDates.map((data) =>
-    (estimatedData[data] / 1000).toFixed(2)
-  );
+
   const estimatedValuesTemp = sortedDates.map((data) => {
     return estimatedData[data];
   });
@@ -820,7 +793,6 @@ export const ChartsDashboard = (props) => {
     }
   };
 
-  const labels = sortedDates.map((data) => moment(data).format("DD/MM"));
   const labelsTemp = filterPeriod();
   const periodData = filterPeriodData();
 
@@ -977,7 +949,7 @@ export const ChartsDashboard = (props) => {
 };
 
 export const AdmnistratorGraph = (props) => {
-  const { dataDevices, isLoading, adminGraphRef } = props;
+  const { dataDevices, adminGraphRef } = props;
   const theme = useTheme();
 
   const realData = dataDevices?.somaPorDiaReal || {};
@@ -992,17 +964,10 @@ export const AdmnistratorGraph = (props) => {
   );
 
   const realValues = labels.map((data) => (realData[data] / 1000).toFixed(2));
-  const realValuesTemp = labels.map((data) => {
-    return { value: realData[data], date: moment(data).format("MM/DD/YYYY") };
-  });
+
   const estimatedValues = labels.map((data) =>
     (estimatedData[data] / 1000).toFixed(2)
   );
-  const estimatedValuesTemp = sortedDates.map((data) => {
-    return estimatedData[data];
-  });
-
-  console.log(realValues, estimatedValues);
 
   const data = {
     labels: labels.map((data) => moment(data).format("DD/MM")),
@@ -1122,7 +1087,6 @@ export const ChartsGeneration = (props) => {
 
   // Obter número total de dias entre as datas de início e fim
   const totalDays = moment(endDate).diff(startDate, "days") + 1;
-  const months = moment(endDate).diff(startDate, "months");
   // Gerar rótulos de dia para o gráfico
   const labels =
     optionFilter == "month"
