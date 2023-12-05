@@ -659,3 +659,28 @@ export const deleteUser = (params) => (dispatch) => {
       });
     });
 };
+
+export const updateBrands = (params) => (dispatch) => {
+  dispatch({ type: users.UPDATE_BRAND });
+  const formatBrandLogin = JSON.stringify(params.bl_login);
+  delete params.bl_login;
+  const format = { ...params, bl_login: formatBrandLogin };
+  api
+    .post("/updatebrands", format, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - updateBrands";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};

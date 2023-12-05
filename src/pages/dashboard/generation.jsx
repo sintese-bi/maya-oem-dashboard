@@ -158,13 +158,12 @@ const Generation = () => {
 
   return (
     <Box
-      component="main"
       sx={{
-        flexGrow: 1,
         py: 2,
+        width: "89vw",
       }}
     >
-      <Container maxWidth={false}>
+      <Box sx={{ width: "100%" }}>
         <GenerationHeader
           deviceInfo={deviceInfo}
           handleSelectDevices={handleSelectDevices}
@@ -192,7 +191,7 @@ const Generation = () => {
             blUuidState={blUuidState}
           />
         </Box>
-        <Box sx={{ mx: 4, my: 10 }}>
+        <Box sx={{ my: 10, width: "100%" }}>
           <GenerationBI
             setOptionFilter={setOptionFilter}
             graphRef={graphRef}
@@ -206,7 +205,7 @@ const Generation = () => {
             deviceInfo={deviceInfo}
           />
         </Box>
-      </Container>
+      </Box>
       <Modal
         open={open}
         onClose={handleReportGeneration}
