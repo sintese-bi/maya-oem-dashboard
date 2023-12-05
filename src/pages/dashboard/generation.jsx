@@ -39,10 +39,10 @@ import {
 } from "@mui/icons-material";
 import { getDevices, getCapacities } from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
-import { DeviceDetail } from "../../components/generation-components/DeviceDetail";
-import { GenerationBI } from "src/components/generation-components/GenerationBI";
+import { DeviceDetail } from "../../components/generation/DeviceDetail";
+import { GenerationBI } from "src/components/generation/GenerationBI";
 import Tabs from "../../components/shared/Tabs";
-import { GenerationHeader } from "src/components/generation-components/generation-header";
+import { GenerationHeader } from "src/components/generation/generation-header";
 
 const Generation = () => {
   const location = useLocation();

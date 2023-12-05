@@ -22,7 +22,9 @@ export const DeviceItem = ({
 
   return (
     <Box key={index}>
-      <Typography variant="body2">{data.dev_name}</Typography>
+      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+        {data.dev_name}
+      </Typography>
       <Box
         sx={{
           display: "flex",

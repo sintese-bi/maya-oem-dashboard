@@ -24,7 +24,7 @@ export const axiosBaseQuery = async ({ url, method, data, params }) => {
     const result = await axios({
       ...configRequest(),
       url: `https://app.mayaoem.com.br/v1` + url,
-      //url: `http://localhost:8080/v1` + url,
+      ///url: `http://localhost:8080/v1` + url,
       method,
       data,
       params,

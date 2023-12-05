@@ -1,31 +1,28 @@
 // bibliotecas
 
-import moment from "moment";
 import { Box, Typography } from "@mui/material";
+import moment from "moment";
 
 //components
-
-import { BigNumber, BigNumberDashboard } from "src/components/shared/BigNumber";
-import { LoadingSkeletonBigNumbers } from "src/components/Loading";
 
 //icons
 
 import { MyDevicesResume } from "./my-devices-components/my-devices-resume";
 
 export const MyDevices = ({
-  isLoadingGraph,
   realGeneration,
   estimatedGeneration,
   realGenerationValueDataDevices,
   estimatedGenerationValueDataDevices,
   percent,
-  label,
   type,
   handleChangeColumns,
   dataDevices,
   allDevices,
   brands,
   capacityTotal,
+  notDefined,
+  unactived,
   online,
   offline,
   alerts,
@@ -88,6 +85,8 @@ export const MyDevices = ({
           brands={brands}
           capacityTotal={capacityTotal}
           online={online}
+          notDefined={notDefined}
+          unactived={unactived}
           offline={offline}
           alerts={alerts}
         />

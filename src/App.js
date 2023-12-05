@@ -12,8 +12,8 @@ import Dashboard from "./pages/dashboard";
 import Generation from "./pages/dashboard/generation";
 import Investment from "./pages/dashboard/investment";
 import Alerts from "./pages/dashboard/alerts";
-import AlertDevices from "src/components/alerts-components/AlertDevices";
-import Plants from "src/components/dashboard-components/total-month/total-month-components/total-month-devices";
+import AlertDevices from "src/components/alerts/AlertDevices";
+import Plants from "src/components/dashboard/total-month/total-month-components/total-month-devices";
 
 import PrivateAdminRoute from "./PrivateAdminRoute";
 import ListUsers from "./pages/dashboard/admin/ListUsers";
@@ -22,12 +22,7 @@ import {
   AdminCalculator,
   ClientCalculator,
 } from "./components/calculator";
-import { ReportTest } from "./components/ReportTest";
-import { getUserCookie } from "./services/session";
-import { UpdateNote } from "./pages/dashboard/UpdateNote";
-import { Box, Card, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import BackgroundLogin from "src/assets/img/illustrations/background-login.svg";
+import { ReportTest } from "./components/reports/ReportTest";
 
 export default function App() {
   return (

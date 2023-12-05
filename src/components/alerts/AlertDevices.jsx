@@ -20,7 +20,6 @@ import {
 import { CheckCircle } from "@mui/icons-material";
 
 export default function AlertDevices() {
-  let laoded = 0;
   const { useUuid } = getUserCookie();
   const { devicesALerts, isLoadingAlerts } = useSelector(
     (state) => state.devices
@@ -40,7 +39,6 @@ export default function AlertDevices() {
     if (dataDevices.length !== 0) {
       let devicesWithAlerts = dataDevices.filter((data) => data.alert !== 0);
       setData(devicesWithAlerts);
-      laoded = 1;
     }
   }, [dataDevices]);
 

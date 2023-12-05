@@ -1,7 +1,6 @@
 // bibliotecas
 
-import { Avatar, Box, TextareaAutosize, Typography } from "@mui/material";
-import moment from "moment";
+import { Avatar, Box } from "@mui/material";
 
 //components
 
@@ -10,29 +9,25 @@ import { BigNumberDashboard } from "src/components/shared/BigNumber";
 //icons
 
 import {
-  BrandingWatermark,
   AccountCircle,
-  AlignVerticalTop,
-  Warning,
-  ThumbUpOffAlt,
-  ThumbDownOffAlt,
+  BrandingWatermark,
   ElectricBolt,
+  ThumbDownOffAlt,
+  ThumbUpOffAlt,
+  Warning,
 } from "@mui/icons-material";
 import { numbers } from "src/helpers/utils";
 
 export const MyDevicesResume = ({
-  label,
   realGeneration,
   estimatedGeneration,
-  realGenerationValueDataDevices,
-  estimatedGenerationValueDataDevices,
   percent,
   type,
   handleChangeColumns,
-  dataDevices,
   allDevices,
   brands,
-  capacityTotal,
+  notDefined,
+  unactived,
   online,
   offline,
   alerts,
@@ -124,6 +119,25 @@ export const MyDevicesResume = ({
           activeBtn={type === 6 ? true : false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
+        {/*<BigNumberDashboard
+          title="Inativo"
+          value={unactived.length !== 0 ? unactived.length : 0}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <ThumbUpOffAlt />
+            </Avatar>
+          }
+          type={6}
+          activeBtn={type === 6 ? true : false}
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
+        */}
         <BigNumberDashboard
           title="Offline"
           value={offline.length !== 0 ? offline.length : 0}
@@ -171,7 +185,26 @@ export const MyDevicesResume = ({
           activeBtn={false}
           handleChangeColumns={(type) => handleChangeColumns(type)}
         />
-
+        {/*
+        <BigNumberDashboard
+          title="Não informado"
+          value={notDefined.length !== 0 ? notDefined.length : 0}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <ThumbUpOffAlt />
+            </Avatar>
+          }
+          type={6}
+          activeBtn={type === 6 ? true : false}
+          handleChangeColumns={(type) => handleChangeColumns(type)}
+        />
+        */}
         <BigNumberDashboard
           title="Esperado hoje"
           btn={true}

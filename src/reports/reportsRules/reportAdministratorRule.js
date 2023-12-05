@@ -9,6 +9,7 @@ export const reportAdministrator = {
   graphData: {},
   requistionStartDate: "",
   requisitionEndDate: "",
+  optionFilter: "",
   percent: "",
   useName: "",
   devicesLength: 0,
@@ -29,6 +30,7 @@ export function reportAdministratorRule(
   percent,
   startDateReport,
   endDateReport,
+  optionFilter,
   setIsLoadingReport,
   adminGraphRef
 ) {
@@ -87,6 +89,7 @@ export function reportAdministratorRule(
     "CO2"
   );
   reportAdministrator.color = "#0097B2";
+  reportAdministrator.optionFilter = optionFilter;
 
   setIsLoadingReport(false);
 }

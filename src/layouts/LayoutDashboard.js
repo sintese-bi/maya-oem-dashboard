@@ -6,8 +6,8 @@ import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // COMPONENTS
-import { DashboardNavbar } from "../components/navbar-components/Navbar";
-import { Side } from "../components/sidebar-components/Side";
+import { DashboardNavbar } from "../components/navbar/Navbar";
+import { Side } from "../components/sidebar/Side";
 import { useEffect, useState } from "react";
 
 // STYLE

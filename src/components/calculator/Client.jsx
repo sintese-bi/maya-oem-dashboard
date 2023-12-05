@@ -3,7 +3,6 @@ import * as yup from "yup";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import estadosBrasileiros from "src/services/estados";
-import { Autocomplete } from "@mui/material";
 
 import citiesData from "src/services/municipios";
 import {
@@ -19,27 +18,19 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-import InputMask from "react-input-mask";
-
-function ClientCalculator({ onPreviousStep }) {
+function ClientCalculator() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm({
     mode: "onChange",
   });
   const [responseData, setResponseData] = useState(null);
   const [userAddress, setUserAddress] = useState("");
-  const user_check = watch("user_check");
-  const [message, setMessage] = useState("");
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const handlePrevious = () => {
-    onPreviousStep();
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,11 +41,6 @@ function ClientCalculator({ onPreviousStep }) {
             `https://viacep.com.br/ws/${input}/json`
           );
           setUserAddress(response.data);
-          if (response.data && response.data.cep) {
-            setMessage(`CEP: ${response.data.cep}, DDD: ${response.data.ddd}`);
-          } else {
-            setMessage("CEP não encontrado");
-          }
         } catch (error) {
           console.error(error);
         }
@@ -70,9 +56,6 @@ function ClientCalculator({ onPreviousStep }) {
     event.target.value = event.target.value.replace(/[^0-9.]/g, "");
   };
 
-  //Use state  do CEP
-  const [cepInput, setCepInput] = useState("");
-
   //Construindo o "usestate" do tipo de plano
   const [selectedPlan, setSelectedPlan] = useState("");
   const handlePlanChange = (event) => {
@@ -83,11 +66,7 @@ function ClientCalculator({ onPreviousStep }) {
   const heightCHange = (event) => {
     setselectedHeight(event.target.value);
   };
-  //Construindo o "usestate" da quantidade de módulos e potência
-  const [modQuant, setmodQuant] = useState("");
-  const modChange = (event) => {
-    setmodQuant(event.target.value);
-  };
+
   //Inserção
   const [uniqueCities, setUniqueCities] = useState([]);
   const [nome, setNome] = useState("");
@@ -365,8 +344,6 @@ function ClientCalculator({ onPreviousStep }) {
         siafi: userAddress.siafi,
       },
     };
-
-    const json = JSON.stringify(formData);
     const segPlanGigaValue = String(selectedPlan);
     axios
       .post("https://calculadora.mayawatch.com.br/calmarkp", formData)

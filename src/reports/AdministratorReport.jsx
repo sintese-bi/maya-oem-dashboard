@@ -6,12 +6,13 @@ import {
   View,
   Document,
   StyleSheet,
-  PDFViewer,
-  Svg,
-  Polygon,
   Image,
-  Font,
 } from "@react-pdf/renderer";
+import {
+  handleMonthFilter,
+  handleQuinzenaFilter,
+  handleWeekFilter,
+} from "src/helpers/utils";
 
 export const AdministratorReport = () => {
   const styles = StyleSheet.create({
@@ -112,6 +113,9 @@ export const AdministratorReport = () => {
     },
   });
 
+  const startDate = reportAdministrator.requistionStartDate;
+  const endDate = reportAdministrator.requisitionEndDate;
+
   const realData = reportAdministrator.graphData.realGeneration;
   const estimatedData = reportAdministrator.graphData.estimatedGeneration;
 
@@ -122,17 +126,131 @@ export const AdministratorReport = () => {
   // Mapear as datas para os valores correspondentes
   const realValues = sortedDates.map((data) => {
     return {
-      value: realData[data] / 1000,
-      date: moment(data).format("DD"),
+      value: parseFloat(realData[data]),
+      date: moment(data).format("MM/DD/YYYY"),
     };
   });
-  const estimatedValues = sortedDates.map((data) => estimatedData[data] / 1000);
+  const estimatedValues = sortedDates.map((data) =>
+    parseFloat(estimatedData[data])
+  );
+
+  let filteredWeekValues = handleWeekFilter(
+    startDate,
+    endDate,
+    realValues,
+    estimatedValues
+  );
+
+  let filteredMonthValues = handleMonthFilter(
+    reportAdministrator.requistionStartDate,
+    reportAdministrator.requisitionEndDate,
+    realValues,
+    estimatedValues
+  );
+
+  let filteredQuinzenasValues = handleQuinzenaFilter(
+    reportAdministrator.requistionStartDate,
+    reportAdministrator.requisitionEndDate,
+    realValues,
+    estimatedValues
+  );
+
+  const filterPeriodData = () => {
+    switch (reportAdministrator.optionFilter) {
+      case "days":
+        return {
+          data: {
+            realGeneration: realValues.map((data) => Number(data.value) / 1000),
+            estimatedGeneration: estimatedValues.map((data) => data / 1000),
+          },
+          period: "Dias",
+        };
+        break;
+      case "weeks":
+        return {
+          data: {
+            realGeneration: filteredWeekValues.data.realGeneration.map(
+              (data) => data / 1000
+            ),
+            estimatedGeneration:
+              filteredWeekValues.data.estimatedGeneration.map(
+                (data) => data / 1000
+              ),
+          },
+          period: "Semanas",
+        };
+        break;
+      case "months":
+        return {
+          data: {
+            realGeneration: filteredMonthValues.data.realGeneration,
+            estimatedGeneration: filteredMonthValues.data.estimatedGeneration,
+          },
+          period: "Meses",
+        };
+        break;
+      case "biweek":
+        return {
+          data: {
+            realGeneration: filteredQuinzenasValues.data.realGeneration,
+            estimatedGeneration:
+              filteredQuinzenasValues.data.estimatedGeneration,
+          },
+          period: "Quinzenas",
+        };
+        break;
+      default:
+        break;
+    }
+  };
+
+  const filterPeriod = () => {
+    switch (reportAdministrator.optionFilter) {
+      case "days":
+        return realValues?.map((data) =>
+          moment(data.date, "MM/DD/YYYY").format("DD")
+        );
+        break;
+      case "weeks":
+        return filteredWeekValues.weeks.map((data) => {
+          let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
+            data.endWeek
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      case "months":
+        return filteredMonthValues.months.map((data) => {
+          let date = `${moment(data.startMonth).format("DD/MM")} - ${moment(
+            data.endMonth
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      case "biweek":
+        return filteredQuinzenasValues.quinzenas.map((data) => {
+          let date = `${moment(data.startQuinzena).format("DD/MM")} - ${moment(
+            data.endQuinzena
+          ).format("DD/MM")}`;
+          return date;
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const labelsTemp = filterPeriod();
+  const periodData = filterPeriodData();
 
   const yAxis =
-    Math.max(...estimatedValues) >
-    Math.max(...realValues.map((data) => data.value))
-      ? Math.max(...estimatedValues)
-      : Math.max(...realValues.map((data) => data.value));
+    Math.max(...periodData.data.estimatedGeneration) >
+    Math.max(...periodData.data.realGeneration)
+      ? Math.max(
+          ...(Math.max(...periodData.data.estimatedGeneration) >
+            Math.max(...periodData.data.realGeneration))
+        )
+      : Math.max(...periodData.data.realGeneration);
 
   let division = Math.floor(yAxis / 10);
   let result = [];
@@ -144,7 +262,7 @@ export const AdministratorReport = () => {
     }
   }
 
-  console.log(realValues, estimatedValues, reportAdministrator.graphData);
+  console.log(labelsTemp, periodData);
 
   return (
     <Document>
@@ -239,27 +357,67 @@ export const AdministratorReport = () => {
                       width: "100%",
                       height: "100px",
                       display: "flex",
-                      justifyContent: "space-around",
-                      gap: 1,
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 2,
                       flexDirection: "row",
                     }}
                   >
                     <View
                       style={{
-                        width: "4%",
                         display: "flex",
+                        flexDirection: "row",
+                        gap: 1,
                         justifyContent: "space-between",
                         alignItems: "center",
-                        flexDirection: "column",
-                        marginTop: "auto",
-                        height: `${yAxis + 42}px`,
+                        widh: "12px",
                       }}
                     >
-                      {result.reverse().map((data, index) => (
-                        <Text key={index} style={{ fontSize: "8px" }}>
-                          {data}
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "10px",
+                          }}
+                        >
+                          M
                         </Text>
-                      ))}
+                        <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
+                          W
+                        </Text>
+                        <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
+                          h
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: "4%",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          marginTop: "auto",
+                          height: `${yAxis + 42}px`,
+                        }}
+                      >
+                        {result.reverse().map((data, index) => (
+                          <Text
+                            key={index}
+                            style={{
+                              fontSize: "8px",
+                            }}
+                          >
+                            {data}
+                          </Text>
+                        ))}
+                      </View>
                     </View>
                     <View
                       style={{
@@ -268,51 +426,69 @@ export const AdministratorReport = () => {
                         display: "flex",
                         gap: 8,
                         flexDirection: "row",
+                        marginLeft: "15px",
                       }}
                     >
-                      {realValues.map((realValue, index) => {
-                        return (
-                          <View
-                            key={realValue.value}
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 1,
-                              marginTop: "auto",
-                            }}
-                          >
+                      {periodData.data?.realGeneration.map(
+                        (realValue, index) => {
+                          return (
                             <View
+                              key={realValue.value}
                               style={{
                                 display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-around",
+                                flexDirection: "column",
                                 gap: 1,
                                 marginTop: "auto",
                               }}
                             >
                               <View
                                 style={{
-                                  width: "8px",
-                                  height: `${42 + realValue.value}px`,
-                                  backgroundColor: "#6CE5E8",
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "space-around",
+                                  gap: 1,
                                   marginTop: "auto",
                                 }}
-                              ></View>
-                              <View
-                                style={{
-                                  width: "8px",
-                                  height: `${42 + estimatedValues[index]}px`,
-                                  backgroundColor: "#2D8BBA",
-                                  marginTop: "auto",
-                                }}
-                              ></View>
+                              >
+                                <View
+                                  style={{
+                                    width: "8px",
+                                    height: `${
+                                      realValue != 0
+                                        ? 42 + realValue
+                                        : realValue
+                                    }px`,
+                                    backgroundColor: "#6CE5E8",
+                                    marginTop: "auto",
+                                  }}
+                                ></View>
+                                <View
+                                  style={{
+                                    width: "8px",
+                                    height: `${
+                                      periodData.data?.estimatedGeneration[
+                                        index
+                                      ] != 0
+                                        ? 42 +
+                                          periodData.data?.estimatedGeneration[
+                                            index
+                                          ]
+                                        : periodData.data?.estimatedGeneration[
+                                            index
+                                          ]
+                                    }px`,
+                                    backgroundColor: "#2D8BBA",
+                                    marginTop: "auto",
+                                  }}
+                                ></View>
+                              </View>
+                              <Text style={{ fontSize: "8px" }}>
+                                {labelsTemp[index]}
+                              </Text>
                             </View>
-                            <Text style={{ fontSize: "8px" }}>
-                              {realValue.date}
-                            </Text>
-                          </View>
-                        );
-                      })}
+                          );
+                        }
+                      )}
                     </View>
                   </View>
                   <Text
@@ -322,7 +498,7 @@ export const AdministratorReport = () => {
                       marginTop: "26px",
                     }}
                   >
-                    Days
+                    {`Dias`}
                   </Text>
                 </View>
               </View>

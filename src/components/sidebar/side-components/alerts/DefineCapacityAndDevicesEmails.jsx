@@ -1,9 +1,7 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import location from "src/services/municipios";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { ArrowDownward, JoinFull, SaveAs } from "@mui/icons-material";
+
+import { SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,31 +11,22 @@ import {
 } from "src/store/actions/users";
 import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
-export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
+export function DefineCapacityAndDevicesEmails({ setOpen }) {
   var scrolled = false;
   const containerRef = useRef(null);
   const allDevicesFromUserRef = useRef([]);
   const dataRef = useRef([]);
   const firstIndexRef = useRef(0);
   const lastIndexRef = useRef(10);
-  const [prevScrollPosition, setPrevScrollPosition] = useState(0);
-  const [page, setPage] = useState(1);
-  const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(50);
   const { useUuid } = getUserCookie();
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, setValue } = useForm({
     mode: "onChange",
   });
+
   const { allDevicesFromUser } = useSelector((state) => state.users);
 
   function autoComplete(value, index) {
@@ -170,6 +159,12 @@ export function DefineCapacityAndDevicesEmails({ setOpen, open }) {
         p: 2,
       }}
     >
+      <Typography
+        variant="h4"
+        sx={{ position: "absolute", marginTop: "-80px" }}
+      >
+        Geração estimada das usinas.
+      </Typography>
       <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
         Por favor, define o email e a potência de cada planta!
       </Typography>
