@@ -76,12 +76,20 @@ export const GenerationBI = ({
   }, [totalRealGeneration, totalEstimatedGeneration]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", mt: 4 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        mt: 4,
+
+        width: "100%",
+      }}
+    >
       <Typography variant="h4" sx={{ mb: 6 }}>
         Informações do dia
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -92,7 +100,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -103,7 +111,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -121,7 +129,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -139,7 +147,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -158,7 +166,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (

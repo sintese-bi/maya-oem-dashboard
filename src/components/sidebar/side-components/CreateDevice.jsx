@@ -6,8 +6,9 @@ import * as Yup from "yup";
 import { getUserCookie } from "src/services/session";
 
 import { createDevice } from "src/store/actions/devices";
-import { getDashboard } from "src/store/actions/users";
+import { getDashboard, updateBrands } from "src/store/actions/users";
 import { Button, TextField, Box, Typography, MenuItem } from "@mui/material";
+import { useState } from "react";
 
 const validateSchema = Yup.object().shape({
   bl_login: Yup.string().required("Campo é obrigatório."),
@@ -15,6 +16,7 @@ const validateSchema = Yup.object().shape({
 });
 
 export const CreateDevice = () => {
+  const [action, setAction] = useState("createDevice");
   const methods = useForm();
   const { useUuid } = getUserCookie();
   const dispatch = useDispatch();
@@ -29,14 +31,32 @@ export const CreateDevice = () => {
   });
 
   async function onSubmit(values) {
-    const { bl_login, bl_password, bl_name } = values;
+    const { bl_login, bl_password, bl_name, bl_url } = values;
+    console.log(values);
     try {
-      dispatch(
-        createDevice({ bl_login, bl_password, bl_name, use_uuid: useUuid })
-      );
+      if (action == "createDevice") {
+        dispatch(
+          createDevice({
+            bl_login,
+            bl_password,
+            bl_name,
+            use_uuid: useUuid,
+            bl_url,
+          })
+        );
+      } else {
+        dispatch(
+          updateBrands({
+            bl_login,
+            bl_password,
+            bl_name,
+            use_uuid: useUuid,
+            bl_url,
+          })
+        );
+      }
+
       dispatch(getDashboard(useUuid, "create-devices.jsx"));
-      setValue("bl_login", "");
-      setValue("bl_password", "");
     } catch (error) {
       alert(error);
     }
@@ -57,7 +77,7 @@ export const CreateDevice = () => {
       >
         <Box>
           <Typography sx={{ fontWeight: "bold" }} variant="h5">
-            Adicionar portal
+            {action == "createDevice" ? "Adicionar portal" : "Atualizar portal"}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", py: 4 }}>
@@ -83,18 +103,25 @@ export const CreateDevice = () => {
           </TextField>
           <TextField
             margin="normal"
-            label="Login da planta"
+            label="Login"
             {...register("bl_login")}
-            error={!!errors.deviceLogin}
-            helperText={errors.deviceLogin?.message}
+            error={!!errors.bl_login}
+            helperText={errors.bl_login?.message}
           />
           <TextField
             margin="normal"
             label="Senha"
             type="password"
             {...register("bl_password")}
-            error={!!errors.devicePassword}
-            helperText={errors.devicePassword?.message}
+            error={!!errors.bl_password}
+            helperText={errors.bl_password?.message}
+          />
+          <TextField
+            margin="normal"
+            label="URL"
+            {...register("bl_url")}
+            error={!!errors.bl_url}
+            helperText={errors.bl_url?.message}
           />
           <TextField
             margin="normal"
@@ -103,15 +130,29 @@ export const CreateDevice = () => {
             {...register("bl_usins_qntd")}
           />
         </Box>
-        <Button
-          sx={{
-            width: "162px",
-          }}
-          type="submit"
-          variant="contained"
-        >
-          Confirmar
-        </Button>
+        <Box>
+          <Button
+            sx={{
+              width: "162px",
+            }}
+            type="submit"
+            variant="contained"
+          >
+            Confirmar
+          </Button>
+          <Button
+            sx={{
+              width: "162px",
+            }}
+            onClick={() => {
+              action == "createDevice"
+                ? setAction("updateDevice")
+                : setAction("createDevice");
+            }}
+          >
+            {action == "createDevice" ? "Atualizar marca?" : "Criar portal?"}
+          </Button>
+        </Box>
       </Box>
     </FormProvider>
   );

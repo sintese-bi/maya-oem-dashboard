@@ -16,7 +16,7 @@ export const BigNumber = (props) => {
   return (
     <Card>
       <CardContent>
-        <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
+        <Grid container spacing={1} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
               {title}

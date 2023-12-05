@@ -358,7 +358,6 @@ export const handleWeekFilter = (
   realGeneration,
   estimatedGeneration
 ) => {
-  console.log(startDate, endDate, realGeneration, estimatedGeneration);
   const weeks = [];
   let recentDate = moment(startDate).startOf("week");
   let endOfInterval = moment(endDate);

@@ -697,6 +697,11 @@ export default function userReducer(state = initialState, action) {
         isDeletingUser: false,
       };
 
+    case users.UPDATE_BRAND:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }

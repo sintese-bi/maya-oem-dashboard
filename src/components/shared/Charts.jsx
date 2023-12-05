@@ -423,6 +423,9 @@ export const ChartsLinear = (props) => {
           font: { size: 23, weight: "bold" },
         },
         ticks: {
+          autoSkip: false,
+          maxRotation: 90,
+          minRotation: 90,
           font: { size: 22, weight: "bold" }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
         },
       },
