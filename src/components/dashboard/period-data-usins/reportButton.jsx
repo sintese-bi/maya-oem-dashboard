@@ -12,9 +12,9 @@ import { AdministratorReport } from "src/reports/AdministratorReport";
 
 import { DownloadForOffline } from "@mui/icons-material";
 import { useState } from "react";
-import { DashboardCarousel } from "./dashboard-carousel";
+import { ReportButtonCarousel } from "./reportButtonCarousel";
 
-export const DashboardHeader = ({
+export const ReportButton = ({
   handleReportGeneration,
   isLoadingReportGeneration,
   useTypeMember,
@@ -98,7 +98,7 @@ export const DashboardHeader = ({
         }}
         open={open}
       >
-        <DashboardCarousel
+        <ReportButtonCarousel
           open={open}
           setOpen={setOpen}
           setCurrentPage={setCurrentPage}

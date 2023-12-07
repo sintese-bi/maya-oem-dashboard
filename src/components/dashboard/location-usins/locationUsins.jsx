@@ -9,7 +9,7 @@ export const LocationUsins = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        width: 382,
+        width: "100%",
         p: 1,
         height: 364,
       }}

@@ -51,6 +51,7 @@ import {
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
+import { ModuleOM } from "./side-components/module-o&m/moduleO&M";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -129,14 +130,30 @@ export const Side = ({ sideState, setSideState }) => {
             />
           </Box>
         );
-
+        break;
       case "configSetup":
         return (
           <Box sx={{ width: "92vw" }}>
             <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
           </Box>
         );
-
+        break;
+      case "module-orm":
+        return (
+          <Box>
+            <ModuleOM setOpen={setOpen} open={open} />
+          </Box>
+        );
+        break;
+      case "module-fatura":
+        return (
+          <Box sx={{ p: 4 }}>
+            <Typography>
+              Funcionalidade em processo de implementação! Em breve você poderá
+              desfrutar dessa funcionalidade
+            </Typography>
+          </Box>
+        );
       default:
         break;
     }

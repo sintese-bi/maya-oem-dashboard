@@ -6,12 +6,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ChartsDashboard } from "src/components/shared/Charts";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import moment from "moment";
 import { numbers } from "src/helpers/utils";
+import { getUserCookie } from "src/services/session";
+import { getGraphData } from "src/store/actions/users";
+import { useEffect } from "react";
+import { ReportButton } from "./reportButton";
+import { TotalMonthInfo } from "../total-month/total-month-components/total-month-info";
 
 export const PeriodDataUsins = ({
   startDate,
@@ -24,10 +29,43 @@ export const PeriodDataUsins = ({
   realGenerationTotal,
   estimatedGenerationTotal,
   percentTotal,
+  handleReportGeneration,
+  isLoadingReportGeneration,
+  useTypeMember,
 }) => {
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
     (state) => state.users
   );
+  const dispatch = useDispatch();
+  const { useUuid, useName } = getUserCookie();
+
+  useEffect(() => {
+    let graphStartDate = graphData?.dates?.startDate;
+    let graphEndDate = graphData?.dates?.endDate;
+    if (
+      moment(startDate).isSame(graphStartDate) &&
+      moment(endDate).isSame(graphEndDate)
+    ) {
+      return;
+    }
+    if (selectedUser.length != 0) {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: selectedUser[0]?.useUuidState,
+        })
+      );
+    } else {
+      dispatch(
+        getGraphData({
+          startDate: moment(startDate).format("YYYY-MM-DD"),
+          endDate: moment(endDate).format("YYYY-MM-DD"),
+          uuid: useUuid,
+        })
+      );
+    }
+  }, [startDate, endDate, optionFilter, useUuid]);
   return (
     <Card
       sx={{
@@ -36,6 +74,7 @@ export const PeriodDataUsins = ({
         alignItems: "center",
         width: "100%",
         overflow: "scroll",
+        gap: 2,
         py: 2,
         px: 2,
       }}
@@ -80,6 +119,14 @@ export const PeriodDataUsins = ({
           <MenuItem value="months">Mês</MenuItem>
         </TextField>
       </Box>
+      <TotalMonthInfo
+        useName={useName}
+        realGenerationTotal={realGenerationTotal}
+        estimatedGenerationTotal={estimatedGenerationTotal}
+        percentTotal={percentTotal}
+        startDate={startDate}
+        endDate={endDate}
+      />
       <Box
         sx={{
           display: "flex",
@@ -127,9 +174,11 @@ export const PeriodDataUsins = ({
             </Typography>
             <Typography>Desempenho: {percentTotal}%</Typography>
           </Box>
-          <Button variant="contained" disabled>
-            Relatório mensal
-          </Button>
+          <ReportButton
+            isLoadingReportGeneration={isLoadingReportGeneration}
+            useTypeMember={useTypeMember}
+            handleReportGeneration={handleReportGeneration}
+          />
         </Box>
       </Box>
     </Card>

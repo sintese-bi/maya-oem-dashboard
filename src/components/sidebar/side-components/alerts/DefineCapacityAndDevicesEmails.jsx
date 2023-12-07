@@ -27,7 +27,9 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
     mode: "onChange",
   });
 
-  const { allDevicesFromUser } = useSelector((state) => state.users);
+  const { allDevicesFromUser, selectedUser } = useSelector(
+    (state) => state.users
+  );
 
   function autoComplete(value, index) {
     const locationFiltered = location.filter((data) =>
@@ -132,8 +134,14 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
   }
 
   useEffect(() => {
-    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
-  }, []);
+    if (selectedUser.length != 0) {
+      dispatch(
+        getAllDevicesFromUser({ use_uuid: selectedUser[0]?.useUuidState })
+      );
+    } else {
+      dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
+    }
+  }, [useUuid]);
 
   useEffect(() => {
     allDevicesFromUserRef.current = allDevicesFromUser;

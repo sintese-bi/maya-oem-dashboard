@@ -27,7 +27,7 @@ export const MayaWatchPro = () => {
       }}
     >
       <Box sx={{ width: "90%", mb: 4 }}>
-        <Typography variant="h4" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 2 }}>
           Maya Watch PRO
         </Typography>
         <Typography variant="body2" sx={{ width: "70%" }}>
@@ -76,10 +76,19 @@ export const MayaWatchPro = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: "26px", mb: 1 }}>
-              R$ 99,00
-            </Typography>
-            <Typography sx={{ fontSize: "14px" }}>por mês</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <Typography sx={{ fontSize: "20px" }}>12 x </Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "26px" }}>
+                R$ 99,00
+              </Typography>
+            </Box>
           </Box>
           <List sx={{ py: 2, width: "100%" }}>
             <ListItem sx={{ height: "32px" }}>
@@ -180,10 +189,19 @@ export const MayaWatchPro = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: "26px", mb: 1 }}>
-              R$ 239,00
-            </Typography>
-            <Typography sx={{ fontSize: "14px" }}>por mês</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <Typography sx={{ fontSize: "20px" }}>12 x </Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "26px" }}>
+                R$ 239,00
+              </Typography>
+            </Box>
           </Box>
           <List sx={{ py: 2, width: "100%" }}>
             <ListItem sx={{ height: "32px" }}>
@@ -284,10 +302,19 @@ export const MayaWatchPro = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: "26px", mb: 1 }}>
-              R$ 459,00
-            </Typography>
-            <Typography sx={{ fontSize: "14px" }}>por mês</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <Typography sx={{ fontSize: "20px" }}>12 x </Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "26px" }}>
+                R$ 459,00
+              </Typography>
+            </Box>
           </Box>
           <List sx={{ py: 2, width: "100%" }}>
             <ListItem sx={{ height: "32px" }}>
@@ -388,10 +415,19 @@ export const MayaWatchPro = () => {
               p: 2,
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: "26px", mb: 1 }}>
-              R$ 629,00
-            </Typography>
-            <Typography sx={{ fontSize: "14px" }}>por mês</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <Typography sx={{ fontSize: "20px" }}>12 x </Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "26px" }}>
+                R$ 629,00
+              </Typography>
+            </Box>
           </Box>
           <List sx={{ pb: 2, width: "100%" }}>
             <ListItem sx={{ height: "32px" }}>
