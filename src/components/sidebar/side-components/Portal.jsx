@@ -15,7 +15,7 @@ const validateSchema = Yup.object().shape({
   bl_password: Yup.string().required("Campo é obrigatório."),
 });
 
-export const CreateDevice = () => {
+export const Portal = () => {
   const [action, setAction] = useState("createDevice");
   const methods = useForm();
   const { useUuid } = getUserCookie();
@@ -118,7 +118,7 @@ export const CreateDevice = () => {
           />
           <TextField
             margin="normal"
-            label="URL"
+            label="Website do portal"
             {...register("bl_url")}
             error={!!errors.bl_url}
             helperText={errors.bl_url?.message}
@@ -150,7 +150,7 @@ export const CreateDevice = () => {
                 : setAction("createDevice");
             }}
           >
-            {action == "createDevice" ? "Atualizar marca?" : "Criar portal?"}
+            {action == "createDevice" ? "Atualizar portal?" : "Criar portal?"}
           </Button>
         </Box>
       </Box>
