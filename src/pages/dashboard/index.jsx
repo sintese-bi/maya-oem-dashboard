@@ -15,7 +15,7 @@ import {
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
-import { Backdrop, Box, CircularProgress, Modal } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Grid, Modal } from "@mui/material";
 import { TopUsins } from "src/components/dashboard/top-usins/topUsins";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
@@ -30,6 +30,7 @@ import { LocationUsins } from "src/components/dashboard/location-usins/locationU
 import { MyUsins } from "src/components/dashboard/my-usins/myUsins";
 import { ListUsins } from "src/components/dashboard/list-usins/listUsins";
 import { PeriodDataUsins } from "src/components/dashboard/period-data-usins/periodDataUsins";
+import AlertDevices from "src/components/alerts/AlertDevices";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -252,44 +253,44 @@ export default function Dashboard() {
 
   return (
     <>
-      <DashboardHeader
-        label={"Apresentção do usuário / botão para download de relatório"}
-        isLoadingReportGeneration={isLoadingReportGeneration}
-        useTypeMember={useTypeMember}
-        handleReportGeneration={handleReportGeneration}
-      />
-
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
           width: "89vw",
-
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-          gap: 2,
           mb: 6,
         }}
       >
-        <MyUsins
-          realGeneration={realGeneration}
-          estimatedGeneration={estimatedGeneration}
-          percent={percent}
-          allDevices={allDevices}
-          brands={brands}
-          notDefined={notDefined}
-          unactived={unactived}
-          online={online}
-          offline={offline}
-          alerts={alerts}
-        />
-        <LocationUsins />
-        <TopUsins
-          dataDevices={allDevices}
-          title={"Top usinas"}
-          ref={devicesTableRef}
-          type={type}
-        />
+        <Grid item xs={3}>
+          <MyUsins
+            realGeneration={realGeneration}
+            estimatedGeneration={estimatedGeneration}
+            percent={percent}
+            allDevices={allDevices}
+            brands={brands}
+            notDefined={notDefined}
+            unactived={unactived}
+            online={online}
+            offline={offline}
+            alerts={alerts}
+            type={type}
+            handleChangeColumns={setType}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TopUsins
+            dataDevices={allDevices}
+            title={"Top usinas"}
+            ref={devicesTableRef}
+            type={type}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <LocationUsins />
+        </Grid>
+
         {/*<MyDevices
           label={"Minhas Usinas"}
           isLoadingGraph={isLoadingGraph}
@@ -312,7 +313,7 @@ export default function Dashboard() {
           offline={offline}
           alerts={alerts}
         />*/}
-      </Box>
+      </Grid>
       <Box
         sx={{
           width: "89vw",
@@ -335,7 +336,11 @@ export default function Dashboard() {
           realGenerationTotal={realGenerationTotal}
           estimatedGenerationTotal={estimatedGenerationTotal}
           percentTotal={percentTotal}
+          isLoadingReportGeneration={isLoadingReportGeneration}
+          useTypeMember={useTypeMember}
+          handleReportGeneration={handleReportGeneration}
         />
+        <AlertDevices />
       </Box>
       {/*<TotalMonth
         optionFilter={optionFilter}

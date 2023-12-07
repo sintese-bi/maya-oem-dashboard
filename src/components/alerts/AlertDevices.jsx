@@ -16,6 +16,7 @@ import {
   TableRow,
   TableCell,
   Paper,
+  Card,
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 
@@ -56,24 +57,14 @@ export default function AlertDevices() {
     }
   }, [useUuid]);
 
-  if (isLoadingAlerts) {
-    return (
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoadingAlerts}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
-  }
-
   return (
-    <Box
+    <Card
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        width: "100%",
         py: 4,
       }}
     >
@@ -148,6 +139,6 @@ export default function AlertDevices() {
           <Typography variant="h4">Nenhum alerta encontrado</Typography>
         </Box>
       )}
-    </Box>
+    </Card>
   );
 }

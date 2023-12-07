@@ -20,9 +20,11 @@ export const MyUsins = ({
   online,
   offline,
   alerts,
+  type,
+  handleChangeColumns,
 }) => {
   return (
-    <Card sx={{ width: 382, p: 2, height: 364 }}>
+    <Card sx={{ width: "100%", p: 2, height: 364, mt: 2 }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         Minhas usinas hoje
       </Typography>
@@ -35,12 +37,20 @@ export const MyUsins = ({
         }}
       >
         <Typography
+          onClick={() => {
+            handleChangeColumns(1);
+          }}
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
           }}
         >
           Usinas: {allDevices.length}
@@ -67,7 +77,7 @@ export const MyUsins = ({
             opacity: 0.6,
           }}
         >
-          Total esperado: {numbers(realGeneration, "KWh")}
+          Total esperado: {numbers(estimatedGeneration, "KWh")}
           <Bolt fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
@@ -82,24 +92,40 @@ export const MyUsins = ({
           Desempenho: {percent}%
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(6);
+          }}
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
           }}
         >
           Online: {online.length}
           <Wifi fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(5);
+          }}
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
           }}
         >
           Offline: {offline.length}
@@ -120,7 +146,6 @@ export const MyUsins = ({
         <Typography
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
@@ -130,24 +155,40 @@ export const MyUsins = ({
           <Block fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(4);
+          }}
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
           }}
         >
           Alertas: {alerts.length}
           <ReportProblem fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(2);
+          }}
           sx={{
             display: "flex",
-
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
           }}
         >
           Portais: {brands.length}

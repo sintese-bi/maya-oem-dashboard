@@ -53,13 +53,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
         profileLevel === "admin" && useName == "Maya Energy" ? true : false,
       active: location.pathname === "/dashboard/users" ? true : false,
     },
-    {
-      label: "Alertas",
-      to: "/dashboard/alertDevices",
-      icon: <Warning fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
-      active: location.pathname === "/dashboard/alertDevices" ? true : false,
-    },
     //{
     //  label: "Plantas",
     //  to: "/dashboard/devices",
@@ -67,14 +60,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
     //  disabled: true,
     //  active: location.pathname === "/dashboard/devices" ? true : false,
     //},
-    {
-      label: "Proposta",
-      to: "/dashboard/calculator",
-      icon: <BrandingWatermark fontSize="small" />,
-      disabled:
-        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
-      active: location.pathname === "/dashboard/calculator" ? true : false,
-    },
   ];
 
   function handleLogOut() {
