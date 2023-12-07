@@ -376,6 +376,7 @@ export const TotalMonth = ({
                 </Button>
               </Tooltip>
               <Plants
+                title={"Listagem de usinas"}
                 data={data}
                 devicesTableRef={devicesTableRef}
                 type={type}

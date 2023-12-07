@@ -152,11 +152,25 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
             autoPlay={false}
             sx={{ width: 500 }}
           >
-            <DefineAlertEmail
+            <AlertsDefineComponent
+              setOpen={setOpen}
+              welcome={welcome}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
             />
-            <AlertsDefineComponent setOpen={setOpen} welcome={welcome} />
+            <Box>
+              <DefineAlertEmail
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+              <Button
+                sx={{ mt: 2 }}
+                variant="outlined"
+                onClick={() => setOpen(false)}
+              >
+                Pular etapa
+              </Button>
+            </Box>
           </Carousel>
         )
       ) : (

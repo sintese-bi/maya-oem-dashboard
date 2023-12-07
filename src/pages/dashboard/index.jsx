@@ -16,6 +16,7 @@ import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
 import { Backdrop, Box, CircularProgress, Modal } from "@mui/material";
+import { TopUsins } from "src/components/dashboard/top-usins/topUsins";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
@@ -25,6 +26,10 @@ import moment from "moment";
 import { MyDevices } from "src/components/dashboard/my-devices/my-devices";
 import { DashboardHeader } from "src/components/dashboard/dashboard-header/dashboard-header";
 import { bigNumberSum } from "src/store/actions/devices";
+import { LocationUsins } from "src/components/dashboard/location-usins/locationUsins";
+import { MyUsins } from "src/components/dashboard/my-usins/myUsins";
+import { ListUsins } from "src/components/dashboard/list-usins/listUsins";
+import { PeriodDataUsins } from "src/components/dashboard/period-data-usins/periodDataUsins";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -256,13 +261,36 @@ export default function Dashboard() {
 
       <Box
         sx={{
+          width: "89vw",
+
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "column",
+          flexDirection: "row",
+          gap: 2,
+          mb: 6,
         }}
       >
-        <MyDevices
+        <MyUsins
+          realGeneration={realGeneration}
+          estimatedGeneration={estimatedGeneration}
+          percent={percent}
+          allDevices={allDevices}
+          brands={brands}
+          notDefined={notDefined}
+          unactived={unactived}
+          online={online}
+          offline={offline}
+          alerts={alerts}
+        />
+        <LocationUsins />
+        <TopUsins
+          dataDevices={allDevices}
+          title={"Top usinas"}
+          ref={devicesTableRef}
+          type={type}
+        />
+        {/*<MyDevices
           label={"Minhas Usinas"}
           isLoadingGraph={isLoadingGraph}
           realGeneration={realGeneration}
@@ -283,9 +311,33 @@ export default function Dashboard() {
           online={online}
           offline={offline}
           alerts={alerts}
+        />*/}
+      </Box>
+      <Box
+        sx={{
+          width: "89vw",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: 2,
+          mb: 6,
+        }}
+      >
+        <ListUsins data={data} devicesTableRef={devicesTableRef} type={type} />
+        <PeriodDataUsins
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          optionFilter={optionFilter}
+          setOptionFilter={setOptionFilter}
+          adminGraphRef={adminGraphRef}
+          realGenerationTotal={realGenerationTotal}
+          estimatedGenerationTotal={estimatedGenerationTotal}
+          percentTotal={percentTotal}
         />
       </Box>
-      <TotalMonth
+      {/*<TotalMonth
         optionFilter={optionFilter}
         setOptionFilter={setOptionFilter}
         useName={useName}
@@ -307,7 +359,7 @@ export default function Dashboard() {
         devicesTableRef={devicesTableRef}
         adminGraphRef={adminGraphRef}
         setIsLoadingReportGeneration={setIsLoadingReportGeneration}
-      />
+      />*/}
       <Modal
         open={open}
         onClose={handleReportGeneration}

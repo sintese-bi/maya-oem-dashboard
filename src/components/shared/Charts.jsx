@@ -805,7 +805,7 @@ export const ChartsDashboard = (props) => {
       {
         label: "Geração real",
         maxBarThickness: 16,
-        barPercentage: 0.8,
+        barPercentage: 0.4,
         label: "Geração real",
         data: periodData.data?.realGeneration,
         backgroundColor: "#6CE5E8",
@@ -816,7 +816,7 @@ export const ChartsDashboard = (props) => {
         categoryPercentage: 0.5,
         label: "Geração estimada",
         maxBarThickness: 22,
-        barPercentage: 0.8,
+        barPercentage: 0.4,
         label: "Geração estimada",
         data: periodData.data?.estimatedGeneration,
         backgroundColor: "#2D8BBA",
@@ -923,30 +923,18 @@ export const ChartsDashboard = (props) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         alignItems: "center",
-        px: 2,
-        pb: 2,
-        pt: 4,
         width: "100%",
-        height: 520,
       }}
     >
-      <Typography
-        color="textPrimary"
-        sx={{ fontWeight: "bold", fontSize: "20px" }}
-      >
-        Série histórica da produção de Usinas
-      </Typography>
-      <Box sx={{ height: 360, width: "100%" }}>
-        <Chart
-          type="bar"
-          options={options}
-          data={data}
-          ref={adminGraphRef}
-          plugins={[plugin]}
-        />
-      </Box>
+      <Chart
+        height={280}
+        type="bar"
+        options={options}
+        data={data}
+        ref={adminGraphRef}
+        plugins={[plugin]}
+      />
     </Card>
   );
 };

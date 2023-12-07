@@ -24,7 +24,7 @@ import { getAllDevices, getDashboard } from "src/store/actions/users";
 import { getUserCookie } from "src/services/session";
 
 export default function Plants(props) {
-  const { type, devicesTableRef } = props;
+  const { type, devicesTableRef, title } = props;
   const { useUuid, profileLevel } = getUserCookie();
 
   const devicesRef = useRef(null);
@@ -157,6 +157,7 @@ export default function Plants(props) {
         devicesRef.current.scrollIntoView();
 
         break;
+
       default:
         break;
     }
@@ -220,7 +221,7 @@ export default function Plants(props) {
       <Grid container spacing={3} sx={{ width: "100%" }} ref={devicesTableRef}>
         <Grid item xs={12} ref={devicesRef}>
           <MUIDataTable
-            title="Listagem de usinas"
+            title={title}
             data={data}
             columns={columns}
             options={options}
