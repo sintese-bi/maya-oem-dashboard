@@ -24,7 +24,7 @@ export const MyUsins = ({
   handleChangeColumns,
 }) => {
   return (
-    <Card sx={{ width: "100%", p: 2, height: 364, mt: 2 }}>
+    <Card sx={{ width: "100%", p: 2, height: 364 }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         Minhas usinas hoje
       </Typography>
@@ -132,9 +132,17 @@ export const MyUsins = ({
           <SignalWifiOff fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(8);
+          }}
           sx={{
             display: "flex",
-
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
             fontSize: "14px",
             fontWeight: "bold",
             opacity: 0.6,
@@ -144,9 +152,18 @@ export const MyUsins = ({
           <Block fontSize="small" sx={{ ml: 2 }} />
         </Typography>
         <Typography
+          onClick={() => {
+            handleChangeColumns(7);
+          }}
           sx={{
             display: "flex",
             fontSize: "14px",
+            cursor: "pointer",
+            "&:hover": {
+              transition: "1s",
+              fontSize: "12px",
+              opacity: 1,
+            },
             fontWeight: "bold",
             opacity: 0.6,
           }}

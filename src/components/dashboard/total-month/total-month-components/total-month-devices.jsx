@@ -15,13 +15,17 @@ import {
   CircularProgress,
   Grid,
   Modal,
+  Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { getAllDevices, getDashboard } from "src/store/actions/users";
 import { getUserCookie } from "src/services/session";
+import { Avatar } from "@mui/material";
+import { listBrand } from "src/utils/list-brand";
 
 export default function Plants(props) {
   const { type, devicesTableRef, title } = props;
@@ -43,6 +47,8 @@ export default function Plants(props) {
     dataDevices,
     generationBelowEstimated,
     alerts,
+    notDefined,
+    unactived,
     offline,
     online,
     allDevices,
@@ -157,11 +163,47 @@ export default function Plants(props) {
         devicesRef.current.scrollIntoView();
 
         break;
+      case 7:
+        setData(handleTransformColumnData(notDefined));
+        devicesRef.current.scrollIntoView();
 
+        break;
+      case 8:
+        setData(handleTransformColumnData(unactived));
+        devicesRef.current.scrollIntoView();
+
+        break;
       default:
         break;
     }
-    setColumns(type == 2 ? [columnsDevices[2]] : columnsDevices);
+    setColumns(
+      type == 2
+        ? [
+            {
+              name: "brand",
+              label: "Nome da marca",
+              options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (name, dataTable) => {
+                  const brandImg = listBrand.filter(
+                    (brand) => brand.params === name
+                  )[0];
+                  return (
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      <Avatar src={brandImg?.media} />
+
+                      <Typography sx={{ mr: 2 }} variant="body1">
+                        {name}
+                      </Typography>
+                    </Stack>
+                  );
+                },
+              },
+            },
+          ]
+        : columnsDevices
+    );
   }
 
   useEffect(() => {
