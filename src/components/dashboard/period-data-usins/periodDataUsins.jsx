@@ -42,12 +42,7 @@ export const PeriodDataUsins = ({
   useEffect(() => {
     let graphStartDate = graphData?.dates?.startDate;
     let graphEndDate = graphData?.dates?.endDate;
-    if (
-      moment(startDate).isSame(graphStartDate) &&
-      moment(endDate).isSame(graphEndDate)
-    ) {
-      return;
-    }
+
     if (selectedUser.length != 0) {
       dispatch(
         getGraphData({

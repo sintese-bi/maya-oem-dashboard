@@ -15,7 +15,14 @@ import {
 import { numbers } from "src/helpers/utils";
 
 // COMPONENTS / LIBS DE ESTILOS
-import { Backdrop, Box, CircularProgress, Grid, Modal } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Card,
+  CircularProgress,
+  Grid,
+  Modal,
+} from "@mui/material";
 import { TopUsins } from "src/components/dashboard/top-usins/topUsins";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
@@ -279,16 +286,13 @@ export default function Dashboard() {
             handleChangeColumns={setType}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <TopUsins
             dataDevices={allDevices}
             title={"Top usinas"}
             ref={devicesTableRef}
             type={type}
           />
-        </Grid>
-        <Grid item xs={3}>
-          <LocationUsins />
         </Grid>
 
         {/*<MyDevices
@@ -313,6 +317,23 @@ export default function Dashboard() {
           offline={offline}
           alerts={alerts}
         />*/}
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          width: "89vw",
+          display: "flex",
+          alignItems: "center",
+          mb: 6,
+        }}
+      >
+        <Grid item xs={9}>
+          <LocationUsins />
+        </Grid>
+        <Grid item xs={3}>
+          <Card></Card>
+        </Grid>
       </Grid>
       <Box
         sx={{
