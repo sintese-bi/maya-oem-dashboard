@@ -1,23 +1,21 @@
 import { LocationOn } from "@mui/icons-material";
+import "leaflet/dist/leaflet.css";
+
 import { Card, Typography } from "@mui/material";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
 export const LocationUsins = () => {
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        p: 1,
-        height: 364,
-      }}
+    <MapContainer
+      center={[-19.912998, -43.940933]}
+      zoom={13}
+      scrollWheelZoom={false}
+      style={{ height: 364, width: "100%" }}
     >
-      <LocationOn />
-      <Typography sx={{ fontSize: "10px" }}>
-        Mapeamento de usinas disponível em breve
-      </Typography>
-    </Card>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+    </MapContainer>
   );
 };
