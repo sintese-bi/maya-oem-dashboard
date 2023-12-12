@@ -365,7 +365,7 @@ export const TopUsins = ({ dataDevices, ref, type, title }) => {
   }, [dataDevices]);
 
   return (
-    <Card sx={{ width: "100%", p: 1, height: 364, overflow: "scroll" }}>
+    <Card sx={{ width: "100%" }}>
       <MUIDataTable
         title={"Principais usinas"}
         data={data}

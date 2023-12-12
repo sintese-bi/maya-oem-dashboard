@@ -38,6 +38,7 @@ import { MyUsins } from "src/components/dashboard/my-usins/myUsins";
 import { ListUsins } from "src/components/dashboard/list-usins/listUsins";
 import { PeriodDataUsins } from "src/components/dashboard/period-data-usins/periodDataUsins";
 import AlertDevices from "src/components/alerts/AlertDevices";
+import { BigNumbers } from "src/components/dashboard/big-numbers/bigNumbers";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function Dashboard() {
   const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
     useState(true);
 
-  // valores de geração de dataDevices
+  // valores de geração de allDevices
 
   const [realGenerationValueDataDevices, setRealGenerationValueDataDevices] =
     useState(0);
@@ -184,6 +185,12 @@ export default function Dashboard() {
   useEffect(() => {
     if (allDevices.length !== 0) {
       setData(allDevices);
+      setRealGenerationValueDataDevices(
+        allDevices.reduce(
+          (total, element) => total + element.generationRealMonth,
+          0
+        )
+      );
     }
   }, [allDevices]);
 
@@ -207,21 +214,18 @@ export default function Dashboard() {
       )
         .reduce((total, element) => total + element, 0)
         .toFixed(2);
-
-      setRealGenerationValueDataDevices(realGeneration);
-      setEstimatedGenerationValueDataDevices(estimatedGeneration);
     }
 
-    let realGenerationTempArray = dataDevices.map((data) => {
-      let generationRealValue = data.generationRealMonth;
-      return generationRealValue;
+    let capacityTotal = allDevices.map((data) => {
+      let capacityRealValue = data.capacity;
+      return capacityRealValue;
     });
     setCapacityTotal(
       numbers(
-        realGenerationTempArray
+        capacityTotal
           .reduce((total, element) => total + element, 0)
           .toFixed("2"),
-        "KWh"
+        "KWp"
       )
     );
   }, [dataDevices, bignumbersumValues]);
@@ -262,7 +266,7 @@ export default function Dashboard() {
     <>
       <Grid
         container
-        spacing={2}
+        spacing={4}
         sx={{
           width: "89vw",
           display: "flex",
@@ -270,7 +274,7 @@ export default function Dashboard() {
           mb: 6,
         }}
       >
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <MyUsins
             realGeneration={realGeneration}
             estimatedGeneration={estimatedGeneration}
@@ -286,12 +290,13 @@ export default function Dashboard() {
             handleChangeColumns={setType}
           />
         </Grid>
-        <Grid item xs={9}>
-          <TopUsins
-            dataDevices={allDevices}
-            title={"Top usinas"}
-            ref={devicesTableRef}
-            type={type}
+        <Grid item xs={8}>
+          <BigNumbers
+            notDefined={notDefined}
+            unactived={unactived}
+            offline={offline}
+            capacityTotal={capacityTotal}
+            realGenerationValueDataDevices={realGenerationValueDataDevices}
           />
         </Grid>
 
@@ -328,11 +333,8 @@ export default function Dashboard() {
           mb: 6,
         }}
       >
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <LocationUsins />
-        </Grid>
-        <Grid item xs={3}>
-          <Card></Card>
         </Grid>
       </Grid>
       <Box
