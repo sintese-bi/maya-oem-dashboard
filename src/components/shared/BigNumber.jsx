@@ -49,50 +49,59 @@ export const BigNumberDashboard = (props) => {
     props;
 
   return (
-    <Card sx={{ width: 285 }}>
+    <Card sx={{}}>
       <CardActionArea>
         <CardContent sx={{ height: 120 }}>
-          <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
-            <Grid item>
-              <Typography color="textSecondary" gutterBottom variant="overline">
-                {title}
-              </Typography>
-              <Typography color="textPrimary" variant="h4">
-                {value}
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+                sx={{ fontWeight: "bold", fontSize: "12px" }}
+              >
+                {title.toUpperCase()}
               </Typography>
             </Grid>
             <Grid
               item
-              sx={{ position: "absolute", marginLeft: 24, marginTop: -2 }}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              xs={12}
             >
+              <Typography color="textPrimary" variant="h4">
+                {value}
+              </Typography>
+
               {icon}
             </Grid>
           </Grid>
         </CardContent>
       </CardActionArea>
 
-      {!btn ? (
-        <CardActions>
-          <Typography
-            onClick={() => handleChangeColumns(type)}
-            size="small"
-            style={{
-              color: activeBtn ? "lightblue" : "#10B981",
-              fontSize: "14px",
-              fontWeight: 600,
-              textDecoration: "none",
-              underline: "none",
-              paddingTop: "5px",
-              paddingBottom: "5px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-              cursor: "pointer",
-            }}
-          >
-            Visualizar
-          </Typography>
-        </CardActions>
-      ) : null}
+      <CardActions sx={{ height: 40 }}>
+        <Typography
+          onClick={() => handleChangeColumns(type)}
+          size="small"
+          style={{
+            color: activeBtn ? "lightblue" : "#10B981",
+            fontSize: "14px",
+            fontWeight: 600,
+            textDecoration: "none",
+            underline: "none",
+            paddingTop: "5px",
+            paddingBottom: "5px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            cursor: "pointer",
+          }}
+        >
+          {!btn ? "Visualizar" : ""}
+        </Typography>
+      </CardActions>
     </Card>
   );
 };

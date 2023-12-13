@@ -272,9 +272,20 @@ export default function Dashboard() {
           display: "flex",
           alignItems: "center",
           mb: 6,
+          height: "20%",
         }}
       >
-        <Grid item xs={4}>
+        <Grid
+          item
+          xs={5}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: 2,
+            height: "100%",
+          }}
+        >
           <MyUsins
             realGeneration={realGeneration}
             estimatedGeneration={estimatedGeneration}
@@ -289,15 +300,18 @@ export default function Dashboard() {
             type={type}
             handleChangeColumns={setType}
           />
-        </Grid>
-        <Grid item xs={8}>
           <BigNumbers
+            allDevices={allDevices}
             notDefined={notDefined}
             unactived={unactived}
             offline={offline}
-            capacityTotal={capacityTotal}
+            capacityTotal={capacity}
             realGenerationValueDataDevices={realGenerationValueDataDevices}
+            handleChangeColumns={setType}
           />
+        </Grid>
+        <Grid item xs={7} sx={{ height: "100%" }}>
+          <LocationUsins />
         </Grid>
 
         {/*<MyDevices
@@ -333,9 +347,7 @@ export default function Dashboard() {
           mb: 6,
         }}
       >
-        <Grid item xs={12}>
-          <LocationUsins />
-        </Grid>
+        <Grid item xs={12}></Grid>
       </Grid>
       <Box
         sx={{

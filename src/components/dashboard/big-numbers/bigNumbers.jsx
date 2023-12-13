@@ -6,11 +6,13 @@ import { BigNumberDashboard } from "src/components/shared/BigNumber";
 import { numbers } from "src/helpers/utils";
 
 export const BigNumbers = ({
+  allDevices,
   notDefined,
   unactived,
   offline,
   capacityTotal,
   realGenerationValueDataDevices,
+  handleChangeColumns,
 }) => {
   const [perfomanceUsins, setPerfomanceUsins] = useState(0);
 
@@ -20,10 +22,11 @@ export const BigNumbers = ({
 
   return (
     <Grid container columnSpacing={1} rowSpacing={1} sx={{ width: "100%" }}>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <BigNumberDashboard
-          title="Relatórios"
-          value={10}
+          title="Relatórios gerados no mês"
+          btn={true}
+          value={`1/${allDevices.length}`}
           icon={
             <Avatar
               sx={{
@@ -37,9 +40,11 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <BigNumberDashboard
-          title="Desempenho de usinas"
+          title="Usinas em baixo desempenho no mês"
+          type={9}
+          handleChangeColumns={handleChangeColumns}
           value={perfomanceUsins}
           icon={
             <Avatar
@@ -54,10 +59,16 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <BigNumberDashboard
-          title="Potência Instalada"
-          value={capacityTotal}
+          title="Potência total instalada"
+          btn={true}
+          value={numbers(
+            capacityTotal
+              .reduce((total, element) => element + total, 0)
+              .toFixed(2),
+            "KWp"
+          )}
           icon={
             <Avatar
               sx={{
@@ -71,9 +82,10 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <BigNumberDashboard
-          title="Produção real"
+          title="Geração total no mês"
+          btn={true}
           value={numbers(realGenerationValueDataDevices.toFixed("2"), "KWh")}
           icon={
             <Avatar
