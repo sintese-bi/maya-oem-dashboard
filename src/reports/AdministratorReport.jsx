@@ -355,6 +355,53 @@ export const AdministratorReport = () => {
                   <View
                     style={{
                       width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: 2,
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text style={{ fontSize: "10px" }}>Geração real</Text>
+                      <View
+                        style={{
+                          height: "14px",
+                          width: "14px",
+                          backgroundColor: "#6CE5E8",
+                          borderRadius: "5px",
+                        }}
+                      ></View>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text style={{ fontSize: "10px" }}>Geração estimada</Text>
+                      <View
+                        style={{
+                          height: "14px",
+                          width: "14px",
+                          borderRadius: "5px",
+                          backgroundColor: "#2D8BBA",
+                        }}
+                      ></View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: "100%",
                       height: "100px",
                       display: "flex",
                       justifyContent: "space-between",

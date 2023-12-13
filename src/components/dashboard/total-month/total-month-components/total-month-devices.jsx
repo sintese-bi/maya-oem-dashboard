@@ -173,6 +173,14 @@ export default function Plants(props) {
         devicesRef.current.scrollIntoView();
 
         break;
+      case 9:
+        setData(
+          handleTransformColumnData(
+            allDevices.filter((data) => data.staCode != "online")
+          )
+        );
+        devicesRef.current.scrollIntoView();
+        break;
       default:
         break;
     }
