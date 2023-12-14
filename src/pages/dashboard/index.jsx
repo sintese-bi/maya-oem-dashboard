@@ -274,8 +274,9 @@ export default function Dashboard() {
           width: "89vw",
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
           mb: 6,
-          height: "19%",
+          height: "22%",
         }}
       >
         <Grid
@@ -285,7 +286,7 @@ export default function Dashboard() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-
+            gap: 4,
             height: "100%",
           }}
         >

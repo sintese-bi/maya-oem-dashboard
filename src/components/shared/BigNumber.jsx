@@ -74,7 +74,7 @@ export const BigNumberDashboard = (props) => {
             >
               <Typography
                 color="textPrimary"
-                variant="h5"
+                variant="h4"
                 sx={{ fontWeight: "bold" }}
               >
                 {value}

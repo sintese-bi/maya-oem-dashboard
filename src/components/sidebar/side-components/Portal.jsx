@@ -31,7 +31,7 @@ export const Portal = () => {
   });
 
   async function onSubmit(values) {
-    const { bl_login, bl_password, bl_name, bl_url } = values;
+    const { bl_login, bl_password, bl_name, bl_url, bl_quant } = values;
     console.log(values);
     try {
       if (action == "createDevice") {
@@ -42,6 +42,7 @@ export const Portal = () => {
             bl_name,
             use_uuid: useUuid,
             bl_url,
+            bl_quant,
           })
         );
       } else {
@@ -127,7 +128,7 @@ export const Portal = () => {
             margin="normal"
             label="Quantas usinas possui neste portal?"
             type="number"
-            {...register("bl_usins_qntd")}
+            {...register("bl_quant")}
           />
         </Box>
         <Box>
