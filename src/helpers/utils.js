@@ -333,7 +333,10 @@ export const numbers = (value, unity) => {
       let numberToArray = stringToNumber?.split("");
       numberToArray.splice(-3, 1, ",");
       numberToArray.splice(-6, 0, ".");
-      let transformedNumber = numberToArray.join("") + ` ${unity}`;
+      let transformedNumber =
+        unity == "R$"
+          ? ` ${unity}` + numberToArray.join("")
+          : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length >= 10) {
       let stringToNumber = Number(number).toFixed(2);
@@ -341,12 +344,18 @@ export const numbers = (value, unity) => {
       numberToArray.splice(-3, 1, ",");
       numberToArray.splice(-6, 0, ".");
       numberToArray.splice(-10, 0, ".");
-      let transformedNumber = numberToArray.join("") + ` ${unity}`;
+      let transformedNumber =
+        unity == "R$"
+          ? ` ${unity}` + numberToArray.join("")
+          : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length <= 6) {
       let numberToArray = number?.split("");
       numberToArray.splice(-3, 1, ",");
-      let transformedNumber = numberToArray.join("") + ` ${unity}`;
+      let transformedNumber =
+        unity == "R$"
+          ? ` ${unity}` + numberToArray.join("")
+          : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     }
   }

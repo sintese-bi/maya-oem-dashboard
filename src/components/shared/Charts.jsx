@@ -945,7 +945,7 @@ export const PieChartMyUsins = (props) => {
   const { offline, online, notDefined, unactived } = props;
 
   const data = {
-    labels: ["offline", "online", "não definida", "não ativa"],
+    labels: [],
     datasets: [
       {
         data: [
