@@ -102,7 +102,7 @@ export const createDevice = (params) => (dispatch) => {
     .post(`/deviceLogin`, format, configRequest())
     .then(() => {
       toast.success(
-        "Prezado cliente, parabens por monitorar suas usinas conosco, estamos trazendo os dados da suas plantas, em breve seu monitoramento será centralizado no Maya Watch!",
+        "Esse processo pode demorar um pouco, mas não se preocupe lhe avisaremos assim que suas plantas estiverem disponíveis.",
         {
           duration: 5000,
         }

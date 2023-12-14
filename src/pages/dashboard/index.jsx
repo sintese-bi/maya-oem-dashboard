@@ -93,6 +93,8 @@ export default function Dashboard() {
     estimatedGenerationValueDataDevices,
     setEstimatedGenerationValueDataDevices,
   ] = useState(0);
+  const [monthEconomy, setMonthEconomy] = useState("");
+  const [treesSaved, setTreesSaved] = useState("");
 
   // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
 
@@ -184,13 +186,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (allDevices.length !== 0) {
-      setData(allDevices);
-      setRealGenerationValueDataDevices(
-        allDevices.reduce(
-          (total, element) => total + element.generationRealMonth,
-          0
-        )
+      let generationReal = allDevices.reduce(
+        (total, element) => total + element.generationRealMonth,
+        0
       );
+      setData(allDevices);
+      setRealGenerationValueDataDevices(generationReal);
+      setMonthEconomy((generationReal * 0.58).toFixed(2));
+      setTreesSaved((generationReal * 0.000504).toFixed(2));
     }
   }, [allDevices]);
 
@@ -272,7 +275,7 @@ export default function Dashboard() {
           display: "flex",
           alignItems: "center",
           mb: 6,
-          height: "20%",
+          height: "19%",
         }}
       >
         <Grid
@@ -282,7 +285,7 @@ export default function Dashboard() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            gap: 2,
+
             height: "100%",
           }}
         >
@@ -308,6 +311,8 @@ export default function Dashboard() {
             capacityTotal={capacity}
             realGenerationValueDataDevices={realGenerationValueDataDevices}
             handleChangeColumns={setType}
+            monthEconomy={monthEconomy}
+            treesSaved={treesSaved}
           />
         </Grid>
         <Grid item xs={7} sx={{ height: "100%" }}>

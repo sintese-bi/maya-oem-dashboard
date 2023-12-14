@@ -33,7 +33,7 @@ export function DefineAlertEmail({ setCurrentPage, currentPage }) {
     currentPage < 3 && currentPage >= 0
       ? setCurrentPage(currentPage + 1)
       : null;
-    dispatch(portalemailLogins({ use_uuid: useUuid, use_email: email }));
+    //dispatch(portalemailLogins({ use_uuid: useUuid, use_email: email }));
   }
 
   return (

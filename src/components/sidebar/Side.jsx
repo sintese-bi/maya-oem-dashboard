@@ -52,6 +52,7 @@ import {
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
 import { ModuleOM } from "./side-components/module-o&m/moduleO&M";
+import { FaturaModulo } from "../modules/faturaModule";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -148,10 +149,7 @@ export const Side = ({ sideState, setSideState }) => {
       case "module-fatura":
         return (
           <Box sx={{ p: 4 }}>
-            <Typography>
-              Funcionalidade em processo de implementação! Em breve você poderá
-              desfrutar dessa funcionalidade
-            </Typography>
+            <FaturaModulo />
           </Box>
         );
       default:
@@ -354,6 +352,7 @@ export const Side = ({ sideState, setSideState }) => {
       </Box>
 
       <Modal
+        keepMounted
         open={open}
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"

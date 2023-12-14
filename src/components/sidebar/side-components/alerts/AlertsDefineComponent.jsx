@@ -85,7 +85,7 @@ export function AlertsDefineComponent({
   });
 
   async function onSubmit(values) {
-    //dispatch(patchAlertFrequency({ values, useUuid }));
+    dispatch(patchAlertFrequency({ values, useUuid }));
 
     currentPage < 3 && currentPage >= 0
       ? setCurrentPage(currentPage + 1)

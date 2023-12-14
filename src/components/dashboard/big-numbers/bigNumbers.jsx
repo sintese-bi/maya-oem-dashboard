@@ -1,5 +1,11 @@
 import { FileCopy } from "@material-ui/icons";
-import { Bolt, Percent } from "@mui/icons-material";
+import {
+  AttachMoney,
+  AttachMoneyOutlined,
+  Bolt,
+  Forest,
+  Percent,
+} from "@mui/icons-material";
 import { Avatar, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { BigNumberDashboard } from "src/components/shared/BigNumber";
@@ -13,6 +19,8 @@ export const BigNumbers = ({
   capacityTotal,
   realGenerationValueDataDevices,
   handleChangeColumns,
+  monthEconomy,
+  treesSaved,
 }) => {
   const [perfomanceUsins, setPerfomanceUsins] = useState(0);
 
@@ -42,10 +50,11 @@ export const BigNumbers = ({
       </Grid>
       <Grid item xs={6}>
         <BigNumberDashboard
-          title="Usinas em baixo desempenho no mês"
+          title="Economia no mês"
+          btn={true}
           type={9}
           handleChangeColumns={handleChangeColumns}
-          value={perfomanceUsins}
+          value={numbers(monthEconomy, "R$")}
           icon={
             <Avatar
               sx={{
@@ -54,7 +63,7 @@ export const BigNumbers = ({
                 width: 56,
               }}
             >
-              <Percent />
+              <AttachMoneyOutlined />
             </Avatar>
           }
         />
@@ -84,9 +93,9 @@ export const BigNumbers = ({
       </Grid>
       <Grid item xs={6}>
         <BigNumberDashboard
-          title="Geração total no mês"
+          title="Árvores salvas"
           btn={true}
-          value={numbers(realGenerationValueDataDevices.toFixed("2"), "KWh")}
+          value={treesSaved}
           icon={
             <Avatar
               sx={{
@@ -95,7 +104,7 @@ export const BigNumbers = ({
                 width: 56,
               }}
             >
-              <Bolt />
+              <Forest />
             </Avatar>
           }
         />
