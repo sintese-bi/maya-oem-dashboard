@@ -20,6 +20,7 @@ export const ListUsins = ({ data, devicesTableRef, type }) => {
         type={type}
       />
       <Modal
+        keepMounted
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         open={open}
         onClose={() => setOpen(false)}

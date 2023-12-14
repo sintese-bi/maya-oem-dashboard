@@ -65,7 +65,7 @@ export const MayaWatchPro = () => {
               fontWeight: "700",
             }}
           >
-            Plano Watt
+            Plano anual Watt
           </Typography>
           <Box
             sx={{
@@ -178,7 +178,7 @@ export const MayaWatchPro = () => {
               fontWeight: "700",
             }}
           >
-            Plano kilowatt
+            Plano anual kilowatt
           </Typography>
           <Box
             sx={{
@@ -291,7 +291,7 @@ export const MayaWatchPro = () => {
               fontWeight: "700",
             }}
           >
-            Plano Megawatt
+            Plano anual Megawatt
           </Typography>
           <Box
             sx={{
@@ -404,7 +404,7 @@ export const MayaWatchPro = () => {
               fontWeight: "700",
             }}
           >
-            Plano Gigawatt
+            Plano anual Gigawatt
           </Typography>
           <Box
             sx={{

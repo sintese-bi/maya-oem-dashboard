@@ -7,7 +7,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 export const LocationUsins = () => {
   return (
     <MapContainer
-      center={[-19.912998, -43.940933]}
+      center={[-19.860098, -43.940933]}
       zoom={13}
       scrollWheelZoom={false}
       style={{ height: "100%", width: "100%" }}

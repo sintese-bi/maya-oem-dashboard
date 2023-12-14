@@ -301,7 +301,7 @@ export const selectPropsStyle = () => {
 export const numbers = (value, unity) => {
   let number = value;
 
-  if (unity != "CO2") {
+  if (unity != "CO2" && unity != "R$") {
     if (number.length > 6 && number.length < 10) {
       let stringToNumber = Number(number / 1000).toFixed(2);
       let numberToArray = stringToNumber?.split("");
