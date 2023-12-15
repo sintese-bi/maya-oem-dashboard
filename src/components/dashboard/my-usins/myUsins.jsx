@@ -28,24 +28,23 @@ export const MyUsins = ({
     <Card
       sx={{
         width: "100%",
-        p: 2,
-        height: 364,
+        py: 4,
+        px: 4,
+
         display: "flex",
-        justifyContent: "space-between",
+
         alignItems: "center",
-        flexDirection: "row",
+        flexDirection: "column",
       }}
     >
       <Box
         sx={{
           display: "flex",
+          width: "100%",
           justifyContent: "space-between",
-          flexDirection: "column",
+          flexDirection: "row",
         }}
       >
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Minhas usinas hoje
-        </Typography>
         <Box
           sx={{
             display: "flex",
@@ -54,19 +53,22 @@ export const MyUsins = ({
             gap: 1,
           }}
         >
+          <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
+            Minhas usinas hoje
+          </Typography>
           <Typography
             onClick={() => {
               handleChangeColumns(1);
             }}
             sx={{
               display: "flex",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
             }}
@@ -78,7 +80,7 @@ export const MyUsins = ({
             sx={{
               display: "flex",
 
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
             }}
@@ -90,7 +92,7 @@ export const MyUsins = ({
             sx={{
               display: "flex",
 
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
             }}
@@ -102,12 +104,45 @@ export const MyUsins = ({
             sx={{
               display: "flex",
 
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
             }}
           >
             Desempenho: {percent}%
+          </Typography>
+
+          <Typography
+            onClick={() => {
+              handleChangeColumns(2);
+            }}
+            sx={{
+              display: "flex",
+              fontSize: "16px",
+              fontWeight: "bold",
+              opacity: 0.6,
+              cursor: "pointer",
+              "&:hover": {
+                transition: "1s",
+                fontSize: "14px",
+                opacity: 1,
+              },
+            }}
+          >
+            Portais: {brands.length}
+            <SolarPower fontSize="small" sx={{ ml: 2 }} />
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            gap: 1,
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
+            Minhas usinas hoje
           </Typography>
           <Typography
             onClick={() => {
@@ -115,20 +150,22 @@ export const MyUsins = ({
             }}
             sx={{
               display: "flex",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
-              color: "rgba(54, 162, 235, 1)",
             }}
           >
             Online: {online.length}
-            <Wifi fontSize="small" sx={{ ml: 2 }} />
+            <Wifi
+              fontSize="small"
+              sx={{ ml: 2, color: "rgba(54, 162, 235, 1)" }}
+            />
           </Typography>
           <Typography
             onClick={() => {
@@ -136,20 +173,22 @@ export const MyUsins = ({
             }}
             sx={{
               display: "flex",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
-              color: "rgba(255, 99, 132, 1)",
             }}
           >
             Offline: {offline.length}
-            <SignalWifiOff fontSize="small" sx={{ ml: 2 }} />
+            <SignalWifiOff
+              fontSize="small"
+              sx={{ ml: 2, color: "rgba(255, 99, 132, 1)" }}
+            />
           </Typography>
           <Typography
             onClick={() => {
@@ -160,17 +199,19 @@ export const MyUsins = ({
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
-              color: "rgba(75, 192, 192, 1)",
             }}
           >
             Inativo: {unactived.length}
-            <Block fontSize="small" sx={{ ml: 2 }} />
+            <Block
+              fontSize="small"
+              sx={{ ml: 2, color: "rgba(75, 192, 192, 1)" }}
+            />
           </Typography>
           <Typography
             onClick={() => {
@@ -178,20 +219,22 @@ export const MyUsins = ({
             }}
             sx={{
               display: "flex",
-              fontSize: "14px",
+              fontSize: "16px",
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
               fontWeight: "bold",
               opacity: 0.6,
-              color: "rgba(255, 206, 86, 1)",
             }}
           >
             Sem Inversor: {notDefined.length}
-            <Block fontSize="small" sx={{ ml: 2 }} />
+            <Block
+              fontSize="small"
+              sx={{ ml: 2, color: "rgba(255, 206, 86, 1)" }}
+            />
           </Typography>
           <Typography
             onClick={() => {
@@ -199,13 +242,13 @@ export const MyUsins = ({
             }}
             sx={{
               display: "flex",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               opacity: 0.6,
               cursor: "pointer",
               "&:hover": {
                 transition: "1s",
-                fontSize: "12px",
+                fontSize: "14px",
                 opacity: 1,
               },
             }}
@@ -213,34 +256,15 @@ export const MyUsins = ({
             Alertas: {alerts.length}
             <ReportProblem fontSize="small" sx={{ ml: 2 }} />
           </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(2);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "14px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "12px",
-                opacity: 1,
-              },
-            }}
-          >
-            Portais: {brands.length}
-            <SolarPower fontSize="small" sx={{ ml: 2 }} />
-          </Typography>
         </Box>
       </Box>
-      <PieChartMyUsins
+
+      {/*<PieChartMyUsins
         notDefined={notDefined}
         unactived={unactived}
         online={online}
         offline={offline}
-      />
+          />*/}
     </Card>
   );
 };

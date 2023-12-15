@@ -17,6 +17,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { useState } from "react";
+import { concessionaries } from "src/utils/concessionaries";
 
 const validateSchema = Yup.object().shape({
   bl_login: Yup.string().required("Campo é obrigatório."),
@@ -89,6 +90,26 @@ export const FaturaModulo = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", py: 4 }}>
+          <TextField
+            sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
+            label="Concessionária"
+            {...register("concessionary_name")}
+            select
+            defaultValue="Cemig"
+            variant="standard"
+          >
+            {concessionaries.map((data) =>
+              data.title != "SolarView" && data.title != "Solarz" ? (
+                <MenuItem
+                  key={data.title}
+                  value={data.title}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  {data.title}
+                </MenuItem>
+              ) : null
+            )}
+          </TextField>
           <TextField
             margin="normal"
             label="Número de instalação"

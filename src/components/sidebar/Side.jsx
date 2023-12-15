@@ -48,10 +48,11 @@ import {
   MoneyOffCsredOutlined,
   AttachMoney,
   SolarPower,
+  FileCopy,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
-import { ModuleOM } from "./side-components/module-o&m/moduleO&M";
+import { ModuleOM } from "../modules/moduleO&M";
 import { FaturaModulo } from "../modules/faturaModule";
 
 export const Side = ({ sideState, setSideState }) => {
@@ -173,6 +174,12 @@ export const Side = ({ sideState, setSideState }) => {
       action: "device",
     },
     {
+      label: "Relatórios",
+      icon: <FileCopy fontSize="small" />,
+      disabled: true,
+      action: "reports",
+    },
+    {
       label: "Configurar alertas",
       icon: <Info fontSize="small" />,
       disabled: true,
@@ -221,7 +228,7 @@ export const Side = ({ sideState, setSideState }) => {
   }
 
   return (
-    <Drawer variant="permanent" anchor="left" sx={{ overflow: "hidden" }}>
+    <Drawer variant="permanent" anchor="left" sx={{}}>
       <Toolbar />
       <Box
         sx={{
@@ -231,8 +238,9 @@ export const Side = ({ sideState, setSideState }) => {
           overflow: "auto",
           height: "100%",
           width: sideState ? 236 : 100,
-          overflow: "hidden",
+          overflow: "scroll",
         }}
+
       >
         <List>
           {topItems.map((data, index) => (

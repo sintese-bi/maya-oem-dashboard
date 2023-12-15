@@ -19,6 +19,7 @@ import {
   Card,
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
+import moment from "moment";
 
 export default function AlertDevices() {
   const { useUuid } = getUserCookie();
@@ -87,6 +88,7 @@ export default function AlertDevices() {
                   <TableCell>Dispositivo/Usuário</TableCell>
                   <TableCell>Inversor</TableCell>
                   <TableCell>Mensagem do alerta</TableCell>
+                  <TableCell>Data do alerta</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -107,6 +109,11 @@ export default function AlertDevices() {
                         </TableCell>
                         <TableCell component="th" scope="row">
                           {data.al_inv}
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          {moment(data.alert_created_at).format(
+                            "DD/MM/YYYY HH:mm:ss"
+                          )}
                         </TableCell>
                       </TableRow>
                     ))

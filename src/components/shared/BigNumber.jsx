@@ -49,7 +49,7 @@ export const BigNumberDashboard = (props) => {
     props;
 
   return (
-    <Card sx={{}}>
+    <Card sx={{ width: "100%" }}>
       <CardActionArea>
         <CardContent sx={{ height: 120 }}>
           <Grid container>
