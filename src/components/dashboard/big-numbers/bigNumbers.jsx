@@ -29,8 +29,8 @@ export const BigNumbers = ({
   }, [notDefined, unactived, offline]);
 
   return (
-    <Grid container columnSpacing={1} rowSpacing={1} sx={{ width: "100%" }}>
-      <Grid item xs={6}>
+    <Grid container spacing={1} sx={{ width: "100%" }}>
+      <Grid item xs={6} sx={{ width: "90%" }}>
         <BigNumberDashboard
           title="Relatórios gerados no mês"
           btn={true}
@@ -48,7 +48,7 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} sx={{ width: "90%" }}>
         <BigNumberDashboard
           title="Economia no mês"
           btn={true}
@@ -68,7 +68,7 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} sx={{ width: "90%" }}>
         <BigNumberDashboard
           title="Potência total instalada"
           btn={true}
@@ -91,9 +91,9 @@ export const BigNumbers = ({
           }
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} sx={{ width: "90%" }}>
         <BigNumberDashboard
-          title="Árvores salvas"
+          title="Árvores salvas no mês"
           btn={true}
           value={treesSaved}
           icon={

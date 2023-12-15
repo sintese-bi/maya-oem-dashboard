@@ -86,8 +86,8 @@ const Generation = () => {
 
   function handleReportGeneration(action) {
     let address = deviceInfo?.dev_address;
-    let startDateReport = moment(startDate).format("DD/MM/YYYY");
-    let endDateReport = moment(endDate).format("DD/MM/YYYY");
+    let startDateReport = moment(startDate).format("YYYY-MM-DD");
+    let endDateReport = moment(endDate).format("YYYY-MM-DD");
     if (useTypeMember) {
       reportClientRule(
         generation,

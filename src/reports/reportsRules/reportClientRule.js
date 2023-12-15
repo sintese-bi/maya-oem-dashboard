@@ -8,6 +8,7 @@ export const reportClient = {
   estimatedGenerationTotal: "",
   realGenerationTotal: "",
   percent: "",
+  optionFilter: "",
   capacity: "",
   lowLevel: false,
   useName: "",
@@ -26,6 +27,7 @@ export const reportClient = {
   carbon: "",
   deviceName: "",
   color: "",
+  graphData: {},
 };
 
 export function reportClientRule(
@@ -46,6 +48,10 @@ export function reportClientRule(
   let realGenerationNumber = generation.realGeneration
     .reduce((total, element) => total + Number(element.value), 0)
     ?.toFixed(2);
+
+  reportClient.graphData["realGeneration"] = generation.realGeneration;
+  reportClient.graphData["estimatedGeneration"] =
+    generation.estimatedGeneration;
 
   function handleSituation(percent) {
     if (percent < 100) {
@@ -107,6 +113,8 @@ export function reportClientRule(
   );
   reportClient.deviceName = deviceName;
   reportClient.color = "#0097B2";
+
+  reportClient.optionFilter = "days";
 
   setIsLoadingReport(false);
 }

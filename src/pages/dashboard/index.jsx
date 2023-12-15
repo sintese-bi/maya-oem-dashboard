@@ -276,7 +276,6 @@ export default function Dashboard() {
           alignItems: "center",
           justifyContent: "space-between",
           mb: 6,
-          height: "22%",
         }}
       >
         <Grid
@@ -286,7 +285,7 @@ export default function Dashboard() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            gap: 4,
+            gap: 2,
             height: "100%",
           }}
         >
@@ -316,7 +315,7 @@ export default function Dashboard() {
             treesSaved={treesSaved}
           />
         </Grid>
-        <Grid item xs={7} sx={{ height: "100%" }}>
+        <Grid item xs={7} sx={{ height: 620 }}>
           <LocationUsins />
         </Grid>
 
