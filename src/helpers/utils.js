@@ -335,7 +335,7 @@ export const numbers = (value, unity) => {
       numberToArray.splice(-6, 0, ".");
       let transformedNumber =
         unity == "R$"
-          ? ` ${unity}` + numberToArray.join("")
+          ? ` ${unity} ` + numberToArray.join("")
           : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length >= 10) {
@@ -346,7 +346,7 @@ export const numbers = (value, unity) => {
       numberToArray.splice(-10, 0, ".");
       let transformedNumber =
         unity == "R$"
-          ? ` ${unity}` + numberToArray.join("")
+          ? ` ${unity} ` + numberToArray.join("")
           : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     } else if (number.length <= 6) {
@@ -354,7 +354,7 @@ export const numbers = (value, unity) => {
       numberToArray.splice(-3, 1, ",");
       let transformedNumber =
         unity == "R$"
-          ? ` ${unity}` + numberToArray.join("")
+          ? ` ${unity} ` + numberToArray.join("")
           : numberToArray.join("") + ` ${unity}`;
       return transformedNumber;
     }

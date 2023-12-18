@@ -142,7 +142,7 @@ export const MyUsins = ({
           }}
         >
           <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
-            Minhas usinas hoje
+            Status usinas hoje
           </Typography>
           <Typography
             onClick={() => {

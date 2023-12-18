@@ -54,6 +54,7 @@ import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
 import { ModuleOM } from "../modules/moduleO&M";
 import { FaturaModulo } from "../modules/faturaModule";
+import { Reports } from "../reports/Reports";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -109,6 +110,13 @@ export const Side = ({ sideState, setSideState }) => {
         return (
           <Box>
             <Portal />
+          </Box>
+        );
+        break;
+      case "reports":
+        return (
+          <Box>
+            <Reports />
           </Box>
         );
         break;
@@ -240,7 +248,6 @@ export const Side = ({ sideState, setSideState }) => {
           width: sideState ? 236 : 100,
           overflow: "scroll",
         }}
-
       >
         <List>
           {topItems.map((data, index) => (
@@ -360,7 +367,6 @@ export const Side = ({ sideState, setSideState }) => {
       </Box>
 
       <Modal
-        keepMounted
         open={open}
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"
@@ -388,7 +394,7 @@ export const Side = ({ sideState, setSideState }) => {
             <Cancel
               fontSize="large"
               onClick={() => {
-                setOpen(!open);
+                setOpen(false);
               }}
               sx={{ cursor: "pointer" }}
             />

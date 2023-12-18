@@ -22,7 +22,6 @@ import {
   AdminCalculator,
   ClientCalculator,
 } from "./components/calculator";
-import { ReportTest } from "./components/reports/ReportTest";
 
 export default function App() {
   return (
@@ -47,7 +46,6 @@ export default function App() {
             <Route path="calculator/client" element={<ClientCalculator />} />
             <Route path="calculator/admin" element={<AdminCalculator />} />
             <Route path="users" element={<ListUsers />} />
-            <Route path="reportTest" element={<ReportTest />} />
           </Route>
         </Route>
       </Route>

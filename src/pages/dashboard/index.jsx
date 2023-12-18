@@ -1,5 +1,5 @@
 // IMPORTS
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
@@ -39,8 +39,15 @@ import { ListUsins } from "src/components/dashboard/list-usins/listUsins";
 import { PeriodDataUsins } from "src/components/dashboard/period-data-usins/periodDataUsins";
 import AlertDevices from "src/components/alerts/AlertDevices";
 import { BigNumbers } from "src/components/dashboard/big-numbers/bigNumbers";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 export default function Dashboard() {
+  const {
+    monthEconomyTotal,
+    treesSavedTotal,
+    handleGenerationTotalValues,
+    handleGenerationFilteredValues,
+  } = useContext(DashboardContext);
   const navigate = useNavigate();
 
   // PROPS DE CONTROLLER
@@ -151,9 +158,7 @@ export default function Dashboard() {
         percent,
         startDateReport,
         endDateReport,
-        optionFilter,
-        setIsLoadingReportGeneration,
-        adminGraphRef
+        optionFilter
       );
     } else if (action) {
       setAction(action);
@@ -186,10 +191,22 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (allDevices.length !== 0) {
-      let generationReal = allDevices.reduce(
+      const generationReal = allDevices.reduce(
         (total, element) => total + element.generationRealMonth,
         0
       );
+      const generationEstimated = allDevices.reduce(
+        (total, element) => total + element.generationEstimatedMonth,
+        0
+      );
+
+      handleGenerationTotalValues({
+        realGenerationTotal: generationReal,
+        estimatedGenerationTotal: generationEstimated,
+        monthEconomyTotal: (generationReal * 0.58).toFixed(2),
+        treesSavedTotal: (generationReal * 0.000504).toFixed(2),
+      });
+
       setData(allDevices);
       setRealGenerationValueDataDevices(generationReal);
       setMonthEconomy((generationReal * 0.58).toFixed(2));
@@ -239,6 +256,26 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (graphData.data !== undefined) {
+      let generationRealMonthTemp = Object.values(
+        graphData.data.somaPorDiaReal
+      ).reduce((total, element) => total + element, 0);
+      let realGenerationFiltered = generationRealMonthTemp.toFixed(2);
+
+      let generationEstimatedMonthTemp = Object.values(
+        graphData.data.somaPorDiaEstimada
+      ).reduce((total, element) => total + element, 0);
+      let estimatedGenerationFiltered = generationEstimatedMonthTemp.toFixed(2);
+
+      let percentGenerationFiltered = (
+        (realGenerationFiltered / estimatedGenerationFiltered) *
+        100
+      ).toFixed();
+
+      handleGenerationFilteredValues({
+        realGenerationFiltered,
+        estimatedGenerationFiltered,
+        percentGenerationFiltered,
+      });
       handleRealGenerationTotal();
       handleEstimatedGenerationTotal();
     }
