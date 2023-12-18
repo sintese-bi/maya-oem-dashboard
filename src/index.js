@@ -13,22 +13,25 @@ import { Toaster } from "react-hot-toast";
 
 import "./global.css";
 import "moment/locale/pt-br";
+import { DashboardProvider } from "./contexts/dashboard-context";
 // import "react-widgets/styles.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <>
-    <BrandsContextProvider>
-      <BrowserRouter>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Toaster />
-            <App />
-          </ThemeProvider>
-        </Provider>
-      </BrowserRouter>
-    </BrandsContextProvider>
+    <DashboardProvider>
+      <BrandsContextProvider>
+        <BrowserRouter>
+          <Provider store={store}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <Toaster />
+              <App />
+            </ThemeProvider>
+          </Provider>
+        </BrowserRouter>
+      </BrandsContextProvider>
+    </DashboardProvider>
   </>
 );

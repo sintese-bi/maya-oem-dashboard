@@ -30,9 +30,7 @@ export function reportAdministratorRule(
   percent,
   startDateReport,
   endDateReport,
-  optionFilter,
-  setIsLoadingReport,
-  adminGraphRef
+  optionFilter
 ) {
   let realGenerationDay = dataDevices.map((data) => {
     let generationRealValue = data.generationRealDay;
@@ -71,10 +69,6 @@ export function reportAdministratorRule(
   );
 
   reportAdministrator.devicesLength = allDevices.length;
-  reportAdministrator.adminGraphRef = adminGraphRef?.current?.toBase64Image(
-    "image/jpeg",
-    1
-  );
 
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;
@@ -90,6 +84,4 @@ export function reportAdministratorRule(
   );
   reportAdministrator.color = "#0097B2";
   reportAdministrator.optionFilter = optionFilter;
-
-  setIsLoadingReport(false);
 }
