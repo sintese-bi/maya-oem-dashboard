@@ -45,6 +45,7 @@ const initialState = {
   allDevicesFromUser: [],
   isDeletingUser: null,
   userDevicesIsReady: false,
+  reportsCounting: 0,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -95,6 +96,17 @@ export default function userReducer(state = initialState, action) {
         ...state,
         loadingRegister: true,
         register: false,
+      };
+
+    case users.GET_REPORT_COUNTING:
+      return {
+        ...state,
+        reportsCounting: result,
+      };
+
+    case users.POST_REPORT_COUNTING:
+      return {
+        ...state,
       };
 
     case users.POST_REGISTER_SUCCESS:
@@ -357,6 +369,8 @@ export default function userReducer(state = initialState, action) {
               brand: item.bl_name,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
+              dev_lat: dev.dev_lat,
+              dev_long: dev.dev_long,
               email: dev.dev_email,
               capacity: parseFloat(
                 dev.dev_capacity !== null ? dev.dev_capacity.toFixed(2) : 0

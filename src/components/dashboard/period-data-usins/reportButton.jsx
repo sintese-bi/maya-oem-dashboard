@@ -15,7 +15,7 @@ import { useState } from "react";
 import { ReportButtonCarousel } from "./reportButtonCarousel";
 
 export const ReportButton = ({
-  handleReportGeneration,
+  handleAdminReportGeneration,
   isLoadingReportGeneration,
   useTypeMember,
 }) => {
@@ -58,7 +58,7 @@ export const ReportButton = ({
                 sx={{ width: "100%" }}
                 onClick={() => {
                   setOpen(true);
-                  handleReportGeneration();
+                  handleAdminReportGeneration();
                 }}
               >
                 Preparar relatório

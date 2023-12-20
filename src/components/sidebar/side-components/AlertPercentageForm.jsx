@@ -56,7 +56,15 @@ import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevice
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 
-export default function AlertPercentageForm({ welcome, setOpen, open }) {
+export default function AlertPercentageForm({
+  setSecondaryAction,
+  secondaryAction,
+  setTitle,
+  setDescription,
+  welcome,
+  setOpen,
+  open,
+}) {
   const dispatch = useDispatch();
   const userDevicesIsReady = localStorage.getItem("userDevicesIsReady");
   const [currentPage, setCurrentPage] = useState(0);
@@ -85,94 +93,76 @@ export default function AlertPercentageForm({ welcome, setOpen, open }) {
     }
   }, [currentPage]);
 
+  const CarousselContent = () => {
+    switch (secondaryAction) {
+      case "AlertsDefineComponent":
+        return (
+          <AlertsDefineComponent
+            setTitle={setTitle}
+            setDescription={setDescription}
+            welcome={welcome}
+            setSecondaryAction={setSecondaryAction}
+          />
+        );
+        break;
+      case "DefineAlertEmail":
+        return (
+          <DefineAlertEmail
+            welcome={welcome}
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setSecondaryAction={setSecondaryAction}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        );
+
+        break;
+      case "DefineCapacityAndDevicesEmails":
+        <DefineCapacityAndDevicesEmails
+          setOpen={setOpen}
+          open={open}
+          setTitle={setTitle}
+          setDescription={setDescription}
+          currentPage={currentPage}
+        />;
+        break;
+    }
+  };
+
   return (
     <Box>
       {userDevicesIsReady ? (
-        welcome ? (
-          <>
-            <Carousel
-              navButtonsAlwaysInvisible={true}
-              indicators={false}
-              indicatorIconButtonProps={{
-                style: {
-                  color: "#14B8A6",
-                },
-              }}
-              index={currentPage}
-              autoPlay={false}
-              sx={{ width: carouselWidth }}
-            >
-              <AlertsDefineComponent
-                welcome={welcome}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
-              <DefineAlertEmail
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
-              <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
-            </Carousel>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                mt: 2,
-              }}
-            >
-              <ArrowBackIos
-                fontSize="small"
-                sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-                onClick={() =>
-                  currentPage > 0 ? setCurrentPage(currentPage - 1) : null
-                }
-              />
-
-              <ArrowForwardIos
-                fontSize="small"
-                sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-                onClick={() =>
-                  currentPage < 2 ? setCurrentPage(currentPage + 1) : null
-                }
-              />
-            </Box>
-          </>
-        ) : (
-          <Carousel
-            navButtonsAlwaysInvisible={true}
-            indicators={false}
-            indicatorIconButtonProps={{
-              style: {
-                color: "#14B8A6",
-              },
+        <>
+          <Box sx={{ width: carouselWidth }}>
+            <CarousselContent />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 2,
             }}
-            index={currentPage}
-            autoPlay={false}
-            sx={{ width: 500 }}
           >
-            <AlertsDefineComponent
-              setOpen={setOpen}
-              welcome={welcome}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
+            {/*<ArrowBackIos
+              fontSize="small"
+              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
+              onClick={() =>
+                currentPage > 0 ? setCurrentPage(currentPage - 1) : null
+              }
             />
-            <Box>
-              <DefineAlertEmail
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
-              <Button
-                sx={{ mt: 2 }}
-                variant="outlined"
-                onClick={() => setOpen(false)}
-              >
-                Pular etapa
-              </Button>
-            </Box>
-          </Carousel>
-        )
+
+            <ArrowForwardIos
+              fontSize="small"
+              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
+              onClick={() =>
+                currentPage < 2 ? setCurrentPage(currentPage + 1) : null
+              }
+            />*/}
+          </Box>
+        </>
       ) : (
         <NoDevicesWarning />
       )}

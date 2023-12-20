@@ -20,18 +20,16 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <>
-    <DashboardProvider>
+    <Provider store={store}>
       <BrandsContextProvider>
         <BrowserRouter>
-          <Provider store={store}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Toaster />
-              <App />
-            </ThemeProvider>
-          </Provider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Toaster />
+            <App />
+          </ThemeProvider>
         </BrowserRouter>
       </BrandsContextProvider>
-    </DashboardProvider>
+    </Provider>
   </>
 );

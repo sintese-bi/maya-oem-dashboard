@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { getUserCookie } from "./services/session";
+import { DashboardProvider } from "./contexts/dashboard-context";
 
 export default function PrivateRoute() {
   // SE O USUARIO NAO ESTIVER LOGADO, REDIRECIONA PARA TELA DE LOGIN
@@ -7,5 +8,9 @@ export default function PrivateRoute() {
     return <Navigate to="/" />;
   }
 
-  return <Outlet />;
+  return (
+    <DashboardProvider>
+      <Outlet />
+    </DashboardProvider>
+  );
 }

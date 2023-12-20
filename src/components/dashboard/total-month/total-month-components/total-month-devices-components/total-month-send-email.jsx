@@ -41,6 +41,7 @@ import {
 } from "src/store/actions/devices";
 import { getUserCookie } from "src/services/session";
 import { ClientReport } from "src/reports/ClientReport";
+import { storeReport } from "src/store/actions/users";
 
 const styles = StyleSheet.create({
   pdfViewer: {
@@ -155,7 +156,7 @@ export const SendEmail = ({
   capacity,
   address,
   email,
-  deviceName
+  deviceName,
 }) => {
   const dispatch = useDispatch();
 
@@ -205,7 +206,10 @@ export const SendEmail = ({
     let startDateTemp = moment(startDate).format("DD/MM/YYYY");
     let endDateTemp = moment(endDate).format("DD/MM/YYYY");
 
-    if(devicesGeneration.realGeneration.length != 0 && devicesGeneration.estimatedGeneration.length != 0){
+    if (
+      devicesGeneration.realGeneration.length != 0 &&
+      devicesGeneration.estimatedGeneration.length != 0
+    ) {
       reportClientRule(
         devicesGeneration,
         useNameState,
@@ -218,7 +222,6 @@ export const SendEmail = ({
         deviceName
       );
     }
-    
   }
 
   useEffect(() => {
@@ -646,7 +649,7 @@ export const SendEmail = ({
                 <View>
                   <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
                   <Text style={styles.cardNumber}>
-                    {reportClient.realGenerationTotal} 
+                    {reportClient.realGenerationTotal}
                   </Text>
                 </View>
                 <Image
@@ -658,7 +661,7 @@ export const SendEmail = ({
                 <View>
                   <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
                   <Text style={styles.cardNumber}>
-                    {reportClient.estimatedGenerationTotal} 
+                    {reportClient.estimatedGenerationTotal}
                   </Text>
                 </View>
                 <Image
@@ -767,9 +770,9 @@ export const SendEmail = ({
 
     // Adicione o elemento canvas ao container desejado na sua página HTML
     document.getElementById("acquisitions").appendChild(canvas);
-    document.getElementById("acquisitions").style.height = '420px'
+    document.getElementById("acquisitions").style.height = "420px";
     // Crie o gráfico usando Chart.js
-    const ctx = canvas.getContext("2d"); 
+    const ctx = canvas.getContext("2d");
     const chart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -793,7 +796,7 @@ export const SendEmail = ({
             barThickness: 3,
             data: devicesGeneration.estimatedGeneration?.map((data) => data),
             borderColor: "#14B8A6",
-            backgroundColor: "#14B8A6",       
+            backgroundColor: "#14B8A6",
             type: "line",
             borderWidth: 0.4,
           },
@@ -803,7 +806,7 @@ export const SendEmail = ({
         scales: {
           y: {
             grid: {
-              display: false
+              display: false,
             },
             beginAtZero: true,
             ticks: {
@@ -812,7 +815,7 @@ export const SendEmail = ({
           },
           x: {
             grid: {
-              display: false
+              display: false,
             },
             beginAtZero: true,
             ticks: {
@@ -832,6 +835,7 @@ export const SendEmail = ({
     const { email } = values;
     try {
       dispatch(updateEmail({ dev_uuid: devUuidState, email }));
+      dispatch(storeReport({ dev_uuid: devUuidState }));
       setEmailIsUpdated(true);
     } catch (error) {
       alert(error);

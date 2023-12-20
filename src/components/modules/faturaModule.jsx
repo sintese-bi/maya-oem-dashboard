@@ -16,7 +16,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { concessionaries } from "src/utils/concessionaries";
 
 const validateSchema = Yup.object().shape({
@@ -24,7 +24,7 @@ const validateSchema = Yup.object().shape({
   bl_password: Yup.string().required("Campo é obrigatório."),
 });
 
-export const FaturaModulo = () => {
+export const FaturaModulo = ({ setTitle, setDescription }) => {
   const [action, setAction] = useState("createDevice");
   const methods = useForm();
   const { useUuid } = getUserCookie();
@@ -71,6 +71,11 @@ export const FaturaModulo = () => {
     }
   }
 
+  useEffect(() => {
+    setTitle("Módulo de fatura");
+    setDescription("");
+  }, []);
+
   return (
     <FormProvider {...methods}>
       <Box
@@ -80,69 +85,76 @@ export const FaturaModulo = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "start",
-          width: 364,
+          justifyContent: "space-between",
+          gap: 10,
+          width: 664,
         }}
       >
-        <Box>
-          <Typography sx={{ fontWeight: "bold" }} variant="h5">
-            Módulo de fatura
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", py: 4 }}>
-          <TextField
-            sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
-            label="Concessionária"
-            {...register("concessionary_name")}
-            select
-            defaultValue="Cemig"
-            variant="standard"
-          >
-            {concessionaries.map((data) =>
-              data.title != "SolarView" && data.title != "Solarz" ? (
-                <MenuItem
-                  key={data.title}
-                  value={data.title}
-                  sx={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {data.title}
-                </MenuItem>
-              ) : null
-            )}
-          </TextField>
-          <TextField
-            margin="normal"
-            label="Número de instalação"
-            {...register("number_instalation")}
-            error={!!errors.number_instalation}
-            helperText={errors.number_instalation?.message}
-          />
-          <TextField
-            margin="normal"
-            label="Número do cliente"
-            {...register("client_phone")}
-            error={!!errors.client_phone}
-            helperText={errors.client_phone?.message}
-          />
-          <TextField
-            margin="normal"
-            label="Login"
-            {...register("login")}
-            error={!!errors.login}
-            helperText={errors.login?.message}
-          />
-          <TextField
-            margin="normal"
-            label="Senha"
-            type="password"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="Termo de aceite"
-          />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", width: 320 }}>
+            <TextField
+              sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
+              label="Concessionária"
+              {...register("concessionary_name")}
+              select
+              defaultValue="Cemig"
+              variant="standard"
+            >
+              {concessionaries.map((data) =>
+                data.title != "SolarView" && data.title != "Solarz" ? (
+                  <MenuItem
+                    key={data.title}
+                    value={data.title}
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    {data.title}
+                  </MenuItem>
+                ) : null
+              )}
+            </TextField>
+            <TextField
+              margin="normal"
+              label="Número de instalação"
+              {...register("number_instalation")}
+              error={!!errors.number_instalation}
+              helperText={errors.number_instalation?.message}
+            />
+            <TextField
+              margin="normal"
+              label="Número do cliente"
+              {...register("client_phone")}
+              error={!!errors.client_phone}
+              helperText={errors.client_phone?.message}
+            />
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", width: 320 }}>
+            <TextField
+              margin="normal"
+              label="Login"
+              {...register("login")}
+              error={!!errors.login}
+              helperText={errors.login?.message}
+            />
+            <TextField
+              margin="normal"
+              label="Senha"
+              type="password"
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+            <FormControlLabel
+              control={<Checkbox defaultChecked />}
+              label="Termo de aceite"
+            />
+          </Box>
         </Box>
 
         <Box>

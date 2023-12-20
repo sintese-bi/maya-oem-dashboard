@@ -13,7 +13,11 @@ import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
-export function DefineCapacityAndDevicesEmails({ setOpen }) {
+export function DefineCapacityAndDevicesEmails({
+  setOpen,
+  setTitle,
+  setDescription,
+}) {
   var scrolled = false;
   const containerRef = useRef(null);
   const allDevicesFromUserRef = useRef([]);
@@ -99,6 +103,10 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
   }
 
   useEffect(() => {
+    setTitle("Geração estimada das usinas");
+    setDescription(`Por favor, define o email e a potência de cada planta. Precisamos desses dados para o envio de alertas MAYA, e
+    para cálcularmos valores como a geração estimada da sua usina. Seus
+    dados estão seguros conosco!`);
     containerRef.current?.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -164,23 +172,8 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
         display: "flex",
         width: "100%",
         flexDirection: "column",
-        p: 2,
       }}
     >
-      <Typography
-        variant="h4"
-        sx={{ position: "absolute", marginTop: "-80px" }}
-      >
-        Geração estimada das usinas.
-      </Typography>
-      <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-        Por favor, define o email e a potência de cada planta!
-      </Typography>
-      <Typography variant="body2" sx={{ mb: 4, opacity: 0.7 }}>
-        Precisamos desses dados para o envio de alertas <strong>MAYA</strong>, e
-        para cálcularmos valores como a geração estimada da sua usina. Seus
-        dados estão seguros conosco!
-      </Typography>
       <Box
         sx={{
           display: "grid",
@@ -188,9 +181,9 @@ export function DefineCapacityAndDevicesEmails({ setOpen }) {
           gridTemplateColumns: "repeat(3, 380px)",
           gap: 3,
           width: "100%",
-          height: 362,
+          height: 282,
           overflow: "auto",
-          mb: 6,
+          mb: 2,
           borderBottom: "1px",
         }}
         ref={containerRef}

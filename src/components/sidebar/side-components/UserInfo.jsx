@@ -22,6 +22,8 @@ const validateSchema = Yup.object().shape({
 });
 
 export const UserInfo = ({
+  setTitle,
+  setDescription,
   useName,
   useEmail,
   useUuid,
@@ -77,9 +79,13 @@ export const UserInfo = ({
     setUserData({ useName, useEmail, useUuid, useCityState, useTelephone });
   }, [useName, useEmail, useUuid, useCityState, useTelephone]);
 
+  useEffect(() => {
+    setTitle("Dados do usuário");
+    setDescription("");
+  }, []);
+
   return (
     <Box sx={{}}>
-      <Typography variant="h3">Dados do usuário</Typography>
       {editUserData ? (
         <FormProvider {...methods}>
           <Box

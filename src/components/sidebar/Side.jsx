@@ -66,8 +66,12 @@ export const Side = ({ sideState, setSideState }) => {
     useCityState,
     useTelephone,
   } = getUserCookie();
-
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [action, setAction] = useState("alertFrequency");
+  const [secondaryAction, setSecondaryAction] = useState(
+    "AlertsDefineComponent"
+  );
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(firstTime ? true : false);
 
@@ -86,6 +90,10 @@ export const Side = ({ sideState, setSideState }) => {
     setWelcome(firstTime);
   }, [firstTime]);
 
+  useEffect(() => {
+    console.log(secondaryAction);
+  }, [secondaryAction]);
+
   const ModalContent = () => {
     switch (action) {
       case "alertFrequency":
@@ -93,14 +101,20 @@ export const Side = ({ sideState, setSideState }) => {
           <Box>
             {useTypeMember ? (
               <AlertPercentageForm
+                secondaryAction={secondaryAction}
+                setSecondaryAction={setSecondaryAction}
                 welcome={welcome}
                 setOpen={setOpen}
                 open={open}
+                setTitle={setTitle}
+                setDescription={setDescription}
               />
             ) : (
               <PaymentWarn
                 welcome={welcome}
                 handleModalState={handleModalState}
+                setTitle={setTitle}
+                setDescription={setDescription}
               />
             )}
           </Box>
@@ -109,21 +123,36 @@ export const Side = ({ sideState, setSideState }) => {
       case "device":
         return (
           <Box>
-            <Portal />
+            <Portal
+              setTitle={setTitle}
+              setDescription={setDescription}
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+            />
           </Box>
         );
         break;
       case "reports":
         return (
           <Box>
-            <Reports />
+            <Reports
+              setTitle={setTitle}
+              setDescription={setDescription}
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+            />
           </Box>
         );
         break;
       case "assignPlan":
         return (
           <Box>
-            <MayaWatchPro />
+            <MayaWatchPro
+              setTitle={setTitle}
+              setDescription={setDescription}
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+            />
           </Box>
         );
         break;
@@ -131,6 +160,10 @@ export const Side = ({ sideState, setSideState }) => {
         return (
           <Box>
             <UserInfo
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+              setTitle={setTitle}
+              setDescription={setDescription}
               useName={useName}
               useEmail={useEmail}
               useUuid={useUuid}
@@ -144,21 +177,40 @@ export const Side = ({ sideState, setSideState }) => {
       case "configSetup":
         return (
           <Box sx={{ width: "92vw" }}>
-            <DefineCapacityAndDevicesEmails setOpen={setOpen} open={open} />
+            <DefineCapacityAndDevicesEmails
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+              setOpen={setOpen}
+              open={open}
+              setTitle={setTitle}
+              setDescription={setDescription}
+            />
           </Box>
         );
         break;
       case "module-orm":
         return (
           <Box>
-            <ModuleOM setOpen={setOpen} open={open} />
+            <ModuleOM
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+              setOpen={setOpen}
+              open={open}
+              setTitle={setTitle}
+              setDescription={setDescription}
+            />
           </Box>
         );
         break;
       case "module-fatura":
         return (
           <Box sx={{ p: 4 }}>
-            <FaturaModulo />
+            <FaturaModulo
+              setTitle={setTitle}
+              setDescription={setDescription}
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+            />
           </Box>
         );
       default:
@@ -376,9 +428,13 @@ export const Side = ({ sideState, setSideState }) => {
         <Box
           sx={{
             bgcolor: "background.paper",
+            height: "90vh",
             pb: 6,
             px: 4,
-            bgcolor: "background.paper",
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+            alignItems: "center",
             borderRadius: 1,
             border: 0,
           }}
@@ -386,11 +442,18 @@ export const Side = ({ sideState, setSideState }) => {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "end",
+              justifyContent: "space-between",
+              alignItems: "center",
               width: "100%",
-              py: 4,
+              py: 2,
             }}
           >
+            <Box sx={{ width: "620px" }}>
+              <Typography variant="h2">{title}</Typography>
+              <Typography variant="body2" sx={{ width: "620px" }}>
+                {description}
+              </Typography>
+            </Box>
             <Cancel
               fontSize="large"
               onClick={() => {
@@ -400,7 +463,17 @@ export const Side = ({ sideState, setSideState }) => {
             />
           </Box>
 
-          <ModalContent />
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ModalContent />
+          </Box>
         </Box>
       </Modal>
     </Drawer>

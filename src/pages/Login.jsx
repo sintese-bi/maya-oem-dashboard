@@ -213,11 +213,11 @@ export default function Login() {
       <Modal
         open={open}
         onClose={handleModalState}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <RecoveryPassword />
+        <>
+          <RecoveryPassword />
+        </>
       </Modal>
     </ThemeProvider>
   );
