@@ -54,10 +54,11 @@ const validateSchema = Yup.object().shape({
 });
 
 export function AlertsDefineComponent({
+  setTitle,
+  setDescription,
   welcome,
   setOpen,
-  setCurrentPage,
-  currentPage,
+  setSecondaryAction,
 }) {
   const [freePlan, setFreePlan] = useState(true);
   const dispatch = useDispatch();
@@ -87,9 +88,7 @@ export function AlertsDefineComponent({
   async function onSubmit(values) {
     dispatch(patchAlertFrequency({ values, useUuid }));
 
-    currentPage < 3 && currentPage >= 0
-      ? setCurrentPage(currentPage + 1)
-      : null;
+    setSecondaryAction("DefineAlertEmail");
   }
 
   useEffect(() => {
@@ -108,42 +107,27 @@ export function AlertsDefineComponent({
     }
   }, [percentage, frequencyName]);
 
+  useEffect(() => {
+    setTitle("Definição de frequência dos alertas");
+    setDescription(`Prezado usuário, definir a frequência e o limite mínimo de produtividade
+    das suas plantas. Essa definição controla o envio de alerta das plantas
+    para seu email todas as vezes que suas plantas produzirem ${watch(
+      "percentage"
+    )}%
+    abaixo do definido enviaremos um alerta para você.`);
+  }, []);
+
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
       <Card
         sx={{
+          width: "100%",
           display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           flexDirection: "column",
-          bgcolor: "background.paper",
         }}
       >
-        {welcome ? (
-          <Typography variant="h2" sx={{ py: 2 }}>
-            Bem vindo
-          </Typography>
-        ) : null}
-
-        <Box sx={{ display: "flex", flexDirection: "column", pb: 6 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
-            <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-              Definição de frequência dos alertas
-            </Typography>
-            <Tooltip
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              title="O Software envia automaticamente alertas de produção para seu email. Selecione aqui a frequência de alertas."
-            >
-              <Info />
-            </Tooltip>
-          </Box>
-          <Typography sx={{ width: 460, fontSize: "14px" }}>
-            {`Prezado usuário, definir a frequência e o limite mínimo de produtividade
-              das suas plantas. Essa definição controla o envio de alerta das plantas
-              para seu email todas as vezes que suas plantas produzirem ${watch(
-                "percentage"
-              )}%
-              abaixo do definido enviaremos um alerta para você.`}
-          </Typography>
-        </Box>
         <Grid
           container
           sx={{

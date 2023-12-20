@@ -30,7 +30,8 @@ export function reportAdministratorRule(
   percent,
   startDateReport,
   endDateReport,
-  optionFilter
+  optionFilter,
+  setIsLoadingReportGeneration
 ) {
   let realGenerationDay = dataDevices.map((data) => {
     let generationRealValue = data.generationRealDay;
@@ -84,4 +85,6 @@ export function reportAdministratorRule(
   );
   reportAdministrator.color = "#0097B2";
   reportAdministrator.optionFilter = optionFilter;
+
+  setIsLoadingReportGeneration(false);
 }

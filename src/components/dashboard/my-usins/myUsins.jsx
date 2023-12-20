@@ -11,9 +11,9 @@ import { PieChartMyUsins } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
 
 export const MyUsins = ({
-  realGeneration,
-  estimatedGeneration,
-  percent,
+  realGenerationLastDay,
+  estimatedGenerationLastDay,
+  percentLastDay,
   allDevices,
   brands,
   notDefined,
@@ -85,7 +85,7 @@ export const MyUsins = ({
               opacity: 0.6,
             }}
           >
-            Total produzido: {numbers(realGeneration, "KWh")}
+            Total produzido: {numbers(realGenerationLastDay, "KWh")}
             <Bolt fontSize="small" sx={{ ml: 2 }} />
           </Typography>
           <Typography
@@ -97,7 +97,7 @@ export const MyUsins = ({
               opacity: 0.6,
             }}
           >
-            Total esperado: {numbers(estimatedGeneration, "KWh")}
+            Total esperado: {numbers(estimatedGenerationLastDay, "KWh")}
             <Bolt fontSize="small" sx={{ ml: 2 }} />
           </Typography>
           <Typography
@@ -109,7 +109,7 @@ export const MyUsins = ({
               opacity: 0.6,
             }}
           >
-            Desempenho: {percent}%
+            Desempenho: {percentLastDay}%
           </Typography>
 
           <Typography

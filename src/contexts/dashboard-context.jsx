@@ -1,9 +1,33 @@
-import { createContext, useState } from "react";
+import moment from "moment";
+import { createContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
+import { getUserCookie } from "src/services/session";
+import { bigNumberSum } from "src/store/actions/devices";
+import {
+  getAllDevices,
+  getCapacities,
+  getDashboard,
+  reportCounting,
+} from "src/store/actions/users";
 
 export const DashboardContext = createContext({});
 
 export const DashboardProvider = ({ children }) => {
+  const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
+    useState(true);
+
+  // data serve para guardar os dados principais do dashboard, como todos os devices, e o type é o responsável pela filtragem desses dados
+
+  const [data, setData] = useState([]);
+  const [type, setType] = useState(null);
+
+  // datas para requisições com período de tempo
+
+  const [startDate, setStartDate] = useState(moment().startOf("month"));
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+  const [optionFilter, setOptionFilter] = useState("days");
+
   // valores de geração de allDevices, ou seja, valores totais de geração
 
   const [realGenerationTotal, setRealGenerationTotal] = useState(0);
@@ -24,6 +48,17 @@ export const DashboardProvider = ({ children }) => {
   const [estimatedGenerationFiltered, SetEstimatedGenerationFiltered] =
     useState(0);
   const [percentGenerationFiltered, SetPercentGenerationFiltered] = useState(0);
+
+  // dados do usuário vindo to cookies do site
+  const userData = getUserCookie();
+
+  useEffect(() => {
+    console.log(userData?.useUuid);
+  }, []);
+
+  // dados da API
+  const dispatch = useDispatch();
+  const usersAPIData = useSelector((state) => state.users);
 
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
@@ -51,30 +86,151 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleAdminReportGeneration(props) {
+    let startDateReport = moment(startDate).format("YYYY-MM-DD");
+    let endDateReport = moment(endDate).format("YYYY-MM-DD");
     reportAdministratorRule(
-      props.graphData,
-      props.capacity,
+      usersAPIData.graphData,
+      usersAPIData.capacity,
       realGenerationTotal,
       estimatedGenerationTotal,
-      props.dataDevices,
-      props.allDevices,
+      usersAPIData.dataDevices,
+      usersAPIData.allDevices,
       percentLastDay,
-      props.startDateReport,
-      props.endDateReport,
-      props.optionFilter
+      startDateReport,
+      endDateReport,
+      optionFilter,
+      setIsLoadingReportGeneration
     );
   }
+
+  useEffect(() => {
+    dispatch(reportCounting(0));
+    if (usersAPIData.selectedUser.length != 0) {
+      dispatch(bigNumberSum(usersAPIData.selectedUser[0]?.useUuidState));
+      dispatch(
+        getDashboard(
+          usersAPIData.selectedUser[0]?.useUuidState,
+          "index.jsx - selectedUser"
+        )
+      );
+      dispatch(
+        getAllDevices(
+          usersAPIData.selectedUser[0]?.useUuidState,
+          "index.jsx - normal"
+        )
+      );
+    } else {
+      dispatch(bigNumberSum(userData?.useUuid));
+      dispatch(getDashboard(userData?.useUuid, "index.jsx - normal"));
+      dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
+    }
+  }, [userData?.useUuid]);
+
+  useEffect(() => {
+    dispatch(getCapacities(usersAPIData.blUuids));
+  }, [usersAPIData.blUuids]);
+
+  useEffect(() => {
+    if (usersAPIData.allDevices.length !== 0) {
+      const generationReal = usersAPIData.allDevices.reduce(
+        (total, element) => total + element.generationRealMonth,
+        0
+      );
+      const generationEstimated = usersAPIData.allDevices.reduce(
+        (total, element) => total + element.generationEstimatedMonth,
+        0
+      );
+
+      handleGenerationTotalValues({
+        realGenerationTotal: generationReal,
+        estimatedGenerationTotal: generationEstimated,
+        monthEconomyTotal: (generationReal * 0.58).toFixed(2),
+        treesSavedTotal: (generationReal * 0.000504).toFixed(2),
+      });
+
+      setData(usersAPIData.allDevices);
+    }
+  }, [usersAPIData.allDevices]);
+
+  useEffect(() => {
+    if (usersAPIData.graphData.data !== undefined) {
+      //formato = {"data":"valor"}
+
+      let sumPerDayRealGeneration = usersAPIData.graphData.data.somaPorDiaReal;
+      let sumPerDayEstimatedGeneration =
+        usersAPIData.graphData.data.somaPorDiaEstimada;
+
+      //pegando apenas os valores
+
+      let sumPerDayRealGenerationValues = Object.values(
+        sumPerDayRealGeneration
+      );
+      let sumPerDayEstimatedGenerationValues = Object.values(
+        sumPerDayEstimatedGeneration
+      );
+
+      //usando reduce para somar todos os valores
+
+      let generationRealMonthTemp = sumPerDayRealGenerationValues.reduce(
+        (total, element) => total + element,
+        0
+      );
+
+      let generationEstimatedMonthTemp =
+        sumPerDayEstimatedGenerationValues.reduce(
+          (total, element) => total + element,
+          0
+        );
+
+      // preparando os valores para obedecerem as condições de formatação da nossa função numbers, precisa ter 2 casas á direita da vírgula
+
+      let realGenerationFiltered = generationRealMonthTemp.toFixed(2);
+      let estimatedGenerationFiltered = generationEstimatedMonthTemp.toFixed(2);
+
+      let percentGenerationFiltered = (
+        (realGenerationFiltered / estimatedGenerationFiltered) *
+        100
+      ).toFixed();
+
+      handleGenerationFilteredValues({
+        realGenerationFiltered,
+        estimatedGenerationFiltered,
+        percentGenerationFiltered,
+      });
+    }
+  }, [usersAPIData.graphData]);
 
   return (
     <DashboardContext.Provider
       value={{
+        isLoadingReportGeneration,
+        data,
+        type,
+        userData,
+        usersAPIData,
+        startDate,
+        endDate,
+        optionFilter,
         realGenerationTotal,
         estimatedGenerationTotal,
         monthEconomyTotal,
         treesSavedTotal,
+        realGenerationFiltered,
+        estimatedGenerationFiltered,
+        percentGenerationFiltered,
+        realGenerationLastDay,
+        estimatedGenerationLastDay,
+        percentLastDay,
+        setIsLoadingReportGeneration,
+        setData,
+        setType,
+        setStartDate,
+        setEndDate,
+        setOptionFilter,
         handleGenerationTotalValues,
         handleGenerationLastDayValues,
         handleGenerationFilteredValues,
+        handleAdminReportGeneration,
       }}
     >
       {children}

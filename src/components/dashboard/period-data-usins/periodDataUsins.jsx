@@ -26,10 +26,10 @@ export const PeriodDataUsins = ({
   optionFilter,
   setOptionFilter,
   adminGraphRef,
-  realGenerationTotal,
-  estimatedGenerationTotal,
-  percentTotal,
-  handleReportGeneration,
+  realGenerationFiltered,
+  estimatedGenerationFiltered,
+  percentGenerationFiltered,
+  handleAdminReportGeneration,
   isLoadingReportGeneration,
   useTypeMember,
 }) => {
@@ -116,9 +116,9 @@ export const PeriodDataUsins = ({
       </Box>
       <TotalMonthInfo
         useName={useName}
-        realGenerationTotal={realGenerationTotal}
-        estimatedGenerationTotal={estimatedGenerationTotal}
-        percentTotal={percentTotal}
+        realGenerationFiltered={realGenerationFiltered}
+        estimatedGenerationFiltered={estimatedGenerationFiltered}
+        percentGenerationFiltered={percentGenerationFiltered}
         startDate={startDate}
         endDate={endDate}
       />
@@ -162,17 +162,17 @@ export const PeriodDataUsins = ({
             }}
           >
             <Typography>
-              Total: {numbers(realGenerationTotal, "KWh")}
+              Total: {numbers(realGenerationFiltered, "KWh")}
             </Typography>
             <Typography>
-              Esperado: {numbers(estimatedGenerationTotal, "KWh")}
+              Esperado: {numbers(estimatedGenerationFiltered, "KWh")}
             </Typography>
-            <Typography>Desempenho: {percentTotal}%</Typography>
+            <Typography>Desempenho: {percentGenerationFiltered}%</Typography>
           </Box>
           <ReportButton
             isLoadingReportGeneration={isLoadingReportGeneration}
             useTypeMember={useTypeMember}
-            handleReportGeneration={handleReportGeneration}
+            handleAdminReportGeneration={handleAdminReportGeneration}
           />
         </Box>
       </Box>

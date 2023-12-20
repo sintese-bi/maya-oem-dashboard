@@ -43,10 +43,34 @@ import { DashboardContext } from "src/contexts/dashboard-context";
 
 export default function Dashboard() {
   const {
+    isLoadingReportGeneration,
+    data,
+    type,
+    userData,
+    usersAPIData,
+    startDate,
+    endDate,
+    optionFilter,
+    realGenerationTotal,
+    estimatedGenerationTotal,
     monthEconomyTotal,
     treesSavedTotal,
+    realGenerationFiltered,
+    estimatedGenerationFiltered,
+    percentGenerationFiltered,
+    realGenerationLastDay,
+    estimatedGenerationLastDay,
+    percentLastDay,
+    setIsLoadingReportGeneration,
+    setData,
+    setType,
+    setStartDate,
+    setEndDate,
+    setOptionFilter,
     handleGenerationTotalValues,
+    handleGenerationLastDayValues,
     handleGenerationFilteredValues,
+    handleAdminReportGeneration,
   } = useContext(DashboardContext);
   const navigate = useNavigate();
 
@@ -57,245 +81,22 @@ export default function Dashboard() {
     navigate("/dashboard/devices");
   }
 
-  // ESTADOS DE QUERIES
-  const dispatch = useDispatch();
-  const {
-    isLoading,
-    isAllDevicesDataLoading,
-    isLoadingGraph,
-    brands,
-    blUuids,
-    dataDevices,
-    allDevices,
-    alerts,
-    offline,
-    online,
-    notDefined,
-    unactived,
-    capacity,
-    selectedUser,
-    graphData,
-  } = useSelector((state) => state.users);
-
   const { bignumbersumValues } = useSelector((state) => state.devices);
 
   const devicesTableRef = useRef(null);
-
-  const [type, setType] = useState(null);
-
   const adminGraphRef = useRef(null);
 
-  const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
   const [capacityTotal, setCapacityTotal] = useState(0);
-  const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
-    useState(true);
-
-  // valores de geração de allDevices
-
-  const [realGenerationValueDataDevices, setRealGenerationValueDataDevices] =
-    useState(0);
-  const [
-    estimatedGenerationValueDataDevices,
-    setEstimatedGenerationValueDataDevices,
-  ] = useState(0);
-  const [monthEconomy, setMonthEconomy] = useState("");
-  const [treesSaved, setTreesSaved] = useState("");
-
-  // valores de geração real, estimada e porcentagem, referentes ao - MÊS -
-
-  const [percentTotal, setPercentTotal] = useState(0);
-  const [realGenerationTotal, setRealGenerationTotal] = useState(0);
-  const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0);
-
-  // valores de geração real, estimada e porcentagem, referentes ao - ÚLTIMO DIA -
-
-  const [percent, setPercent] = useState(0);
-  const [realGeneration, setRealGeneration] = useState(0);
-  const [estimatedGeneration, setEstimatedGeneration] = useState(0);
-
-  // datas para requisições com período de tempo
-
-  const [startDate, setStartDate] = useState(moment().startOf("month"));
-  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  const [optionFilter, setOptionFilter] = useState("days");
-
-  // funções
-
-  function handleRealGenerationTotal() {
-    let generationRealMonthTemp = Object.values(
-      graphData.data.somaPorDiaReal
-    ).reduce((total, element) => total + element, 0);
-    let generationRealMonthTotalTemp = generationRealMonthTemp.toFixed(2);
-
-    setRealGenerationTotal(generationRealMonthTotalTemp);
-  }
-
-  function handleEstimatedGenerationTotal() {
-    let generationEstimatedMonthTemp = Object.values(
-      graphData.data.somaPorDiaEstimada
-    ).reduce((total, element) => total + element, 0);
-    let generationEstimatedMonthTotalTemp =
-      generationEstimatedMonthTemp.toFixed(2);
-
-    setEstimatedGenerationTotal(generationEstimatedMonthTotalTemp);
-  }
-
-  // função para capturar os valores do relatório administrador
-
-  function handleReportGeneration(action) {
-    let startDateReport = moment(startDate).format("YYYY-MM-DD");
-    let endDateReport = moment(endDate).format("YYYY-MM-DD");
-    if (useTypeMember) {
-      reportAdministratorRule(
-        graphData,
-        capacity,
-        realGenerationTotal,
-        estimatedGenerationTotal,
-        dataDevices,
-        allDevices,
-        percent,
-        startDateReport,
-        endDateReport,
-        optionFilter
-      );
-    } else if (action) {
-      setAction(action);
-    } else {
-      setOpen(!open);
-      setAction("");
-    }
-  }
-
-  // useEffects
-  useEffect(() => {
-    if (selectedUser.length != 0) {
-      dispatch(bigNumberSum(selectedUser[0]?.useUuidState));
-      dispatch(
-        getDashboard(selectedUser[0]?.useUuidState, "index.jsx - selectedUser")
-      );
-      dispatch(
-        getAllDevices(selectedUser[0]?.useUuidState, "index.jsx - normal")
-      );
-    } else {
-      dispatch(bigNumberSum(useUuid));
-      dispatch(getDashboard(useUuid, "index.jsx - normal"));
-      dispatch(getAllDevices(useUuid, "index.jsx - normal"));
-    }
-  }, [useUuid]);
-
-  useEffect(() => {
-    dispatch(getCapacities(blUuids));
-  }, [blUuids]);
-
-  useEffect(() => {
-    if (allDevices.length !== 0) {
-      const generationReal = allDevices.reduce(
-        (total, element) => total + element.generationRealMonth,
-        0
-      );
-      const generationEstimated = allDevices.reduce(
-        (total, element) => total + element.generationEstimatedMonth,
-        0
-      );
-
-      handleGenerationTotalValues({
-        realGenerationTotal: generationReal,
-        estimatedGenerationTotal: generationEstimated,
-        monthEconomyTotal: (generationReal * 0.58).toFixed(2),
-        treesSavedTotal: (generationReal * 0.000504).toFixed(2),
-      });
-
-      setData(allDevices);
-      setRealGenerationValueDataDevices(generationReal);
-      setMonthEconomy((generationReal * 0.58).toFixed(2));
-      setTreesSaved((generationReal * 0.000504).toFixed(2));
-    }
-  }, [allDevices]);
-
-  useEffect(() => {
-    if (bignumbersumValues.somaPorDiaReal !== undefined) {
-      setRealGeneration(
-        bignumbersumValues.somaPorDiaReal[
-          `${moment().format("YYYY-MM-DD")}`
-        ].toFixed(2)
-      );
-      setEstimatedGeneration(
-        bignumbersumValues.somaPorDiaEstimada[
-          `${moment().format("YYYY-MM-DD")}`
-        ].toFixed(2)
-      );
-      let realGeneration = Object.values(bignumbersumValues.somaPorDiaReal)
-        .reduce((total, element) => total + element, 0)
-        .toFixed(2);
-      let estimatedGeneration = Object.values(
-        bignumbersumValues.somaPorDiaEstimada
-      )
-        .reduce((total, element) => total + element, 0)
-        .toFixed(2);
-    }
-
-    let capacityTotal = allDevices.map((data) => {
-      let capacityRealValue = data.capacity;
-      return capacityRealValue;
-    });
-    setCapacityTotal(
-      numbers(
-        capacityTotal
-          .reduce((total, element) => total + element, 0)
-          .toFixed("2"),
-        "KWp"
-      )
-    );
-  }, [dataDevices, bignumbersumValues]);
-
-  useEffect(() => {
-    setPercent(((realGeneration / estimatedGeneration) * 100).toFixed());
-  }, [realGeneration, estimatedGeneration]);
-
-  useEffect(() => {
-    if (graphData.data !== undefined) {
-      let generationRealMonthTemp = Object.values(
-        graphData.data.somaPorDiaReal
-      ).reduce((total, element) => total + element, 0);
-      let realGenerationFiltered = generationRealMonthTemp.toFixed(2);
-
-      let generationEstimatedMonthTemp = Object.values(
-        graphData.data.somaPorDiaEstimada
-      ).reduce((total, element) => total + element, 0);
-      let estimatedGenerationFiltered = generationEstimatedMonthTemp.toFixed(2);
-
-      let percentGenerationFiltered = (
-        (realGenerationFiltered / estimatedGenerationFiltered) *
-        100
-      ).toFixed();
-
-      handleGenerationFilteredValues({
-        realGenerationFiltered,
-        estimatedGenerationFiltered,
-        percentGenerationFiltered,
-      });
-      handleRealGenerationTotal();
-      handleEstimatedGenerationTotal();
-    }
-  }, [graphData]);
-
-  useEffect(() => {
-    let percentValue = (
-      (realGenerationTotal / estimatedGenerationTotal) *
-      100
-    ).toFixed();
-    setPercentTotal(percentValue);
-  }, [realGenerationTotal, estimatedGenerationTotal]);
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
 
-  if (isAllDevicesDataLoading) {
+  if (usersAPIData.isAllDevicesDataLoading) {
     return (
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isAllDevicesDataLoading}
+        open={usersAPIData.isAllDevicesDataLoading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -327,33 +128,34 @@ export default function Dashboard() {
           }}
         >
           <MyUsins
-            realGeneration={realGeneration}
-            estimatedGeneration={estimatedGeneration}
-            percent={percent}
-            allDevices={allDevices}
-            brands={brands}
-            notDefined={notDefined}
-            unactived={unactived}
-            online={online}
-            offline={offline}
-            alerts={alerts}
+            realGenerationLastDay={realGenerationLastDay}
+            estimatedGenerationLastDay={estimatedGenerationLastDay}
+            percentLastDay={percentLastDay}
+            allDevices={usersAPIData.allDevices}
+            brands={usersAPIData.brands}
+            notDefined={usersAPIData.notDefined}
+            unactived={usersAPIData.unactived}
+            online={usersAPIData.online}
+            offline={usersAPIData.offline}
+            alerts={usersAPIData.alerts}
             type={type}
             handleChangeColumns={setType}
           />
           <BigNumbers
-            allDevices={allDevices}
-            notDefined={notDefined}
-            unactived={unactived}
-            offline={offline}
-            capacityTotal={capacity}
-            realGenerationValueDataDevices={realGenerationValueDataDevices}
+            reportsCounting={usersAPIData.reportsCounting}
+            allDevices={usersAPIData.allDevices}
+            notDefined={usersAPIData.notDefined}
+            unactived={usersAPIData.unactived}
+            offline={usersAPIData.offline}
+            capacityTotal={usersAPIData.capacity}
+            realGenerationTotal={realGenerationTotal}
             handleChangeColumns={setType}
-            monthEconomy={monthEconomy}
-            treesSaved={treesSaved}
+            monthEconomyTotal={monthEconomyTotal}
+            treesSavedTotal={treesSavedTotal}
           />
         </Grid>
         <Grid item xs={7} sx={{ height: 620 }}>
-          <LocationUsins />
+          <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
 
         {/*<MyDevices
@@ -410,12 +212,12 @@ export default function Dashboard() {
           optionFilter={optionFilter}
           setOptionFilter={setOptionFilter}
           adminGraphRef={adminGraphRef}
-          realGenerationTotal={realGenerationTotal}
-          estimatedGenerationTotal={estimatedGenerationTotal}
-          percentTotal={percentTotal}
+          realGenerationFiltered={realGenerationFiltered}
+          estimatedGenerationFiltered={estimatedGenerationFiltered}
+          percentGenerationFiltered={percentGenerationFiltered}
           isLoadingReportGeneration={isLoadingReportGeneration}
-          useTypeMember={useTypeMember}
-          handleReportGeneration={handleReportGeneration}
+          useTypeMember={userData.useTypeMember}
+          handleAdminReportGeneration={handleAdminReportGeneration}
         />
         <AlertDevices />
       </Box>
@@ -444,7 +246,7 @@ export default function Dashboard() {
       />*/}
       <Modal
         open={open}
-        onClose={handleReportGeneration}
+        onClose={handleAdminReportGeneration}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
@@ -476,7 +278,9 @@ export default function Dashboard() {
           {action == "assignPlan" ? (
             <MayaWatchPro />
           ) : (
-            <PaymentWarn handleReportGeneration={handleReportGeneration} />
+            <PaymentWarn
+              handleAdminReportGeneration={handleAdminReportGeneration}
+            />
           )}
         </Box>
       </Modal>

@@ -1,20 +1,34 @@
 import { Avatar, Box, Button, Link, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import MUIDataTable from "mui-datatables";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link as LinkRouter } from "react-router-dom";
 import { listBrand } from "src/utils/list-brand";
 import { SendEmail } from "../dashboard/total-month/total-month-components/total-month-devices-components/total-month-send-email";
 import { Info } from "@mui/icons-material";
+import { ReportButton } from "../dashboard/period-data-usins/reportButton";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
-export const Reports = () => {
+export const Reports = ({ setTitle, setDescription }) => {
+  const { handleAdminReportGeneration, isLoadingReportGeneration, userData } =
+    useContext(DashboardContext);
+
   const { allDevices } = useSelector((state) => state.users);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     setData(allDevices);
   }, [allDevices]);
+
+  useEffect(() => {
+    setTitle("Relatórios");
+    setDescription(
+      `Caso queira o relatório relacionado aos valores totais das usinas, 
+      siga o procedicmento do botão "Preparar relatório". No caso de necessitar enviar relatórios por email
+       com valores referentes á uma única planta, siga o procedimento em "Relatório Mensal"`
+    );
+  }, []);
 
   const options = {
     filter: true,
@@ -124,9 +138,19 @@ export const Reports = () => {
   ];
 
   return (
-    <Box sx={{ width: "90vw", height: "70vh", overflow: "scroll" }}>
-      <Box sx={{ height: 200 }}>
-        <MUIDataTable data={data} columns={columns} options={options} />
+    <Box sx={{ width: "90vw", overflow: "scroll" }}>
+      <ReportButton
+        handleAdminReportGeneration={handleAdminReportGeneration}
+        isLoadingReportGeneration={isLoadingReportGeneration}
+        useTypeMember={userData.useTypeMember}
+      />
+      <Box sx={{ height: 300 }}>
+        <MUIDataTable
+          title="Listagem de plantas"
+          data={data}
+          columns={columns}
+          options={options}
+        />
       </Box>
     </Box>
   );

@@ -12,6 +12,7 @@ import { BigNumberDashboard } from "src/components/shared/BigNumber";
 import { numbers } from "src/helpers/utils";
 
 export const BigNumbers = ({
+  reportsCounting,
   allDevices,
   notDefined,
   unactived,
@@ -19,8 +20,8 @@ export const BigNumbers = ({
   capacityTotal,
   realGenerationValueDataDevices,
   handleChangeColumns,
-  monthEconomy,
-  treesSaved,
+  monthEconomyTotal,
+  treesSavedTotal,
 }) => {
   const [perfomanceUsins, setPerfomanceUsins] = useState(0);
 
@@ -34,7 +35,7 @@ export const BigNumbers = ({
         <BigNumberDashboard
           title="Relatórios gerados no mês"
           btn={true}
-          value={`1/${allDevices.length}`}
+          value={`${reportsCounting}/${allDevices.length}`}
           icon={
             <Avatar
               sx={{
@@ -54,7 +55,7 @@ export const BigNumbers = ({
           btn={true}
           type={9}
           handleChangeColumns={handleChangeColumns}
-          value={numbers(monthEconomy, "R$")}
+          value={numbers(monthEconomyTotal, "R$")}
           icon={
             <Avatar
               sx={{
@@ -95,7 +96,7 @@ export const BigNumbers = ({
         <BigNumberDashboard
           title="Árvores salvas no mês"
           btn={true}
-          value={treesSaved}
+          value={treesSavedTotal}
           icon={
             <Avatar
               sx={{

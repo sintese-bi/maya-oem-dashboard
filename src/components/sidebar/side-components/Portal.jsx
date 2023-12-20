@@ -8,14 +8,14 @@ import { getUserCookie } from "src/services/session";
 import { createDevice } from "src/store/actions/devices";
 import { getDashboard, updateBrands } from "src/store/actions/users";
 import { Button, TextField, Box, Typography, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const validateSchema = Yup.object().shape({
   bl_login: Yup.string().required("Campo é obrigatório."),
   bl_password: Yup.string().required("Campo é obrigatório."),
 });
 
-export const Portal = () => {
+export const Portal = ({ setTitle, setDescription }) => {
   const [action, setAction] = useState("createDevice");
   const methods = useForm();
   const { useUuid } = getUserCookie();
@@ -63,6 +63,10 @@ export const Portal = () => {
     }
   }
 
+  useEffect(() => {
+    setTitle("Portal");
+  }, []);
+
   return (
     <FormProvider {...methods}>
       <Box
@@ -76,12 +80,7 @@ export const Portal = () => {
           width: 364,
         }}
       >
-        <Box>
-          <Typography sx={{ fontWeight: "bold" }} variant="h5">
-            {action == "createDevice" ? "Adicionar portal" : "Atualizar portal"}
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", py: 4 }}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField
             sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
             label="Brands"
@@ -146,9 +145,11 @@ export const Portal = () => {
               width: "162px",
             }}
             onClick={() => {
-              action == "createDevice"
-                ? setAction("updateDevice")
-                : setAction("createDevice");
+              if (action == "createDevice") {
+                setAction("updateDevice");
+              } else {
+                setAction("createDevice");
+              }
             }}
           >
             {action == "createDevice" ? "Atualizar portal?" : "Criar portal?"}

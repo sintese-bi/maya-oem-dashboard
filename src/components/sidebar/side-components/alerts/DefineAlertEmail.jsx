@@ -6,6 +6,7 @@ import { SaveAs } from "@mui/icons-material";
 import { getUserCookie } from "src/services/session";
 import { useDispatch } from "react-redux";
 import { portalemailLogins } from "src/store/actions/users";
+import { useEffect } from "react";
 
 const validateSchema = Yup.object().shape({
   email: Yup.string()
@@ -13,7 +14,14 @@ const validateSchema = Yup.object().shape({
     .required("Campo é obrigatório."),
 });
 
-export function DefineAlertEmail({ setCurrentPage, currentPage }) {
+export function DefineAlertEmail({
+  welcome,
+  setCurrentPage,
+  currentPage,
+  setTitle,
+  setDescription,
+  setSecondaryAction,
+}) {
   const { useUuid } = getUserCookie();
   const dispatch = useDispatch();
   const {
@@ -30,11 +38,19 @@ export function DefineAlertEmail({ setCurrentPage, currentPage }) {
 
   async function onSubmit(values) {
     const { email } = values;
-    currentPage < 3 && currentPage >= 0
-      ? setCurrentPage(currentPage + 1)
-      : null;
+
+    if (welcome) {
+      setSecondaryAction("DefineCapacityAndDevicesEmails");
+    } else {
+      setSecondaryAction("AlertsDefineComponent");
+    }
     //dispatch(portalemailLogins({ use_uuid: useUuid, use_email: email }));
   }
+
+  useEffect(() => {
+    setTitle("Definição do email para alertas");
+    setDescription("");
+  }, [currentPage]);
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>

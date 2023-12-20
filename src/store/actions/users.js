@@ -12,6 +12,53 @@ const config = {
   },
 };
 
+export const reportCounting = (params) => (dispatch) => {
+  api
+    .get("/reportcounting", configRequest())
+    .then((res) => {
+      dispatch({
+        type: users.GET_REPORT_COUNTING,
+        result: res.data["Quantidade de relatórios distintos baixados:"],
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
+export const storeReport = (params) => (dispatch) => {
+  api
+    .post("/storereport", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: users.POST_REPORT_COUNTING,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
 // AUTENTICAÇÃO DE USUARIO
 export const auth = (params) => (dispatch) => {
   dispatch({ type: users.AUTH_REQUEST });

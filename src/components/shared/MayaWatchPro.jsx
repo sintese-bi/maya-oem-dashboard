@@ -12,8 +12,17 @@ import {
 } from "@mui/material";
 import { InsertDriveFile, Info } from "@mui/icons-material";
 import { getUserCookie } from "src/services/session";
+import { useEffect } from "react";
 
-export const MayaWatchPro = () => {
+export const MayaWatchPro = ({ setTitle, setDescription }) => {
+  useEffect(() => {
+    setTitle("Maya Watch PRO");
+    setDescription(`A um passo de liberar todas as funcionalidades PRO do nosso software.
+    Tenha relatorios personalizaveis a qualquer hora, configure alertas e
+    tenha suporte continuo do nosso time de monitoramento. Veja os planos
+    disponiveis abaixo.`);
+  }, []);
+
   const { useEmail } = getUserCookie();
   return (
     <Box
@@ -26,17 +35,6 @@ export const MayaWatchPro = () => {
         width: "90vw",
       }}
     >
-      <Box sx={{ width: "90%", mb: 4 }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>
-          Maya Watch PRO
-        </Typography>
-        <Typography variant="body2" sx={{ width: "70%" }}>
-          A um passo de liberar todas as funcionalidades PRO do nosso software.
-          Tenha relatorios personalizaveis a qualquer hora, configure alertas e
-          tenha suporte continuo do nosso time de monitoramento. Veja os planos
-          disponiveis abaixo.
-        </Typography>
-      </Box>
       <Box
         sx={{
           display: "flex",
