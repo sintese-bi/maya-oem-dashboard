@@ -67,8 +67,6 @@ export default function AlertPercentageForm({
 }) {
   const dispatch = useDispatch();
   const userDevicesIsReady = localStorage.getItem("userDevicesIsReady");
-  const [currentPage, setCurrentPage] = useState(0);
-  const [carouselWidth, setCarouselWidth] = useState(512);
 
   const NoDevicesWarning = () => {
     return (
@@ -84,14 +82,6 @@ export default function AlertPercentageForm({
       </Card>
     );
   };
-
-  useEffect(() => {
-    if (currentPage == 2) {
-      setCarouselWidth("92vw");
-    } else {
-      setCarouselWidth(512);
-    }
-  }, [currentPage]);
 
   const CarousselContent = () => {
     switch (secondaryAction) {
@@ -112,29 +102,29 @@ export default function AlertPercentageForm({
             setTitle={setTitle}
             setDescription={setDescription}
             setSecondaryAction={setSecondaryAction}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
           />
         );
 
         break;
       case "DefineCapacityAndDevicesEmails":
-        <DefineCapacityAndDevicesEmails
-          setOpen={setOpen}
-          open={open}
-          setTitle={setTitle}
-          setDescription={setDescription}
-          currentPage={currentPage}
-        />;
+        return (
+          <DefineCapacityAndDevicesEmails
+            setOpen={setOpen}
+            open={open}
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setSecondaryAction={setSecondaryAction}
+          />
+        );
         break;
     }
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       {userDevicesIsReady ? (
         <>
-          <Box sx={{ width: carouselWidth }}>
+          <Box>
             <CarousselContent />
           </Box>
           <Box
@@ -150,7 +140,7 @@ export default function AlertPercentageForm({
               fontSize="small"
               sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
               onClick={() =>
-                currentPage > 0 ? setCurrentPage(currentPage - 1) : null
+                 > 0 ? ( - 1) : null
               }
             />
 
@@ -158,7 +148,7 @@ export default function AlertPercentageForm({
               fontSize="small"
               sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
               onClick={() =>
-                currentPage < 2 ? setCurrentPage(currentPage + 1) : null
+                 < 2 ? ( + 1) : null
               }
             />*/}
           </Box>

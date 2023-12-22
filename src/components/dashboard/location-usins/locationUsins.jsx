@@ -7,6 +7,7 @@ import { Box, Card, Typography } from "@mui/material";
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
+import { numbers } from "src/helpers/utils";
 
 export const LocationUsins = ({ allDevices }) => {
   const [data, setData] = useState([]);
@@ -48,12 +49,11 @@ export const LocationUsins = ({ allDevices }) => {
             <Popup>
               Nome da usina: {data.name}
               <br />
-              Número contrato: informações não disponível
+              Endereço: {data.address}
               <br />
-              Potência instalada: {data.capacity}
+              Potência instalada: {data.capacity + " KWp"}
               <br />
-              Geração atual: {data.generationRealDay}
-              <br />
+              Geração atual: {data.generationRealDay + " KWh"}
               <Box
                 sx={{
                   width: "100%",

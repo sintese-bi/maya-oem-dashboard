@@ -277,6 +277,7 @@ export const Side = ({ sideState, setSideState }) => {
   ];
 
   function handleModalState(actionType) {
+    setSecondaryAction("AlertsDefineComponent");
     if (action == "alertFrequency" && actionType == "assignPlan") {
       setAction(actionType);
       setOpen(true);
@@ -428,7 +429,7 @@ export const Side = ({ sideState, setSideState }) => {
         <Box
           sx={{
             bgcolor: "background.paper",
-            height: "90vh",
+
             pb: 6,
             px: 4,
             display: "flex",
@@ -465,11 +466,9 @@ export const Side = ({ sideState, setSideState }) => {
 
           <Box
             sx={{
+              P: 4,
               width: "100%",
               height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
             }}
           >
             <ModalContent />
