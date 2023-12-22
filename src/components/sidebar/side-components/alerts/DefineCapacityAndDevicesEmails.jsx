@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import location from "src/services/municipios";
 
 import { SaveAs } from "@mui/icons-material";
@@ -12,12 +12,16 @@ import {
 import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import MUIDataTable from "mui-datatables";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
   setTitle,
   setDescription,
+  setSecondaryAction,
 }) {
+  const [deviceChanged, setDeviceChanged] = useState([]);
+  let devices = [];
   var scrolled = false;
   const containerRef = useRef(null);
   const allDevicesFromUserRef = useRef([]);
@@ -35,33 +39,24 @@ export function DefineCapacityAndDevicesEmails({
     (state) => state.users
   );
 
-  function autoComplete(value, index) {
+  function autoComplete(value) {
     const locationFiltered = location.filter((data) =>
       data.ic_city.includes(value)
     );
 
     if (locationFiltered.length == 1) {
-      setValue(
-        `dev_address_${index}`,
-        `${locationFiltered[0].ic_city}-${locationFiltered[0].ic_states}`
-      );
+      return `${locationFiltered[0].ic_city}-${locationFiltered[0].ic_states}`;
+    } else {
+      return value;
     }
   }
 
   async function saveSetupData(values) {
-    let arraydevices = [];
-    data.map((_, index) => {
-      let adress = values[`dev_address_${index}`].split("-");
-      arraydevices.push({
-        dev_name: values[`dev_name_${index}`],
-        dev_uuid: values[`dev_uuid_${index}`],
-        dev_email: values[`dev_email_${index}`],
-        dev_capacity: values[`dev_capacity_${index}`],
-        ic_city: adress[0],
-        ic_states: adress[1],
-        gen_estimated: values[`gen_estimated_${index}`],
-      });
-    });
+    let arraydevices = [...data, devices];
+
+    setTitle("");
+    setDescription("");
+    setSecondaryAction("AlertsDefineComponent");
 
     localStorage.setItem("setupData", JSON.stringify(arraydevices));
     setUserCookie({ ...getUserCookie(), firstTime: false });
@@ -107,34 +102,17 @@ export function DefineCapacityAndDevicesEmails({
     setDescription(`Por favor, define o email e a potência de cada planta. Precisamos desses dados para o envio de alertas MAYA, e
     para cálcularmos valores como a geração estimada da sua usina. Seus
     dados estão seguros conosco!`);
-    containerRef.current?.addEventListener("scroll", handleScroll);
-
-    return () => {
-      containerRef.current?.removeEventListener("scroll", handleScroll);
-    };
   }, []);
 
   useEffect(() => {
+    console.log(data);
     dataRef.current = data;
   }, [data]);
 
   async function onSubmit(values) {
-    let arrayplants = [];
+    let arrayplants = [...data, devices];
 
-    data.map((_, index) => {
-      let adress =
-        values[`dev_address_${index}`] != ""
-          ? values[`dev_address_${index}`].split("-")
-          : "-".split("-");
-      arrayplants.push({
-        dev_uuid: values[`dev_uuid_${index}`],
-        dev_email: values[`dev_email_${index}`],
-        dev_capacity: values[`dev_capacity_${index}`],
-        ic_city: adress[0],
-        ic_states: adress[1],
-        gen_estimated: values[`gen_estimated_${index}`],
-      });
-    });
+    console.log(devices);
 
     localStorage.setItem("setupData", JSON.stringify(arrayplants));
     dispatch(updateEmailAndCapacity({ arrayplants }));
@@ -152,16 +130,115 @@ export function DefineCapacityAndDevicesEmails({
   }, [useUuid]);
 
   useEffect(() => {
+    console.log(allDevicesFromUser);
     allDevicesFromUserRef.current = allDevicesFromUser;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
       setData(setupData);
     } else {
-      setData(
-        allDevicesFromUser.slice(firstIndexRef.current, lastIndexRef.current)
-      );
+      setData(allDevicesFromUser);
     }
   }, [allDevicesFromUser]);
+
+  useEffect(() => {
+    console.log(deviceChanged);
+  }, [deviceChanged]);
+
+  const options = {
+    filter: true,
+    rowsPerPage: allDevicesFromUser.length,
+    filterType: "dropdown",
+    responsive: "simple",
+    selectableRows: "none",
+  };
+
+  const columns = [
+    {
+      name: "dev_uuid",
+      label: "ID do Dispositivos/usuário",
+      options: {
+        display: false,
+        viewColumns: false,
+        filter: true,
+      },
+    },
+    {
+      name: "dev_name",
+      label: "Planta",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "dev_address",
+      label: "Endereço de instalação",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          return (
+            <Box sx={{ width: 324 }}>
+              <TextField
+                type="text"
+                defaultValue={dataTable.rowData[2]}
+                label="Endereço"
+                sx={{ width: "100%" }}
+                onChange={(e) => {
+                  e.target.value = autoComplete(e.target.value);
+                  let fullAddres = autoComplete(e.target.value);
+
+                  let deviceInfo = devices.filter(
+                    (item) => item.dev_uuid === dataTable.rowData[0]
+                  );
+
+                  if (deviceInfo.length != 0) {
+                    deviceInfo[0].dev_address = fullAddres;
+
+                    const indiceObjetoExistente = devices.findIndex(
+                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                    );
+
+                    devices[indiceObjetoExistente] = deviceInfo[0];
+                  } else {
+                    let newDeviceToAdd = data.filter(
+                      (item) => item.dev_uuid === dataTable.rowData[0]
+                    );
+                    newDeviceToAdd[0].dev_address = fullAddres;
+
+                    devices.push(newDeviceToAdd[0]);
+                  }
+                }}
+              />
+            </Box>
+          );
+        },
+      },
+    },
+    {
+      name: "dev_capacity",
+      label: "Potência",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          return (
+            <Box sx={{ width: 72 }}>
+              <TextField
+                type="number"
+                defaultValue={dataTable.rowData[3]}
+                label="Potência"
+                sx={{ width: "100%" }}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                }}
+              />
+            </Box>
+          );
+        },
+      },
+    },
+  ];
 
   return (
     <Box
@@ -177,9 +254,6 @@ export function DefineCapacityAndDevicesEmails({
       <Box
         sx={{
           display: "grid",
-          justifyContent: "space-around",
-          gridTemplateColumns: "repeat(3, 380px)",
-          gap: 3,
           width: "100%",
           height: 282,
           overflow: "auto",
@@ -188,16 +262,12 @@ export function DefineCapacityAndDevicesEmails({
         }}
         ref={containerRef}
       >
-        {data.map((data, index) => (
-          <DeviceItem
-            key={index}
-            data={data}
-            index={index}
-            register={register}
-            autoComplete={autoComplete}
-            setValue={setValue}
-          />
-        ))}
+        <MUIDataTable
+          data={data}
+          columns={columns}
+          options={options}
+          title="Formulário de geração estimada"
+        />
       </Box>
       <Box sx={{ width: "100%", textAlign: "center", py: 1 }}></Box>
 
