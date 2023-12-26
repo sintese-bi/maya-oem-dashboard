@@ -1,4 +1,12 @@
-import { Avatar, Box, Button, Link, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Link,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import MUIDataTable from "mui-datatables";
 import { useContext, useEffect, useState } from "react";
@@ -11,8 +19,12 @@ import { ReportButton } from "../dashboard/period-data-usins/reportButton";
 import { DashboardContext } from "src/contexts/dashboard-context";
 
 export const Reports = ({ setTitle, setDescription }) => {
-  const { handleAdminReportGeneration, isLoadingReportGeneration, userData } =
-    useContext(DashboardContext);
+  const {
+    handleAdminReportGeneration,
+    isLoadingReportGeneration,
+    userData,
+    usersAPIData,
+  } = useContext(DashboardContext);
 
   const { allDevices } = useSelector((state) => state.users);
   const [data, setData] = useState([]);
@@ -137,13 +149,41 @@ export const Reports = ({ setTitle, setDescription }) => {
     },
   ];
 
+  if (data.length == 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress color="success" size={80} />
+        <Typography>Carregando dados</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: "90vw", overflow: "scroll" }}>
-      <ReportButton
-        handleAdminReportGeneration={handleAdminReportGeneration}
-        isLoadingReportGeneration={isLoadingReportGeneration}
-        useTypeMember={userData.useTypeMember}
-      />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="body" sx={{ fontWeight: "bold" }}>
+          Contagem de relatórios:{" "}
+          {`${usersAPIData.reportsCounting}/${usersAPIData.allDevices.length}`}
+        </Typography>
+        <ReportButton
+          handleAdminReportGeneration={handleAdminReportGeneration}
+          isLoadingReportGeneration={isLoadingReportGeneration}
+          useTypeMember={userData.useTypeMember}
+        />
+      </Box>
       <Box sx={{ height: 300 }}>
         <MUIDataTable
           title="Listagem de plantas"

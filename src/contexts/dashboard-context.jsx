@@ -6,6 +6,7 @@ import { getUserCookie } from "src/services/session";
 import { bigNumberSum } from "src/store/actions/devices";
 import {
   getAllDevices,
+  getAllDevicesFromUser,
   getCapacities,
   getDashboard,
   reportCounting,
@@ -119,10 +120,16 @@ export const DashboardProvider = ({ children }) => {
           "index.jsx - normal"
         )
       );
+      dispatch(
+        getAllDevicesFromUser({
+          use_uuid: usersAPIData.selectedUser[0]?.useUuidState,
+        })
+      );
     } else {
       dispatch(bigNumberSum(userData?.useUuid));
       dispatch(getDashboard(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
+      dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
     }
   }, [userData?.useUuid]);
 
