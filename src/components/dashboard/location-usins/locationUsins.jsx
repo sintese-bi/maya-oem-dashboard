@@ -30,8 +30,8 @@ export const LocationUsins = ({ allDevices }) => {
 
   return (
     <MapContainer
-      center={[-19.860098, -43.940933]}
-      zoom={13}
+      center={[-19.9678, -44.1983]}
+      zoom={10}
       scrollWheelZoom={false}
       style={{ height: "100%", width: "100%" }}
     >

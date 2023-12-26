@@ -1,9 +1,16 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import location from "src/services/municipios";
 
 import { SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllDevicesFromUser,
@@ -13,6 +20,7 @@ import { DeviceItem } from "./DeviceItem";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import MUIDataTable from "mui-datatables";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -20,6 +28,7 @@ export function DefineCapacityAndDevicesEmails({
   setDescription,
   setSecondaryAction,
 }) {
+  const { usersAPIData } = useContext(DashboardContext);
   const [deviceChanged, setDeviceChanged] = useState([]);
   let devices = [];
   var scrolled = false;
@@ -112,33 +121,24 @@ export function DefineCapacityAndDevicesEmails({
   async function onSubmit(values) {
     let arrayplants = [...data, devices];
 
-    console.log(devices);
+    setTitle("");
+    setDescription("");
+    setSecondaryAction("AlertsDefineComponent");
 
     localStorage.setItem("setupData", JSON.stringify(arrayplants));
     dispatch(updateEmailAndCapacity({ arrayplants }));
-    //setOpen(false);
+    setOpen(false);
   }
 
   useEffect(() => {
-    if (selectedUser.length != 0) {
-      dispatch(
-        getAllDevicesFromUser({ use_uuid: selectedUser[0]?.useUuidState })
-      );
-    } else {
-      dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
-    }
-  }, [useUuid]);
-
-  useEffect(() => {
-    console.log(allDevicesFromUser);
-    allDevicesFromUserRef.current = allDevicesFromUser;
+    allDevicesFromUserRef.current = usersAPIData.allDevicesFromUser;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
       setData(setupData);
     } else {
-      setData(allDevicesFromUser);
+      setData(usersAPIData.allDevicesFromUser);
     }
-  }, [allDevicesFromUser]);
+  }, [usersAPIData.allDevicesFromUser]);
 
   useEffect(() => {
     console.log(deviceChanged);
@@ -146,7 +146,8 @@ export function DefineCapacityAndDevicesEmails({
 
   const options = {
     filter: true,
-    rowsPerPage: allDevicesFromUser.length,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 50, 100, 200, 300],
     filterType: "dropdown",
     responsive: "simple",
     selectableRows: "none",
@@ -239,6 +240,22 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
   ];
+
+  if (data.length == 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress color="success" size={80} />
+        <Typography>Carregando dados</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box

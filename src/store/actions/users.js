@@ -16,6 +16,7 @@ export const reportCounting = (params) => (dispatch) => {
   api
     .get("/reportcounting", configRequest())
     .then((res) => {
+      console.log(res.data);
       dispatch({
         type: users.GET_REPORT_COUNTING,
         result: res.data["Quantidade de relatórios distintos baixados:"],
@@ -39,7 +40,7 @@ export const storeReport = (params) => (dispatch) => {
     .then((res) => {
       const { data } = res;
 
-      toast.success(data.message, {
+      toast.success("report contado", {
         duration: 5000,
       });
 
