@@ -801,6 +801,8 @@ export const ChartsDashboard = (props) => {
   const labelsTemp = filterPeriod();
   const periodData = filterPeriodData();
 
+  console.log(labelsTemp, periodData);
+
   const data = {
     labels: labelsTemp,
     datasets: [
@@ -972,7 +974,7 @@ export const PieChartMyUsins = (props) => {
   };
 
   return (
-    <Box sx={{ height: "200px", width: "240px" }}>
+    <Box sx={{ height: "172px", width: "172px" }}>
       <Pie data={data} />
     </Box>
   );

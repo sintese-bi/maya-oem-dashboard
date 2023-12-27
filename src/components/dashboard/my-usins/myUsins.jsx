@@ -29,12 +29,10 @@ export const MyUsins = ({
       sx={{
         width: "100%",
         py: 4,
-        px: 4,
-
+        pl: 4,
+        pr: 1,
         display: "flex",
-
         alignItems: "center",
-        flexDirection: "column",
       }}
     >
       <Box
@@ -259,12 +257,12 @@ export const MyUsins = ({
         </Box>
       </Box>
 
-      {/*<PieChartMyUsins
+      <PieChartMyUsins
         notDefined={notDefined}
         unactived={unactived}
         online={online}
         offline={offline}
-          />*/}
+      />
     </Card>
   );
 };
