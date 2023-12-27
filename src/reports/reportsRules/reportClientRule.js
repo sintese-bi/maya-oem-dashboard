@@ -98,7 +98,7 @@ export function reportClientRule(
   reportClient.graph = graphRef?.toBase64Image();
   reportClient.requistionStartDate = startDateReport;
   reportClient.requisitionEndDate = endDateReport;
-  reportClient.capacity = numbers(capacity, "KWp");
+  reportClient.capacity = numbers(capacity.toFixed(2), "KWp");
   reportClient.lowLevel = handleSituationGeneration(reportClient.percent);
   reportClient.address = address;
   reportClient.savedtree = numbers(
