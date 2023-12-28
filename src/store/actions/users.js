@@ -16,7 +16,6 @@ export const reportCounting = (params) => (dispatch) => {
   api
     .get("/reportcounting", configRequest())
     .then((res) => {
-      console.log(res.data);
       dispatch({
         type: users.GET_REPORT_COUNTING,
         result: res.data["Quantidade de relatórios distintos baixados:"],
@@ -251,7 +250,6 @@ export const getUsers = () => (dispatch) => {
     .get("/users", configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({
         type: users.GET_USERS_SUCCESS,
         result: data,
@@ -354,7 +352,6 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
         result: { info: data.result, brands: data.brand },
@@ -381,7 +378,6 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
 
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
@@ -408,7 +404,6 @@ export const updateUser = (params) => (dispatch) => {
     .post("/updateuser", params, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
       const { use_name, use_uuid, use_email, use_city_state, use_telephone } =
         data["Informações"];
       setUserCookie({

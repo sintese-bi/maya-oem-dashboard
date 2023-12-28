@@ -90,10 +90,6 @@ export const Side = ({ sideState, setSideState }) => {
     setWelcome(firstTime);
   }, [firstTime]);
 
-  useEffect(() => {
-    console.log(secondaryAction);
-  }, [secondaryAction]);
-
   const ModalContent = () => {
     switch (action) {
       case "alertFrequency":

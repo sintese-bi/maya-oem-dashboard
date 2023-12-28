@@ -65,7 +65,6 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.AUTH_SUCCESS:
-      console.log(result);
       return {
         ...state,
         loading: false,
@@ -675,7 +674,6 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_ALL_DEVICES_FROM_USER_SUCCESS:
-      console.log(result);
       return {
         ...state,
         allDevicesFromUser: result,

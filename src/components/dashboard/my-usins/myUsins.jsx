@@ -208,7 +208,7 @@ export const MyUsins = ({
             Inativo: {unactived.length}
             <Block
               fontSize="small"
-              sx={{ ml: 2, color: "rgba(75, 192, 192, 1)" }}
+              sx={{ ml: 2, color: "rgba(60, 179, 113, 1)" }}
             />
           </Typography>
           <Typography
