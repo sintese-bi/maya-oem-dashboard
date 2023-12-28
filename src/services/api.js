@@ -3,7 +3,7 @@ import { getUserCookie } from "./session";
 
 // CRIAÇÃO DA INSTANCIA DO AXIOS
 const api = axios.create({
-  aseURL: `https://app.mayaoem.com.br/v1`,
+  baseURL: `https://app.mayaoem.com.br/v1`,
   //baseURL: `http://localhost:8080/v1`,
 });
 
