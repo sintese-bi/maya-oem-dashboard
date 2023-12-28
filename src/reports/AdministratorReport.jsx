@@ -262,8 +262,6 @@ export const AdministratorReport = () => {
     }
   }
 
-  console.log(labelsTemp, periodData);
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>

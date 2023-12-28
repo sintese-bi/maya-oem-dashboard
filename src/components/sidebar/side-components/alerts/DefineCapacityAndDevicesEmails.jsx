@@ -114,7 +114,6 @@ export function DefineCapacityAndDevicesEmails({
   }, []);
 
   useEffect(() => {
-    console.log(data);
     dataRef.current = data;
   }, [data]);
 
@@ -231,7 +230,28 @@ export function DefineCapacityAndDevicesEmails({
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
-                  console.log(e.target.value);
+                  let capacity = e.target.value;
+
+                  let deviceInfo = devices.filter(
+                    (item) => item.dev_uuid === dataTable.rowData[0]
+                  );
+
+                  if (deviceInfo.length != 0) {
+                    deviceInfo[0].dev_capacity = capacity;
+
+                    const indiceObjetoExistente = devices.findIndex(
+                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                    );
+
+                    devices[indiceObjetoExistente] = deviceInfo[0];
+                  } else {
+                    let newDeviceToAdd = data.filter(
+                      (item) => item.dev_uuid === dataTable.rowData[0]
+                    );
+                    newDeviceToAdd[0].dev_capacity = capacity;
+
+                    devices.push(newDeviceToAdd[0]);
+                  }
                 }}
               />
             </Box>

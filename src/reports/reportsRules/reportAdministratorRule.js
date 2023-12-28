@@ -38,8 +38,6 @@ export function reportAdministratorRule(
     return generationRealValue;
   });
 
-  console.log(graphData);
-
   reportAdministrator.graphData["realGeneration"] =
     graphData.data.somaPorDiaReal;
 

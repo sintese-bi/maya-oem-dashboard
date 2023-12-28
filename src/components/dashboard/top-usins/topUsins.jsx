@@ -356,7 +356,6 @@ export const TopUsins = ({ dataDevices, ref, type, title }) => {
   ];
 
   useEffect(() => {
-    console.log(dataDevices);
     setData(
       dataDevices
         .sort((a, b) => b.generationRealMonth - a.generationRealMonth)

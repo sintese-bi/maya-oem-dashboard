@@ -139,7 +139,6 @@ export const getDevicesAlerts = (devicesWithAlerts) => (dispatch) => {
       .get(`/alerts/${data.uuid}`, configRequest())
       .then((res) => {
         const { data } = res;
-        console.log(data);
         dispatch({
           type: devices.GET_DEVICES_ALERTS_SUCCESS,
           result: data.length !== 0 ? data[0] : [],

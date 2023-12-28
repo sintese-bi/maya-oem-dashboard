@@ -53,10 +53,6 @@ export const DashboardProvider = ({ children }) => {
   // dados do usuário vindo to cookies do site
   const userData = getUserCookie();
 
-  useEffect(() => {
-    console.log(userData?.useUuid);
-  }, []);
-
   // dados da API
   const dispatch = useDispatch();
   const usersAPIData = useSelector((state) => state.users);
@@ -67,7 +63,6 @@ export const DashboardProvider = ({ children }) => {
     setMonthEconomyTotal(props.monthEconomyTotal);
     setTreesSavedTotal(props.treesSavedTotal);
 
-    console.log(props);
   }
 
   function handleGenerationLastDayValues(props) {
@@ -75,7 +70,6 @@ export const DashboardProvider = ({ children }) => {
     setEstimatedGenerationLastDay(props.estimatedGenerationLastDay);
     setPercentLastDay(props.percentLastDay);
 
-    console.log(props);
   }
 
   function handleGenerationFilteredValues(props) {
@@ -83,7 +77,6 @@ export const DashboardProvider = ({ children }) => {
     SetEstimatedGenerationFiltered(props.estimatedGenerationFiltered);
     SetPercentGenerationFiltered(props.percentGenerationFiltered);
 
-    console.log(props);
   }
 
   function handleAdminReportGeneration(props) {

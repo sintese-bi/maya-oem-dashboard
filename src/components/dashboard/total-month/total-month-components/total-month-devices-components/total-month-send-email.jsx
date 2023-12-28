@@ -26,6 +26,7 @@ import {
   View,
   StyleSheet,
   Image,
+  PDFDownloadLink,
 } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
 import { Cancel, Email } from "@mui/icons-material";
@@ -42,6 +43,11 @@ import {
 import { getUserCookie } from "src/services/session";
 import { ClientReport } from "src/reports/ClientReport";
 import { storeReport } from "src/store/actions/users";
+import {
+  reportDevice,
+  reportDeviceRule,
+} from "src/reports/reportsRules/reportDeviceRule";
+import { DeviceReport } from "src/reports/DeviceReport";
 
 const styles = StyleSheet.create({
   pdfViewer: {
@@ -210,12 +216,11 @@ export const SendEmail = ({
       devicesGeneration.realGeneration.length != 0 &&
       devicesGeneration.estimatedGeneration.length != 0
     ) {
-      reportClientRule(
+      reportDeviceRule(
         devicesGeneration,
         useNameState,
         capacity,
         setIsLoadingReport,
-        opa,
         startDateTemp,
         endDateTemp,
         address,
@@ -761,76 +766,6 @@ export const SendEmail = ({
   const [isLoadingReport, setIsLoadingReport] = useState(true);
   const [fileIsReadyToPreview, setFileIsReadyToPreview] = useState(false);
 
-  function createChart() {
-    // Crie um elemento canvas para o gráfico
-    const canvas = document.createElement("canvas");
-
-    // Configure o ID do container para o elemento canvas
-    canvas.id = "acquisitions";
-
-    // Adicione o elemento canvas ao container desejado na sua página HTML
-    document.getElementById("acquisitions").appendChild(canvas);
-    document.getElementById("acquisitions").style.height = "420px";
-    // Crie o gráfico usando Chart.js
-    const ctx = canvas.getContext("2d");
-    const chart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: devicesGeneration?.realGeneration?.map((data) =>
-          moment(data.date, "MM/DD/YYYY").format("DD/MM")
-        ),
-        datasets: [
-          {
-            label: "Geração Real",
-            data: devicesGeneration.realGeneration?.map((data) =>
-              Number(data.value)
-            ),
-            barThickness: 8,
-            borderRadius: 2,
-            categoryPercentage: 0.5,
-            maxBarThickness: 8,
-            backgroundColor: "#6CE5E8",
-          },
-          {
-            label: "Geração Estimada",
-            barThickness: 3,
-            data: devicesGeneration.estimatedGeneration?.map((data) => data),
-            borderColor: "#14B8A6",
-            backgroundColor: "#14B8A6",
-            type: "line",
-            borderWidth: 0.4,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            grid: {
-              display: false,
-            },
-            beginAtZero: true,
-            ticks: {
-              font: { size: 8 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
-            },
-          },
-          x: {
-            grid: {
-              display: false,
-            },
-            beginAtZero: true,
-            ticks: {
-              font: { size: 6 }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
-            },
-          },
-        },
-      },
-    });
-
-    setIsLoadingGraph(false);
-    setOpa(chart);
-    document.getElementById("acquisitions").style.display = "none";
-  }
-
   async function onSubmit(values) {
     const { email } = values;
     try {
@@ -893,81 +828,38 @@ export const SendEmail = ({
             Caro usuário, siga os passos seguintes para finalizar o envio do
             email !
           </Typography>
-          <Box sx={{ width: "100%", mb: 2 }}>
-            <Typography variant="body2" sx={{ mb: 2 }}>
-              Aguarde a geração do preview do relatório
-            </Typography>
-            {fileIsReadyToPreview ? (
-              <PDFViewer style={{ width: "100%", height: 420 }}>
-                <MyDocPreview />
-              </PDFViewer>
-            ) : null}
-          </Box>
-          <div>
-            <div id="acquisitions"></div>
-          </div>
-          <BlobProvider document={MyDoc}>
-            {({ blob, url, loading, error }) => {
-              return (
-                <>
-                  {emailIsUpdated ? (
-                    isLoadingGraph ? (
-                      <Button variant="contained" onClick={() => createChart()}>
-                        Gerar gráfico
-                      </Button>
-                    ) : isLoadingReport ? (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          setFileIsReadyToPreview(true);
-                          handleReportGeneration();
-                        }}
-                      >
-                        Preparar para envio
-                      </Button>
-                    ) : (
-                      <Button
-                        disabled={loading}
-                        variant="contained"
-                        onClick={() => {
-                          var reader = new FileReader();
-                          reader.addEventListener("loadend", () => {
-                            handleDeleteDevice(reader.result);
-                          });
-                          reader.readAsDataURL(blob);
-                        }}
-                      >
-                        {loading ? "Finalizando" : "Enviar email"}
-                      </Button>
-                    )
-                  ) : (
-                    <FormProvider {...methods}>
-                      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-                        <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
-                          {email
-                            ? `Por favor, digite o email que deseja enviar o relatório.`
-                            : `Não encontramos nenhum email registrado, por favor, registre uma novo email.`}
-                        </Typography>
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          <TextField
-                            defaultValue={email}
-                            margin="normal"
-                            label="Novo email"
-                            {...register("email")}
-                            error={!!errors.deviceLogin}
-                            helperText={errors.deviceLogin?.message}
-                          />
-                          <Button type="submit" variant="contained">
-                            {email ? `Atualizar email` : "Registrar email"}
-                          </Button>
-                        </Box>
-                      </Box>
-                    </FormProvider>
-                  )}
-                </>
-              );
-            }}
-          </BlobProvider>
+
+          {!fileIsReadyToPreview ? (
+            <Button
+              variant="contained"
+              onClick={() => {
+                setFileIsReadyToPreview(true);
+                handleReportGeneration();
+              }}
+            >
+              Preparar relatório
+            </Button>
+          ) : (
+            <BlobProvider document={DeviceReport()}>
+              {({ blob, url, loading, error }) => {
+                // Do whatever you need with blob here
+                return (
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      var reader = new FileReader();
+                      reader.addEventListener("loadend", () => {
+                        handleDeleteDevice(reader.result);
+                      });
+                      reader.readAsDataURL(blob);
+                    }}
+                  >
+                    Enviar relatório
+                  </Button>
+                );
+              }}
+            </BlobProvider>
+          )}
         </Box>
       </Modal>
     </>

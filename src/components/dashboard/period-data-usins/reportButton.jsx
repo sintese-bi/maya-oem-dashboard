@@ -98,15 +98,17 @@ export const ReportButton = ({
         }}
         open={open}
       >
-        <ReportButtonCarousel
-          open={open}
-          setOpen={setOpen}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-          handleUploadLogo={handleUploadLogo}
-        />
+        <>
+          <ReportButtonCarousel
+            open={open}
+            setOpen={setOpen}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+            handleUploadLogo={handleUploadLogo}
+          />
+        </>
       </Modal>
     </Box>
   );

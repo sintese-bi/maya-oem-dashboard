@@ -131,7 +131,6 @@ export const generalReport = (use_uuid) => (dispatch) => {
     .post("/generalreport", use_uuid, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({
         type: generation.GET_GENERAL_REPORT_SUCCESS,
         result: data,
