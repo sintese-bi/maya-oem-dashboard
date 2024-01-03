@@ -83,7 +83,10 @@ export const MyUsins = ({
               opacity: 0.6,
             }}
           >
-            Total produzido: {numbers(realGenerationLastDay, "KWh")}
+            Total produzido:
+            {realGenerationLastDay != 0
+              ? numbers(realGenerationLastDay, "KWh")
+              : realGenerationLastDay + "KWh"}
             <Bolt fontSize="small" sx={{ ml: 2 }} />
           </Typography>
           <Typography
@@ -95,7 +98,10 @@ export const MyUsins = ({
               opacity: 0.6,
             }}
           >
-            Total esperado: {numbers(estimatedGenerationLastDay, "KWh")}
+            Total esperado:
+            {estimatedGenerationLastDay != 0
+              ? numbers(estimatedGenerationLastDay, "KWh")
+              : estimatedGenerationLastDay + "KWh"}
             <Bolt fontSize="small" sx={{ ml: 2 }} />
           </Typography>
           <Typography

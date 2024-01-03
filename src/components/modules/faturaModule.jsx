@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { getUserCookie } from "src/services/session";
 
 import { createDevice } from "src/store/actions/devices";
-import { getDashboard, updateBrands } from "src/store/actions/users";
+import { getDashboard, invoice, updateBrands } from "src/store/actions/users";
 import {
   Button,
   TextField,
@@ -20,12 +20,14 @@ import { useEffect, useState } from "react";
 import { concessionaries } from "src/utils/concessionaries";
 
 const validateSchema = Yup.object().shape({
-  bl_login: Yup.string().required("Campo é obrigatório."),
-  bl_password: Yup.string().required("Campo é obrigatório."),
+  voice_login: Yup.string().required("Campo é obrigatório."),
+  voice_password: Yup.string().required("Campo é obrigatório."),
+  voice_client: Yup.string().required("Campo é obrigatório."),
+  voice_install: Yup.string().required("Campo é obrigatório."),
 });
 
 export const FaturaModulo = ({ setTitle, setDescription }) => {
-  const [action, setAction] = useState("createDevice");
+  const [acceptState, setAcceptState] = useState(true);
   const methods = useForm();
   const { useUuid } = getUserCookie();
   const dispatch = useDispatch();
@@ -40,32 +42,24 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
   });
 
   async function onSubmit(values) {
-    const { bl_login, bl_password, bl_name, bl_url } = values;
-    console.log(values);
+    const {
+      voice_login,
+      voice_password,
+      voice_install,
+      voice_client,
+      voice_company,
+    } = values;
     try {
-      if (action == "createDevice") {
-        dispatch(
-          createDevice({
-            bl_login,
-            bl_password,
-            bl_name,
-            use_uuid: useUuid,
-            bl_url,
-          })
-        );
-      } else {
-        dispatch(
-          updateBrands({
-            bl_login,
-            bl_password,
-            bl_name,
-            use_uuid: useUuid,
-            bl_url,
-          })
-        );
-      }
-
-      dispatch(getDashboard(useUuid, "create-devices.jsx"));
+      dispatch(
+        invoice({
+          use_uuid: useUuid,
+          voice_login,
+          voice_password,
+          voice_install,
+          voice_client,
+          voice_company,
+        })
+      );
     } catch (error) {
       alert(error);
     }
@@ -102,7 +96,7 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
             <TextField
               sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
               label="Concessionária"
-              {...register("concessionary_name")}
+              {...register("voice_company")}
               select
               defaultValue="Cemig"
               variant="standard"
@@ -122,36 +116,41 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
             <TextField
               margin="normal"
               label="Número de instalação"
-              {...register("number_instalation")}
-              error={!!errors.number_instalation}
-              helperText={errors.number_instalation?.message}
+              {...register("voice_install")}
+              error={!!errors.voice_install}
+              helperText={errors.voice_install?.message}
             />
             <TextField
               margin="normal"
               label="Número do cliente"
-              {...register("client_phone")}
-              error={!!errors.client_phone}
-              helperText={errors.client_phone?.message}
+              {...register("voice_client")}
+              error={!!errors.voice_client}
+              helperText={errors.voice_client?.message}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", width: 320 }}>
             <TextField
               margin="normal"
               label="Login"
-              {...register("login")}
-              error={!!errors.login}
-              helperText={errors.login?.message}
+              {...register("voice_login")}
+              error={!!errors.voice_login}
+              helperText={errors.voice_login?.message}
             />
             <TextField
               margin="normal"
               label="Senha"
               type="password"
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
+              {...register("voice_password")}
+              error={!!errors.voice_password}
+              helperText={errors.voice_password?.message}
             />
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={
+                <Checkbox
+                  defaultChecked
+                  onChange={(event) => setAcceptState(event.target.checked)}
+                />
+              }
               label="Termo de aceite"
             />
           </Box>
@@ -159,6 +158,7 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
 
         <Box>
           <Button
+            disabled={!acceptState}
             sx={{
               width: "162px",
             }}
@@ -166,18 +166,6 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
             variant="contained"
           >
             Confirmar
-          </Button>
-          <Button
-            sx={{
-              width: "162px",
-            }}
-            onClick={() => {
-              action == "createDevice"
-                ? setAction("updateDevice")
-                : setAction("createDevice");
-            }}
-          >
-            {action == "createDevice" ? "Atualizar portal?" : "Criar portal?"}
           </Button>
         </Box>
       </Box>

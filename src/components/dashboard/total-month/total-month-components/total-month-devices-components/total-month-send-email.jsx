@@ -211,7 +211,7 @@ export const SendEmail = ({
   function handleReportGeneration() {
     let startDateTemp = moment(startDate).format("DD/MM/YYYY");
     let endDateTemp = moment(endDate).format("DD/MM/YYYY");
-
+    console.log(devicesGeneration);
     if (
       devicesGeneration.realGeneration.length != 0 &&
       devicesGeneration.estimatedGeneration.length != 0
@@ -268,486 +268,6 @@ export const SendEmail = ({
   useEffect(() => {
     dispatch(getCapacities(devUuidState));
   }, [devUuidState]);
-
-  const MyDoc = (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.main}>
-          <View style={styles.header}>
-            <View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <View style={{ marginRight: "22px" }}>
-                  <Text style={styles.generationDateText}>Data de geração</Text>
-                  <Text style={styles.generationDateValue}>
-                    {reportClient.date.getDate() < 10 ? "0" : ""}
-                    {reportClient.date.getDate()}/
-                    {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
-                    {reportClient.date.getMonth() + 1}/
-                    {reportClient.date.getFullYear()}
-                  </Text>
-                </View>
-                <View style={styles.generationDate}>
-                  <Text style={styles.generationDateText}>
-                    Data de aquisição dos dados
-                  </Text>
-                  <Text style={styles.generationDateValue}>
-                    {reportClient.requistionStartDate} -
-                    {reportClient.requisitionEndDate}
-                  </Text>
-                </View>
-              </View>
-              <View>
-                <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
-                  End. de instalação: {reportClient.address}
-                </Text>
-                <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
-                  Planta: {reportClient.deviceName}
-                </Text>
-              </View>
-              <View>
-                <Text style={{ fontSize: "18px", marginRight: "20px" }}>
-                  Cliente: {reportClient.useName}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.logo}>
-              <Image
-                style={{ width: "160px", height: "62px" }}
-                src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
-              ></Image>
-            </View>
-          </View>
-          <View
-            style={{
-              width: "100vw",
-              backgroundColor: "white",
-              padding: "20px",
-              marginBottom: "20px",
-              marginTop: "10px",
-              borderRadius: "10px",
-              opacity: 0.9,
-            }}
-          >
-            <Text
-              style={{
-                marginBottom: "16px",
-                marginLeft: "16px",
-                fontWeight: "heavy",
-                fontSize: "12px",
-              }}
-            >
-              Comparação da geração real e estimada
-            </Text>
-            <Image
-              style={{
-                width: "100%",
-                height: "220px",
-              }}
-              src={`${
-                reportClient.graph
-                  ? reportClient.graph
-                  : `https://ucarecdn.com/
-            258f82dc-bf80-4b30-a4be-bcea7118f14a/
-            -/preview/500x500/
-            -/quality/smart_retina/
-            -/format/auto/`
-              }`}
-            ></Image>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "200px",
-              width: "600px",
-              position: "absolute",
-              top: "192px",
-              zIndex: 2,
-            }}
-          >
-            <Image
-              style={{ height: "100%", width: "80%" }}
-              src="https://ucarecdn.com/4e2bca57-c558-47ca-b01e-c0a62ca8d23a/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
-            ></Image>
-          </View>
-          <View style={styles.cardsRow}>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>MARCA</Text>
-                <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-                  {reportClient.brand}
-                </Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>POTÊNCIA</Text>
-                <Text style={styles.cardNumber}>{reportClient.capacity}</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-                <Text style={styles.cardText}>{reportClient.lowLevel}</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-              ></Image>
-            </View>
-          </View>
-          <View style={styles.cardsRow}>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-                <Text style={styles.cardNumber}>
-                  {reportClient.realGenerationTotal}
-                </Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-                <Text style={styles.cardNumber}>
-                  {reportClient.estimatedGenerationTotal}
-                </Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>PERCENTUAL</Text>
-                <Text style={styles.cardNumber}>{reportClient.percent} %</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-              ></Image>
-            </View>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "69%",
-              justifyContent: "space-around",
-              marginVertical: "8px",
-            }}
-          >
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>
-                  ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
-                </Text>
-                <Text style={styles.cardNumber}>{reportClient.savedtree}</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.cardLabel}>
-                  EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
-                </Text>
-                <Text style={styles.cardNumber}>{reportClient.carbon}</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-          </View>
-          <View
-            style={{
-              width: "80%",
-              backgroundColor: "#D9D9D9",
-              paddingVertical: "24px",
-              paddingHorizontal: "12px",
-              marginBottom: "10px",
-              marginTop: "10px",
-              borderRadius: "10px",
-            }}
-          >
-            <Text style={{ fontSize: "12px" }}>{reportClient.situation}</Text>
-          </View>
-          <View style={styles.madeBy}>
-            <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
-            <Image
-              style={{ width: "60px", height: "24px" }}
-              src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
-            ></Image>
-          </View>
-        </View>
-      </Page>
-    </Document>
-  );
-
-  const MyDocPreview = () => {
-    return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.main}>
-            <View style={styles.header}>
-              <View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <View style={{ marginRight: "22px" }}>
-                    <Text style={styles.generationDateText}>
-                      Data de geração
-                    </Text>
-                    <Text style={styles.generationDateValue}>
-                      {reportClient.date.getDate() < 10 ? "0" : ""}
-                      {reportClient.date.getDate()}/
-                      {reportClient.date.getMonth() + 1 < 10 ? "0" : ""}
-                      {reportClient.date.getMonth() + 1}/
-                      {reportClient.date.getFullYear()}
-                    </Text>
-                  </View>
-                  <View style={styles.generationDate}>
-                    <Text style={styles.generationDateText}>
-                      Data de aquisição dos dados
-                    </Text>
-                    <Text style={styles.generationDateValue}>
-                      {reportClient.requistionStartDate} -
-                      {reportClient.requisitionEndDate}
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
-                    End. de instalação: {reportClient.address}
-                  </Text>
-                  <Text style={{ fontSize: "8px", marginBottom: "10px" }}>
-                    Planta: {reportClient.deviceName}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={{ fontSize: "18px", marginRight: "20px" }}>
-                    Cliente: {reportClient.useName}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.logo}>
-                <Image
-                  style={{ width: "160px", height: "62px" }}
-                  src="https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                width: "100vw",
-                backgroundColor: "white",
-                padding: "20px",
-                marginBottom: "20px",
-                marginTop: "10px",
-                borderRadius: "10px",
-                opacity: 0.9,
-              }}
-            >
-              <Text
-                style={{
-                  marginBottom: "16px",
-                  marginLeft: "16px",
-                  fontWeight: "heavy",
-                  fontSize: "12px",
-                }}
-              >
-                Comparação da geração real e estimada
-              </Text>
-              <Image
-                style={{
-                  width: "100%",
-                  height: "220px",
-                }}
-                src={`${
-                  reportClient.graph
-                    ? reportClient.graph
-                    : `https://ucarecdn.com/
-              258f82dc-bf80-4b30-a4be-bcea7118f14a/
-              -/preview/500x500/
-              -/quality/smart_retina/
-              -/format/auto/`
-                }`}
-              ></Image>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "200px",
-                width: "600px",
-                position: "absolute",
-                top: "192px",
-                zIndex: 2,
-              }}
-            >
-              <Image
-                style={{ height: "100%", width: "80%" }}
-                src="https://ucarecdn.com/4e2bca57-c558-47ca-b01e-c0a62ca8d23a/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
-              ></Image>
-            </View>
-            <View style={styles.cardsRow}>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>MARCA</Text>
-                  <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-                    {reportClient.brand}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>POTÊNCIA</Text>
-                  <Text style={styles.cardNumber}>{reportClient.capacity}</Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>NÍVEL DE GERAÇÃO</Text>
-                  <Text style={styles.cardText}>{reportClient.lowLevel}</Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-                ></Image>
-              </View>
-            </View>
-            <View style={styles.cardsRow}>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL REAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportClient.realGenerationTotal}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>GERAÇÃO TOTAL ESTIMADA</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportClient.estimatedGenerationTotal}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>PERCENTUAL</Text>
-                  <Text style={styles.cardNumber}>
-                    {reportClient.percent} %
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/"
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "69%",
-                justifyContent: "space-around",
-                marginVertical: "8px",
-              }}
-            >
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
-                  </Text>
-                  <Text style={styles.cardNumber}>
-                    {reportClient.savedtree}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
-                  </Text>
-                  <Text style={styles.cardNumber}>{reportClient.carbon}</Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                width: "80%",
-                backgroundColor: "#D9D9D9",
-                paddingVertical: "24px",
-                paddingHorizontal: "12px",
-                marginBottom: "10px",
-                marginTop: "10px",
-                borderRadius: "10px",
-              }}
-            >
-              <Text style={{ fontSize: "12px" }}>{reportClient.situation}</Text>
-            </View>
-            <View style={styles.madeBy}>
-              <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A </Text>
-              <Image
-                style={{ width: "60px", height: "24px" }}
-                src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
-              ></Image>
-            </View>
-          </View>
-        </Page>
-      </Document>
-    );
-  };
 
   const {
     register,
@@ -807,60 +327,76 @@ export const SendEmail = ({
         aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box
-          sx={{ bgcolor: "background.paper", px: 4, pb: 4, borderRadius: 1 }}
-        >
+        {devicesGeneration?.realGeneration?.length != 0 &&
+        devicesGeneration?.estimatedGeneration?.length != 0 ? (
           <Box
-            sx={{
-              display: "flex",
-              justifyContent: "end",
-              width: "100%",
-              py: 4,
-            }}
+            sx={{ bgcolor: "background.paper", px: 4, pb: 4, borderRadius: 1 }}
           >
-            <Cancel
-              fontSize="large"
-              onClick={() => setOpen(!open)}
-              sx={{ cursor: "pointer" }}
-            />
-          </Box>
-          <Typography sx={{ width: "100%", mb: 4 }}>
-            Caro usuário, siga os passos seguintes para finalizar o envio do
-            email !
-          </Typography>
-
-          {!fileIsReadyToPreview ? (
-            <Button
-              variant="contained"
-              onClick={() => {
-                setFileIsReadyToPreview(true);
-                handleReportGeneration();
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                width: "100%",
+                py: 4,
               }}
             >
-              Preparar relatório
-            </Button>
-          ) : (
-            <BlobProvider document={DeviceReport()}>
-              {({ blob, url, loading, error }) => {
-                // Do whatever you need with blob here
-                return (
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      var reader = new FileReader();
-                      reader.addEventListener("loadend", () => {
-                        handleDeleteDevice(reader.result);
-                      });
-                      reader.readAsDataURL(blob);
-                    }}
-                  >
-                    Enviar relatório
-                  </Button>
-                );
-              }}
-            </BlobProvider>
-          )}
-        </Box>
+              <Cancel
+                fontSize="large"
+                onClick={() => setOpen(!open)}
+                sx={{ cursor: "pointer" }}
+              />
+            </Box>
+            <Typography sx={{ width: "100%", mb: 4 }}>
+              Caro usuário, siga os passos seguintes para finalizar o envio do
+              email !
+            </Typography>
+
+            {devicesGeneration?.realGeneration?.length != 0 &&
+            devicesGeneration?.estimatedGeneration?.length != 0 ? (
+              !fileIsReadyToPreview ? (
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setFileIsReadyToPreview(true);
+                    handleReportGeneration();
+                  }}
+                >
+                  Preparar relatório
+                </Button>
+              ) : (
+                <BlobProvider document={DeviceReport()}>
+                  {({ blob, url, loading, error }) => {
+                    // Do whatever you need with blob here
+                    return (
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          var reader = new FileReader();
+                          reader.addEventListener("loadend", () => {
+                            handleDeleteDevice(reader.result);
+                          });
+                          reader.readAsDataURL(blob);
+                        }}
+                      >
+                        Enviar relatório
+                      </Button>
+                    );
+                  }}
+                </BlobProvider>
+              )
+            ) : (
+              "não há dados de geração"
+            )}
+          </Box>
+        ) : (
+          <Box
+            sx={{ bgcolor: "background.paper", px: 4, py: 6, borderRadius: 1 }}
+          >
+            <Typography variant="h5">
+              Não há dados de geração disponível
+            </Typography>
+          </Box>
+        )}
       </Modal>
     </>
   );

@@ -182,7 +182,7 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingDevicesGeneration: false,
         devicesGeneration:
-          deviceData.length !== 0
+          deviceData[0].generation.length !== 0
             ? Object.assign(
                 handlesGeneration(deviceData[0], type, day, label),
                 { deviceName: deviceName }

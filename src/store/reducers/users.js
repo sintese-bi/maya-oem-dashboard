@@ -685,6 +685,15 @@ export default function userReducer(state = initialState, action) {
         allDevicesFromUser: [],
       };
 
+    case users.INVOICE_USER_REQUEST:
+      return { ...state };
+
+    case users.INVOICE_USER_SUCCESS:
+      return { ...state };
+
+    case users.INVOICE_USER_FAILURE:
+      return { ...state };
+
     case users.UPDATE_EMAIL_CAPACITY_DEVICE:
       return {
         ...state,

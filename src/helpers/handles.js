@@ -4,7 +4,9 @@ import { sunArrayPercentage } from "./utils";
 
 // ESTRUTURANDO DADOS PARA O GRAFICO DE PROJETADA VS REAL (Kwh)
 export const handlesGeneration = (data, type, day, label) => {
-  const estimated = data.generation[0]?.gen_estimated ? data.generation[0]?.gen_estimated : 0;
+  const estimated = data.generation[0]?.gen_estimated
+    ? data.generation[0]?.gen_estimated
+    : 0;
 
   const realGeneration = Array(day).fill(0);
   const estimatedGeneration = Array(day).fill(estimated);
@@ -26,28 +28,39 @@ export const handlesGeneration = (data, type, day, label) => {
     data.generation.map((gen) => {
       label.filter((day, index) => {
         let dayBooleano =
-          moment(gen.gen_date).format("DD") + "/" + moment(gen.gen_date).format("MM") === day ? true : false;
+          moment(gen.gen_date).format("DD") +
+            "/" +
+            moment(gen.gen_date).format("MM") ===
+          day
+            ? true
+            : false;
 
         if (dayBooleano)
           realGeneration[index] = gen.gen_real
-            ? { value: parseFloat(gen.gen_real).toFixed(2), date: moment(gen.gen_date).format("MM/DD/YYYY") }
+            ? {
+                value: parseFloat(gen.gen_real).toFixed(2),
+                date: moment(gen.gen_date).format("MM/DD/YYYY"),
+              }
             : { value: 0, date: moment(gen.gen_date).format("MM/DD/YYYY") };
         // realGeneration[index] = parseFloat(gen.gen_real / 1000).toFixed(2); // FOI DUVIDIDO POR 1000 POR CAUSA DA MARCA FRONUIS
       });
     });
   } else {
     label.filter((data, index) => {
-      let sunGenReal = { value: 0, date: '' };
+      let sunGenReal = { value: 0, date: "" };
       data.generation.map((gen) => {
         let mothBooleano =
-          moment(gen.gen_date).format("MM") + "/" + moment(gen.gen_date).format("YYYY") === data
+          moment(gen.gen_date).format("MM") +
+            "/" +
+            moment(gen.gen_date).format("YYYY") ===
+          data
             ? true
             : false;
 
         if (mothBooleano) {
           sunGenReal.value = gen.gen_real + sunGenReal.value;
-          sunGenReal.date = moment(gen.gen_date).format("DD/MM/YYYY")
-        };
+          sunGenReal.date = moment(gen.gen_date).format("DD/MM/YYYY");
+        }
       });
       realGeneration[index] = sunGenReal;
       // realGeneration[index] = parseFloat(sunGenReal / 1000).toFixed(2); // FOI DUVIDIDO POR 1000 POR CAUSA DA MARCA FRONUIS
@@ -58,7 +71,7 @@ export const handlesGeneration = (data, type, day, label) => {
     return parseFloat(soma) + parseFloat(i.value);
   });
 
-  let realGenerationValues = realGeneration.map((data) => data.value)
+  let realGenerationValues = realGeneration.map((data) => data.value);
 
   const generationPercentage = sunArrayPercentage(
     realGenerationValues,

@@ -128,6 +128,8 @@ export default function Dashboard() {
           }}
         >
           <MyUsins
+            realGenerationTotal={realGenerationTotal}
+            estimatedGenerationTotal={estimatedGenerationTotal}
             realGenerationLastDay={realGenerationLastDay}
             estimatedGenerationLastDay={estimatedGenerationLastDay}
             percentLastDay={percentLastDay}
