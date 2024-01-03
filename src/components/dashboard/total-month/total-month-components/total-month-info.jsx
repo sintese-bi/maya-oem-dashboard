@@ -12,7 +12,7 @@ export const TotalMonthInfo = ({
   useName,
   realGenerationFiltered,
   estimatedGenerationFiltered,
-  percentTotalFiltered,
+  percentGenerationFiltered,
   label,
   startDate,
   endDate,
@@ -68,7 +68,7 @@ export const TotalMonthInfo = ({
             "KWh"
           )}, 
             no momento você produziu ${numbers(realGenerationFiltered, "KWh")}.
-            Isto corresponde a um desempenho de ${percentTotalFiltered}% `}
+            Isto corresponde a um desempenho de ${percentGenerationFiltered}% `}
         </Typography>
       </Card>
     </Box>

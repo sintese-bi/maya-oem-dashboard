@@ -972,7 +972,17 @@ export const PieChartMyUsins = (props) => {
   };
 
   return (
-    <Box sx={{ height: "172px", width: "172px" }}>
+    <Box
+      sx={{
+        height: "172px",
+        width: "172px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <span style={{ fontSize: "12px" }}>O que cada cor representa</span>
       <Pie data={data} />
     </Box>
   );

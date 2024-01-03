@@ -49,6 +49,7 @@ import {
   AttachMoney,
   SolarPower,
   FileCopy,
+  HelpCenter,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
@@ -255,6 +256,11 @@ export const Side = ({ sideState, setSideState }) => {
       label: "Módulo de fatura",
       icon: <AttachMoney fontSize="small" />,
       action: "module-fatura",
+    },
+    {
+      label: "Central de ajuda",
+      icon: <HelpCenter fontSize="small" />,
+      action: "help",
     },
     {
       label: "Módulo de O&M",

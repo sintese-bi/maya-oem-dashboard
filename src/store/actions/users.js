@@ -398,6 +398,31 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     });
 };
 
+export const invoice = (params) => (dispatch) => {
+  dispatch({ type: users.INVOICE_USER_REQUEST });
+
+  api
+    .post("/invoice", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({
+        type: users.INVOICE_USER_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - invoice";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.INVOICE_USER_FAILURE, message });
+    });
+};
+
 export const updateUser = (params) => (dispatch) => {
   dispatch({ type: users.UPDATE_USER_REQUEST });
   api
@@ -426,7 +451,8 @@ export const updateUser = (params) => (dispatch) => {
       const { response: err } = error;
       console.log(error);
 
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - updateUser";
 
       toast.error(message, {
         duration: 5000,
