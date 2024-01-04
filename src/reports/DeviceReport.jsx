@@ -132,7 +132,7 @@ export const DeviceReport = () => {
   const realGeneration = realValues?.map((data) => Number(data.value) / 1000);
   const estimatedGeneration = estimatedValues?.map((data) => data / 1000);
 
-  console.log(realGeneration, estimatedGeneration);
+  console.log(reportDevice.devicesGenerationData);
   const maxEstimated = Math.max(...estimatedGeneration);
   const maxReal = Math.max(...realGeneration);
 
@@ -202,232 +202,232 @@ export const DeviceReport = () => {
             </View>
           </View>
           <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              width: "100vw",
+              padding: "20px",
+              marginBottom: "20px",
+              marginTop: "10px",
+              borderRadius: "10px",
+              opacity: 0.9,
+            }}
+          >
+            <Text
               style={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                width: "100vw",
-                padding: "20px",
-                marginBottom: "20px",
-                marginTop: "10px",
-                borderRadius: "10px",
-                opacity: 0.9,
+                marginBottom: "16px",
+                fontWeight: "heavy",
+                fontSize: "12px",
               }}
             >
-              <Text
-                style={{
-                  marginBottom: "16px",
-                  fontWeight: "heavy",
-                  fontSize: "12px",
-                }}
-              >
-                Comparação da geração real e estimada
-              </Text>
+              Comparação da geração real e estimada
+            </Text>
+            <View
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
               <View
                 style={{
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  flexDirection: "column",
+                  marginBottom: "40px",
+                  gap: 2,
+                  flexDirection: "row",
                 }}
               >
                 <View
                   style={{
-                    width: "100%",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
-                    marginBottom: "40px",
                     gap: 2,
                     flexDirection: "row",
                   }}
                 >
+                  <Text style={{ fontSize: "10px" }}>Geração real</Text>
                   <View
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                      flexDirection: "row",
+                      height: "14px",
+                      width: "14px",
+                      backgroundColor: "#6CE5E8",
+                      borderRadius: "5px",
                     }}
-                  >
-                    <Text style={{ fontSize: "10px" }}>Geração real</Text>
-                    <View
-                      style={{
-                        height: "14px",
-                        width: "14px",
-                        backgroundColor: "#6CE5E8",
-                        borderRadius: "5px",
-                      }}
-                    ></View>
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text style={{ fontSize: "10px" }}>Geração estimada</Text>
-                    <View
-                      style={{
-                        height: "14px",
-                        width: "14px",
-                        borderRadius: "5px",
-                        backgroundColor: "#2D8BBA",
-                      }}
-                    ></View>
-                  </View>
+                  ></View>
                 </View>
                 <View
                   style={{
-                    width: "100%",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
+                    gap: 2,
                     flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ fontSize: "10px" }}>Geração estimada</Text>
+                  <View
+                    style={{
+                      height: "14px",
+                      width: "14px",
+                      borderRadius: "5px",
+                      backgroundColor: "#2D8BBA",
+                    }}
+                  ></View>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 1,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    widh: "12px",
                   }}
                 >
                   <View
                     style={{
                       display: "flex",
-                      flexDirection: "row",
-                      gap: 1,
-                      justifyContent: "space-between",
+                      flexDirection: "column",
+                      justifyContent: "center",
                       alignItems: "center",
-                      widh: "12px",
                     }}
                   >
-                    <View
+                    <Text
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        fontWeight: "bold",
+                        fontSize: "10px",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "10px",
-                        }}
-                      >
-                        M
-                      </Text>
-                      <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
-                        W
-                      </Text>
-                      <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
-                        h
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        width: "4%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        height: `${division * 50}px`,
-                      }}
-                    >
-                      {result?.reverse().map((data, index) => (
-                        <Text
-                          key={index}
-                          style={{
-                            fontSize: "8px",
-                          }}
-                        >
-                          {data}
-                        </Text>
-                      ))}
-                    </View>
+                      M
+                    </Text>
+                    <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
+                      W
+                    </Text>
+                    <Text style={{ fontWeight: "bold", fontSize: "10px" }}>
+                      h
+                    </Text>
                   </View>
                   <View
                     style={{
+                      width: "4%",
                       display: "flex",
-                      gap: 8,
-                      flexDirection: "row",
-                      marginLeft: "15px",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      height: `${division * 50}px`,
                     }}
                   >
-                    {realValues?.map((realValue, index) => {
-                      return (
+                    {result?.reverse().map((data, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: "8px",
+                        }}
+                      >
+                        {data}
+                      </Text>
+                    ))}
+                  </View>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    flexDirection: "row",
+                    marginLeft: "15px",
+                  }}
+                >
+                  {realValues?.map((realValue, index) => {
+                    return (
+                      <View
+                        key={realValue.value}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          gap: 1,
+                          marginTop: "auto",
+                        }}
+                      >
                         <View
-                          key={realValue.value}
                           style={{
                             display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
                             gap: 1,
                             marginTop: "auto",
                           }}
                         >
                           <View
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "space-around",
-                              gap: 1,
+                              width: "8px",
+                              height: `${
+                                realValue.value != 0
+                                  ? 50 * (realValue.value / 1000)
+                                  : realValue.value
+                              }px`,
+                              backgroundColor: "#6CE5E8",
                               marginTop: "auto",
                             }}
-                          >
-                            <View
-                              style={{
-                                width: "8px",
-                                height: `${
-                                  realValue.value != 0
-                                    ? 50 * (realValue.value / 1000)
-                                    : realValue.value
-                                }px`,
-                                backgroundColor: "#6CE5E8",
-                                marginTop: "auto",
-                              }}
-                            ></View>
-                            <View
-                              style={{
-                                width: "8px",
-                                height: `${
-                                  estimatedValues[index] != 0
-                                    ? 50 * (estimatedValues[index] / 1000)
-                                    : estimatedValues[index]
-                                }px`,
-                                backgroundColor: "#2D8BBA",
-                                marginTop: "auto",
-                              }}
-                            ></View>
-                          </View>
-                          <Text
+                          ></View>
+                          <View
                             style={{
-                              position: "absolute",
-                              bottom: "-12px",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              fontSize: "8px",
+                              width: "8px",
+                              height: `${
+                                estimatedValues[index] != 0
+                                  ? 50 * (estimatedValues[index] / 1000)
+                                  : estimatedValues[index]
+                              }px`,
+                              backgroundColor: "#2D8BBA",
+                              marginTop: "auto",
                             }}
-                          >
-                            {moment(realValue.date).format("DD")}
-                          </Text>
+                          ></View>
                         </View>
-                      );
-                    })}
-                  </View>
+                        <Text
+                          style={{
+                            position: "absolute",
+                            bottom: "-12px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "8px",
+                          }}
+                        >
+                          {moment(realValue.date).format("DD")}
+                        </Text>
+                      </View>
+                    );
+                  })}
                 </View>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "10px",
-                    marginTop: "26px",
-                  }}
-                >
-                  {"Dias"}
-                </Text>
               </View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "10px",
+                  marginTop: "26px",
+                }}
+              >
+                {"Dias"}
+              </Text>
             </View>
+          </View>
           <View style={styles.cardsRow}>
             <View style={styles.card}>
               <View>

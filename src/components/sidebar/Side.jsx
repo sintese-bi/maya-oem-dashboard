@@ -56,6 +56,7 @@ import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineC
 import { ModuleOM } from "../modules/moduleO&M";
 import { FaturaModulo } from "../modules/faturaModule";
 import { Reports } from "../reports/Reports";
+import { Help } from "../help/help";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -203,6 +204,17 @@ export const Side = ({ sideState, setSideState }) => {
         return (
           <Box sx={{ p: 4 }}>
             <FaturaModulo
+              setTitle={setTitle}
+              setDescription={setDescription}
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+            />
+          </Box>
+        );
+      case "help":
+        return (
+          <Box sx={{ p: 4 }}>
+            <Help
               setTitle={setTitle}
               setDescription={setDescription}
               secondaryAction={secondaryAction}

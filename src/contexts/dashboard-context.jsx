@@ -56,27 +56,25 @@ export const DashboardProvider = ({ children }) => {
   // dados da API
   const dispatch = useDispatch();
   const usersAPIData = useSelector((state) => state.users);
+  const devicesAPIData = useSelector((state) => state.devices);
 
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
     setEstimatedGenerationTotal(props.estimatedGenerationTotal);
     setMonthEconomyTotal(props.monthEconomyTotal);
     setTreesSavedTotal(props.treesSavedTotal);
-
   }
 
   function handleGenerationLastDayValues(props) {
     setRealGenerationLastDay(props.realGenerationLastDay);
     setEstimatedGenerationLastDay(props.estimatedGenerationLastDay);
     setPercentLastDay(props.percentLastDay);
-
   }
 
   function handleGenerationFilteredValues(props) {
     setRealGenerationFiltered(props.realGenerationFiltered);
     SetEstimatedGenerationFiltered(props.estimatedGenerationFiltered);
     SetPercentGenerationFiltered(props.percentGenerationFiltered);
-
   }
 
   function handleAdminReportGeneration(props) {
@@ -124,7 +122,7 @@ export const DashboardProvider = ({ children }) => {
       dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
     }
-  }, [userData?.useUuid]);
+  }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
     dispatch(getCapacities(usersAPIData.blUuids));
@@ -199,6 +197,32 @@ export const DashboardProvider = ({ children }) => {
       });
     }
   }, [usersAPIData.graphData]);
+
+  useEffect(() => {}, [usersAPIData.selectedUser]);
+
+  useEffect(() => {
+    if (devicesAPIData.bignumbersumValues.somaPorDiaReal !== undefined) {
+      let lastRealGenerationDay =
+        devicesAPIData.bignumbersumValues.somaPorDiaReal[
+          `${moment().format("YYYY-MM-DD")}`
+        ];
+      let lastEstimatedGenerationDay =
+        devicesAPIData.bignumbersumValues.somaPorDiaEstimada[
+          `${moment().format("YYYY-MM-DD")}`
+        ];
+
+      let lastPercentGenerationDay = (
+        (lastRealGenerationDay / lastEstimatedGenerationDay) *
+        100
+      ).toFixed();
+
+      handleGenerationLastDayValues({
+        realGenerationLastDay: lastRealGenerationDay.toFixed(2),
+        estimatedGenerationLastDay: lastEstimatedGenerationDay.toFixed(2),
+        percentLastDay: lastPercentGenerationDay,
+      });
+    }
+  }, [devicesAPIData.bignumbersumValues]);
 
   return (
     <DashboardContext.Provider

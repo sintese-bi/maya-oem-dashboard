@@ -41,7 +41,10 @@ export function reportAdministratorRule(
   reportAdministrator.graphData["realGeneration"] =
     graphData.data.somaPorDiaReal;
 
-  reportAdministrator.generationRealTotalValue = numbers(realGeneration, "KWh");
+  reportAdministrator.generationRealTotalValue = numbers(
+    realGeneration.toFixed(2),
+    "KWh"
+  );
 
   let estimatedGenerationDay = dataDevices.map((data) => {
     let generationEstimatedValue = data.generationEstimatedDay;
@@ -52,7 +55,7 @@ export function reportAdministratorRule(
     graphData.data.somaPorDiaEstimada;
 
   reportAdministrator.generationEstimatedTotalValue = numbers(
-    estimatedGeneration,
+    estimatedGeneration.toFixed(2),
     "KWh"
   );
 

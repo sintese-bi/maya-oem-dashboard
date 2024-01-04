@@ -370,15 +370,14 @@ export const SendEmail = ({
                     return (
                       <Button
                         variant="outlined"
+                        disabled={blob !== null ? false : true}
                         onClick={() => {
-                          var reader = new FileReader();
-                          reader.addEventListener("loadend", () => {
-                            handleDeleteDevice(reader.result);
-                          });
-                          reader.readAsDataURL(blob);
+                          console.log(blob);
                         }}
                       >
-                        Enviar relatório
+                        {blob !== null
+                          ? "Enviar relatório"
+                          : "Finalizando relatório...."}
                       </Button>
                     );
                   }}

@@ -118,7 +118,7 @@ export default function Dashboard() {
       >
         <Grid
           item
-          xs={5}
+          xs={6}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -156,7 +156,7 @@ export default function Dashboard() {
             treesSavedTotal={treesSavedTotal}
           />
         </Grid>
-        <Grid item xs={7} sx={{ height: 620 }}>
+        <Grid item xs={6} sx={{ height: 620 }}>
           <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
 

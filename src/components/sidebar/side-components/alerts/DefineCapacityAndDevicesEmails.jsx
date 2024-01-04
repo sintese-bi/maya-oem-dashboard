@@ -110,7 +110,7 @@ export function DefineCapacityAndDevicesEmails({
     setTitle("Geração estimada das usinas");
     setDescription(`Por favor, define o email e a potência de cada planta. Precisamos desses dados para o envio de alertas MAYA, e
     para cálcularmos valores como a geração estimada da sua usina. Seus
-    dados estão seguros conosco!`);
+    dados estão seguros conosco! para pesquisar uma planta especifica utilizar a 'lupa' que aparece no campo superior direito da tabela (GERAÇÃO ESTIMADA DAS USINAS).`);
   }, []);
 
   useEffect(() => {
