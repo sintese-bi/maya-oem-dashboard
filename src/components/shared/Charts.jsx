@@ -945,7 +945,7 @@ export const PieChartMyUsins = (props) => {
   const { offline, online, notDefined, unactived } = props;
 
   const data = {
-    labels: [],
+    labels: ["offline", "online", "não definido", "inativo"],
     datasets: [
       {
         data: [
@@ -982,7 +982,6 @@ export const PieChartMyUsins = (props) => {
         alignItems: "center",
       }}
     >
-      <span style={{ fontSize: "12px" }}>O que cada cor representa</span>
       <Pie data={data} />
     </Box>
   );

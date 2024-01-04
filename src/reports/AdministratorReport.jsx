@@ -243,24 +243,24 @@ export const AdministratorReport = () => {
   const labelsTemp = filterPeriod();
   const periodData = filterPeriodData();
 
-  const yAxis =
-    Math.max(...periodData.data.estimatedGeneration) >
-    Math.max(...periodData.data.realGeneration)
-      ? Math.max(
-          ...(Math.max(...periodData.data.estimatedGeneration) >
-            Math.max(...periodData.data.realGeneration))
-        )
-      : Math.max(...periodData.data.realGeneration);
+  console.log(periodData);
 
-  let division = Math.floor(yAxis / 10);
+  const maxEstimated = Math.max(...periodData.data.estimatedGeneration);
+  const maxReal = Math.max(...periodData.data.realGeneration);
+
+  const yAxis = maxEstimated > maxReal ? maxEstimated : maxReal;
+
+  let division = Math.ceil(yAxis / 10);
   let result = [];
   for (let i = 0; i <= division; i++) {
     if (i == division) {
-      result.push(Number(yAxis.toFixed()));
+      result.push(Math.ceil(Number(yAxis.toFixed())));
     } else {
       result.push(i * 10);
     }
   }
+
+  console.log(periodData, result, division);
 
   return (
     <Document>
