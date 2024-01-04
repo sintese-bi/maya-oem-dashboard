@@ -3,10 +3,13 @@ import {
   Box,
   Button,
   CircularProgress,
+  Input,
   TextField,
   Typography,
 } from "@mui/material";
 import location from "src/services/municipios";
+
+import UsinIcon from "src/assets/usinIcon.png";
 
 import { SaveAs } from "@mui/icons-material";
 import { setUserCookie, getUserCookie } from "src/services/session";
@@ -178,7 +181,7 @@ export function DefineCapacityAndDevicesEmails({
         sort: true,
         customBodyRender: (name, dataTable) => {
           return (
-            <Box sx={{ width: 324 }}>
+            <Box sx={{ width: 294 }}>
               <TextField
                 type="text"
                 defaultValue={dataTable.rowData[2]}
@@ -253,6 +256,77 @@ export function DefineCapacityAndDevicesEmails({
                     devices.push(newDeviceToAdd[0]);
                   }
                 }}
+              />
+            </Box>
+          );
+        },
+      },
+    },
+    {
+      name: "dev_usin_photo",
+      label: "Foto da usina",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          return (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                variant="contained"
+                component="label"
+                sx={{ width: 224, mr: 2 }}
+              >
+                Upload foto
+                <Input
+                  type="file"
+                  onChange={(e) => {
+                    if (e.target.files.length != 0) {
+                      var reader = new FileReader();
+                      reader.addEventListener("loadend", () => {
+                        let deviceInfo = devices.filter(
+                          (item) => item.dev_uuid === dataTable.rowData[0]
+                        );
+
+                        if (deviceInfo.length != 0) {
+                          deviceInfo[0].dev_usin_photo = reader.result;
+
+                          const indiceObjetoExistente = devices.findIndex(
+                            (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                          );
+
+                          devices[indiceObjetoExistente] = deviceInfo[0];
+                        } else {
+                          let newDeviceToAdd = data.filter(
+                            (item) => item.dev_uuid === dataTable.rowData[0]
+                          );
+                          newDeviceToAdd[0].dev_usin_photo = reader.result;
+
+                          devices.push(newDeviceToAdd[0]);
+                        }
+
+                        document.getElementById("logo").src = reader.result;
+                      });
+                      reader.readAsDataURL(e.target.files[0]);
+                    }
+                  }}
+                  sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
+                />
+              </Button>
+              <img
+                src={
+                  dataTable.rowData[4] !== undefined
+                    ? dataTable.rowData[4]
+                    : UsinIcon
+                }
+                alt="logo"
+                id="logo"
+                style={{ width: "80px", height: "80px", borderRadius: "50%" }}
               />
             </Box>
           );

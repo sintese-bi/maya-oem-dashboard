@@ -274,6 +274,7 @@ export const ChartsGenerationBIProductive = (props) => {
 export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter, graphRef } =
     props;
+  const theme = useTheme();
 
   // ESTADOS DE CONTROLE DO FILTRO
 
@@ -390,45 +391,45 @@ export const ChartsLinear = (props) => {
   const periodData = filterPeriodData();
 
   const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
-      legend: {
-        position: "top",
+      customCanvasBackgroundColor: {
+        color: "white",
       },
-      title: {
-        display: false,
-        text: "",
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
       },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
     },
     scales: {
       y: {
-        beginAtZero: true,
         grid: {
           display: false,
         },
         title: {
           display: true,
-          text: "KWh",
-          font: { size: 23, weight: "bold" },
-        },
-        ticks: {
-          font: { size: 22, weight: "bold" }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
-        },
-      },
-      x: {
-        grid: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: periodData.period,
-          font: { size: 23, weight: "bold" },
-        },
-        ticks: {
-          autoSkip: false,
-          maxRotation: 90,
-          minRotation: 90,
-          font: { size: 22, weight: "bold" }, // Adicione esta linha para definir o tamanho da fonte dos rótulos do eixo Y
+          text: "MWh",
+          font: { size: 18, weight: "bold" },
         },
       },
     },
@@ -439,18 +440,22 @@ export const ChartsLinear = (props) => {
     datasets: [
       {
         label: "Geração real",
+        maxBarThickness: 16,
+        barPercentage: 0.4,
         data: periodData.data?.realGeneration,
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
-        cubicInterpolationMode: "monotone",
-        tension: 0.4,
       },
       {
         label: "Geração estimada",
+        barThickness: 16,
+        borderRadius: 2,
+        categoryPercentage: 0.5,
+        maxBarThickness: 22,
+        barPercentage: 0.4,
         data: periodData.data?.estimatedGeneration,
         backgroundColor: "#14B8A6",
-        cubicInterpolationMode: "monotone",
-        tension: 0.4,
+        type: "line",
       },
     ],
   };
@@ -517,7 +522,13 @@ export const ChartsLinear = (props) => {
           Relação da geração real e geração estimada
         </Typography>
         <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
-          <Line type="bar" options={options} data={data} ref={graphRef} />
+          <Chart
+            height={280}
+            type="bar"
+            options={options}
+            data={data}
+            ref={graphRef}
+          />
         </Box>
       </Box>
     </Box>
