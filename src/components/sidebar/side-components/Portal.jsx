@@ -7,7 +7,16 @@ import { getUserCookie } from "src/services/session";
 
 import { createDevice } from "src/store/actions/devices";
 import { getDashboard, updateBrands } from "src/store/actions/users";
-import { Button, TextField, Box, Typography, MenuItem } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  MenuItem,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 
 const validateSchema = Yup.object().shape({
@@ -16,6 +25,8 @@ const validateSchema = Yup.object().shape({
 });
 
 export const Portal = ({ setTitle, setDescription }) => {
+  const [portalHasMoreThanOneUsin, setPortalHasMoreThanOneUsin] =
+    useState("false");
   const [action, setAction] = useState("createDevice");
   const methods = useForm();
   const { useUuid } = getUserCookie();
@@ -43,6 +54,7 @@ export const Portal = ({ setTitle, setDescription }) => {
             use_uuid: useUuid,
             bl_url,
             bl_quant,
+            portalHasMoreThanOneUsin,
           })
         );
       } else {
@@ -53,6 +65,7 @@ export const Portal = ({ setTitle, setDescription }) => {
             bl_name,
             use_uuid: useUuid,
             bl_url,
+            portalHasMoreThanOneUsin,
           })
         );
       }
@@ -65,6 +78,7 @@ export const Portal = ({ setTitle, setDescription }) => {
 
   useEffect(() => {
     setTitle("Portal");
+    setDescription("");
   }, []);
 
   return (
@@ -123,12 +137,63 @@ export const Portal = ({ setTitle, setDescription }) => {
             error={!!errors.bl_url}
             helperText={errors.bl_url?.message}
           />
-          <TextField
-            margin="normal"
-            label="Quantas usinas possui neste portal?"
-            type="number"
-            {...register("bl_quant")}
-          />
+
+          <Box
+            sx={{
+              display: "flex",
+
+              flexDirection: "column",
+              my: 4,
+            }}
+          >
+            <Typography variant="body2">
+              O portal possui mais de uma usina?
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p>Sim</p>
+                <Radio
+                  checked={portalHasMoreThanOneUsin == "true"}
+                  value="true"
+                  name="radio-buttons"
+                  inputProps={{ "aria-label": "A" }}
+                  onChange={(e) => {
+                    setPortalHasMoreThanOneUsin(e.target.value);
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p>Não</p>
+                <Radio
+                  checked={portalHasMoreThanOneUsin == "false"}
+                  value="false"
+                  name="radio-buttons"
+                  inputProps={{ "aria-label": "A" }}
+                  onChange={(e) => {
+                    setPortalHasMoreThanOneUsin(e.target.value);
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
         </Box>
         <Box>
           <Button

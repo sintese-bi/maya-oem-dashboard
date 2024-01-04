@@ -89,7 +89,7 @@ export const GenerationBI = ({
         Informações do dia
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={3}>
+        {/*<Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -100,7 +100,8 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={3}>
+          */}
+        {/*<Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -111,6 +112,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
+      */}
         <Grid item xs={3}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
@@ -182,7 +184,7 @@ export const GenerationBI = ({
         Informações do período
       </Typography>
       <Box sx={{ bgcolor: "background.paper", p: 4, boxShadow: 3 }}>
-        <Typography sx={{ fontSize: "20px", mb: 6, fontWeight: "600" }}>
+        {/*<Typography sx={{ fontSize: "20px", mb: 6, fontWeight: "600" }}>
           {isLoading
             ? ""
             : deviceIsProductive
@@ -256,7 +258,7 @@ export const GenerationBI = ({
               />
             )}
           </Grid>
-        </Box>
+              </Box>*/}
         <TextField
           sx={{
             width: 200,
