@@ -372,7 +372,11 @@ export const SendEmail = ({
                         variant="outlined"
                         disabled={blob !== null ? false : true}
                         onClick={() => {
-                          console.log(blob);
+                          var reader = new FileReader();
+                          reader.addEventListener("loadend", () => {
+                            handleDeleteDevice(reader.result);
+                          });
+                          reader.readAsDataURL(blob);
                         }}
                       >
                         {blob !== null

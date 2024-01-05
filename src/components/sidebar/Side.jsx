@@ -216,6 +216,7 @@ export const Side = ({ sideState, setSideState }) => {
           <Box sx={{ p: 4 }}>
             <Help
               setTitle={setTitle}
+              setOpen={setOpen}
               setDescription={setDescription}
               secondaryAction={secondaryAction}
               setSecondaryAction={setSecondaryAction}
