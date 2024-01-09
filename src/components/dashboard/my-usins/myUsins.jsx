@@ -33,13 +33,14 @@ export const MyUsins = ({
         pr: 1,
         display: "flex",
         alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
       <Box
         sx={{
           display: "flex",
           width: "100%",
-          justifyContent: "space-between",
+          gap: 2,
           flexDirection: "row",
         }}
       >
