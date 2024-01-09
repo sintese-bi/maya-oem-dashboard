@@ -982,6 +982,14 @@ export const PieChartMyUsins = (props) => {
     ],
   };
 
+  const options = {
+    plugins: {
+      legend: {
+        display: false, // Oculta a legenda
+      },
+    },
+  };
+
   return (
     <Box
       sx={{
@@ -993,7 +1001,7 @@ export const PieChartMyUsins = (props) => {
         alignItems: "center",
       }}
     >
-      <Pie data={data} />
+      <Pie data={data} options={options} />
     </Box>
   );
 };

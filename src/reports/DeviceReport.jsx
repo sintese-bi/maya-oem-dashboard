@@ -132,7 +132,6 @@ export const DeviceReport = () => {
   const realGeneration = realValues?.map((data) => Number(data.value) / 1000);
   const estimatedGeneration = estimatedValues?.map((data) => data / 1000);
 
-  console.log(reportDevice.devicesGenerationData);
   const maxEstimated = Math.max(...estimatedGeneration);
   const maxReal = Math.max(...realGeneration);
 

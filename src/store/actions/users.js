@@ -33,6 +33,28 @@ export const reportCounting = (params) => (dispatch) => {
     });
 };
 
+export const brandInfo = () => (dispatch) => {
+  api
+    .get("/brandinfo", configRequest())
+    .then((res) => {
+      dispatch({
+        type: users.GET_BRAND_INFO,
+        result: res.data,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - brandInfo";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
 export const storeReport = (params) => (dispatch) => {
   api
     .post("/storereport", params, configRequest())
