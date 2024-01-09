@@ -50,6 +50,7 @@ import {
   SolarPower,
   FileCopy,
   HelpCenter,
+  SettingsApplications,
 } from "@mui/icons-material";
 import { UserInfo } from "./side-components/UserInfo";
 import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
@@ -186,6 +187,12 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
+      case "configPortals":
+        setTitle("Função em estado de desenvolvimento");
+        setDescription(
+          "Caro usuário, essa funcionalidade se encontra em estado de desenvolvimento, por favor aguarde!"
+        );
+        return <Box sx={{ p: 4 }}></Box>;
       case "module-orm":
         return (
           <Box>
@@ -259,6 +266,11 @@ export const Side = ({ sideState, setSideState }) => {
       label: "Configurar plantas",
       icon: <Settings fontSize="small" />,
       action: "configSetup",
+    },
+    {
+      label: "Configurar portais",
+      icon: <SettingsApplications fontSize="small" />,
+      action: "configPortals",
     },
     {
       label: "Deletar plantas",
