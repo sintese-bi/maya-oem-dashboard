@@ -1,5 +1,5 @@
 import { listBrand } from "src/utils/list-brand.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -25,6 +25,7 @@ const validateSchema = Yup.object().shape({
 });
 
 export const Portal = ({ setTitle, setDescription }) => {
+  const { brandInfoData } = useSelector((state) => state.users);
   const [portalHasMoreThanOneUsin, setPortalHasMoreThanOneUsin] =
     useState("false");
   const [action, setAction] = useState("createDevice");
@@ -81,6 +82,10 @@ export const Portal = ({ setTitle, setDescription }) => {
     setDescription("");
   }, []);
 
+  const [brand, setBrand] = useState(
+    brandInfoData.filter((data) => data.bl_name == "AURORA")[0]
+  );
+
   return (
     <FormProvider {...methods}>
       <Box
@@ -100,17 +105,24 @@ export const Portal = ({ setTitle, setDescription }) => {
             label="Brands"
             {...register("bl_name")}
             select
-            defaultValue="Aurora"
+            defaultValue={brand.bl_name}
             variant="standard"
+            onChange={(event) =>
+              setBrand(
+                brandInfoData.filter(
+                  (data) => data.bl_name == event.target.value
+                )[0]
+              )
+            }
           >
-            {listBrand.map((data) =>
-              data.title != "SolarView" && data.title != "Solarz" ? (
+            {brandInfoData.map((data, index) =>
+              data.bl_name != "SolarView" && data.bl_name != "Solarz" ? (
                 <MenuItem
-                  key={data.title}
-                  value={data.title}
+                  key={index}
+                  value={data.bl_name}
                   sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {data.title}
+                  {data.bl_name}
                 </MenuItem>
               ) : null
             )}
@@ -133,6 +145,7 @@ export const Portal = ({ setTitle, setDescription }) => {
           <TextField
             margin="normal"
             label="Website do portal"
+            value={brand.bl_url}
             {...register("bl_url")}
             error={!!errors.bl_url}
             helperText={errors.bl_url?.message}

@@ -87,6 +87,8 @@ export const users = {
   DELETE_USER_REQUEST: "@api/DELETE_USER_REQUEST",
   DELETE_USER_SUCCESS: "@api/DELETE_USER_SUCCESS",
   DELETE_USER_FAILURE: "@api/DELETE_USER_FAILURE",
+
+  GET_BRAND_INFO: "@api/GET_BRAND_INFO",
 };
 
 export const investment = {

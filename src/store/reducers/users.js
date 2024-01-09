@@ -46,6 +46,7 @@ const initialState = {
   isDeletingUser: null,
   userDevicesIsReady: false,
   reportsCounting: 0,
+  brandInfoData: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -363,7 +364,6 @@ export default function userReducer(state = initialState, action) {
                     return alertDate === today;
                   })
                 : [];
-
             return {
               brand: item.bl_name,
               blUuid: item.bl_uuid,
@@ -442,6 +442,12 @@ export default function userReducer(state = initialState, action) {
         alerts: [],
         offline: [],
         online: [],
+      };
+
+    case users.GET_BRAND_INFO:
+      return {
+        ...state,
+        brandInfoData: result,
       };
 
     case users.GET_DASHBOARD_REQUEST:

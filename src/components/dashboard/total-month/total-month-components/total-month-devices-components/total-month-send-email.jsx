@@ -167,6 +167,7 @@ export const SendEmail = ({
   const dispatch = useDispatch();
 
   const [deviceInfo, setDeviceInfo] = useState({});
+  const [action, setAction] = useState("generateReport");
   const [open, setOpen] = useState(false);
   const [emailIsUpdated, setEmailIsUpdated] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -211,22 +212,17 @@ export const SendEmail = ({
   function handleReportGeneration() {
     let startDateTemp = moment(startDate).format("DD/MM/YYYY");
     let endDateTemp = moment(endDate).format("DD/MM/YYYY");
-    console.log(devicesGeneration);
-    if (
-      devicesGeneration.realGeneration.length != 0 &&
-      devicesGeneration.estimatedGeneration.length != 0
-    ) {
-      reportDeviceRule(
-        devicesGeneration,
-        useNameState,
-        capacity,
-        setIsLoadingReport,
-        startDateTemp,
-        endDateTemp,
-        address,
-        deviceName
-      );
-    }
+    setAction("confirmEmail");
+    reportDeviceRule(
+      devicesGeneration,
+      useNameState,
+      capacity,
+      setIsLoadingReport,
+      startDateTemp,
+      endDateTemp,
+      address,
+      deviceName
+    );
   }
 
   useEffect(() => {
@@ -261,13 +257,20 @@ export const SendEmail = ({
     }
   }, [devices, devUuidState]);
 
-  useEffect(() => {
-    dispatch(getDevices(blUuidState));
-  }, [blUuidState]);
+  //useEffect(() => {
+  //  dispatch(getDevices(blUuidState));
+  //}, [blUuidState]);
+  //
+  //useEffect(() => {
+  //  dispatch(getCapacities(devUuidState));
+  //}, [devUuidState]);
 
   useEffect(() => {
-    dispatch(getCapacities(devUuidState));
-  }, [devUuidState]);
+    if (open) {
+      dispatch(getDevices(blUuidState));
+      dispatch(getCapacities(devUuidState));
+    }
+  }, [open]);
 
   const {
     register,
@@ -291,11 +294,100 @@ export const SendEmail = ({
     try {
       dispatch(updateEmail({ dev_uuid: devUuidState, email }));
       dispatch(storeReport({ dev_uuid: devUuidState }));
-      setEmailIsUpdated(true);
+      setAction("reportPreview");
     } catch (error) {
       alert(error);
     }
   }
+
+  const TotalMonthSendEmailContent = () => {
+    if (devicesGeneration.realGeneration == undefined) {
+      return (
+        <Box sx={{ width: "100%", height: "100px" }}>
+          <CircularProgress color="inherit" />
+        </Box>
+      );
+    }
+
+    switch (action) {
+      case "generateReport":
+        return (
+          <Button
+            variant="contained"
+            onClick={() => {
+              setFileIsReadyToPreview(true);
+              handleReportGeneration();
+            }}
+          >
+            Preparar relatório
+          </Button>
+        );
+        break;
+      case "confirmEmail":
+        return (
+          <FormProvider {...methods}>
+            <Box
+              component="form"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "start",
+                gap: 2,
+              }}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <TextField
+                sx={{ width: "100%" }}
+                label="Email"
+                defaultValue={email}
+                {...register("email")}
+              />
+              <Button type="submit" variant="contained">
+                Confirmar email
+              </Button>
+            </Box>
+          </FormProvider>
+        );
+        break;
+      case "reportPreview":
+        return (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "start",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <BlobProvider document={DeviceReport()}>
+              {({ blob, url, loading, error }) => {
+                // Do whatever you need with blob here
+                return (
+                  <Button
+                    variant="outlined"
+                    disabled={blob !== null ? false : true}
+                    onClick={() => {
+                      var reader = new FileReader();
+                      reader.addEventListener("loadend", () => {
+                        handleDeleteDevice(reader.result);
+                      });
+                      reader.readAsDataURL(blob);
+                    }}
+                  >
+                    {blob !== null
+                      ? "Enviar relatório"
+                      : "Finalizando relatório...."}
+                  </Button>
+                );
+              }}
+            </BlobProvider>
+          </Box>
+        );
+        break;
+    }
+  };
 
   return (
     <>
@@ -327,79 +419,30 @@ export const SendEmail = ({
         aria-describedby="modal-modal-description"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        {devicesGeneration?.realGeneration?.length != 0 &&
-        devicesGeneration?.estimatedGeneration?.length != 0 ? (
+        <Box
+          sx={{ bgcolor: "background.paper", px: 4, pb: 4, borderRadius: 1 }}
+        >
           <Box
-            sx={{ bgcolor: "background.paper", px: 4, pb: 4, borderRadius: 1 }}
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              width: "100%",
+              py: 4,
+            }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                width: "100%",
-                py: 4,
-              }}
-            >
-              <Cancel
-                fontSize="large"
-                onClick={() => setOpen(!open)}
-                sx={{ cursor: "pointer" }}
-              />
-            </Box>
-            <Typography sx={{ width: "100%", mb: 4 }}>
-              Caro usuário, siga os passos seguintes para finalizar o envio do
-              email !
-            </Typography>
+            <Cancel
+              fontSize="large"
+              onClick={() => setOpen(!open)}
+              sx={{ cursor: "pointer" }}
+            />
+          </Box>
+          <Typography sx={{ width: "100%", mb: 4 }}>
+            Caro usuário, siga os passos seguintes para finalizar o envio do
+            email !
+          </Typography>
 
-            {devicesGeneration?.realGeneration?.length != 0 &&
-            devicesGeneration?.estimatedGeneration?.length != 0 ? (
-              !fileIsReadyToPreview ? (
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setFileIsReadyToPreview(true);
-                    handleReportGeneration();
-                  }}
-                >
-                  Preparar relatório
-                </Button>
-              ) : (
-                <BlobProvider document={DeviceReport()}>
-                  {({ blob, url, loading, error }) => {
-                    // Do whatever you need with blob here
-                    return (
-                      <Button
-                        variant="outlined"
-                        disabled={blob !== null ? false : true}
-                        onClick={() => {
-                          var reader = new FileReader();
-                          reader.addEventListener("loadend", () => {
-                            handleDeleteDevice(reader.result);
-                          });
-                          reader.readAsDataURL(blob);
-                        }}
-                      >
-                        {blob !== null
-                          ? "Enviar relatório"
-                          : "Finalizando relatório...."}
-                      </Button>
-                    );
-                  }}
-                </BlobProvider>
-              )
-            ) : (
-              "não há dados de geração"
-            )}
-          </Box>
-        ) : (
-          <Box
-            sx={{ bgcolor: "background.paper", px: 4, py: 6, borderRadius: 1 }}
-          >
-            <Typography variant="h5">
-              Não há dados de geração disponível
-            </Typography>
-          </Box>
-        )}
+          <TotalMonthSendEmailContent />
+        </Box>
       </Modal>
     </>
   );

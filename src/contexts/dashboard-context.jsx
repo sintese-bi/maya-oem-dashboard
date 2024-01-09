@@ -5,6 +5,7 @@ import { reportAdministratorRule } from "src/reports/reportsRules/reportAdminist
 import { getUserCookie } from "src/services/session";
 import { bigNumberSum } from "src/store/actions/devices";
 import {
+  brandInfo,
   getAllDevices,
   getAllDevicesFromUser,
   getCapacities,
@@ -122,6 +123,7 @@ export const DashboardProvider = ({ children }) => {
       dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
     }
+    dispatch(brandInfo());
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
