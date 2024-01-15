@@ -1,6 +1,7 @@
 import moment from "moment";
 import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { brazilStates } from "src/constants/states";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { getUserCookie } from "src/services/session";
 import { bigNumberSum } from "src/store/actions/devices";
@@ -59,6 +60,9 @@ export const DashboardProvider = ({ children }) => {
   const usersAPIData = useSelector((state) => state.users);
   const devicesAPIData = useSelector((state) => state.devices);
 
+  // dados para gráfico de quantidade de usinas por estado
+  const [usinsByState, setUsinsByState] = useState([])
+
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
     setEstimatedGenerationTotal(props.estimatedGenerationTotal);
@@ -96,6 +100,18 @@ export const DashboardProvider = ({ children }) => {
     );
   }
 
+  function handleUsinsByStateData(){
+    let devicesWithAddress = usersAPIData.allDevices.filter((data) => data.address !== null && data.address.includes("-"))
+    let devicesAddressState = brazilStates.map((state) => {
+      let amountOfUsins = devicesWithAddress.filter((data) => data.address.split('-')[1] == state.nome )
+      let stateWithAmountOfUsins = {state: state.sigla, amountOfUsins: amountOfUsins.length}
+      return stateWithAmountOfUsins
+    })
+    setUsinsByState(devicesAddressState)
+  }
+
+
+
   useEffect(() => {
     dispatch(reportCounting(0));
     if (usersAPIData.selectedUser.length != 0) {
@@ -117,13 +133,15 @@ export const DashboardProvider = ({ children }) => {
           use_uuid: usersAPIData.selectedUser[0]?.useUuidState,
         })
       );
+      dispatch(brandInfo({use_uuid: usersAPIData.selectedUser[0]?.useUuidState,}));
+
     } else {
       dispatch(bigNumberSum(userData?.useUuid));
       dispatch(getDashboard(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
+      dispatch(brandInfo({use_uuid: userData?.useUuid}));
     }
-    dispatch(brandInfo());
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
@@ -150,6 +168,8 @@ export const DashboardProvider = ({ children }) => {
 
       setData(usersAPIData.allDevices);
     }
+
+    handleUsinsByStateData()
   }, [usersAPIData.allDevices]);
 
   useEffect(() => {
@@ -247,6 +267,7 @@ export const DashboardProvider = ({ children }) => {
         realGenerationLastDay,
         estimatedGenerationLastDay,
         percentLastDay,
+        usinsByState,
         setIsLoadingReportGeneration,
         setData,
         setType,

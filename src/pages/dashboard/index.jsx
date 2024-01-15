@@ -61,6 +61,7 @@ export default function Dashboard() {
     realGenerationLastDay,
     estimatedGenerationLastDay,
     percentLastDay,
+    usinsByState,
     setIsLoadingReportGeneration,
     setData,
     setType,
@@ -141,6 +142,7 @@ export default function Dashboard() {
             offline={usersAPIData.offline}
             alerts={usersAPIData.alerts}
             type={type}
+            usinsByState={usinsByState}
             handleChangeColumns={setType}
           />
           <BigNumbers

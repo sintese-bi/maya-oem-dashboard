@@ -271,11 +271,11 @@ export const Side = ({ sideState, setSideState }) => {
       icon: <Settings fontSize="small" />,
       action: "configSetup",
     },
-    {
-      label: "Configurar portais",
-      icon: <SettingsApplications fontSize="small" />,
-      action: "configPortals",
-    },
+    //{
+    //  label: "Configurar portais",
+    //  icon: <SettingsApplications fontSize="small" />,
+    //  action: "configPortals",
+    //},
     {
       label: "Deletar plantas",
       icon: <Delete fontSize="small" />,

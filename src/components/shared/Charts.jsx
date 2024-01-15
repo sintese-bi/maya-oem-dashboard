@@ -40,6 +40,7 @@ import { LoadingSkeletonCharts } from "../Loading";
 import { Container } from "@mui/system";
 import NoData from "../../assets/img/illustrations/no-data.svg";
 import { TabPanel } from "../TabPanel";
+import { brazilStates } from "src/constants/states";
 
 ChartJS.register(
   CategoryScale,
@@ -270,6 +271,115 @@ export const ChartsGenerationBIProductive = (props) => {
     </Box>
   );
 };
+
+export const ChartUsinsByState = (props) => {
+
+  const theme = useTheme();
+
+
+  const options = {
+    animation: true,
+    cornerRadius: 20,
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      customCanvasBackgroundColor: {
+        color: "white",
+      },
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: "MWh",
+          font: { size: 18, weight: "bold" },
+        },
+      },
+    },
+  };
+
+  const data = {
+    labels: brazilStates,
+    datasets: [
+      {
+        label: "Geração real",
+        maxBarThickness: 16,
+        barPercentage: 0.4,
+        data: brazilStates.map((data, index) => index * 10),
+        borderColor: "#5048E5",
+        backgroundColor: "#5048E5",
+      },
+      
+    ],
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80%",
+          width: "100%",
+          flexDirection: "column",
+          px: 1,
+          pt: 2,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+          }}
+        >
+          Relação da geração real e geração estimada
+        </Typography>
+        <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
+          <Chart
+            height={280}
+            type="bar"
+            options={options}
+            data={data}
+          />
+        </Box>
+      </Box>
+    </Box>
+  );
+}
 
 export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter, graphRef } =
@@ -952,57 +1062,79 @@ export const ChartsDashboard = (props) => {
   );
 };
 
-export const PieChartMyUsins = (props) => {
-  const { offline, online, notDefined, unactived } = props;
+export const ChartUsinsBystate = (props) => {
+  const theme = useTheme()
+  const { usinsByState } = props;
+
+  const statesWithAmount = usinsByState.filter((data) => data.amountOfUsins != 0)
+
+  let states = statesWithAmount.map((data) => data.state)
+  let usinsByStateAmount = statesWithAmount.filter((data) => data.amountOfUsins != 0)
+
+  console.log(states, usinsByStateAmount)
 
   const data = {
-    labels: ["offline", "online", "não definido", "inativo"],
+    labels: states,
     datasets: [
       {
-        data: [
-          offline.length,
-          online.length,
-          notDefined.length,
-          unactived.length,
-        ],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(60, 179, 113, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(60, 179, 113, 1)",
-        ],
-        borderWidth: 1,
+        maxBarThickness: 12,
+        barPercentage: 0.4,
+        label: "Quantidade de usinas por estado",
+        data: usinsByStateAmount.map((data) => data.amountOfUsins),
+        backgroundColor: "#6CE5E8",
       },
     ],
   };
 
   const options = {
+    animation: true,
+   
+    layout: { padding: 0 },
+    maintainAspectRatio: false,
+    responsive: true,
     plugins: {
-      legend: {
-        display: false, // Oculta a legenda
+      customCanvasBackgroundColor: {
+        color: "white",
+      },
+    },
+    yAxes: [
+      {
+        ticks: {
+          fontColor: theme.palette.text.secondary,
+          beginAtZero: true,
+          min: 0,
+        },
+      },
+    ],
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: "Quantidade de usinas",
+          font: { size: 14, weight: "bold" },
+        },
       },
     },
   };
 
   return (
-    <Box
-      sx={{
-        height: "172px",
-        width: "172px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Pie data={data} options={options} />
-    </Box>
+      <Box sx={{width: "100%", height: "100%"}}>
+        <Chart type="bar" options={options} data={data} />
+      </Box>
   );
 };
 

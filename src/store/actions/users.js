@@ -33,13 +33,14 @@ export const reportCounting = (params) => (dispatch) => {
     });
 };
 
-export const brandInfo = () => (dispatch) => {
+export const brandInfo = (params) => (dispatch) => {
   api
-    .get("/brandinfo", configRequest())
+    .post("/brandinfo", params, configRequest())
     .then((res) => {
+      console.log(res.data.message)
       dispatch({
         type: users.GET_BRAND_INFO,
-        result: res.data,
+        result: res.data.message,
       });
     })
     .catch((error) => {
@@ -427,6 +428,9 @@ export const invoice = (params) => (dispatch) => {
     .post("/invoice", params, configRequest())
     .then((res) => {
       const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
       dispatch({
         type: users.INVOICE_USER_SUCCESS,
       });

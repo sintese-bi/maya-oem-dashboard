@@ -83,7 +83,7 @@ export const Portal = ({ setTitle, setDescription }) => {
   }, []);
 
   const [brand, setBrand] = useState(
-    brandInfoData.filter((data) => data.bl_name == "AURORA")[0]
+    brandInfoData[0].filter((data) => data.bl_name == "AURORA")[0]
   );
 
   return (
@@ -109,13 +109,13 @@ export const Portal = ({ setTitle, setDescription }) => {
             variant="standard"
             onChange={(event) =>
               setBrand(
-                brandInfoData.filter(
+                brandInfoData[0].filter(
                   (data) => data.bl_name == event.target.value
                 )[0]
               )
             }
           >
-            {brandInfoData.map((data, index) =>
+            {brandInfoData[0].map((data, index) =>
               data.bl_name != "SolarView" && data.bl_name != "Solarz" ? (
                 <MenuItem
                   key={index}
