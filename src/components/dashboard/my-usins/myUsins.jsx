@@ -7,7 +7,7 @@ import {
   Wifi,
 } from "@mui/icons-material";
 import { Card, Typography, Box } from "@mui/material";
-import { PieChartMyUsins } from "src/components/shared/Charts";
+import { ChartUsinsBystate } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
 
 export const MyUsins = ({
@@ -22,6 +22,7 @@ export const MyUsins = ({
   offline,
   alerts,
   type,
+  usinsByState,
   handleChangeColumns,
 }) => {
   return (
@@ -34,14 +35,14 @@ export const MyUsins = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        gap: 2,
       }}
     >
       <Box
         sx={{
           display: "flex",
-          width: "100%",
           gap: 2,
-          flexDirection: "row",
+          flexDirection: "row",   
         }}
       >
         <Box
@@ -264,12 +265,12 @@ export const MyUsins = ({
         </Box>
       </Box>
 
-      <PieChartMyUsins
-        notDefined={notDefined}
-        unactived={unactived}
-        online={online}
-        offline={offline}
-      />
+
+      <Box sx={{width: "50%", height: 240}}>
+        <ChartUsinsBystate
+          usinsByState={usinsByState}
+        />
+      </Box>
     </Card>
   );
 };
