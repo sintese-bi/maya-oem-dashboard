@@ -58,6 +58,7 @@ import { ModuleOM } from "../modules/moduleO&M";
 import { FaturaModulo } from "../modules/faturaModule";
 import { Reports } from "../reports/Reports";
 import { Help } from "../help/help";
+import { ConfigPortals } from "../configPortals/configPortal";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -188,11 +189,14 @@ export const Side = ({ sideState, setSideState }) => {
         );
         break;
       case "configPortals":
-        setTitle("Função em estado de desenvolvimento");
-        setDescription(
-          "Caro usuário, essa funcionalidade se encontra em estado de desenvolvimento, por favor aguarde!"
+        return (
+          <Box sx={{ p: 4 }}>
+            <ConfigPortals
+              setTitle={setTitle}
+              setDescription={setDescription}
+            />
+          </Box>
         );
-        return <Box sx={{ p: 4 }}></Box>;
       case "module-orm":
         return (
           <Box>

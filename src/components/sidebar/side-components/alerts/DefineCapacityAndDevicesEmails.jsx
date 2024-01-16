@@ -57,9 +57,9 @@ export function DefineCapacityAndDevicesEmails({
     );
 
     if (locationFiltered.length == 1) {
-      return `${locationFiltered[0].ic_city}-${locationFiltered[0].ic_states}`;
+      return locationFiltered[0].ic_states;
     } else {
-      return value;
+      return "";
     }
   }
 
@@ -174,8 +174,8 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "dev_address",
-      label: "Endereço de instalação",
+      name: "ic_city",
+      label: "Cidade",
       options: {
         filter: true,
         sort: true,
@@ -185,18 +185,17 @@ export function DefineCapacityAndDevicesEmails({
               <TextField
                 type="text"
                 defaultValue={dataTable.rowData[2]}
-                label="Endereço"
+                label="Cidade"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
-                  e.target.value = autoComplete(e.target.value);
-                  let fullAddres = autoComplete(e.target.value);
+                  let city = e.target.value;
 
                   let deviceInfo = devices.filter(
                     (item) => item.dev_uuid === dataTable.rowData[0]
                   );
 
                   if (deviceInfo.length != 0) {
-                    deviceInfo[0].dev_address = fullAddres;
+                    deviceInfo[0].ic_city = city;
 
                     const indiceObjetoExistente = devices.findIndex(
                       (item) => item.dev_uuid === deviceInfo[0].dev_uuid
@@ -207,7 +206,51 @@ export function DefineCapacityAndDevicesEmails({
                     let newDeviceToAdd = data.filter(
                       (item) => item.dev_uuid === dataTable.rowData[0]
                     );
-                    newDeviceToAdd[0].dev_address = fullAddres;
+                    newDeviceToAdd[0].ic_city = city;
+
+                    devices.push(newDeviceToAdd[0]);
+                  }
+                }}
+              />
+            </Box>
+          );
+        },
+      },
+    },
+    {
+      name: "ic_states",
+      label: "Estado",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          return (
+            <Box sx={{ width: 294 }}>
+              <TextField
+                type="text"
+                defaultValue={autoComplete(dataTable.rowData[2])}
+                label="Estado"
+                sx={{ width: "100%" }}
+                onChange={(e) => {
+                  let state = e.target.value;
+
+                  let deviceInfo = devices.filter(
+                    (item) => item.dev_uuid === dataTable.rowData[0]
+                  );
+
+                  if (deviceInfo.length != 0) {
+                    deviceInfo[0].ic_states = state;
+
+                    const indiceObjetoExistente = devices.findIndex(
+                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                    );
+
+                    devices[indiceObjetoExistente] = deviceInfo[0];
+                  } else {
+                    let newDeviceToAdd = data.filter(
+                      (item) => item.dev_uuid === dataTable.rowData[0]
+                    );
+                    newDeviceToAdd[0].ic_states = state;
 
                     devices.push(newDeviceToAdd[0]);
                   }
@@ -229,7 +272,7 @@ export function DefineCapacityAndDevicesEmails({
             <Box sx={{ width: 72 }}>
               <TextField
                 type="number"
-                defaultValue={dataTable.rowData[3]}
+                defaultValue={dataTable.rowData[4]}
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
@@ -263,7 +306,7 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "dev_usin_photo",
+      name: "dev_image",
       label: "Foto da usina",
       options: {
         filter: true,
@@ -294,7 +337,7 @@ export function DefineCapacityAndDevicesEmails({
                         );
 
                         if (deviceInfo.length != 0) {
-                          deviceInfo[0].dev_usin_photo = reader.result;
+                          deviceInfo[0].dev_image = reader.result;
 
                           const indiceObjetoExistente = devices.findIndex(
                             (item) => item.dev_uuid === deviceInfo[0].dev_uuid
@@ -305,12 +348,14 @@ export function DefineCapacityAndDevicesEmails({
                           let newDeviceToAdd = data.filter(
                             (item) => item.dev_uuid === dataTable.rowData[0]
                           );
-                          newDeviceToAdd[0].dev_usin_photo = reader.result;
+                          newDeviceToAdd[0].dev_image = reader.result;
 
                           devices.push(newDeviceToAdd[0]);
                         }
 
-                        document.getElementById("logo").src = reader.result;
+                        document.getElementById(
+                          `logo-${dataTable.rowData[0]}`
+                        ).src = reader.result;
                       });
                       reader.readAsDataURL(e.target.files[0]);
                     }
@@ -320,12 +365,12 @@ export function DefineCapacityAndDevicesEmails({
               </Button>
               <img
                 src={
-                  dataTable.rowData[4] !== undefined
-                    ? dataTable.rowData[4]
+                  dataTable.rowData[5] !== undefined
+                    ? dataTable.rowData[5]
                     : UsinIcon
                 }
                 alt="logo"
-                id="logo"
+                id={`logo-${dataTable.rowData[0]}`}
                 style={{ width: "80px", height: "80px", borderRadius: "50%" }}
               />
             </Box>

@@ -302,7 +302,7 @@ export const Reports = ({ setTitle, setDescription }) => {
         customHeadLabelRender: () => {
           return (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography sx={{ mr: 2 }}>Relatório mensal</Typography>
+              <Typography sx={{ mr: 2 }}>Gerar relatório</Typography>
               <Tooltip title="enviar relatório do mês para cliente da planta">
                 <Info sx={{ fontSize: "16px" }} />
               </Tooltip>

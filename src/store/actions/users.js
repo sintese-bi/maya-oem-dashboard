@@ -707,6 +707,7 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
       toast.success("Plantas carregadas com sucesso", {
         duration: 5000,
       });
+      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_FROM_USER_SUCCESS,
         result: data,
