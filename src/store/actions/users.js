@@ -375,6 +375,7 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
         result: { info: data.result, brands: data.brand },
@@ -672,7 +673,7 @@ export const cancelUserPlan = (use_uuid) => (dispatch) => {
 export const portalemailLogins = (params) => (dispatch) => {
   dispatch({ type: users.UPDATE_USER_EMAIL_REQUEST });
   api
-    .post("/emaildash", params, configRequest())
+    .post("/usealertemail", params, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {

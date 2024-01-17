@@ -364,12 +364,15 @@ export default function userReducer(state = initialState, action) {
                     return alertDate === today;
                   })
                 : [];
+
+
             return {
               brand: item.bl_name,
               blUuid: item.bl_uuid,
               name: dev.dev_name,
               dev_lat: dev.dev_lat,
               dev_long: dev.dev_long,
+              dev_image: dev.dev_image,
               email: dev.dev_email,
               capacity: parseFloat(
                 dev.dev_capacity !== null ? dev.dev_capacity.toFixed(2) : 0

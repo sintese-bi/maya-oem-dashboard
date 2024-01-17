@@ -273,9 +273,7 @@ export const ChartsGenerationBIProductive = (props) => {
 };
 
 export const ChartUsinsByState = (props) => {
-
   const theme = useTheme();
-
 
   const options = {
     animation: true,
@@ -333,7 +331,6 @@ export const ChartUsinsByState = (props) => {
         borderColor: "#5048E5",
         backgroundColor: "#5048E5",
       },
-      
     ],
   };
 
@@ -369,17 +366,12 @@ export const ChartUsinsByState = (props) => {
           Relação da geração real e geração estimada
         </Typography>
         <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
-          <Chart
-            height={280}
-            type="bar"
-            options={options}
-            data={data}
-          />
+          <Chart height={280} type="bar" options={options} data={data} />
         </Box>
       </Box>
     </Box>
   );
-}
+};
 
 export const ChartsLinear = (props) => {
   const { startDate, endDate, generation, isLoading, optionFilter, graphRef } =
@@ -1063,15 +1055,19 @@ export const ChartsDashboard = (props) => {
 };
 
 export const ChartUsinsBystate = (props) => {
-  const theme = useTheme()
-  const { usinsByState } = props;
+  const theme = useTheme();
+  const { usinsByState, handleChangeColumns } = props;
 
-  const statesWithAmount = usinsByState.filter((data) => data.amountOfUsins != 0)
+  const statesWithAmount = usinsByState.filter(
+    (data) => data.amountOfUsins.length != 0
+  );
 
-  let states = statesWithAmount.map((data) => data.state)
-  let usinsByStateAmount = statesWithAmount.filter((data) => data.amountOfUsins != 0)
+  let states = statesWithAmount.map((data) => data.state);
+  let usinsByStateAmount = statesWithAmount.filter(
+    (data) => data.amountOfUsins.length != 0
+  );
 
-  console.log(states, usinsByStateAmount)
+  console.log(states, usinsByStateAmount);
 
   const data = {
     labels: states,
@@ -1080,7 +1076,7 @@ export const ChartUsinsBystate = (props) => {
         maxBarThickness: 12,
         barPercentage: 0.4,
         label: "Quantidade de usinas por estado",
-        data: usinsByStateAmount.map((data) => data.amountOfUsins),
+        data: usinsByStateAmount.map((data) => data.amountOfUsins.length),
         backgroundColor: "#6CE5E8",
       },
     ],
@@ -1088,7 +1084,7 @@ export const ChartUsinsBystate = (props) => {
 
   const options = {
     animation: true,
-   
+
     layout: { padding: 0 },
     maintainAspectRatio: false,
     responsive: true,
@@ -1096,6 +1092,13 @@ export const ChartUsinsBystate = (props) => {
       customCanvasBackgroundColor: {
         color: "white",
       },
+    },
+    onClick: (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const label = states[index];
+        handleChangeColumns(label);
+      }
     },
     yAxes: [
       {
@@ -1132,9 +1135,9 @@ export const ChartUsinsBystate = (props) => {
   };
 
   return (
-      <Box sx={{width: "100%", height: "100%"}}>
-        <Chart type="bar" options={options} data={data} />
-      </Box>
+    <Box sx={{ width: "100%", height: "100%" }}>
+      <Chart type="bar" options={options} data={data} />
+    </Box>
   );
 };
 

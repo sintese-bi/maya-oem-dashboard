@@ -28,7 +28,7 @@ import { Avatar } from "@mui/material";
 import { listBrand } from "src/utils/list-brand";
 
 export default function Plants(props) {
-  const { type, devicesTableRef, title } = props;
+  const { type, devicesTableRef, title, usinsByState } = props;
   const { useUuid, profileLevel } = getUserCookie();
 
   const devicesRef = useRef(null);
@@ -128,62 +128,72 @@ export default function Plants(props) {
   }
 
   function handleChangeColumns(type) {
-    switch (type) {
-      case 1:
-        setData(handleTransformColumnData(allDevices));
-        devicesRef.current.scrollIntoView();
-        break;
-      case 2:
-        setData(
-          brands.map((data) => {
-            let brandItem = { brand: data };
-            return brandItem;
-          })
-        );
-        devicesRef.current.scrollIntoView();
+    if (typeof type == "string") {
+      setData(
+        usinsByState
+          .filter((data) => data.state == type)
+          .map((data) => data.amountOfUsins)[0]
+      );
+      devicesRef.current.scrollIntoView();
+    } else {
+      switch (type) {
+        case 1:
+          setData(handleTransformColumnData(allDevices));
+          devicesRef.current.scrollIntoView();
+          break;
+        case 2:
+          setData(
+            brands.map((data) => {
+              let brandItem = { brand: data };
+              return brandItem;
+            })
+          );
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 3:
-        setData(handleTransformColumnData(generationBelowEstimated));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 3:
+          setData(handleTransformColumnData(generationBelowEstimated));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 4:
-        setData(handleTransformColumnData(alerts));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 4:
+          setData(handleTransformColumnData(alerts));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 5:
-        setData(handleTransformColumnData(offline));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 5:
+          setData(handleTransformColumnData(offline));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 6:
-        setData(handleTransformColumnData(online));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 6:
+          setData(handleTransformColumnData(online));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 7:
-        setData(handleTransformColumnData(notDefined));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 7:
+          setData(handleTransformColumnData(notDefined));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 8:
-        setData(handleTransformColumnData(unactived));
-        devicesRef.current.scrollIntoView();
+          break;
+        case 8:
+          setData(handleTransformColumnData(unactived));
+          devicesRef.current.scrollIntoView();
 
-        break;
-      case 9:
-        setData(
-          handleTransformColumnData(
-            allDevices.filter((data) => data.staCode != "online")
-          )
-        );
-        devicesRef.current.scrollIntoView();
-        break;
-      default:
-        break;
+          break;
+        case 9:
+          setData(
+            handleTransformColumnData(
+              allDevices.filter((data) => data.staCode != "online")
+            )
+          );
+          devicesRef.current.scrollIntoView();
+          break;
+        default:
+          break;
+      }
     }
+
     setColumns(
       type == 2
         ? [
