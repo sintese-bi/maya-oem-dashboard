@@ -86,19 +86,19 @@ export const Portal = ({ setTitle, setDescription }) => {
     brandInfoData[0].filter((data) => data.bl_name == "AURORA")[0]
   );
 
-  //if (brandInfoData[1][0].bl_check == null) {
-  //  return (
-  //    <Box sx={{ p: 2 }}>
-  //      <Typography width={100} sx={{ width: 200 }} variant="body">
-  //        O portal recente adicionado, de email {brandInfoData[1][0].bl_login},
-  //        está em validação.
-  //        <br />
-  //        Enviaremos um email quando os dados estiverem prontos, por favor,
-  //        aguarde.
-  //      </Typography>
-  //    </Box>
-  //  );
-  //}
+  if (brandInfoData[1][0].bl_check == "validating") {
+    return (
+      <Box sx={{ p: 2 }}>
+        <Typography width={100} sx={{ width: 200 }} variant="body">
+          O portal recente adicionado, de email {brandInfoData[1][0].bl_login},
+          está em validação.
+          <br />
+          Enviaremos um email quando os dados estiverem prontos, por favor,
+          aguarde.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <FormProvider {...methods}>

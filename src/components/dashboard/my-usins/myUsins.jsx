@@ -42,7 +42,7 @@ export const MyUsins = ({
         sx={{
           display: "flex",
           gap: 2,
-          flexDirection: "row",   
+          flexDirection: "row",
         }}
       >
         <Box
@@ -265,10 +265,10 @@ export const MyUsins = ({
         </Box>
       </Box>
 
-
-      <Box sx={{width: "50%", height: 240}}>
+      <Box sx={{ width: "50%", height: 240 }}>
         <ChartUsinsBystate
           usinsByState={usinsByState}
+          handleChangeColumns={handleChangeColumns}
         />
       </Box>
     </Card>

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Cancel } from "@mui/icons-material";
 import { useState } from "react";
 
-export const ListUsins = ({ data, devicesTableRef, type }) => {
+export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [open, setOpen] = useState(false);
   const { allDevices } = useSelector((state) => state.users);
   return (
@@ -18,6 +18,7 @@ export const ListUsins = ({ data, devicesTableRef, type }) => {
         data={data}
         devicesTableRef={devicesTableRef}
         type={type}
+        usinsByState={usinsByState}
       />
       <Modal
         keepMounted

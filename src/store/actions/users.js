@@ -672,7 +672,7 @@ export const cancelUserPlan = (use_uuid) => (dispatch) => {
 export const portalemailLogins = (params) => (dispatch) => {
   dispatch({ type: users.UPDATE_USER_EMAIL_REQUEST });
   api
-    .post("/emaildash", params, configRequest())
+    .post("/usealertemail", params, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {

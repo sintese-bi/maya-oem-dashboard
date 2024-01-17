@@ -61,7 +61,7 @@ export const DashboardProvider = ({ children }) => {
   const devicesAPIData = useSelector((state) => state.devices);
 
   // dados para gráfico de quantidade de usinas por estado
-  const [usinsByState, setUsinsByState] = useState([])
+  const [usinsByState, setUsinsByState] = useState([]);
 
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
@@ -100,17 +100,22 @@ export const DashboardProvider = ({ children }) => {
     );
   }
 
-  function handleUsinsByStateData(){
-    let devicesWithAddress = usersAPIData.allDevices.filter((data) => data.address !== null && data.address.includes("-"))
+  function handleUsinsByStateData() {
+    let devicesWithAddress = usersAPIData.allDevices.filter(
+      (data) => data.address !== null && data.address.includes("-")
+    );
     let devicesAddressState = brazilStates.map((state) => {
-      let amountOfUsins = devicesWithAddress.filter((data) => data.address.split('-')[1] == state.nome )
-      let stateWithAmountOfUsins = {state: state.sigla, amountOfUsins: amountOfUsins.length}
-      return stateWithAmountOfUsins
-    })
-    setUsinsByState(devicesAddressState)
+      let amountOfUsins = devicesWithAddress.filter(
+        (data) => data.address.split("-")[1] == state.nome
+      );
+      let stateWithAmountOfUsins = {
+        state: state.sigla,
+        amountOfUsins,
+      };
+      return stateWithAmountOfUsins;
+    });
+    setUsinsByState(devicesAddressState);
   }
-
-
 
   useEffect(() => {
     dispatch(reportCounting(0));
@@ -133,14 +138,15 @@ export const DashboardProvider = ({ children }) => {
           use_uuid: usersAPIData.selectedUser[0]?.useUuidState,
         })
       );
-      dispatch(brandInfo({use_uuid: usersAPIData.selectedUser[0]?.useUuidState,}));
-
+      dispatch(
+        brandInfo({ use_uuid: usersAPIData.selectedUser[0]?.useUuidState })
+      );
     } else {
       dispatch(bigNumberSum(userData?.useUuid));
       dispatch(getDashboard(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
       dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
-      dispatch(brandInfo({use_uuid: userData?.useUuid}));
+      dispatch(brandInfo({ use_uuid: userData?.useUuid }));
     }
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
@@ -169,7 +175,7 @@ export const DashboardProvider = ({ children }) => {
       setData(usersAPIData.allDevices);
     }
 
-    handleUsinsByStateData()
+    handleUsinsByStateData();
   }, [usersAPIData.allDevices]);
 
   useEffect(() => {

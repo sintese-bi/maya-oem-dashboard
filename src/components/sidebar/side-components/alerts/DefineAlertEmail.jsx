@@ -44,7 +44,7 @@ export function DefineAlertEmail({
     } else {
       setSecondaryAction("AlertsDefineComponent");
     }
-    //dispatch(portalemailLogins({ use_uuid: useUuid, use_email: email }));
+    dispatch(portalemailLogins({ use_uuid: useUuid, use_alert_email: email }));
   }
 
   useEffect(() => {

@@ -207,7 +207,12 @@ export default function Dashboard() {
           mb: 6,
         }}
       >
-        <ListUsins data={data} devicesTableRef={devicesTableRef} type={type} />
+        <ListUsins
+          data={data}
+          devicesTableRef={devicesTableRef}
+          type={type}
+          usinsByState={usinsByState}
+        />
         <PeriodDataUsins
           startDate={startDate}
           endDate={endDate}
