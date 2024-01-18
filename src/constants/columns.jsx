@@ -80,7 +80,6 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
-      sortDirection: "desc",
     },
   },
   {

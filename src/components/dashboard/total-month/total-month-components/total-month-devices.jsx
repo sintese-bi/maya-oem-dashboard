@@ -63,6 +63,10 @@ export default function Plants(props) {
   const dispatch = useDispatch();
 
   const options = {
+    sortOrder: {
+      name: "capacity",
+      direction: "desc",
+    },
     filter: true,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 50, 100, 200, 300],

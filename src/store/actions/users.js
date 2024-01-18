@@ -37,7 +37,6 @@ export const brandInfo = (params) => (dispatch) => {
   api
     .post("/brandinfo", params, configRequest())
     .then((res) => {
-      console.log(res.data.message)
       dispatch({
         type: users.GET_BRAND_INFO,
         result: res.data.message,
@@ -375,7 +374,6 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
         result: { info: data.result, brands: data.brand },
@@ -708,7 +706,6 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
       toast.success("Plantas carregadas com sucesso", {
         duration: 5000,
       });
-      console.log(data)
       dispatch({
         type: users.GET_ALL_DEVICES_FROM_USER_SUCCESS,
         result: data,

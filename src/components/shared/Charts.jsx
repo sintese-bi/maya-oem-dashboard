@@ -1067,8 +1067,6 @@ export const ChartUsinsBystate = (props) => {
     (data) => data.amountOfUsins.length != 0
   );
 
-  console.log(states, usinsByStateAmount);
-
   const data = {
     labels: states,
     datasets: [

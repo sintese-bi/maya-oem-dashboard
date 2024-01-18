@@ -1,6 +1,5 @@
 const workercode = () => {
   function getDevices({use_uuid, configRequest}){
-    console.log(configRequest())
   }
 
   self.onmessage = ({data}) => {

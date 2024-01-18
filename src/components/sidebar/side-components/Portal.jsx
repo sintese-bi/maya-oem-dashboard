@@ -44,7 +44,6 @@ export const Portal = ({ setTitle, setDescription }) => {
 
   async function onSubmit(values) {
     const { bl_login, bl_password, bl_name, bl_url, bl_quant } = values;
-    console.log(values);
     try {
       if (action == "createDevice") {
         dispatch(

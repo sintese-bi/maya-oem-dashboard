@@ -243,8 +243,6 @@ export const AdministratorReport = () => {
   const labelsTemp = filterPeriod();
   const periodData = filterPeriodData();
 
-  console.log(periodData);
-
   const maxEstimated = Math.max(...periodData.data.estimatedGeneration);
   const maxReal = Math.max(...periodData.data.realGeneration);
 
@@ -259,8 +257,6 @@ export const AdministratorReport = () => {
       result.push(i * 10);
     }
   }
-
-  console.log(periodData, result, division);
 
   return (
     <Document>
