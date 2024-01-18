@@ -74,7 +74,7 @@ export const MyUsins = ({
             }}
           >
             Usinas: {allDevices.length}
-            <SolarPower fontSize="small" sx={{ ml: 2 }} />
+            <SolarPower fontSize="small" sx={{ ml: 2, color: "green" }} />
           </Typography>
           <Typography
             sx={{
@@ -89,7 +89,7 @@ export const MyUsins = ({
             {realGenerationLastDay != 0
               ? numbers(realGenerationLastDay, "KWh")
               : realGenerationLastDay + "KWh"}
-            <Bolt fontSize="small" sx={{ ml: 2 }} />
+            <Bolt fontSize="small" sx={{ ml: 2, color: "#F2E205" }} />
           </Typography>
           <Typography
             sx={{
@@ -104,7 +104,7 @@ export const MyUsins = ({
             {estimatedGenerationLastDay != 0
               ? numbers(estimatedGenerationLastDay, "KWh")
               : estimatedGenerationLastDay + "KWh"}
-            <Bolt fontSize="small" sx={{ ml: 2 }} />
+            <Bolt fontSize="small" sx={{ ml: 2, color: "#F2E205" }} />
           </Typography>
           <Typography
             sx={{
@@ -136,7 +136,7 @@ export const MyUsins = ({
             }}
           >
             Portais: {brands.length}
-            <SolarPower fontSize="small" sx={{ ml: 2 }} />
+            <SolarPower fontSize="small" sx={{ ml: 2, color: "orange" }} />
           </Typography>
         </Box>
         <Box
