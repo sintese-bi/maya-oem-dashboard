@@ -685,10 +685,17 @@ export default function userReducer(state = initialState, action) {
     case users.GET_ALL_DEVICES_FROM_USER_SUCCESS:
       return {
         ...state,
-        allDevicesFromUser: result.filter((data) => data.dev_address != null).map((data) => {
-          let ic_city = data.dev_address.split("-")[0]
-          let ic_states = data.dev_address.split("-")[1]
-          return {...data, ic_city, ic_states}
+        allDevicesFromUser: result.map((data) => {
+          if(data.dev_address != null) {
+            let ic_city = data.dev_address.split("-")[0]
+            let ic_states = data.dev_address.split("-")[1]
+            return {...data, ic_city, ic_states}
+          } else {
+            let ic_city = ""
+            let ic_states = ""
+            return {...data, ic_city, ic_states}
+          }
+          
         }),
       };
 

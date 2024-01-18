@@ -196,7 +196,11 @@ export function AlertsDefineComponent({
                       label="Frequência de alertas"
                       error={!!errors.frequencyName}
                       helperText={errors.frequencyName?.message}
-                      value={watch("frequencyName") || ""}
+                      value={
+                        watch("frequencyName") !== undefined
+                          ? watch("frequencyName")
+                          : "month"
+                      }
                       select
                       defaultValue="month"
                       variant="standard"

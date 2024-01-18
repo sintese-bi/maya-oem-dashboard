@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import location from "src/services/municipios";
-
 import UsinIcon from "src/assets/usinIcon.png";
 
 import { SaveAs } from "@mui/icons-material";
@@ -51,15 +50,19 @@ export function DefineCapacityAndDevicesEmails({
     (state) => state.users
   );
 
-  function autoComplete(value) {
-    const locationFiltered = location.filter((data) =>
-      data.ic_city.includes(value)
-    );
+  function autoCompleteState(cityValue, stateValue) {
+    if (stateValue === undefined) {
+      const locationFiltered = location.filter(
+        (data) => data.ic_city == cityValue
+      );
 
-    if (locationFiltered.length == 1) {
-      return locationFiltered[0].ic_states;
+      if (locationFiltered.length == 1) {
+        return locationFiltered[0].ic_states;
+      } else {
+        return "";
+      }
     } else {
-      return "";
+      return stateValue;
     }
   }
 
@@ -141,10 +144,6 @@ export function DefineCapacityAndDevicesEmails({
       setData(usersAPIData.allDevicesFromUser);
     }
   }, [usersAPIData.allDevicesFromUser]);
-
-  useEffect(() => {
-    console.log(deviceChanged);
-  }, [deviceChanged]);
 
   const options = {
     filter: true,
@@ -228,10 +227,14 @@ export function DefineCapacityAndDevicesEmails({
             <Box sx={{ width: 294 }}>
               <TextField
                 type="text"
-                defaultValue={autoComplete(dataTable.rowData[2])}
+                defaultValue={autoCompleteState(
+                  dataTable.rowData[2],
+                  dataTable.rowData[3]
+                )}
                 label="Estado"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
+                  e.target.value = e.target.value.toUpperCase();
                   let state = e.target.value;
 
                   let deviceInfo = devices.filter(
@@ -276,6 +279,8 @@ export function DefineCapacityAndDevicesEmails({
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
+                  console.log(JSON.parse());
+
                   let capacity = e.target.value;
 
                   let deviceInfo = devices.filter(
