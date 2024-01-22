@@ -8,7 +8,7 @@ import {
 
 import AlertPercentageForm from "src/components/sidebar/side-components/AlertPercentageForm";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
-import { Portal } from "src/components/sidebar/side-components/Portal";
+import { Portal } from "src/components/portals/Portal";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
 
 // COMPONENTS
@@ -286,25 +286,26 @@ export const Side = ({ sideState, setSideState }) => {
       icon: <AttachMoney fontSize="small" />,
       action: "module-fatura",
     },
-    {
-      label: "Central de ajuda",
-      icon: <HelpCenter fontSize="small" />,
-      action: "help",
-    },
+
     {
       label: "Módulo de O&M",
       icon: <SolarPower fontSize="small" />,
       action: "module-orm",
     },
+    {
+      label: "Central de ajuda",
+      icon: <HelpCenter fontSize="small" />,
+      action: "help",
+    },
   ];
 
   const bottomItems = [
-    {
-      label: "MAYA WATCH PRO",
-      icon: <ShoppingCart fontSize="small" />,
-      disabled: true,
-      action: "assignPlan",
-    },
+    //{
+    //  label: "MAYA WATCH PRO",
+    //  icon: <ShoppingCart fontSize="small" />,
+    //  disabled: true,
+    //  action: "assignPlan",
+    //},
   ];
 
   function handleModalState(actionType) {
