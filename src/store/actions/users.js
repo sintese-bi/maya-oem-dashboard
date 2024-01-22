@@ -606,6 +606,32 @@ export const sendEmail = (data) => (dispatch) => {
     });
 };
 
+export const xlsxPortal = (params) => (dispatch) => {
+  dispatch({type: users.XLSX_PORTAL_REQUEST})
+  api.post("/xlsxportal", params, configRequest()).then((res) => {
+    const { data } = res;
+
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      
+      dispatch({
+        type: users.XLSX_PORTAL_SUCCESS,
+      });
+  }).catch((error) => {
+    const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido - xlsxPortal";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+
+      dispatch({ type: users.XLSX_PORTAL_FAILURE });
+  })
+}
+
 export const passwordRecovery = (params) => (dispatch) => {
   dispatch({ type: users.RECOVER_PASSWORD_REQUEST });
   const { new_password, use_token, use_email, navigate } = params;

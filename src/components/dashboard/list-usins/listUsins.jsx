@@ -4,13 +4,20 @@ import { TopUsins } from "../top-usins/topUsins";
 import { useSelector } from "react-redux";
 import { Cancel } from "@mui/icons-material";
 import { useState } from "react";
+import { callingWebWorkers } from "src/web-workers";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [open, setOpen] = useState(false);
   const { allDevices } = useSelector((state) => state.users);
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      <Button variant="contained" onClick={() => setOpen(true)} sx={{ my: 2 }}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          callingWebWorkers();
+        }}
+        sx={{ my: 2 }}
+      >
         Principais usinas.
       </Button>
       <Plants

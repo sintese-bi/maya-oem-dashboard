@@ -31,6 +31,7 @@ import Logo from "../assets/img/logo/maya-watch-logo.png";
 
 //COOKIES
 import { getUserCookie, removeUserCookie } from "src/services/session";
+import toast from "react-hot-toast";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
@@ -76,9 +77,13 @@ export default function Login() {
     } catch (error) {
       // Verificando erros
       if (error.status === 404) {
-        console.log("Credenciais inválidas. Por favor, tente novamente.");
+        toast.error("Credenciais inválidas. Por favor, tente novamente.", {
+          duration: 5000,
+        });
       } else {
-        console.log("Ocorreu um erro. Por favor, tente novamente mais tarde.");
+        toast.error("Ocorreu um erro. Por favor, tente novamente mais tarde.", {
+          duration: 5000,
+        });
       }
     }
   }

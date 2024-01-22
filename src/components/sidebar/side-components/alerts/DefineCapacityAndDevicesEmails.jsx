@@ -73,7 +73,15 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    localStorage.setItem("setupData", JSON.stringify(arraydevices));
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices));
+    arrayplantsWithNoBase64.map((data) => {
+      let obj = data;
+      delete data.dev_image;
+      return obj;
+    });
+
+    localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
+
     setUserCookie({ ...getUserCookie(), firstTime: false });
     setOpen(false);
 
@@ -117,6 +125,8 @@ export function DefineCapacityAndDevicesEmails({
     setDescription(`Por favor, define o email e a potência de cada planta. Precisamos desses dados para o envio de alertas MAYA, e
     para cálcularmos valores como a geração estimada da sua usina. Seus
     dados estão seguros conosco! para pesquisar uma planta especifica utilizar a 'lupa' que aparece no campo superior direito da tabela (GERAÇÃO ESTIMADA DAS USINAS).`);
+
+    dispatch(getAllDevicesFromUser({ use_uuid: useUuid }));
   }, []);
 
   useEffect(() => {
@@ -130,7 +140,14 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    localStorage.setItem("setupData", JSON.stringify(arrayplants));
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants));
+    arrayplantsWithNoBase64.map((data) => {
+      let obj = data;
+      delete data.dev_image;
+      return obj;
+    });
+
+    localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
     dispatch(updateEmailAndCapacity({ arrayplants }));
     setOpen(false);
   }
@@ -139,7 +156,23 @@ export function DefineCapacityAndDevicesEmails({
     allDevicesFromUserRef.current = usersAPIData.allDevicesFromUser;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
-      setData(setupData);
+      let setupDataWithAddressData = usersAPIData.allDevicesFromUser.map(
+        (allDevicesFromUserItem) => {
+          const temp = setupData.filter(
+            (setupDataItem) =>
+              setupDataItem.dev_uuid == allDevicesFromUserItem.dev_uuid
+          );
+
+          return {
+            ...allDevicesFromUserItem,
+            ic_city: temp[0].ic_city,
+            ic_states: temp[0].ic_states,
+            dev_capacity: temp[0].dev_capacity,
+          };
+        }
+      );
+
+      setData(setupDataWithAddressData);
     } else {
       setData(usersAPIData.allDevicesFromUser);
     }
@@ -279,8 +312,6 @@ export function DefineCapacityAndDevicesEmails({
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
-                  console.log(JSON.parse());
-
                   let capacity = e.target.value;
 
                   let deviceInfo = devices.filter(
@@ -370,7 +401,7 @@ export function DefineCapacityAndDevicesEmails({
               </Button>
               <img
                 src={
-                  dataTable.rowData[5] !== undefined
+                  dataTable.rowData[5] !== null
                     ? dataTable.rowData[5]
                     : UsinIcon
                 }

@@ -705,6 +705,15 @@ export default function userReducer(state = initialState, action) {
         allDevicesFromUser: [],
       };
 
+    case users.XLSX_PORTAL_REQUEST:
+      return {...state}
+    
+    case users.XLSX_PORTAL_SUCCESS:
+      return {...state}
+      
+    case users.XLSX_PORTAL_FAILURE:
+      return {...state}
+
     case users.INVOICE_USER_REQUEST:
       return { ...state };
 
