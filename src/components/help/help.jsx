@@ -5,15 +5,17 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { helpCenter } from "src/store/actions/users";
 
 const validateSchema = Yup.object().shape({
-  doubt_email: Yup.string().required("Campo é obrigatório."),
-  doubt_content: Yup.string().required("Campo é obrigatório."),
+  use_email: Yup.string().required("Campo é obrigatório."),
+  text: Yup.string().required("Campo é obrigatório."),
 });
 
 export const Help = ({ setTitle, setDescription, setOpen, open }) => {
   const methods = useForm();
-
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -25,14 +27,16 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
   });
 
   async function onSubmit(values) {
-    alert("Função em estado de desenvolvimento");
+    dispatch(helpCenter(values));
 
     setOpen(false);
   }
 
   useEffect(() => {
     setTitle("Ajuda");
-    setDescription("");
+    setDescription(
+      "Querido usuário, após o envio do email ou menssagem via WhatsApp, nossa equipe irá entrar responder assim que possível, por favor, aguarde."
+    );
   }, []);
 
   return (
@@ -46,8 +50,6 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            width: 364,
-            gap: 1,
           }}
         >
           <TextField
@@ -55,9 +57,9 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
             margin="normal"
             placeholder="example@gmail.com"
             label="Email"
-            {...register("doubt_email")}
-            error={!!errors.doubt_email}
-            helperText={errors.doubt_email?.message}
+            {...register("use_email")}
+            error={!!errors.use_email}
+            helperText={errors.use_email?.message}
           />
           <Box sx={{ width: "100%", height: 120 }}>
             <TextareaAutosize
@@ -69,14 +71,14 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
                 padding: "20px 10px 20px 10px",
                 borderRadius: "5px",
               }}
-              {...register("doubt_content")}
+              {...register("text")}
               aria-label="maximum height"
               placeholder="Dúvida"
-              error={!!errors.doubt_content}
-              helperText={errors.doubt_content?.message}
+              error={!!errors.text}
+              helperText={errors.text?.message}
             />
             <span style={{ fontSize: "10px", color: "red" }}>
-              {errors.doubt_content?.message}
+              {errors.text?.message}
             </span>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "start", gap: 2, mt: 4 }}>

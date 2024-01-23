@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Backdrop,
   Box,
   Button,
@@ -191,11 +192,7 @@ export function DefineCapacityAndDevicesEmails({
     {
       name: "dev_uuid",
       label: "ID do Dispositivos/usuário",
-      options: {
-        display: false,
-        viewColumns: false,
-        filter: true,
-      },
+      options: {},
     },
     {
       name: "dev_name",
@@ -399,7 +396,7 @@ export function DefineCapacityAndDevicesEmails({
                   sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
                 />
               </Button>
-              <img
+              <Avatar
                 src={
                   dataTable.rowData[5] !== null
                     ? dataTable.rowData[5]

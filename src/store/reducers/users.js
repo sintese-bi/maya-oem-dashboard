@@ -714,6 +714,15 @@ export default function userReducer(state = initialState, action) {
     case users.XLSX_PORTAL_FAILURE:
       return {...state}
 
+    case users.HELP_CENTER_REQUEST:
+      return {...state}
+    
+    case users.HELP_CENTER_SUCCESS:
+      return {...state}
+    
+    case users.HELP_CENTER_FAILURE:
+      return {...state}
+
     case users.INVOICE_USER_REQUEST:
       return { ...state };
 

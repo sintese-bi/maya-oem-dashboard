@@ -8,22 +8,17 @@ export const PortalValidationState = ({ setValidationWarningState }) => {
     switch (validated) {
       case "notValidated":
         return `
-            Portal recente adicionado, falhou no processo de
-            validação! Por favor, verifique o login e senha do portal e tente
-            novamente.
+            O portal recém adicionado falhou no processo de validação! Por favor verifique o login e senha ou o portal informado e tente novamente.
             `;
         break;
       case "validating":
         return `
-            O portal recente adicionado,
-            está em validação. Enviaremos um email quando os dados estiverem prontos, por favor,
-            aguarde.
+            O portal recém adicionado está em validação. Por favor aguarde, mas fique tranquilo você pode fechar este campo e navegar pelo software, enviaremos um email quando os dados estiverem prontos..
             `;
         break;
       case "validated":
         return `
-            Portal recente adicionado, passou no processo de
-            validação.
+            O portal recém adicionado passou no processo de validação, você pode fechar esta tela e continuar a navegar pelo software.
             `;
         break;
       default:
@@ -40,18 +35,12 @@ export const PortalValidationState = ({ setValidationWarningState }) => {
           px: 1,
           bgcolor: "whitesmoke",
           borderRadius: "10px",
-          width: "100%",
         }}
       >
-        <Typography variant="body">{content()}</Typography>
+        <Typography variant="body" fontSize={"12px"}>
+          {content()}
+        </Typography>
       </Box>
-      <Button
-        variant="contained"
-        color="success"
-        onClick={() => setValidationWarningState(false)}
-      >
-        Prosseguir
-      </Button>
     </Box>
   );
 };
