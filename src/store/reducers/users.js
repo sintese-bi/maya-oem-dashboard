@@ -330,6 +330,7 @@ export default function userReducer(state = initialState, action) {
             const generationEstimatedDay =
               dev.generation.length !== 0 ? dev.generation[0].gen_estimated : 0;
 
+
             let sumRealWeek = 0;
             let sumEstimatedlWeek =
               generationEstimatedDay * Math.min(7, daysPassedAllDevices);
@@ -386,7 +387,7 @@ export default function userReducer(state = initialState, action) {
               generationRealWeek: parseFloat(sumRealWeek.toFixed(2)),
               generationRealMonth: parseFloat(sumRealMonth.toFixed(2)),
               generationEstimatedDay: parseFloat(
-                generationEstimatedDay.toFixed(2)
+                generationEstimatedDay?.toFixed(2)
               ),
               generationEstimatedlWeek: parseFloat(
                 sumEstimatedlWeek.toFixed(2)
@@ -688,7 +689,7 @@ export default function userReducer(state = initialState, action) {
         allDevicesFromUser: result.map((data) => {
           if(data.dev_address != null) {
             let ic_city = data.dev_address.split("-")[0]
-            let ic_states = data.dev_address.split("-")[1]
+            let ic_states = data.dev_address.split("-")[1] ?  data.dev_address.split("-")[1] : ""
             return {...data, ic_city, ic_states}
           } else {
             let ic_city = ""
@@ -712,6 +713,15 @@ export default function userReducer(state = initialState, action) {
       return {...state}
       
     case users.XLSX_PORTAL_FAILURE:
+      return {...state}
+
+    case users.HELP_CENTER_REQUEST:
+      return {...state}
+    
+    case users.HELP_CENTER_SUCCESS:
+      return {...state}
+    
+    case users.HELP_CENTER_FAILURE:
       return {...state}
 
     case users.INVOICE_USER_REQUEST:

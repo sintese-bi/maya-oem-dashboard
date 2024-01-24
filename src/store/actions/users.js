@@ -606,6 +606,33 @@ export const sendEmail = (data) => (dispatch) => {
     });
 };
 
+export const helpCenter = (params) => (dispatch) => {
+  dispatch({type: users.HELP_CENTER_REQUEST})
+  api.post("/helpcenter", params, configRequest()).then((res) => {
+    const { data } = res;
+
+    toast.success(data.message, {
+      duration: 5000,
+    });
+    
+    dispatch({
+      type: users.HELP_CENTER_SUCCESS,
+    });
+  }).catch((error) => {
+    const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido - helpCenter";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+
+      dispatch({ type: users.HELP_CENTER_FAILURE });
+  })
+
+}
+
 export const xlsxPortal = (params) => (dispatch) => {
   dispatch({type: users.XLSX_PORTAL_REQUEST})
   api.post("/xlsxportal", params, configRequest()).then((res) => {

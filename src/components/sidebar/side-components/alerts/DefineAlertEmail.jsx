@@ -40,7 +40,7 @@ export function DefineAlertEmail({
     const { email } = values;
 
     if (welcome) {
-      setSecondaryAction("DefineCapacityAndDevicesEmails");
+      setSecondaryAction("Portal");
     } else {
       setSecondaryAction("AlertsDefineComponent");
     }

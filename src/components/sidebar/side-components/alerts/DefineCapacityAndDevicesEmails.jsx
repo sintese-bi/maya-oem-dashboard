@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Backdrop,
   Box,
   Button,
@@ -73,12 +74,15 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices));
-    arrayplantsWithNoBase64.map((data) => {
-      let obj = data;
-      delete data.dev_image;
-      return obj;
-    });
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices)).map(
+      (data) => {
+        return {
+          dev_uuid: data.dev_uuid,
+          ic_city: data.ic_city,
+          ic_states: data.ic_states,
+        };
+      }
+    );
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
@@ -140,14 +144,18 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants));
-    arrayplantsWithNoBase64.map((data) => {
-      let obj = data;
-      delete data.dev_image;
-      return obj;
-    });
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
+      (data) => {
+        return {
+          dev_uuid: data.dev_uuid,
+          ic_city: data.ic_city,
+          ic_states: data.ic_states,
+        };
+      }
+    );
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
+
     dispatch(updateEmailAndCapacity({ arrayplants }));
     setOpen(false);
   }
@@ -192,9 +200,8 @@ export function DefineCapacityAndDevicesEmails({
       name: "dev_uuid",
       label: "ID do Dispositivos/usuário",
       options: {
-        display: false,
-        viewColumns: false,
-        filter: true,
+        display: "false",
+        viewColumn: "false",
       },
     },
     {

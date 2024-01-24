@@ -32,7 +32,12 @@ const validateSchema = Yup.object().shape({
   bl_password: Yup.string().required("Campo é obrigatório."),
 });
 
-export const Portal = ({ setTitle, setDescription }) => {
+export const Portal = ({
+  setTitle,
+  setDescription,
+  setSecondaryAction,
+  welcome,
+}) => {
   const { brandInfoData } = useSelector((state) => state.users);
 
   const [validationWarningState, setValidationWarningState] = useState(false);
@@ -81,6 +86,7 @@ export const Portal = ({ setTitle, setDescription }) => {
         );
       }
 
+      if (welcome) setSecondaryAction("DefineCapacityAndDevicesEmails");
       dispatch(getDashboard(useUuid, "create-devices.jsx"));
     } catch (error) {
       alert(error);
@@ -106,19 +112,25 @@ export const Portal = ({ setTitle, setDescription }) => {
 
   return (
     <FormProvider {...methods}>
-      {!validationWarningState ? (
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "start",
+          width: 680,
+        }}
+      >
         <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
           sx={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
-          <Box sx={{ width: 300 }}>
+          <Box sx={{ width: "50%" }}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <TextField
                 sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
@@ -140,7 +152,10 @@ export const Portal = ({ setTitle, setDescription }) => {
                     <MenuItem
                       key={index}
                       value={data.bl_name}
-                      sx={{ display: "flex", justifyContent: "space-between" }}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
                       {data.bl_name}
                     </MenuItem>
@@ -229,72 +244,74 @@ export const Portal = ({ setTitle, setDescription }) => {
               </Box>
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <Box>
-              <Button
-                sx={{
-                  width: "162px",
-                }}
-                type="submit"
-                variant="contained"
-              >
-                Confirmar
-              </Button>
-              <Button
-                sx={{
-                  width: "162px",
-                }}
-                onClick={() => {
-                  if (action == "createDevice") {
-                    setAction("updateDevice");
-                  } else {
-                    setAction("createDevice");
+
+          {!validationWarningState ? null : (
+            <Box sx={{ width: "40%" }}>
+              <PortalValidationState
+                setValidationWarningState={setValidationWarningState}
+              />
+            </Box>
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <Box>
+            <Button
+              sx={{
+                width: "162px",
+              }}
+              type="submit"
+              variant="contained"
+            >
+              Confirmar
+            </Button>
+            <Button
+              sx={{
+                width: "162px",
+              }}
+              onClick={() => {
+                if (action == "createDevice") {
+                  setAction("updateDevice");
+                } else {
+                  setAction("createDevice");
+                }
+              }}
+            >
+              {action == "createDevice" ? "Atualizar portal?" : "Criar portal?"}
+            </Button>
+          </Box>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Button
+              variant="contained"
+              color="success"
+              href={XLSXFile}
+              download="xslxPortais.xlsx"
+            >
+              Baixar modelo XLSX
+            </Button>
+            <Button variant="outlined" color="success" component="label">
+              Upload do arquivo
+              <Input
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files.length != 0) {
+                    const formData = new FormData();
+                    formData.append("arquivo", e.target.files[0]);
+                    formData.append("use_uuid", useUuid);
+                    dispatch(xlsxPortal(formData));
                   }
                 }}
-              >
-                {action == "createDevice"
-                  ? "Atualizar portal?"
-                  : "Criar portal?"}
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Button
-                variant="contained"
-                color="success"
-                href={XLSXFile}
-                download="xslxPortais.xlsx"
-              >
-                Baixar modelo XLSX
-              </Button>
-              <Button variant="outlined" color="success" component="label">
-                Upload do arquivo
-                <Input
-                  type="file"
-                  onChange={(e) => {
-                    if (e.target.files.length != 0) {
-                      const formData = new FormData();
-                      formData.append("arquivo", e.target.files[0]);
-                      formData.append("use_uuid", useUuid);
-                      dispatch(xlsxPortal(formData));
-                    }
-                  }}
-                  sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
-                />
-              </Button>
-            </Box>
+                sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
+              />
+            </Button>
           </Box>
         </Box>
-      ) : (
-        <PortalValidationState
-          setValidationWarningState={setValidationWarningState}
-        />
-      )}
+      </Box>
     </FormProvider>
   );
 };
