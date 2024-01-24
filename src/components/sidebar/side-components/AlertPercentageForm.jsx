@@ -53,6 +53,7 @@ import { display, style } from "@mui/system";
 import { AlertsDefineComponent } from "./alerts/AlertsDefineComponent";
 import { DefineAlertEmail } from "./alerts/DefineAlertEmail";
 import { DefineCapacityAndDevicesEmails } from "./alerts/DefineCapacityAndDevicesEmails";
+import { Portal } from "src/components/portals/Portal";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 
@@ -67,6 +68,8 @@ export default function AlertPercentageForm({
 }) {
   const dispatch = useDispatch();
   const userDevicesIsReady = localStorage.getItem("userDevicesIsReady");
+
+  const [counting, setCounting] = useState(1);
 
   const NoDevicesWarning = () => {
     return (
@@ -96,6 +99,7 @@ export default function AlertPercentageForm({
         );
         break;
       case "DefineAlertEmail":
+        setCounting(2);
         return (
           <DefineAlertEmail
             welcome={welcome}
@@ -104,9 +108,21 @@ export default function AlertPercentageForm({
             setSecondaryAction={setSecondaryAction}
           />
         );
-
         break;
+
+      case "Portal":
+        setCounting(3);
+        return (
+          <Portal
+            welcome={welcome}
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setSecondaryAction={setSecondaryAction}
+          />
+        );
+
       case "DefineCapacityAndDevicesEmails":
+        setCounting(4);
         return (
           <DefineCapacityAndDevicesEmails
             setOpen={setOpen}
@@ -126,6 +142,17 @@ export default function AlertPercentageForm({
         <>
           <Box>
             <CarousselContent />
+            <Box
+              sx={{
+                width: "100%",
+                textAlign: "center",
+                fontSize: "14px",
+                fontWeight: "bold",
+                mt: 4,
+              }}
+            >
+              {welcome ? `${counting}/4` : `${counting}/2`}
+            </Box>
           </Box>
           <Box
             sx={{

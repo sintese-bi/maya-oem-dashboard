@@ -32,7 +32,12 @@ const validateSchema = Yup.object().shape({
   bl_password: Yup.string().required("Campo é obrigatório."),
 });
 
-export const Portal = ({ setTitle, setDescription }) => {
+export const Portal = ({
+  setTitle,
+  setDescription,
+  setSecondaryAction,
+  welcome,
+}) => {
   const { brandInfoData } = useSelector((state) => state.users);
 
   const [validationWarningState, setValidationWarningState] = useState(false);
@@ -81,6 +86,7 @@ export const Portal = ({ setTitle, setDescription }) => {
         );
       }
 
+      if (welcome) setSecondaryAction("DefineCapacityAndDevicesEmails");
       dispatch(getDashboard(useUuid, "create-devices.jsx"));
     } catch (error) {
       alert(error);

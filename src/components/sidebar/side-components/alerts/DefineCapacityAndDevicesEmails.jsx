@@ -74,12 +74,15 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices));
-    arrayplantsWithNoBase64.map((data) => {
-      let obj = data;
-      delete data.dev_image;
-      return obj;
-    });
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices)).map(
+      (data) => {
+        return {
+          dev_uuid: data.dev_uuid,
+          ic_city: data.ic_city,
+          ic_states: data.ic_states,
+        };
+      }
+    );
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
@@ -141,14 +144,18 @@ export function DefineCapacityAndDevicesEmails({
     setDescription("");
     setSecondaryAction("AlertsDefineComponent");
 
-    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants));
-    arrayplantsWithNoBase64.map((data) => {
-      let obj = data;
-      delete data.dev_image;
-      return obj;
-    });
+    let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
+      (data) => {
+        return {
+          dev_uuid: data.dev_uuid,
+          ic_city: data.ic_city,
+          ic_states: data.ic_states,
+        };
+      }
+    );
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
+
     dispatch(updateEmailAndCapacity({ arrayplants }));
     setOpen(false);
   }
@@ -192,7 +199,10 @@ export function DefineCapacityAndDevicesEmails({
     {
       name: "dev_uuid",
       label: "ID do Dispositivos/usuário",
-      options: {},
+      options: {
+        display: "false",
+        viewColumn: "false",
+      },
     },
     {
       name: "dev_name",
@@ -396,7 +406,7 @@ export function DefineCapacityAndDevicesEmails({
                   sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
                 />
               </Button>
-              <Avatar
+              <img
                 src={
                   dataTable.rowData[5] !== null
                     ? dataTable.rowData[5]
