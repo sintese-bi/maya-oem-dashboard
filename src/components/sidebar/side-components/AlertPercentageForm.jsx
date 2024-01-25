@@ -71,6 +71,68 @@ export default function AlertPercentageForm({
 
   const [counting, setCounting] = useState(1);
 
+  function detectPrevious(action) {
+    if (welcome) {
+      switch (action) {
+        case "AlertsDefineComponent":
+          setSecondaryAction("AlertsDefineComponent");
+          break;
+        case "DefineAlertEmail":
+          setSecondaryAction("AlertsDefineComponent");
+          break;
+        case "Portal":
+          setSecondaryAction("DefineAlertEmail");
+          break;
+        case "DefineCapacityAndDevicesEmails":
+          setSecondaryAction("Portal");
+          break;
+      }
+    } else {
+      switch (action) {
+        case "AlertsDefineComponent":
+          setSecondaryAction("AlertsDefineComponent");
+          break;
+        case "DefineAlertEmail":
+          setSecondaryAction("AlertsDefineComponent");
+          break;
+        case "Portal":
+          setSecondaryAction("DefineAlertEmail");
+          break;
+        case "DefineCapacityAndDevicesEmails":
+          setSecondaryAction("Portal");
+          break;
+      }
+    }
+  }
+
+  function detectNext(action) {
+    if (welcome) {
+      switch (action) {
+        case "AlertsDefineComponent":
+          setSecondaryAction("DefineAlertEmail");
+          break;
+        case "DefineAlertEmail":
+          setSecondaryAction("Portal");
+          break;
+        case "Portal":
+          setSecondaryAction("DefineCapacityAndDevicesEmails");
+          break;
+        case "DefineCapacityAndDevicesEmails":
+          setSecondaryAction("DefineCapacityAndDevicesEmails");
+          break;
+      }
+    } else {
+      switch (action) {
+        case "AlertsDefineComponent":
+          setSecondaryAction("DefineAlertEmail");
+          break;
+        case "DefineAlertEmail":
+          setSecondaryAction("DefineAlertEmail");
+          break;
+      }
+    }
+  }
+
   const NoDevicesWarning = () => {
     return (
       <Card sx={{ p: 2, width: "30vw" }}>
@@ -144,40 +206,50 @@ export default function AlertPercentageForm({
             <CarousselContent />
             <Box
               sx={{
+                display: "flex",
                 width: "100%",
-                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
                 fontSize: "14px",
                 fontWeight: "bold",
                 mt: 4,
               }}
             >
-              {welcome ? `${counting}/4` : `${counting}/2`}
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              mt: 2,
-            }}
-          >
-            {/*<ArrowBackIos
-              fontSize="small"
-              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-              onClick={() =>
-                 > 0 ? ( - 1) : null
-              }
-            />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "end",
+                  alignItems: "center",
+                  width: "50%",
+                }}
+              >
+                {welcome ? `${counting}/4` : `${counting}/2`}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "end",
+                  alignItems: "center",
+                  width: "50%",
+                }}
+              >
+                <Button
+                  color="inherit"
+                  onClick={() => detectPrevious(secondaryAction)}
+                >
+                  <ArrowBackIos titleAccess="Voltar" fontSize="small" />
+                  Voltar
+                </Button>
 
-            <ArrowForwardIos
-              fontSize="small"
-              sx={{ cursor: "pointer", "&:hover": { color: "#14B8A6" } }}
-              onClick={() =>
-                 < 2 ? ( + 1) : null
-              }
-            />*/}
+                <Button
+                  color="inherit"
+                  onClick={() => detectNext(secondaryAction)}
+                >
+                  Próximo
+                  <ArrowForwardIos titleAccess="Avançar" fontSize="small" />
+                </Button>
+              </Box>
+            </Box>
           </Box>
         </>
       ) : (
