@@ -95,7 +95,9 @@ export const Portal = ({
 
   useEffect(() => {
     setTitle("Portal");
-    setDescription("");
+    setDescription(
+      "Insira suas usinas! Basta informar marca do portal do inversor, login, senha e, caso saiba, o website do portal, e se há mais de uma usina no portal."
+    );
   }, []);
 
   const [brand, setBrand] = useState(
