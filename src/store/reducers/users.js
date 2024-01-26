@@ -47,6 +47,7 @@ const initialState = {
   userDevicesIsReady: false,
   reportsCounting: 0,
   brandInfoData: [],
+  massEmailFinished: true,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -122,6 +123,8 @@ export default function userReducer(state = initialState, action) {
         loadingRegister: false,
         register: false,
       };
+
+    
 
     // GET DADOS DO USUARIO
     case users.GET_SHOW_REQUEST:
@@ -705,6 +708,18 @@ export default function userReducer(state = initialState, action) {
         ...state,
         allDevicesFromUser: [],
       };
+
+    case users.MASS_EMAIL_REQUEST:
+      return {
+        ...state,
+        massEmailFinished: false
+      }
+
+    case users.MASS_EMAIL_SUCCESS:
+      return {
+        ...state,
+        massEmailFinished: true
+      }
 
     case users.XLSX_PORTAL_REQUEST:
       return {...state}

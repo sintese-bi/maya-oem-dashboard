@@ -1,24 +1,29 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const PortalValidationState = ({ setValidationWarningState }) => {
+export const PortalValidationState = ({
+  setValidationWarningState,
+  recentPortals,
+}) => {
   const [validated, setValidated] = useState("notValidated");
 
-  const content = () => {
-    switch (validated) {
+  useEffect(() => {}, [recentPortals]);
+
+  const content = (login, validationState, bl_name) => {
+    switch (validationState) {
       case "notValidated":
         return `
-            O portal recém adicionado falhou no processo de validação! Por favor verifique o login e senha ou o portal informado e tente novamente.
+            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}",falhou no processo de validação! Por favor verifique o login e senha ou o portal informado e tente novamente.
             `;
         break;
       case "validating":
         return `
-            O portal recém adicionado está em validação. Por favor aguarde, mas fique tranquilo você pode fechar este campo e navegar pelo software, enviaremos um email quando os dados estiverem prontos..
+            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}", está em validação. Por favor aguarde, mas fique tranquilo você pode fechar este campo e navegar pelo software, enviaremos um email quando os dados estiverem prontos.
             `;
         break;
       case "validated":
         return `
-            O portal recém adicionado passou no processo de validação, você pode fechar esta tela e continuar a navegar pelo software.
+            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}", passou no processo de validação, você pode fechar esta tela e continuar a navegar pelo software.
             `;
         break;
       default:
@@ -28,19 +33,24 @@ export const PortalValidationState = ({ setValidationWarningState }) => {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Box
-        sx={{
-          mb: 2,
-          py: 2,
-          px: 1,
-          bgcolor: "whitesmoke",
-          borderRadius: "10px",
-        }}
-      >
-        <Typography variant="body" fontSize={"12px"}>
-          {content()}
-        </Typography>
-      </Box>
+      {recentPortals.map((portal, index) => {
+        return (
+          <Box
+            key={index}
+            sx={{
+              mb: 2,
+              py: 2,
+              px: 1,
+              bgcolor: "whitesmoke",
+              borderRadius: "10px",
+            }}
+          >
+            <Typography variant="body" fontSize={"12px"}>
+              {content(portal.bl_login, portal.bl_check, portal.bl_name)}
+            </Typography>
+          </Box>
+        );
+      })}
     </Box>
   );
 };

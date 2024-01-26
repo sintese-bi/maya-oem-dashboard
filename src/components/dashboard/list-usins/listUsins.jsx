@@ -3,23 +3,49 @@ import Plants from "../total-month/total-month-components/total-month-devices";
 import { TopUsins } from "../top-usins/topUsins";
 import { useSelector } from "react-redux";
 import { Cancel } from "@mui/icons-material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { callingWebWorkers } from "src/web-workers";
+import { DashboardContext } from "src/contexts/dashboard-context";
+import { set } from "react-hook-form";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
+  const { handleMassEmail } = useContext(DashboardContext);
   const [open, setOpen] = useState(false);
-  const { allDevices } = useSelector((state) => state.users);
+  const { allDevices, massEmailFinished } = useSelector((state) => state.users);
+
+  const [massEmailFinishedState, setMassEmailFinishedState] =
+    useState(massEmailFinished);
+
+  useEffect(() => {
+    setMassEmailFinishedState(massEmailFinished);
+  }, [massEmailFinished]);
+
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      <Button
-        variant="contained"
-        onClick={() => {
-          callingWebWorkers();
-        }}
-        sx={{ my: 2 }}
-      >
-        Principais usinas.
-      </Button>
+      <Box sx={{ width: "100%", display: "flex", gap: 2 }}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            callingWebWorkers();
+          }}
+          sx={{ my: 2 }}
+        >
+          Principais usinas.
+        </Button>
+        <Button
+          disabled={!massEmailFinishedState ? true : false}
+          variant="outlined"
+          color="success"
+          onClick={() => {
+            handleMassEmail();
+          }}
+          sx={{ my: 2 }}
+        >
+          {massEmailFinishedState
+            ? "Envio massivo de relatórios"
+            : "Envio de relatórios em andamento"}
+        </Button>
+      </Box>
       <Plants
         title={"Listagem de usinas"}
         data={data}

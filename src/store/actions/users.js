@@ -37,6 +37,7 @@ export const brandInfo = (params) => (dispatch) => {
   api
     .post("/brandinfo", params, configRequest())
     .then((res) => {
+      console.log(res.data.message);
       dispatch({
         type: users.GET_BRAND_INFO,
         result: res.data.message,
@@ -54,6 +55,22 @@ export const brandInfo = (params) => (dispatch) => {
       });
     });
 };
+
+export const massEmail = (params) => (dispatch) => {
+  dispatch({type: users.MASS_EMAIL_REQUEST})
+
+  api.post("/massemail", params, configRequest()).then((res) => {
+    const {data} = res
+
+    dispatch({type: users.MASS_EMAIL_SUCCESS})
+
+    toast.success(data.message, {
+      duration: 5000,
+    });
+
+    console.log(data.reports);
+  })
+}
 
 export const storeReport = (params) => (dispatch) => {
   api
