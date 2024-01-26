@@ -90,7 +90,7 @@ export const getAllDevices = (blUuids) => (dispatch) => {
   });
 };
 
-export const createDevice = (params) => (dispatch) => {
+export const createDevice = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: devices.POST_DEVICE_REQUEST });
 
   const formatBrandLogin = JSON.stringify(params.bl_login);
@@ -99,14 +99,15 @@ export const createDevice = (params) => (dispatch) => {
 
   api
     .post(`/deviceLogin`, format, configRequest())
-    .then(() => {
+    .then((res) => {
+      const { data } = res;
       toast.success(
-        "Esse processo pode demorar um pouco, mas não se preocupe lhe avisaremos assim que suas plantas estiverem disponíveis.",
+        data.message,
         {
           duration: 5000,
         }
       );
-
+      handleBrandInfoRequest()
       dispatch({
         type: devices.POST_DEVICE_SUCCESS,
       });

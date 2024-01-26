@@ -22,10 +22,11 @@ import {
   Radio,
   Input,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PortalValidationState } from "./PortalValidationState";
 
 import XLSXFile from "src/assets/xslxPortais.xlsx";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 const validateSchema = Yup.object().shape({
   bl_login: Yup.string().required("Campo é obrigatório."),
@@ -39,8 +40,10 @@ export const Portal = ({
   welcome,
 }) => {
   const { brandInfoData } = useSelector((state) => state.users);
-
+  const { handleBrandInfoRequest } = useContext(DashboardContext);
   const [validationWarningState, setValidationWarningState] = useState(false);
+
+  const [brandData, setBrandData] = useState([]);
 
   const [portalHasMoreThanOneUsin, setPortalHasMoreThanOneUsin] =
     useState("false");
@@ -63,26 +66,31 @@ export const Portal = ({
     try {
       if (action == "createDevice") {
         dispatch(
-          createDevice({
-            bl_login,
-            bl_password,
-            bl_name,
-            use_uuid: useUuid,
-            bl_url,
-            bl_quant,
-            portalHasMoreThanOneUsin,
-          })
+          createDevice(
+            {
+              bl_login,
+              bl_password,
+              bl_name,
+              use_uuid: useUuid,
+              bl_url,
+              bl_quant: portalHasMoreThanOneUsin,
+            },
+            handleBrandInfoRequest
+          )
         );
       } else {
         dispatch(
-          updateBrands({
-            bl_login,
-            bl_password,
-            bl_name,
-            use_uuid: useUuid,
-            bl_url,
-            portalHasMoreThanOneUsin,
-          })
+          updateBrands(
+            {
+              bl_login,
+              bl_password,
+              bl_name,
+              use_uuid: useUuid,
+              bl_url,
+              bl_quant: portalHasMoreThanOneUsin,
+            },
+            handleBrandInfoRequest
+          )
         );
       }
 
@@ -128,7 +136,6 @@ export const Portal = ({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -248,8 +255,9 @@ export const Portal = ({
           </Box>
 
           {!validationWarningState ? null : (
-            <Box sx={{ width: "40%" }}>
+            <Box sx={{ width: "50%", height: 300, overflow: "scroll" }}>
               <PortalValidationState
+                recentPortals={brandInfoData[1]}
                 setValidationWarningState={setValidationWarningState}
               />
             </Box>
@@ -288,12 +296,7 @@ export const Portal = ({
             </Button>
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Button
-              variant="contained"
-              color="success"
-              href={XLSXFile}
-              download="xslxPortais.xlsx"
-            >
+            <Button variant="contained" color="success">
               Baixar modelo XLSX
             </Button>
             <Button variant="outlined" color="success" component="label">

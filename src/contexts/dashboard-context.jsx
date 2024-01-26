@@ -11,6 +11,7 @@ import {
   getAllDevicesFromUser,
   getCapacities,
   getDashboard,
+  massEmail,
   reportCounting,
 } from "src/store/actions/users";
 
@@ -62,6 +63,41 @@ export const DashboardProvider = ({ children }) => {
 
   // dados para gráfico de quantidade de usinas por estado
   const [usinsByState, setUsinsByState] = useState([]);
+
+  // guardar use_uuid atual
+  const [use_uuid, set_use_uuid] = useState(userData?.useUuid);
+
+  // funções de chamada de requisição
+
+  function handleBigNumberSumRequest() {
+    dispatch(bigNumberSum(use_uuid));
+  }
+
+  function handleGetDashboardRequest() {
+    dispatch(getDashboard(use_uuid));
+  }
+
+  function handleGetAllDevicesRequest() {
+    dispatch(getAllDevices(use_uuid));
+  }
+
+  function handleGetAllDevicesFromUserRequest() {
+    dispatch(getAllDevicesFromUser({ use_uuid }));
+  }
+
+  function handleBrandInfoRequest() {
+    dispatch(brandInfo({ use_uuid }));
+  }
+
+  function handleMassEmail() {
+    dispatch(massEmail());
+  }
+
+  function handleReportCountingRequest() {
+    dispatch(reportCounting({ use_uuid }));
+  }
+
+  // funções para guardar os estados dos valores de gerações e cálculos
 
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
@@ -118,37 +154,21 @@ export const DashboardProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    dispatch(reportCounting(0));
-    if (usersAPIData.selectedUser.length != 0) {
-      dispatch(bigNumberSum(usersAPIData.selectedUser[0]?.useUuidState));
-      dispatch(
-        getDashboard(
-          usersAPIData.selectedUser[0]?.useUuidState,
-          "index.jsx - selectedUser"
-        )
-      );
-      dispatch(
-        getAllDevices(
-          usersAPIData.selectedUser[0]?.useUuidState,
-          "index.jsx - normal"
-        )
-      );
-      dispatch(
-        getAllDevicesFromUser({
-          use_uuid: usersAPIData.selectedUser[0]?.useUuidState,
-        })
-      );
-      dispatch(
-        brandInfo({ use_uuid: usersAPIData.selectedUser[0]?.useUuidState })
-      );
-    } else {
-      dispatch(bigNumberSum(userData?.useUuid));
-      dispatch(getDashboard(userData?.useUuid, "index.jsx - normal"));
-      dispatch(getAllDevices(userData?.useUuid, "index.jsx - normal"));
-      dispatch(getAllDevicesFromUser({ use_uuid: userData?.useUuid }));
-      dispatch(brandInfo({ use_uuid: userData?.useUuid }));
-    }
+    set_use_uuid(
+      usersAPIData.selectedUser.length != 0
+        ? usersAPIData.selectedUser[0]?.useUuidState
+        : userData?.useUuid
+    );
   }, [userData?.useUuid, usersAPIData.selectedUser]);
+
+  useEffect(() => {
+    handleBigNumberSumRequest();
+    handleGetDashboardRequest();
+    handleGetAllDevicesRequest();
+    handleGetAllDevicesFromUserRequest();
+    handleBrandInfoRequest();
+    handleReportCountingRequest();
+  }, [use_uuid]);
 
   useEffect(() => {
     dispatch(getCapacities(usersAPIData.blUuids));
@@ -284,6 +304,8 @@ export const DashboardProvider = ({ children }) => {
         handleGenerationLastDayValues,
         handleGenerationFilteredValues,
         handleAdminReportGeneration,
+        handleBrandInfoRequest,
+        handleMassEmail,
       }}
     >
       {children}
