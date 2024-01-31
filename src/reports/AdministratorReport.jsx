@@ -119,6 +119,8 @@ export const AdministratorReport = () => {
   const realData = reportAdministrator.graphData.realGeneration;
   const estimatedData = reportAdministrator.graphData.estimatedGeneration;
 
+  console.log(reportAdministrator.graphData);
+
   const sortedDates = Object.keys(
     reportAdministrator.graphData.realGeneration
   ).sort((a, b) => new Date(a) - new Date(b));
@@ -400,7 +402,7 @@ export const AdministratorReport = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      gap: 2,
+                      gap: 1,
                       flexDirection: "row",
                     }}
                   >
@@ -439,13 +441,14 @@ export const AdministratorReport = () => {
                       </View>
                       <View
                         style={{
-                          width: "4%",
+                          width: "30px",
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
                           flexDirection: "column",
                           marginTop: "auto",
                           height: `${yAxis + 42}px`,
+                          borderRight: "1px solid #545353",
                         }}
                       >
                         {result.reverse().map((data, index) => (
@@ -463,7 +466,7 @@ export const AdministratorReport = () => {
                     <View
                       style={{
                         width: "96%",
-                        height: "120px",
+                        height: "130px",
                         display: "flex",
                         gap: 8,
                         flexDirection: "row",
@@ -532,15 +535,27 @@ export const AdministratorReport = () => {
                       )}
                     </View>
                   </View>
-                  <Text
+                  <View
                     style={{
-                      fontWeight: "bold",
-                      fontSize: "10px",
-                      marginTop: "26px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "42px",
+                      borderTop: "1px solid #545353",
+                      width: "80%",
+                      height: "60px",
                     }}
                   >
-                    {`Dias`}
-                  </Text>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "10px",
+                      }}
+                    >
+                      {`Dias`}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>

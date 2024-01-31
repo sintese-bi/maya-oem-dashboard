@@ -2,7 +2,10 @@ import moment from "moment";
 import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { brazilStates } from "src/constants/states";
-import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
+import {
+  reportAdministrator,
+  reportAdministratorRule,
+} from "src/reports/reportsRules/reportAdministratorRule";
 import { getUserCookie } from "src/services/session";
 import { bigNumberSum } from "src/store/actions/devices";
 import {
@@ -122,7 +125,7 @@ export const DashboardProvider = ({ children }) => {
     let startDateReport = moment(startDate).format("YYYY-MM-DD");
     let endDateReport = moment(endDate).format("YYYY-MM-DD");
     reportAdministratorRule(
-      usersAPIData.graphData,
+      devicesAPIData.bignumbersumValues,
       usersAPIData.capacity,
       realGenerationTotal,
       estimatedGenerationTotal,
