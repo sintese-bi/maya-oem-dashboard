@@ -61,7 +61,7 @@ export const massEmail = (params) => (dispatch) => {
 
   api.post("/massemail", params, configRequest()).then((res) => {
     const {data} = res
-
+    console.log(data);
     dispatch({type: users.MASS_EMAIL_SUCCESS})
 
     toast.success(data.message, {
