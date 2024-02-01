@@ -40,7 +40,8 @@ export const Portal = ({
   welcome,
 }) => {
   const { brandInfoData } = useSelector((state) => state.users);
-  const { handleBrandInfoRequest } = useContext(DashboardContext);
+  const { handleBrandInfoRequest, handleMassEmail } =
+    useContext(DashboardContext);
   const [validationWarningState, setValidationWarningState] = useState(false);
 
   const [brandData, setBrandData] = useState([]);
@@ -62,7 +63,8 @@ export const Portal = ({
   });
 
   async function onSubmit(values) {
-    const { bl_login, bl_password, bl_name, bl_url, bl_quant } = values;
+    const { bl_login, bl_password, bl_name, bl_quant } = values;
+
     try {
       if (action == "createDevice") {
         dispatch(
@@ -72,7 +74,7 @@ export const Portal = ({
               bl_password,
               bl_name,
               use_uuid: useUuid,
-              bl_url,
+
               bl_quant: portalHasMoreThanOneUsin,
             },
             handleBrandInfoRequest
@@ -86,7 +88,7 @@ export const Portal = ({
               bl_password,
               bl_name,
               use_uuid: useUuid,
-              bl_url,
+
               bl_quant: portalHasMoreThanOneUsin,
             },
             handleBrandInfoRequest
@@ -186,15 +188,6 @@ export const Portal = ({
                 error={!!errors.bl_password}
                 helperText={errors.bl_password?.message}
               />
-              <TextField
-                margin="normal"
-                label="Website do portal"
-                value={brand.bl_url}
-                {...register("bl_url")}
-                error={!!errors.bl_url}
-                helperText={errors.bl_url?.message}
-              />
-
               <Box
                 sx={{
                   display: "flex",
