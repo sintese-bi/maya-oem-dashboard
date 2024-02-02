@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ChartsDashboard } from "../../shared/Charts";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+//import { PDFDownloadLink } from "@react-pdf/renderer";
 import Carousel from "react-material-ui-carousel";
 import * as Yup from "yup";
 

@@ -149,27 +149,7 @@ export const GenerationHeader = ({
               >
                 Preparar relatório
               </Button>
-            ) : (
-              <PDFDownloadLink
-                document={<ClientReport />}
-                fileName="relatório-cliente.pdf"
-                style={{ textDecoration: "none", height: "100%" }}
-              >
-                {({ blob, url, loading, error }) =>
-                  loading ? (
-                    "Carregando relatório..."
-                  ) : (
-                    <Button
-                      startIcon={<DownloadForOffline fontSize="small" />}
-                      variant={useTypeMember ? "outlined" : ""}
-                      sx={{ width: "100%" }}
-                    >
-                      Relatório Cliente
-                    </Button>
-                  )
-                }
-              </PDFDownloadLink>
-            )
+            ) : null
           ) : (
             "Relatório indisponível"
           )}
