@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+//import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
 import { Report } from "src/reports/Report";
 import { reportClientRule } from "src/reports/reportsRules/reportClientRule";
