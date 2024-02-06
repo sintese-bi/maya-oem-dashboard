@@ -33,7 +33,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           Principais usinas.
         </Button>
         <Button
-          disabled={true}
+          disabled={massEmailFinishedState ? false : true}
           variant="outlined"
           color="success"
           onClick={() => {
@@ -41,7 +41,9 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           }}
           sx={{ my: 2 }}
         >
-          {"Função em estado de desenvolvimento."}
+          {massEmailFinishedState
+            ? "Envio massivo de relatórios"
+            : "Envio de relatórios em andamento"}
         </Button>
       </Box>
       <Plants

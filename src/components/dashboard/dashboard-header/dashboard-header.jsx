@@ -64,8 +64,7 @@ export const DashboardHeader = ({
                 Preparar relatório
               </Button>
             ) : (
-              {
-                /*<PDFDownloadLink
+              <PDFDownloadLink
                 document={<AdministratorReport />}
                 fileName="relatório-admnistrador.pdf"
                 style={{ textDecoration: "none", height: "100%" }}
@@ -84,8 +83,6 @@ export const DashboardHeader = ({
                   )
                 }
               </PDFDownloadLink>
-              */
-              }
             )
           ) : (
             "Relatório indisponível"

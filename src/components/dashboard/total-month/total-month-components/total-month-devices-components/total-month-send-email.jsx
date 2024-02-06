@@ -360,7 +360,29 @@ export const SendEmail = ({
               gap: 2,
               width: "100%",
             }}
-          ></Box>
+          >
+            <BlobProvider document={DeviceReport()}>
+              {({ blob, url, loading, error }) => {
+                return (
+                  <>
+                    <iframe src={url}></iframe>
+                    <Button
+                      disabled={loading ? true : false}
+                      onClick={() => {
+                        const reader = new FileReader();
+                        reader.addEventListener("loadend", () => {
+                          handleDeleteDevice(reader.result);
+                        });
+                        reader.readAsDataURL(blob);
+                      }}
+                    >
+                      {loading ? "Liberando relatório" : "Enviar relatório"}
+                    </Button>
+                  </>
+                );
+              }}
+            </BlobProvider>
+          </Box>
         );
         break;
     }

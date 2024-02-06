@@ -252,6 +252,7 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {}, [usersAPIData.selectedUser]);
 
   useEffect(() => {
+    console.log(devicesAPIData.bignumbersumValues);
     if (devicesAPIData.bignumbersumValues.somaPorDiaReal !== undefined) {
       let lastRealGenerationDay =
         devicesAPIData.bignumbersumValues.somaPorDiaReal[
@@ -266,6 +267,8 @@ export const DashboardProvider = ({ children }) => {
         (lastRealGenerationDay / lastEstimatedGenerationDay) *
         100
       ).toFixed();
+
+      console.log(lastRealGenerationDay, lastEstimatedGenerationDay);
 
       handleGenerationLastDayValues({
         realGenerationLastDay: lastRealGenerationDay.toFixed(2),
