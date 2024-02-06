@@ -33,7 +33,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           Principais usinas.
         </Button>
         <Button
-          disabled={!massEmailFinishedState ? true : false}
+          disabled={massEmailFinishedState ? false : true}
           variant="outlined"
           color="success"
           onClick={() => {

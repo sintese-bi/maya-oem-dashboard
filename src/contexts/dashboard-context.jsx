@@ -2,7 +2,10 @@ import moment from "moment";
 import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { brazilStates } from "src/constants/states";
-import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
+import {
+  reportAdministrator,
+  reportAdministratorRule,
+} from "src/reports/reportsRules/reportAdministratorRule";
 import { getUserCookie } from "src/services/session";
 import { bigNumberSum } from "src/store/actions/devices";
 import {
@@ -122,7 +125,7 @@ export const DashboardProvider = ({ children }) => {
     let startDateReport = moment(startDate).format("YYYY-MM-DD");
     let endDateReport = moment(endDate).format("YYYY-MM-DD");
     reportAdministratorRule(
-      usersAPIData.graphData,
+      devicesAPIData.bignumbersumValues,
       usersAPIData.capacity,
       realGenerationTotal,
       estimatedGenerationTotal,
@@ -249,6 +252,7 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {}, [usersAPIData.selectedUser]);
 
   useEffect(() => {
+    console.log(devicesAPIData.bignumbersumValues);
     if (devicesAPIData.bignumbersumValues.somaPorDiaReal !== undefined) {
       let lastRealGenerationDay =
         devicesAPIData.bignumbersumValues.somaPorDiaReal[
@@ -263,6 +267,8 @@ export const DashboardProvider = ({ children }) => {
         (lastRealGenerationDay / lastEstimatedGenerationDay) *
         100
       ).toFixed();
+
+      console.log(lastRealGenerationDay, lastEstimatedGenerationDay);
 
       handleGenerationLastDayValues({
         realGenerationLastDay: lastRealGenerationDay.toFixed(2),

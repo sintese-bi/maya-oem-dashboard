@@ -39,7 +39,7 @@ export function reportAdministratorRule(
   });
 
   reportAdministrator.graphData["realGeneration"] =
-    graphData.data.somaPorDiaReal;
+    graphData.realGeneration;
 
   reportAdministrator.generationRealTotalValue = numbers(
     realGeneration.toFixed(2),
@@ -52,7 +52,7 @@ export function reportAdministratorRule(
   });
 
   reportAdministrator.graphData["estimatedGeneration"] =
-    graphData.data.somaPorDiaEstimada;
+    graphData.estimatedGeneration;
 
   reportAdministrator.generationEstimatedTotalValue = numbers(
     estimatedGeneration.toFixed(2),

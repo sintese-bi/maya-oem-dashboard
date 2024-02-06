@@ -59,9 +59,9 @@ export const brandInfo = (params) => (dispatch) => {
 export const massEmail = (params) => (dispatch) => {
   dispatch({type: users.MASS_EMAIL_REQUEST})
 
-  api.post("/massemail", params, configRequest()).then((res) => {
+  api.get("/massemail", params, configRequest()).then((res) => {
     const {data} = res
-
+    console.log(data);
     dispatch({type: users.MASS_EMAIL_SUCCESS})
 
     toast.success(data.message, {

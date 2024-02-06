@@ -35,9 +35,8 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     .post("/bignumbersum", { use_uuid }, configRequest())
     .then((res) => {
       const { data } = res;
-      toast.success(`${data.message}`, {
-        duration: 5000,
-      });
+
+      console.log(data)
 
       dispatch({ type: devices.GET_BIG_NUMBER_SUCCESS, result: data });
     })

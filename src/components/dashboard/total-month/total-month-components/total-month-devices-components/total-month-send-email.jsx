@@ -363,50 +363,23 @@ export const SendEmail = ({
           >
             <BlobProvider document={DeviceReport()}>
               {({ blob, url, loading, error }) => {
-                // Do whatever you need with blob here
-                if (blob !== null) {
-                  var reader = new FileReader();
-                  reader.readAsDataURL(blob);
-
-                  return (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: 2,
-                        width: "100%",
-                      }}
-                    >
-                      <PDFViewer width="100%" height="200px">
-                        <DeviceReport />
-                      </PDFViewer>
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
+                return (
+                  <>
+                    <iframe src={url}></iframe>
+                    <Button
+                      disabled={loading ? true : false}
+                      onClick={() => {
+                        const reader = new FileReader();
+                        reader.addEventListener("loadend", () => {
                           handleDeleteDevice(reader.result);
-                        }}
-                      >
-                        Enviar relatório
-                      </Button>
-                    </Box>
-                  );
-                } else {
-                  return (
-                    <Box
-                      sx={{
-                        width: "100%",
-                        height: "100px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        });
+                        reader.readAsDataURL(blob);
                       }}
                     >
-                      <CircularProgress color="inherit" />
-                    </Box>
-                  );
-                }
+                      {loading ? "Liberando relatório" : "Enviar relatório"}
+                    </Button>
+                  </>
+                );
               }}
             </BlobProvider>
           </Box>

@@ -1,6 +1,6 @@
 // IMPORTS
 import moment from "moment-timezone";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   handleMonthFilter,
   handleQuinzenaFilter,
@@ -41,6 +41,7 @@ import { Container } from "@mui/system";
 import NoData from "../../assets/img/illustrations/no-data.svg";
 import { TabPanel } from "../TabPanel";
 import { brazilStates } from "src/constants/states";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 ChartJS.register(
   CategoryScale,
