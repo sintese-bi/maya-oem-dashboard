@@ -173,21 +173,8 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                 alignItems: "center",
                 flexWrap: "wrap",
               }}
-              variant="subtitle1"
             >
               {renderStageItems()}
-            </Typography>
-
-            <Box
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                borderLeft: `1px solid ${theme.palette.divider}`,
-                display: "flex",
-                ml: 3,
-              }}
-            >
               {sideState ? (
                 <Close
                   sx={{
@@ -213,9 +200,18 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                   }}
                 />
               )}
+            </Typography>
 
+            <Box
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                borderLeft: `1px solid ${theme.palette.divider}`,
+                display: "flex",
+              }}
+            >
               <Close />
-
               {renderNavItems()}
             </Box>
           </Box>

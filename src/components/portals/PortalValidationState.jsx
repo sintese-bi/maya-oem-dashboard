@@ -7,7 +7,9 @@ export const PortalValidationState = ({
 }) => {
   const [validated, setValidated] = useState("notValidated");
 
-  useEffect(() => {}, [recentPortals]);
+  useEffect(() => {
+    console.log(recentPortals);
+  }, [recentPortals]);
 
   const content = (login, validationState, bl_name) => {
     switch (validationState) {
@@ -46,7 +48,11 @@ export const PortalValidationState = ({
             }}
           >
             <Typography variant="body" fontSize={"12px"}>
-              {content(portal.bl_login, portal.bl_check, portal.bl_name)}
+              {content(
+                portal.bl_login,
+                portal.bl_check,
+                portal.bl_name.toLowerCase()
+              )}
             </Typography>
           </Box>
         );

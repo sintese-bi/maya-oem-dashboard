@@ -1,5 +1,6 @@
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import "./side.css";
 import {
   getUserCookie,
   removeUserCookie,
@@ -321,7 +322,7 @@ export const Side = ({ sideState, setSideState }) => {
   }
 
   return (
-    <Drawer variant="permanent" anchor="left" sx={{}}>
+    <Drawer variant="permanent" anchor="left" id="sidebar">
       <Toolbar />
       <Box
         sx={{

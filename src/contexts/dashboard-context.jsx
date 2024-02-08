@@ -253,13 +253,13 @@ export const DashboardProvider = ({ children }) => {
 
   useEffect(() => {
     console.log(devicesAPIData.bignumbersumValues);
-    if (devicesAPIData.bignumbersumValues.somaPorDiaReal !== undefined) {
+    if (devicesAPIData.bignumbersumValues.realGeneration !== undefined) {
       let lastRealGenerationDay =
-        devicesAPIData.bignumbersumValues.somaPorDiaReal[
+        devicesAPIData.bignumbersumValues.realGeneration[
           `${moment().format("YYYY-MM-DD")}`
         ];
       let lastEstimatedGenerationDay =
-        devicesAPIData.bignumbersumValues.somaPorDiaEstimada[
+        devicesAPIData.bignumbersumValues.estimatedGeneration[
           `${moment().format("YYYY-MM-DD")}`
         ];
 

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  Grid,
   MenuItem,
   TextField,
   Typography,
@@ -122,19 +123,14 @@ export const PeriodDataUsins = ({
         startDate={startDate}
         endDate={endDate}
       />
-      <Box
+      <Grid
+        container
+        spacing={4}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          width: "100%",
-          overflow: "scroll",
-
           px: 2,
-          gap: 8,
         }}
       >
-        <Box sx={{ width: "70%" }}>
+        <Grid item lg={8} md={8} sm={12} xs={12}>
           <ChartsDashboard
             startDate={startDate}
             endDate={endDate}
@@ -143,8 +139,13 @@ export const PeriodDataUsins = ({
             isLoading={isLoadingGraph}
             adminGraphRef={adminGraphRef}
           />
-        </Box>
-        <Box
+        </Grid>
+        <Grid
+          lg={4}
+          md={4}
+          sm={12}
+          xs={12}
+          item
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -174,8 +175,8 @@ export const PeriodDataUsins = ({
             useTypeMember={useTypeMember}
             handleAdminReportGeneration={handleAdminReportGeneration}
           />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </Card>
   );
 };

@@ -37,7 +37,6 @@ export const brandInfo = (params) => (dispatch) => {
   api
     .post("/brandinfo", params, configRequest())
     .then((res) => {
-      console.log(res.data.message);
       dispatch({
         type: users.GET_BRAND_INFO,
         result: res.data.message,
@@ -57,20 +56,20 @@ export const brandInfo = (params) => (dispatch) => {
 };
 
 export const massEmail = (params) => (dispatch) => {
-  dispatch({type: users.MASS_EMAIL_REQUEST})
+  dispatch({ type: users.MASS_EMAIL_REQUEST });
 
   api.get("/massemail", params, configRequest()).then((res) => {
-    const {data} = res
+    const { data } = res;
     console.log(data);
-    dispatch({type: users.MASS_EMAIL_SUCCESS})
+    dispatch({ type: users.MASS_EMAIL_SUCCESS });
 
     toast.success(data.message, {
       duration: 5000,
     });
 
     console.log(data.reports);
-  })
-}
+  });
+};
 
 export const storeReport = (params) => (dispatch) => {
   api
@@ -624,57 +623,64 @@ export const sendEmail = (data) => (dispatch) => {
 };
 
 export const helpCenter = (params) => (dispatch) => {
-  dispatch({type: users.HELP_CENTER_REQUEST})
-  api.post("/helpcenter", params, configRequest()).then((res) => {
-    const { data } = res;
+  dispatch({ type: users.HELP_CENTER_REQUEST });
+  api
+    .post("/helpcenter", params, configRequest())
+    .then((res) => {
+      const { data } = res;
 
-    toast.success(data.message, {
-      duration: 5000,
-    });
-    
-    dispatch({
-      type: users.HELP_CENTER_SUCCESS,
-    });
-  }).catch((error) => {
-    const { response: err } = error;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      dispatch({
+        type: users.HELP_CENTER_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
       console.log(error);
 
-      const message = err && err.data ? err.data.message : "Erro desconhecido - helpCenter";
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - helpCenter";
 
       toast.error(message, {
         duration: 5000,
       });
 
       dispatch({ type: users.HELP_CENTER_FAILURE });
-  })
-
-}
+    });
+};
 
 export const xlsxPortal = (params) => (dispatch) => {
-  dispatch({type: users.XLSX_PORTAL_REQUEST})
-  api.post("/xlsxportal", params, configRequest()).then((res) => {
-    const { data } = res;
+  dispatch({ type: users.XLSX_PORTAL_REQUEST });
+  api
+    .post("/xlsxportal", params, configRequest())
+    .then((res) => {
+      const { data } = res;
 
       toast.success(data.message, {
         duration: 5000,
       });
-      
+
       dispatch({
         type: users.XLSX_PORTAL_SUCCESS,
       });
-  }).catch((error) => {
-    const { response: err } = error;
+    })
+    .catch((error) => {
+      const { response: err } = error;
       console.log(error);
 
-      const message = err && err.data ? err.data.message : "Erro desconhecido - xlsxPortal";
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - xlsxPortal";
 
       toast.error(message, {
         duration: 5000,
       });
 
       dispatch({ type: users.XLSX_PORTAL_FAILURE });
-  })
-}
+    });
+};
 
 export const passwordRecovery = (params) => (dispatch) => {
   dispatch({ type: users.RECOVER_PASSWORD_REQUEST });
