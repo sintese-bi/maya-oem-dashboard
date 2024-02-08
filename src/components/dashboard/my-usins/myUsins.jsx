@@ -6,7 +6,7 @@ import {
   SolarPower,
   Wifi,
 } from "@mui/icons-material";
-import { Card, Typography, Box } from "@mui/material";
+import { Card, Typography, Box, Grid } from "@mui/material";
 import { ChartUsinsBystate } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
 
@@ -26,22 +26,24 @@ export const MyUsins = ({
   handleChangeColumns,
 }) => {
   return (
-    <Card
+    <Grid
+      component={Card}
+      container
       sx={{
         width: "100%",
         py: 4,
         pl: 4,
         pr: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 2,
       }}
+      spacing={1}
     >
-      <Box
+      <Grid
+        item
+        sm={12}
+        md={12}
+        lg={6}
         sx={{
           display: "flex",
-          gap: 2,
           flexDirection: "row",
         }}
       >
@@ -263,14 +265,21 @@ export const MyUsins = ({
             <ReportProblem fontSize="small" sx={{ ml: 2 }} />
           </Typography>
         </Box>
-      </Box>
+      </Grid>
 
-      <Box sx={{ width: "50%", height: 240 }}>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={12}
+        lg={6}
+        sx={{ width: "50%", height: 240 }}
+      >
         <ChartUsinsBystate
           usinsByState={usinsByState}
           handleChangeColumns={handleChangeColumns}
         />
-      </Box>
-    </Card>
+      </Grid>
+    </Grid>
   );
 };

@@ -106,20 +106,13 @@ export default function Dashboard() {
 
   return (
     <>
-      <Grid
-        container
-        spacing={4}
-        sx={{
-          width: "89vw",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: 6,
-        }}
-      >
+      <Grid container spacing={4} sx={{ marginTop: 2 }}>
         <Grid
           item
-          xs={6}
+          xs={12}
+          md={12}
+          sm={12}
+          lg={6}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -158,7 +151,7 @@ export default function Dashboard() {
             treesSavedTotal={treesSavedTotal}
           />
         </Grid>
-        <Grid item xs={6} sx={{ height: 620 }}>
+        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 620 }}>
           <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
 
@@ -189,7 +182,7 @@ export default function Dashboard() {
         container
         spacing={2}
         sx={{
-          width: "89vw",
+          width: "100%",
           display: "flex",
           alignItems: "center",
           mb: 6,
@@ -199,7 +192,7 @@ export default function Dashboard() {
       </Grid>
       <Box
         sx={{
-          width: "89vw",
+          width: "100%",
           display: "flex",
           alignItems: "center",
           flexDirection: "column",
