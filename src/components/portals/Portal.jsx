@@ -75,7 +75,10 @@ export const Portal = ({
               bl_name,
               use_uuid: useUuid,
 
-              bl_quant: portalHasMoreThanOneUsin,
+              bl_quant:
+                portalHasMoreThanOneUsin == "true"
+                  ? parseFloat("1")
+                  : parseFloat("2"),
             },
             handleBrandInfoRequest
           )
@@ -89,7 +92,7 @@ export const Portal = ({
               bl_name,
               use_uuid: useUuid,
 
-              bl_quant: portalHasMoreThanOneUsin,
+              bl_quant: portalHasMoreThanOneUsin == "true" ? 1 : 2,
             },
             handleBrandInfoRequest
           )

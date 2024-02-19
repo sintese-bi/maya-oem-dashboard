@@ -832,11 +832,9 @@ export const deleteUser = (params) => (dispatch) => {
 
 export const updateBrands = (params) => (dispatch) => {
   dispatch({ type: users.UPDATE_BRAND });
-  const formatBrandLogin = JSON.stringify(params.bl_login);
-  delete params.bl_login;
-  const format = { ...params, bl_login: formatBrandLogin };
+
   api
-    .post("/updatebrands", format, configRequest())
+    .post("/updatebrands", params, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {

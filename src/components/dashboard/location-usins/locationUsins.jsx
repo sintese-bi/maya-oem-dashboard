@@ -33,7 +33,7 @@ export const LocationUsins = ({ allDevices }) => {
       center={[-19.9678, -44.1983]}
       zoom={10}
       scrollWheelZoom={false}
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", zIndex: 1 }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
