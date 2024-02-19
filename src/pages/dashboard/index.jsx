@@ -115,8 +115,9 @@ export default function Dashboard() {
           lg={6}
           sx={{
             display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             flexDirection: "column",
-            justifyContent: "space-between",
             gap: 2,
             height: "100%",
           }}

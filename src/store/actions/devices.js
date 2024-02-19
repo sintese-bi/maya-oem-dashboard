@@ -36,7 +36,7 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     .then((res) => {
       const { data } = res;
 
-      console.log(data)
+      console.log(data);
 
       dispatch({ type: devices.GET_BIG_NUMBER_SUCCESS, result: data });
     })
@@ -92,21 +92,14 @@ export const getAllDevices = (blUuids) => (dispatch) => {
 export const createDevice = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: devices.POST_DEVICE_REQUEST });
 
-  const formatBrandLogin = JSON.stringify(params.bl_login);
-  delete params.bl_login;
-  const format = { ...params, bl_login: formatBrandLogin };
-
   api
-    .post(`/deviceLogin`, format, configRequest())
+    .post(`/deviceLogin`, params, configRequest())
     .then((res) => {
       const { data } = res;
-      toast.success(
-        data.message,
-        {
-          duration: 5000,
-        }
-      );
-      handleBrandInfoRequest()
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      handleBrandInfoRequest();
       dispatch({
         type: devices.POST_DEVICE_SUCCESS,
       });
