@@ -58,17 +58,29 @@ export const brandInfo = (params) => (dispatch) => {
 export const massEmail = (params) => (dispatch) => {
   dispatch({ type: users.MASS_EMAIL_REQUEST });
 
-  api.get("/massemail", params, configRequest()).then((res) => {
-    const { data } = res;
-    console.log(data);
-    dispatch({ type: users.MASS_EMAIL_SUCCESS });
+  api
+    .get("/massemail", configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({ type: users.MASS_EMAIL_SUCCESS });
 
-    toast.success(data.message, {
-      duration: 5000,
+      toast.success(data.message, {
+        duration: 5000,
+      });
+
+      console.log(data.reports);
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - brandInfo";
+
+      toast.error(message, {
+        duration: 5000,
+      });
     });
-
-    console.log(data.reports);
-  });
 };
 
 export const storeReport = (params) => (dispatch) => {
