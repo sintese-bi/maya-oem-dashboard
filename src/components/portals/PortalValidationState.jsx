@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export const PortalValidationState = ({
@@ -14,19 +14,43 @@ export const PortalValidationState = ({
   const content = (login, validationState, bl_name) => {
     switch (validationState) {
       case "notValidated":
-        return `
-            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}",falhou no processo de validação! Por favor verifique o login e senha ou o portal informado e tente novamente.
-            `;
+        return (
+          <Typography variant="body" fontSize={"12px"}>
+            O portal recém adicionado de login {login}, e de brand{" "}
+            {bl_name.toLowerCase()},falhou no processo de validação! Por favor
+            verifique o login e senha ou o portal informado e tente novamente.
+          </Typography>
+        );
         break;
       case "validating":
-        return `
-            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}", está em validação. Por favor aguarde, mas fique tranquilo você pode fechar este campo e navegar pelo software, enviaremos um email quando os dados estiverem prontos.
-            `;
+        return (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography variant="body" fontSize={"12px"}>
+              O portal recém adicionado de login {login}, e de brand{" "}
+              {bl_name.toLowerCase()}, está em validação. Por favor aguarde, mas
+              fique tranquilo você pode fechar este campo e navegar pelo
+              software, enviaremos um email quando os dados estiverem prontos.
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress size={20} color="inherit" />
+            </Box>
+          </Box>
+        );
         break;
       case "validated":
-        return `
-            O portal recém adicionado de login ${login}, e de brand "${bl_name.toLowerCase()}", passou no processo de validação, você pode fechar esta tela e continuar a navegar pelo software.
-            `;
+        return (
+          <Typography variant="body" fontSize={"12px"}>
+            O portal recém adicionado de login {login}, e de brand{" "}
+            {bl_name.toLowerCase()}, passou no processo de validação, você pode
+            fechar esta tela e continuar a navegar pelo software.
+          </Typography>
+        );
         break;
       default:
         break;
@@ -40,6 +64,9 @@ export const PortalValidationState = ({
           <Box
             key={index}
             sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
               mb: 2,
               py: 2,
               px: 1,
@@ -47,13 +74,17 @@ export const PortalValidationState = ({
               borderRadius: "10px",
             }}
           >
-            <Typography variant="body" fontSize={"12px"}>
-              {content(
-                portal.bl_login,
-                portal.bl_check,
-                portal.bl_name.toLowerCase()
-              )}
-            </Typography>
+            {content(
+              portal.bl_login,
+              portal.bl_check,
+              portal.bl_name.toLowerCase()
+            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            ></Box>
           </Box>
         );
       })}

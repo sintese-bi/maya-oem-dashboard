@@ -94,6 +94,7 @@ export const DashboardProvider = ({ children }) => {
 
   function handleMassEmail() {
     dispatch(massEmail());
+    handleReportCountingRequest();
   }
 
   function handleReportCountingRequest() {

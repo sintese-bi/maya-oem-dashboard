@@ -22,18 +22,26 @@ import { ModalPlantsGraph } from "../dashboard/total-month/total-month-component
 
 export const Reports = ({ setTitle, setDescription }) => {
   const {
+    handleMassEmail,
     handleAdminReportGeneration,
     isLoadingReportGeneration,
     userData,
     usersAPIData,
   } = useContext(DashboardContext);
 
-  const { allDevices } = useSelector((state) => state.users);
+  const { allDevices, massEmailFinished } = useSelector((state) => state.users);
+
   const [data, setData] = useState([]);
+  const [massEmailFinishedState, setMassEmailFinishedState] =
+    useState(massEmailFinished);
 
   useEffect(() => {
     setData(allDevices);
   }, [allDevices]);
+
+  useEffect(() => {
+    setMassEmailFinishedState(massEmailFinished);
+  }, [massEmailFinished]);
 
   useEffect(() => {
     setTitle("Relatórios");
@@ -404,11 +412,29 @@ export const Reports = ({ setTitle, setDescription }) => {
           Contagem de relatórios:{" "}
           {`${usersAPIData.reportsCounting}/${usersAPIData.allDevices.length}`}
         </Typography>
-        <ReportButton
-          handleAdminReportGeneration={handleAdminReportGeneration}
-          isLoadingReportGeneration={isLoadingReportGeneration}
-          useTypeMember={userData.useTypeMember}
-        />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Tooltip title="Essa funcionalidade envia relatório para todos os clientes com e-mail cadastrado em 'relatório mensal'.">
+              <Info fontSize="small" />
+            </Tooltip>
+            <Button
+              disabled={!massEmailFinishedState ? true : false}
+              variant="outlined"
+              color="success"
+              onClick={() => {
+                handleMassEmail();
+              }}
+              sx={{ height: "100%" }}
+            >
+              {"Envio massivo de relatórios"}
+            </Button>
+          </Box>
+          <ReportButton
+            handleAdminReportGeneration={handleAdminReportGeneration}
+            isLoadingReportGeneration={isLoadingReportGeneration}
+            useTypeMember={userData.useTypeMember}
+          />
+        </Box>
       </Box>
       <Box sx={{ height: 300 }}>
         <MUIDataTable

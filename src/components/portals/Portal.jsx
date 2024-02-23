@@ -101,6 +101,9 @@ export const Portal = ({
 
       if (welcome) setSecondaryAction("DefineCapacityAndDevicesEmails");
       dispatch(getDashboard(useUuid, "create-devices.jsx"));
+
+      setValue("bl_login", "");
+      setValue("bl_password", "");
     } catch (error) {
       alert(error);
     }
