@@ -15,9 +15,11 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
+  Divider,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { concessionaries } from "src/utils/concessionaries";
+import MUIDataTable from "mui-datatables";
 
 const validateSchema = Yup.object().shape({
   voice_login: Yup.string().required("Campo é obrigatório."),
@@ -40,6 +42,42 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
     mode: "onChange",
     resolver: yupResolver(validateSchema),
   });
+
+  const columns = [
+    {
+      name: "uc_number",
+      label: "Número da UC",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "compt_boleto",
+      label: "Compt. Boleto",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "energy_compensed",
+      label: "Energia Compensada (kWh)",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+  ];
+
+  const options = {
+    filter: true,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 50, 100, 200, 300],
+    filterType: "dropdown",
+    responsive: "simple",
+    selectableRows: "none",
+  };
 
   async function onSubmit(values) {
     const {
@@ -80,12 +118,15 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          height: "60vh",
           gap: 10,
-          width: 664,
+          width: "90vw",
+          overflow: "scroll",
         }}
       >
         <Box
           sx={{
+            width: 600,
             display: "flex",
             gap: 10,
             flexDirection: "row",
@@ -168,6 +209,12 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
             Confirmar
           </Button>
         </Box>
+        <Divider variant="middle" />
+        <MUIDataTable
+          columns={columns}
+          options={options}
+          title={<Typography variant="h3">Faturas</Typography>}
+        />
       </Box>
     </FormProvider>
   );
