@@ -1,8 +1,8 @@
-import { Box, Button, Card, Modal } from "@mui/material";
+import { Box, Button, Card, Modal, Tooltip } from "@mui/material";
 import Plants from "../total-month/total-month-components/total-month-devices";
 import { TopUsins } from "../top-usins/topUsins";
 import { useSelector } from "react-redux";
-import { Cancel } from "@mui/icons-material";
+import { Cancel, Info } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
 import { callingWebWorkers } from "src/web-workers";
 import { DashboardContext } from "src/contexts/dashboard-context";
@@ -22,7 +22,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      <Box sx={{ width: "100%", display: "flex", gap: 2 }}>
+      <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
         <Button
           variant="contained"
           onClick={() => {
@@ -32,17 +32,21 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
         >
           Principais usinas.
         </Button>
-        <Button
-          disabled={!massEmailFinishedState ? true : false}
-          variant="outlined"
-          color="success"
-          onClick={() => {
-            handleMassEmail();
-          }}
-          sx={{ my: 2 }}
-        >
-          {"Envio massivo de relatórios"}
-        </Button>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Tooltip title="Essa funcionalidade envia relatório para todos os clientes com e-mail cadastrado em 'relatório mensal'.">
+            <Info fontSize="small" />
+          </Tooltip>
+          <Button
+            disabled={!massEmailFinishedState ? true : false}
+            variant="outlined"
+            color="success"
+            onClick={() => {
+              handleMassEmail();
+            }}
+          >
+            {"Envio massivo de relatórios"}
+          </Button>
+        </Box>
       </Box>
       <Plants
         title={"Listagem de usinas"}
