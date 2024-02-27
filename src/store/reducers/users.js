@@ -48,6 +48,7 @@ const initialState = {
   reportsCounting: 0,
   brandInfoData: [],
   massEmailFinished: true,
+  invoiceValuesData: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -123,8 +124,6 @@ export default function userReducer(state = initialState, action) {
         loadingRegister: false,
         register: false,
       };
-
-    
 
     // GET DADOS DO USUARIO
     case users.GET_SHOW_REQUEST:
@@ -333,7 +332,6 @@ export default function userReducer(state = initialState, action) {
             const generationEstimatedDay =
               dev.generation.length !== 0 ? dev.generation[0].gen_estimated : 0;
 
-
             let sumRealWeek = 0;
             let sumEstimatedlWeek =
               generationEstimatedDay * Math.min(7, daysPassedAllDevices);
@@ -368,7 +366,6 @@ export default function userReducer(state = initialState, action) {
                     return alertDate === today;
                   })
                 : [];
-
 
             return {
               brand: item.bl_name,
@@ -455,6 +452,26 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         brandInfoData: result,
+      };
+
+    case users.GET_INVOICE_VALUES_REQUEST:
+      return {
+        ...state,
+        invoiceValuesData: [],
+      };
+
+    case users.GET_INVOICE_VALUES_SUCCESS:
+      return {
+        ...state,
+        invoiceValuesData: result.map((data) => {
+          return { ...data, compensacao: Number(data.compensacao).toFixed() };
+        }),
+      };
+
+    case users.GET_INVOICE_VALUES_FAILURE:
+      return {
+        ...state,
+        invoiceValuesData: [],
       };
 
     case users.GET_DASHBOARD_REQUEST:
@@ -690,16 +707,17 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         allDevicesFromUser: result.map((data) => {
-          if(data.dev_address != null) {
-            let ic_city = data.dev_address.split("-")[0]
-            let ic_states = data.dev_address.split("-")[1] ?  data.dev_address.split("-")[1] : ""
-            return {...data, ic_city, ic_states}
+          if (data.dev_address != null) {
+            let ic_city = data.dev_address.split("-")[0];
+            let ic_states = data.dev_address.split("-")[1]
+              ? data.dev_address.split("-")[1]
+              : "";
+            return { ...data, ic_city, ic_states };
           } else {
-            let ic_city = ""
-            let ic_states = ""
-            return {...data, ic_city, ic_states}
+            let ic_city = "";
+            let ic_states = "";
+            return { ...data, ic_city, ic_states };
           }
-          
         }),
       };
 
@@ -712,32 +730,32 @@ export default function userReducer(state = initialState, action) {
     case users.MASS_EMAIL_REQUEST:
       return {
         ...state,
-        massEmailFinished: false
-      }
+        massEmailFinished: false,
+      };
 
     case users.MASS_EMAIL_SUCCESS:
       return {
         ...state,
-        massEmailFinished: true
-      }
+        massEmailFinished: true,
+      };
 
     case users.XLSX_PORTAL_REQUEST:
-      return {...state}
-    
+      return { ...state };
+
     case users.XLSX_PORTAL_SUCCESS:
-      return {...state}
-      
+      return { ...state };
+
     case users.XLSX_PORTAL_FAILURE:
-      return {...state}
+      return { ...state };
 
     case users.HELP_CENTER_REQUEST:
-      return {...state}
-    
+      return { ...state };
+
     case users.HELP_CENTER_SUCCESS:
-      return {...state}
-    
+      return { ...state };
+
     case users.HELP_CENTER_FAILURE:
-      return {...state}
+      return { ...state };
 
     case users.INVOICE_USER_REQUEST:
       return { ...state };
