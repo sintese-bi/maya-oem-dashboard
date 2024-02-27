@@ -464,7 +464,12 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         invoiceValuesData: result.map((data) => {
-          return { ...data, compensacao: Number(data.compensacao).toFixed() };
+          return {
+            ...data,
+            compensacao: Number(data.compensacao).toFixed(),
+            pago: data.pago == "1" ? "Sim" : "Não",
+            boleto_quitado: data.boleto_quitado == "1" ? "Sim" : "Não",
+          };
         }),
       };
 

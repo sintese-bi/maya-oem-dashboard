@@ -78,6 +78,38 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       },
     },
     {
+      name: "valor",
+      label: "Recebíveis (R$)",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "pago",
+      label: " Consultor Pago ?",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "boleto_quitado",
+      label: "Boleto Quitado ?",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "valor",
+      label: "Recebíveis (R$)",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
       name: "compensacao",
       label: "Energia Compensada (kWh)",
       options: {
