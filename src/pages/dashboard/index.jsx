@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { TotalMonth } from "src/components/dashboard/total-month/total-month";
 
+import { openWebScoketConnection } from "src/services/web-socket";
+
 // QUERYS
 import { getUserCookie } from "src/services/session";
 import {
@@ -92,6 +94,8 @@ export default function Dashboard() {
   const [capacityTotal, setCapacityTotal] = useState(0);
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
+
+  //openWebScoketConnection();
 
   if (usersAPIData.isAllDevicesDataLoading) {
     return (

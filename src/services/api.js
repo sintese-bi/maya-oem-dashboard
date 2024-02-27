@@ -4,7 +4,7 @@ import { getUserCookie } from "./session";
 // CRIAÇÃO DA INSTANCIA DO AXIOS
 const api = axios.create({
   baseURL: `https://app.mayaoem.com.br/v1`,
-  // baseURL: `http://localhost:8080/v1`,
+  //baseURL: `http://localhost:8080/v1`,
 });
 
 // CRIA O OBJETO DE HEADERS COM O TOKEN DO USUARIO

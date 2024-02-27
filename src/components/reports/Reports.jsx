@@ -426,7 +426,7 @@ export const Reports = ({ setTitle, setDescription }) => {
               }}
               sx={{ height: "100%" }}
             >
-              {"Envio massivo de relatórios"}
+              {"Disparo de relatório para clientes"}
             </Button>
           </Box>
           <ReportButton

@@ -7,10 +7,6 @@ export const PortalValidationState = ({
 }) => {
   const [validated, setValidated] = useState("notValidated");
 
-  useEffect(() => {
-    console.log(recentPortals);
-  }, [recentPortals]);
-
   const content = (login, validationState, bl_name) => {
     switch (validationState) {
       case "notValidated":

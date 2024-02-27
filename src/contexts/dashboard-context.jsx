@@ -14,6 +14,7 @@ import {
   getAllDevicesFromUser,
   getCapacities,
   getDashboard,
+  invoiceValues,
   massEmail,
   reportCounting,
 } from "src/store/actions/users";
@@ -90,6 +91,10 @@ export const DashboardProvider = ({ children }) => {
 
   function handleBrandInfoRequest() {
     dispatch(brandInfo({ use_uuid }));
+  }
+
+  function handleInvoiceValuesRequest() {
+    dispatch(invoiceValues({ use_uuid }));
   }
 
   function handleMassEmail() {
@@ -172,6 +177,7 @@ export const DashboardProvider = ({ children }) => {
     handleGetAllDevicesFromUserRequest();
     handleBrandInfoRequest();
     handleReportCountingRequest();
+    handleInvoiceValuesRequest();
   }, [use_uuid]);
 
   useEffect(() => {
@@ -253,7 +259,6 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {}, [usersAPIData.selectedUser]);
 
   useEffect(() => {
-    console.log(devicesAPIData.bignumbersumValues);
     if (devicesAPIData.bignumbersumValues.realGeneration !== undefined) {
       let lastRealGenerationDay =
         devicesAPIData.bignumbersumValues.realGeneration[
@@ -268,8 +273,6 @@ export const DashboardProvider = ({ children }) => {
         (lastRealGenerationDay / lastEstimatedGenerationDay) *
         100
       ).toFixed();
-
-      console.log(lastRealGenerationDay, lastEstimatedGenerationDay);
 
       handleGenerationLastDayValues({
         realGenerationLastDay: lastRealGenerationDay.toFixed(2),

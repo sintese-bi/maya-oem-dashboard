@@ -119,8 +119,6 @@ export const AdministratorReport = () => {
   const realData = reportAdministrator.graphData.realGeneration;
   const estimatedData = reportAdministrator.graphData.estimatedGeneration;
 
-  console.log(reportAdministrator.graphData);
-
   const sortedDates = Object.keys(
     reportAdministrator.graphData.realGeneration
   ).sort((a, b) => new Date(a) - new Date(b));
