@@ -36,8 +36,6 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     .then((res) => {
       const { data } = res;
 
-      console.log(data);
-
       dispatch({ type: devices.GET_BIG_NUMBER_SUCCESS, result: data });
     })
     .catch((error) => {

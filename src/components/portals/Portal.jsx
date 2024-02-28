@@ -126,6 +126,7 @@ export const Portal = ({
     } else {
       setValidationWarningState(false);
     }
+    console.log(brandInfoData);
   }, [brandInfoData]);
 
   return (

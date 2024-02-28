@@ -38,7 +38,7 @@ export default function ListUsers() {
   const [clients, setClients] = useState([]);
 
   function handleDeleteUser(use_uuid) {
-    dispatch(deleteUser({ use_uuid }));
+    dispatch(deleteUser({ use_uuid }, getUsers));
   }
 
   useEffect(() => {
@@ -211,6 +211,7 @@ export default function ListUsers() {
   }, []);
 
   useEffect(() => {
+    console.log(data);
     setClients(data);
   }, [data]);
 

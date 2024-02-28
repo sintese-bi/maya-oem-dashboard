@@ -1,5 +1,5 @@
 import { listBrand } from "src/utils/list-brand.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -29,6 +29,7 @@ const validateSchema = Yup.object().shape({
 });
 
 export const FaturaModulo = ({ setTitle, setDescription }) => {
+  const { invoiceValuesData } = useSelector((state) => state.users);
   const [acceptState, setAcceptState] = useState(true);
   const methods = useForm();
   const { useUuid } = getUserCookie();
@@ -45,7 +46,7 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
 
   const columns = [
     {
-      name: "uc_number",
+      name: "numero_instalacao",
       label: "Número da UC",
       options: {
         filter: true,
@@ -53,15 +54,63 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       },
     },
     {
-      name: "compt_boleto",
-      label: "Compt. Boleto",
+      name: "usina",
+      label: "Usina",
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: "energy_compensed",
+      name: "cliente",
+      label: "Cliente",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "vendedor",
+      label: "Vendedor",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "valor",
+      label: "Recebíveis (R$)",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "pago",
+      label: " Consultor Pago ?",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "boleto_quitado",
+      label: "Boleto Quitado ?",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "valor",
+      label: "Recebíveis (R$)",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "compensacao",
       label: "Energia Compensada (kWh)",
       options: {
         filter: true,
@@ -117,7 +166,6 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
           height: "60vh",
           gap: 10,
           width: "90vw",
@@ -126,65 +174,73 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       >
         <Box
           sx={{
-            width: 600,
             display: "flex",
-            gap: 10,
-            flexDirection: "row",
+            flexDirection: "column",
+            gap: 4,
             justifyContent: "space-between",
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column", width: 320 }}>
-            <TextField
-              sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
-              label="Concessionária"
-              {...register("voice_company")}
-              select
-              defaultValue="Cemig"
-              variant="standard"
+          <Box sx={{ display: "flex", gap: 6, flexDirection: "column" }}>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <TextField
+                sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
+                label="Concessionária"
+                {...register("voice_company")}
+                select
+                defaultValue="Cemig"
+                variant="standard"
+              >
+                {concessionaries.map((data) =>
+                  data.title != "SolarView" && data.title != "Solarz" ? (
+                    <MenuItem
+                      key={data.title}
+                      value={data.title}
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      {data.title}
+                    </MenuItem>
+                  ) : null
+                )}
+              </TextField>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 1,
+                width: 520,
+              }}
             >
-              {concessionaries.map((data) =>
-                data.title != "SolarView" && data.title != "Solarz" ? (
-                  <MenuItem
-                    key={data.title}
-                    value={data.title}
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    {data.title}
-                  </MenuItem>
-                ) : null
-              )}
-            </TextField>
-            <TextField
-              margin="normal"
-              label="Número de instalação"
-              {...register("voice_install")}
-              error={!!errors.voice_install}
-              helperText={errors.voice_install?.message}
-            />
-            <TextField
-              margin="normal"
-              label="Número do cliente"
-              {...register("voice_client")}
-              error={!!errors.voice_client}
-              helperText={errors.voice_client?.message}
-            />
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", width: 320 }}>
-            <TextField
-              margin="normal"
-              label="Login"
-              {...register("voice_login")}
-              error={!!errors.voice_login}
-              helperText={errors.voice_login?.message}
-            />
-            <TextField
-              margin="normal"
-              label="Senha"
-              type="password"
-              {...register("voice_password")}
-              error={!!errors.voice_password}
-              helperText={errors.voice_password?.message}
-            />
+              <TextField
+                margin="normal"
+                label="Login"
+                {...register("voice_login")}
+                error={!!errors.voice_login}
+                helperText={errors.voice_login?.message}
+              />
+              <TextField
+                margin="normal"
+                label="Senha"
+                type="password"
+                {...register("voice_password")}
+                error={!!errors.voice_password}
+                helperText={errors.voice_password?.message}
+              />
+              <TextField
+                margin="normal"
+                label="Número de instalação"
+                {...register("voice_install")}
+                error={!!errors.voice_install}
+                helperText={errors.voice_install?.message}
+              />
+              <TextField
+                margin="normal"
+                label="Número do cliente"
+                {...register("voice_client")}
+                error={!!errors.voice_client}
+                helperText={errors.voice_client?.message}
+              />
+            </Box>
             <FormControlLabel
               control={
                 <Checkbox
@@ -195,26 +251,28 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
               label="Termo de aceite"
             />
           </Box>
+          <Box>
+            <Button
+              disabled={!acceptState}
+              sx={{
+                width: "162px",
+              }}
+              type="submit"
+              variant="contained"
+            >
+              Confirmar
+            </Button>
+          </Box>
         </Box>
 
-        <Box>
-          <Button
-            disabled={!acceptState}
-            sx={{
-              width: "162px",
-            }}
-            type="submit"
-            variant="contained"
-          >
-            Confirmar
-          </Button>
+        <Box sx={{ width: "100%" }}>
+          <MUIDataTable
+            data={invoiceValuesData}
+            columns={columns}
+            options={options}
+            title={<Typography variant="h3">Faturas</Typography>}
+          />
         </Box>
-        <Divider variant="middle" />
-        <MUIDataTable
-          columns={columns}
-          options={options}
-          title={<Typography variant="h3">Faturas</Typography>}
-        />
       </Box>
     </FormProvider>
   );

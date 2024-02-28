@@ -78,7 +78,7 @@ export const ReportButton = ({
                       variant={useTypeMember ? "outlined" : ""}
                       sx={{ width: "100%" }}
                     >
-                      Relatório Administrador
+                      Relatório gerencial
                     </Button>
                   )
                 }

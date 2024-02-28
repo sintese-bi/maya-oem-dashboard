@@ -68,8 +68,6 @@ export const massEmail = (params) => (dispatch) => {
       toast.success(data.message, {
         duration: 5000,
       });
-
-      console.log(data.reports);
     })
     .catch((error) => {
       const { response: err } = error;
@@ -77,6 +75,30 @@ export const massEmail = (params) => (dispatch) => {
 
       const message =
         err && err.data ? err.data.message : "Erro desconhecido - brandInfo";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
+export const invoiceValues = (params) => (dispatch) => {
+  dispatch({ type: users.GET_INVOICE_VALUES_REQUEST });
+  api
+    .get("/invoicevalues", configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({ type: users.GET_INVOICE_VALUES_SUCCESS, result: data });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+
+      dispatch({ type: users.GET_INVOICE_VALUES_FAILURE });
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - invoiceValues";
 
       toast.error(message, {
         duration: 5000,
@@ -816,12 +838,13 @@ export const getAllDevicesFromUser = (params) => (dispatch) => {
     });
 };
 
-export const deleteUser = (params) => (dispatch) => {
+export const deleteUser = (params, getUsers) => (dispatch) => {
   dispatch({ type: users.DELETE_USER_REQUEST });
   api
     .post("/deleteuser", params, configRequest())
     .then((res) => {
       const { data } = res;
+      dispatch(getUsers());
       dispatch({ type: users.DELETE_USER_SUCCESS });
       toast.success(data.message, {
         duration: 5000,
