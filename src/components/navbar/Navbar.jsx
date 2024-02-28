@@ -171,7 +171,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                 color: theme.palette.text.secondary,
                 display: "flex",
                 alignItems: "center",
-                bgcolor: "red",
               }}
             >
               {renderStageItems()}
