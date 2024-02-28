@@ -24,6 +24,8 @@ import {
 import { useSelector } from "react-redux";
 import moment from "moment";
 
+import "./nav.css";
+
 export const DashboardNavbar = ({ sideState, setSideState }) => {
   // PROPS DE CONTROLLER
   const location = useLocation();
@@ -103,7 +105,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
             color: "secondary.main",
             fontWeight: "fontWeightBold",
             justifyContent: "flex-start",
-            px: 3,
             textAlign: "left",
             textTransform: "none",
             width: "100%",
@@ -167,11 +168,10 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
           >
             <Typography
               sx={{
-                m: 1,
                 color: theme.palette.text.secondary,
                 display: "flex",
                 alignItems: "center",
-                flexWrap: "wrap",
+                bgcolor: "red",
               }}
             >
               {renderStageItems()}
@@ -207,7 +207,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
-                borderLeft: `1px solid ${theme.palette.divider}`,
                 display: "flex",
               }}
             >
@@ -224,10 +223,10 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
             }}
           >
             <Typography
+              className="account-info"
               variant="body1"
               sx={{
                 width: 236,
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",
                 color: "black",

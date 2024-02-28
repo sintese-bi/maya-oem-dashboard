@@ -12,9 +12,24 @@ import { useEffect, useState } from "react";
 
 // STYLE
 
-const LayoutDashboard = () => {
-  const [sideState, setSideState] = useState(false);
+const MobileLayout = ({ sideState, setSideState }) => {
+  return (
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        position: "fixed",
+        bgcolor: "background.paper",
+      }}
+    >
+      <DashboardNavbar sideState={sideState} setSideState={setSideState} />
 
+      <Side sideState={sideState} setSideState={setSideState} />
+    </Box>
+  );
+};
+
+const Layout = ({ sideState, setSideState }) => {
   return (
     <>
       <DashboardNavbar sideState={sideState} setSideState={setSideState} />
@@ -41,5 +56,11 @@ const LayoutDashboard = () => {
       </Box>
     </>
   );
+};
+
+const LayoutDashboard = () => {
+  const [sideState, setSideState] = useState(false);
+
+  return <MobileLayout sideState={sideState} setSideState={setSideState} />;
 };
 export default LayoutDashboard;
