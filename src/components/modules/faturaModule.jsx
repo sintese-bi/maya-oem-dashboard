@@ -51,6 +51,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Número da UC</p>;
+        },
       },
     },
     {
@@ -59,6 +62,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Usina</p>;
+        },
       },
     },
     {
@@ -67,6 +73,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Cliente</p>;
+        },
       },
     },
     {
@@ -75,6 +84,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Vendedor</p>;
+        },
       },
     },
     {
@@ -83,6 +95,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Recebíveis (R$)</p>;
+        },
       },
     },
     {
@@ -91,6 +106,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Consultor Pago ?</p>;
+        },
       },
     },
     {
@@ -99,6 +117,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+        },
       },
     },
     {
@@ -107,6 +128,9 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return <p style={{ fontWeight: "bolder" }}>Recebíveis (R$)</p>;
+        },
       },
     },
     {
@@ -115,17 +139,33 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        customHeadLabelRender: (data) => {
+          return (
+            <p style={{ fontWeight: "bolder" }}>Energia Compensada (KWh)</p>
+          );
+        },
       },
     },
   ];
 
   const options = {
     filter: true,
-    rowsPerPage: 10,
-    rowsPerPageOptions: [10, 50, 100, 200, 300],
+    rowsPerPage: 50,
+    rowsPerPageOptions: [50, 100, 200, 300],
     filterType: "dropdown",
     responsive: "simple",
     selectableRows: "none",
+    setRowProps: (row) => {
+      if (row[6] === "Sim") {
+        return {
+          style: { background: "rgba(152, 251, 152, 0.2)" },
+        };
+      } else if (row[6] === "Não") {
+        return {
+          style: { background: "rgba(255, 105, 97, 0.2)" },
+        };
+      }
+    },
   };
 
   async function onSubmit(values) {

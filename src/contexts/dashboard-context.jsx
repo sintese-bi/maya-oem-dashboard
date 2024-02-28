@@ -282,6 +282,12 @@ export const DashboardProvider = ({ children }) => {
     }
   }, [devicesAPIData.bignumbersumValues]);
 
+  useEffect(() => {
+    setInterval(() => {
+      handleBrandInfoRequest();
+    }, 18e5);
+  }, []);
+
   return (
     <DashboardContext.Provider
       value={{

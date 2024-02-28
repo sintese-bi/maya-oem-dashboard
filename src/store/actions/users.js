@@ -41,6 +41,7 @@ export const brandInfo = (params) => (dispatch) => {
         type: users.GET_BRAND_INFO,
         result: res.data.message,
       });
+      toast.success("brand info requested again");
     })
     .catch((error) => {
       const { response: err } = error;
