@@ -61,6 +61,6 @@ const Layout = ({ sideState, setSideState }) => {
 const LayoutDashboard = () => {
   const [sideState, setSideState] = useState(false);
 
-  return <MobileLayout sideState={sideState} setSideState={setSideState} />;
+  return <Layout sideState={sideState} setSideState={setSideState} />;
 };
 export default LayoutDashboard;
