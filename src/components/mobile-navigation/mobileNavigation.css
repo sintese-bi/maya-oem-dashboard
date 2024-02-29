@@ -1,0 +1,12 @@
+#mobileNavigation{
+    flex-direction: row;
+}
+
+@media screen and (max-width: 390px) {
+    #mobileNavigation{
+        flex-direction: column;
+        gap: 8px
+    }
+
+
+}

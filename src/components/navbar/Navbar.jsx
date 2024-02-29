@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 
 import "./nav.css";
+import { routes } from "src/redirection-actions/redirection-actions";
 
 export const DashboardNavbar = ({ sideState, setSideState }) => {
   // PROPS DE CONTROLLER
@@ -39,38 +40,13 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
 
   const { brand } = useParams();
 
-  const navbarPages = [
-    {
-      label: "Home",
-      to: "/dashboard",
-      icon: <AccountCircle fontSize="small" />,
-      disabled: profileLevel === "admin" ? true : false,
-      active: location.pathname === "/dashboard" ? true : false,
-    },
-    {
-      label: "Clientes",
-      to: "/dashboard/users",
-      icon: <AccountCircle fontSize="small" />,
-      disabled:
-        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
-      active: location.pathname === "/dashboard/users" ? true : false,
-    },
-    //{
-    //  label: "Plantas",
-    //  to: "/dashboard/devices",
-    //  icon: <AccountCircle fontSize="small" />,
-    //  disabled: true,
-    //  active: location.pathname === "/dashboard/devices" ? true : false,
-    //},
-  ];
-
   function handleLogOut() {
     removeUserCookie();
     navigate("/login");
   }
 
   const renderNavItems = () =>
-    navbarPages.map(
+    routes.map(
       (page) =>
         page.disabled && (
           <NavItem
