@@ -39,6 +39,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Nome da marca</p>;
+      },
       customBodyRender: (name, dataTable) => {
         const brandImg = listBrand.filter((brand) => brand.params === name)[0];
         return (
@@ -72,6 +75,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Planta</p>;
+      },
     },
   },
   {
@@ -80,6 +86,11 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return (
+          <p style={{ fontWeight: "bolder" }}>Capacidade da usina (KWp)</p>
+        );
+      },
     },
   },
   {
@@ -91,7 +102,9 @@ export const columnsDevices = [
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ mr: 2 }}>Alerta de geração </Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
+              Alerta de geração{" "}
+            </Typography>
             <Tooltip title="usinas que não produziram o esperado no dia anterior">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>
@@ -117,6 +130,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+      },
     },
   },
   {
@@ -125,6 +141,11 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return (
+          <p style={{ fontWeight: "bolder" }}>Produção Estimada dia (KWh)</p>
+        );
+      },
     },
   },
   {
@@ -133,6 +154,11 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return (
+          <p style={{ fontWeight: "bolder" }}>Produção real semana (KWh)</p>
+        );
+      },
     },
   },
   {
@@ -141,6 +167,11 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return (
+          <p style={{ fontWeight: "bolder" }}>Produção Estimada semana (KWh)</p>
+        );
+      },
     },
   },
   {
@@ -149,6 +180,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Produção real mês (KWh)</p>;
+      },
     },
   },
   {
@@ -157,6 +191,11 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return (
+          <p style={{ fontWeight: "bolder" }}>Produção Estimada mês (KWh)</p>
+        );
+      },
     },
   },
   {
@@ -168,7 +207,9 @@ export const columnsDevices = [
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ mr: 2 }}>Quantidade de alertas</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
+              Quantidade de alertas
+            </Typography>
             <Tooltip title="alertas advindos do portal do inversor">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>
@@ -210,10 +251,13 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ mr: 2 }}>Situação</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
+              Situação
+            </Typography>
             <Tooltip title="inapta são usinas com produção 0 kwh advindo do portal do inversor">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>
@@ -228,6 +272,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Histórico de geração</p>;
+      },
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
@@ -250,7 +297,9 @@ export const columnsDevices = [
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ mr: 2 }}>Relatório mensal</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
+              Relatório mensal
+            </Typography>
             <Tooltip title="enviar relatório do mês para cliente da planta">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>
@@ -281,6 +330,9 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+      },
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -308,6 +360,9 @@ export const columnsDevices = [
       display: false,
       viewColumns: false,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+      },
     },
   },
   {
@@ -318,6 +373,9 @@ export const columnsDevices = [
       display: false,
       viewColumns: false,
       sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+      },
     },
   },
 ];

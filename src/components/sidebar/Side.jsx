@@ -60,6 +60,11 @@ import { FaturaModulo } from "../modules/faturaModule";
 import { Reports } from "../reports/Reports";
 import { Help } from "../help/help";
 import { ConfigPortals } from "../configPortals/configPortal";
+import {
+  bottomItems,
+  mainItems,
+  topItems,
+} from "src/modal-actions/modal-actions";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -240,75 +245,6 @@ export const Side = ({ sideState, setSideState }) => {
     }
   };
 
-  const topItems = [
-    {
-      label: "Usuário",
-      icon: <Person fontSize="small" />,
-      action: "userAccount",
-    },
-  ];
-
-  const mainItems = [
-    {
-      label: "Portal",
-      icon: <AddCircle fontSize="small" />,
-      disabled: true,
-      action: "device",
-    },
-    {
-      label: "Relatórios",
-      icon: <FileCopy fontSize="small" />,
-      disabled: true,
-      action: "reports",
-    },
-    {
-      label: "Configurar alertas",
-      icon: <Info fontSize="small" />,
-      disabled: true,
-      action: "alertFrequency",
-    },
-    {
-      label: "Configurar plantas",
-      icon: <Settings fontSize="small" />,
-      action: "configSetup",
-    },
-    //{
-    //  label: "Configurar portais",
-    //  icon: <SettingsApplications fontSize="small" />,
-    //  action: "configPortals",
-    //},
-    {
-      label: "Deletar plantas",
-      icon: <Delete fontSize="small" />,
-      action: "deletePlants",
-    },
-    {
-      label: "Módulo de fatura",
-      icon: <AttachMoney fontSize="small" />,
-      action: "module-fatura",
-    },
-
-    {
-      label: "Módulo de O&M",
-      icon: <SolarPower fontSize="small" />,
-      action: "module-orm",
-    },
-    {
-      label: "Central de ajuda",
-      icon: <HelpCenter fontSize="small" />,
-      action: "help",
-    },
-  ];
-
-  const bottomItems = [
-    //{
-    //  label: "MAYA WATCH PRO",
-    //  icon: <ShoppingCart fontSize="small" />,
-    //  disabled: true,
-    //  action: "assignPlan",
-    //},
-  ];
-
   function handleModalState(actionType) {
     setSecondaryAction("AlertsDefineComponent");
     if (action == "alertFrequency" && actionType == "assignPlan") {
@@ -325,6 +261,7 @@ export const Side = ({ sideState, setSideState }) => {
     <Drawer variant="permanent" anchor="left" id="sidebar">
       <Toolbar />
       <Box
+        className="sidebar-content"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -335,7 +272,14 @@ export const Side = ({ sideState, setSideState }) => {
           overflow: "scroll",
         }}
       >
-        <List>
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {topItems.map((data, index) => (
             <ListItem key={data?.label}>
               {sideState ? (

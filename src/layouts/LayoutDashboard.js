@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "../components/navbar/Navbar";
 import { Side } from "../components/sidebar/Side";
 import { useEffect, useState } from "react";
+import { MobileNavigation } from "src/components/mobile-navigation/mobileNavigation";
 
 // STYLE
 
