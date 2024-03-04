@@ -7,6 +7,8 @@ import { TotalMonth } from "src/components/dashboard/total-month/total-month";
 
 import { openWebScoketConnection } from "src/services/web-socket";
 
+import "./index.css";
+
 // QUERYS
 import { getUserCookie } from "src/services/session";
 import {
@@ -109,7 +111,64 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <Box id="index">
+      <Grid container spacing={2} sx={{}}>
+        <Grid item xs={12} md={12} sm={12} lg={6}>
+          <MyUsins
+            realGenerationTotal={realGenerationTotal}
+            estimatedGenerationTotal={estimatedGenerationTotal}
+            realGenerationLastDay={realGenerationLastDay}
+            estimatedGenerationLastDay={estimatedGenerationLastDay}
+            percentLastDay={percentLastDay}
+            allDevices={usersAPIData.allDevices}
+            brands={usersAPIData.brands}
+            notDefined={usersAPIData.notDefined}
+            unactived={usersAPIData.unactived}
+            online={usersAPIData.online}
+            offline={usersAPIData.offline}
+            alerts={usersAPIData.alerts}
+            type={type}
+            usinsByState={usinsByState}
+            handleChangeColumns={setType}
+          />
+        </Grid>
+        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 526 }}>
+          <LocationUsins allDevices={usersAPIData.allDevices} />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} sx={{ maxHeight: 620 }}>
+        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
+          <AlertDevices />
+        </Grid>
+        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
+          <PeriodDataUsins
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            optionFilter={optionFilter}
+            setOptionFilter={setOptionFilter}
+            adminGraphRef={adminGraphRef}
+            realGenerationFiltered={realGenerationFiltered}
+            estimatedGenerationFiltered={estimatedGenerationFiltered}
+            percentGenerationFiltered={percentGenerationFiltered}
+            isLoadingReportGeneration={isLoadingReportGeneration}
+            useTypeMember={userData.useTypeMember}
+            handleAdminReportGeneration={handleAdminReportGeneration}
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
+        <ListUsins
+          data={data}
+          devicesTableRef={devicesTableRef}
+          type={type}
+          usinsByState={usinsByState}
+        />
+      </Grid>
+
+      {/*
       <Grid container spacing={4} sx={{ marginTop: 2 }}>
         <Grid
           item
@@ -157,31 +216,7 @@ export default function Dashboard() {
           />
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 620 }}>
-          <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
-
-        {/*<MyDevices
-          label={"Minhas Usinas"}
-          isLoadingGraph={isLoadingGraph}
-          realGeneration={realGeneration}
-          estimatedGeneration={estimatedGeneration}
-          realGenerationValueDataDevices={realGenerationValueDataDevices}
-          estimatedGenerationValueDataDevices={
-            estimatedGenerationValueDataDevices
-          }
-          percent={percent}
-          type={type}
-          handleChangeColumns={setType}
-          dataDevices={dataDevices}
-          allDevices={allDevices}
-          brands={brands}
-          capacityTotal={capacityTotal}
-          notDefined={notDefined}
-          unactived={unactived}
-          online={online}
-          offline={offline}
-          alerts={alerts}
-        />*/}
       </Grid>
       <Grid
         container
@@ -205,12 +240,7 @@ export default function Dashboard() {
           mb: 6,
         }}
       >
-        <ListUsins
-          data={data}
-          devicesTableRef={devicesTableRef}
-          type={type}
-          usinsByState={usinsByState}
-        />
+       
         <PeriodDataUsins
           startDate={startDate}
           endDate={endDate}
@@ -228,29 +258,6 @@ export default function Dashboard() {
         />
         <AlertDevices />
       </Box>
-      {/*<TotalMonth
-        optionFilter={optionFilter}
-        setOptionFilter={setOptionFilter}
-        useName={useName}
-        type={type}
-        realGenerationTotal={realGenerationTotal}
-        estimatedGenerationTotal={estimatedGenerationTotal}
-        percentTotal={percentTotal}
-        dataDevices={dataDevices}
-        allDevices={allDevices}
-        data={data}
-        isLoading={isLoading}
-        setEstimatedGeneration={setEstimatedGeneration}
-        setRealGeneration={setRealGeneration}
-        setPercent={setPercent}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        devicesTableRef={devicesTableRef}
-        adminGraphRef={adminGraphRef}
-        setIsLoadingReportGeneration={setIsLoadingReportGeneration}
-      />*/}
       <Modal
         open={open}
         onClose={handleAdminReportGeneration}
@@ -291,6 +298,7 @@ export default function Dashboard() {
           )}
         </Box>
       </Modal>
-    </>
+          */}
+    </Box>
   );
 }

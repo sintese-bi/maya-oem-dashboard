@@ -1,4 +1,10 @@
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useNavigate,
+  Outlet,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./side.css";
 import {
@@ -259,199 +265,174 @@ export const Side = ({ sideState, setSideState }) => {
 
   return (
     <Drawer variant="permanent" anchor="left" id="sidebar">
-      <Toolbar />
       <Box
-        className="sidebar-content"
+        id="sidebar"
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "start",
-          overflow: "auto",
+          bgcolor: "background.paper",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.4)",
           height: "100%",
-          width: sideState ? 236 : 100,
-          overflow: "scroll",
         }}
       >
-        <List
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {topItems.map((data, index) => (
-            <ListItem key={data?.label}>
-              {sideState ? (
-                <Button
-                  startIcon={data?.icon}
-                  variant="outlined"
-                  onClick={() => {
-                    setAction(data?.action);
-                    handleModalState(data?.action);
-                  }}
-                >
-                  {data?.label}
-                </Button>
-              ) : (
-                <Button
-                  sx={{
-                    color: "neutral.700",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={() => {
-                    setAction(data?.action);
-                    handleModalState(data?.action);
-                  }}
-                >
-                  {data?.icon}
-                  <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
-                    {data?.label}
-                  </Typography>
-                </Button>
-              )}
-            </ListItem>
-          ))}
-          {mainItems.map((data, index) => (
-            <ListItem key={data?.label}>
-              {sideState ? (
-                <Button
-                  startIcon={data?.icon}
-                  variant="contained"
-                  onClick={() => {
-                    if (data?.action == "deletePlants") {
-                      window.scrollTo(0, 2000);
-                    } else {
-                      setAction(data?.action);
-                      handleModalState(data?.action);
-                    }
-                  }}
-                >
-                  {data?.label}
-                </Button>
-              ) : (
-                <Button
-                  sx={{
-                    color: "neutral.700",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={() => {
-                    if (data?.action == "deletePlants") {
-                      window.scrollTo(0, 2000);
-                    } else {
-                      setAction(data?.action);
-                      handleModalState(data?.action);
-                    }
-                  }}
-                >
-                  {data?.icon}
-                  <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
-                    {data?.label}
-                  </Typography>
-                </Button>
-              )}
-            </ListItem>
-          ))}
-          {bottomItems.map((data, index) => (
-            <ListItem key={data?.label}>
-              {sideState ? (
-                <Button
-                  startIcon={data?.icon}
-                  variant="outlined"
-                  onClick={() => {
-                    handleModalState(data?.action);
-                    setAction(data?.action);
-                  }}
-                >
-                  {data?.label}
-                </Button>
-              ) : (
-                <Button
-                  sx={{
-                    color: "success.main",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={() => {
-                    handleModalState(data?.action);
-                    setAction(data?.action);
-                  }}
-                >
-                  {data?.icon}
-                  <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
-                    {data?.label}
-                  </Typography>
-                </Button>
-              )}
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-
-      <Modal
-        open={open}
-        onClose={handleModalState}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
         <Box
+          className="sidebar-content"
           sx={{
-            bgcolor: "background.paper",
-
-            pb: 6,
-            px: 4,
             display: "flex",
             flexDirection: "column",
-            gap: 6,
-            alignItems: "center",
-            borderRadius: 1,
-            border: 0,
+            justifyContent: "start",
+            overflow: "auto",
+            height: "100%",
+            width: sideState ? 236 : 100,
           }}
         >
-          <Box
+          <List
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              flexDirection: "column",
               alignItems: "center",
-              width: "100%",
-              py: 2,
+              justifyContent: "center",
             }}
           >
-            <Box sx={{ width: "620px" }}>
-              <Typography variant="h2">{title}</Typography>
-              <Typography variant="body2" sx={{ width: "620px" }}>
-                {description}
-              </Typography>
-            </Box>
-            <Cancel
-              fontSize="large"
-              onClick={() => {
-                setOpen(false);
-              }}
-              sx={{ cursor: "pointer" }}
-            />
-          </Box>
+            {topItems.map((data, index) => (
+              <ListItem key={data?.label}>
+                {sideState ? (
+                  <Button
+                    startIcon={data?.icon}
+                    variant="outlined"
+                    onClick={() => {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }}
+                  >
+                    {data?.label}
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{
+                      color: "neutral.700",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      setAction(data?.action);
+                      handleModalState(data?.action);
+                    }}
+                  >
+                    {data?.icon}
+                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                      {data?.label}
+                    </Typography>
+                  </Button>
+                )}
+              </ListItem>
+            ))}
+            {mainItems.map((data, index) => (
+              <ListItem key={data?.label}>
+                {sideState ? (
+                  <Button
+                    startIcon={data?.icon}
+                    variant="contained"
+                    onClick={() => {
+                      if (data?.action == "deletePlants") {
+                        window.scrollTo(0, 2000);
+                      } else {
+                        setAction(data?.action);
+                        handleModalState(data?.action);
+                      }
+                    }}
+                  >
+                    {data?.label}
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{
+                      color: "neutral.700",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      if (data?.action == "deletePlants") {
+                        window.scrollTo(0, 2000);
+                      } else {
+                        setAction(data?.action);
+                        handleModalState(data?.action);
+                      }
+                    }}
+                  >
+                    {data?.icon}
+                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                      {data?.label}
+                    </Typography>
+                  </Button>
+                )}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
 
+        <Modal
+          open={open}
+          onClose={handleModalState}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Box
             sx={{
-              P: 4,
-              width: "100%",
-              height: "100%",
+              bgcolor: "background.paper",
+              pb: 6,
+              px: 4,
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              alignItems: "center",
+              borderRadius: 1,
+              border: 0,
             }}
           >
-            <ModalContent />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                py: 2,
+              }}
+            >
+              <Box sx={{ width: "620px" }}>
+                <Typography variant="h2">{title}</Typography>
+                <Typography variant="body2" sx={{ width: "620px" }}>
+                  {description}
+                </Typography>
+              </Box>
+              <Cancel
+                fontSize="large"
+                onClick={() => {
+                  setOpen(false);
+                }}
+                sx={{ cursor: "pointer" }}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                P: 4,
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <ModalContent />
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Box>
     </Drawer>
   );
 };

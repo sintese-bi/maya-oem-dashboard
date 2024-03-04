@@ -59,21 +59,12 @@ export default function AlertDevices() {
   }, [useUuid]);
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        py: 4,
-      }}
-    >
+    <Card sx={{ py: 2, paddingLeft: 2, overflow: "auto", height: "100%" }}>
       {devicesALerts.length !== 0 ? (
         <Box
           component="main"
           sx={{
-            width: "94%",
+            width: "100%",
           }}
         >
           <TableContainer component={Paper}>
@@ -143,7 +134,9 @@ export default function AlertDevices() {
         </Box>
       ) : (
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <Typography variant="h4">Nenhum alerta encontrado</Typography>
+          <Typography variant="body2" fontWeight="bolder">
+            NENHUM ALERTA ENCONTRADO
+          </Typography>
         </Box>
       )}
     </Card>

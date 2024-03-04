@@ -76,11 +76,7 @@ export default function Plants(props) {
     setRowProps: (row) => {
       if (row[10] > row[11]) {
         return {
-          style: { background: "rgba(152, 251, 152, 0.2)" },
-        };
-      } else {
-        return {
-          style: { background: "rgba(255, 105, 97, 0.2)" },
+          style: { background: "aliceblue" },
         };
       }
     },

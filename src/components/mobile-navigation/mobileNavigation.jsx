@@ -22,6 +22,8 @@ import { PaymentWarn } from "../shared/PaymentWarn";
 import AlertPercentageForm from "../sidebar/side-components/AlertPercentageForm";
 import { getUserCookie, setUserCookie } from "src/services/session";
 
+import "./mobileNavigation.css";
+
 export const MobileNavigation = () => {
   const {
     useName,
@@ -41,10 +43,16 @@ export const MobileNavigation = () => {
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(firstTime ? true : false);
 
-  const [mobileNavigationIsOpen, setMobileNavigationIsOpen] = useState(false);
+  const handleMobileOpenNavigationState = () => {
+    document.querySelector("#openMenuNavigation").style.display = "none";
+    document.querySelector("#closeMenuNavigation").style.display = "flex";
+    document.querySelector("#mobileNavigation").style.display = "flex";
+  };
 
-  const handleMobileNavigationState = () => {
-    setMobileNavigationIsOpen(!mobileNavigationIsOpen);
+  const handleMobileCloseNavigationState = () => {
+    document.querySelector("#closeMenuNavigation").style.display = "none";
+    document.querySelector("#openMenuNavigation").style.display = "flex";
+    document.querySelector("#mobileNavigation").style.display = "none";
   };
 
   function handleModalState(actionType) {
@@ -223,9 +231,6 @@ export const MobileNavigation = () => {
             component={Link}
             to={route.to}
             key={index}
-            onClick={() => {
-              handleMobileNavigationState();
-            }}
           >
             {route.label}
           </Button>
@@ -270,7 +275,7 @@ export const MobileNavigation = () => {
   };
 
   return (
-    <Box sx={{ width: "100vw", height: "100vh" }}>
+    <Box sx={{ width: "100vw" }} id="mobile">
       <Box
         sx={{
           display: "flex",
@@ -286,15 +291,18 @@ export const MobileNavigation = () => {
           borderRadius: "50px",
           boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.3)",
         }}
-        onClick={() => {
-          handleMobileNavigationState();
-        }}
       >
-        {mobileNavigationIsOpen ? (
-          <Close sx={{ color: "white" }} />
-        ) : (
-          <Menu sx={{ color: "white" }} />
-        )}
+        <Close
+          id="closeMenuNavigation"
+          sx={{ color: "white", display: "none" }}
+          onClick={() => handleMobileCloseNavigationState()}
+        />
+
+        <Menu
+          id="openMenuNavigation"
+          sx={{ color: "white" }}
+          onClick={() => handleMobileOpenNavigationState()}
+        />
       </Box>
 
       <Box
@@ -304,7 +312,6 @@ export const MobileNavigation = () => {
           height: "100%",
           position: "fixed",
           top: 0,
-          display: mobileNavigationIsOpen ? "flex" : "none",
           bgcolor: "background.paper",
           zIndex: 10,
           boxShadow: "1px 5px 25px rgba(0, 0, 0, 0.2)",
@@ -315,7 +322,9 @@ export const MobileNavigation = () => {
 
         <ModalActions />
       </Box>
-      <Outlet />
+      <Box sx={{ py: 10, px: 2 }}>
+        <Outlet />
+      </Box>
       <Modal
         open={open}
         onClose={handleModalState}
