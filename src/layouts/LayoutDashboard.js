@@ -11,6 +11,8 @@ import { Side } from "../components/sidebar/Side";
 import { useEffect, useState } from "react";
 import { MobileNavigation } from "src/components/mobile-navigation/mobileNavigation";
 
+import "./layout.css";
+
 // STYLE
 
 const MobileLayout = ({ sideState, setSideState }) => {
@@ -32,36 +34,46 @@ const MobileLayout = ({ sideState, setSideState }) => {
 
 const Layout = ({ sideState, setSideState }) => {
   return (
-    <>
+    <Box
+      id="layout"
+      sx={{
+        height: "100%",
+      }}
+    >
       <DashboardNavbar sideState={sideState} setSideState={setSideState} />
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          gap: "160px",
-          alignItems: "center",
+          width: "100%",
+          height: "100vh",
+          justifyContent: "space-evenly",
+          gap: 10,
         }}
       >
         <Side sideState={sideState} setSideState={setSideState} />
         <Box
           sx={{
-            width: "94%",
-            marginTop: 10,
-            paddingLeft: 2,
-            paddingRight: 2,
+            py: 2,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
           }}
-          id={"root"}
         >
           <Outlet />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
 const LayoutDashboard = () => {
   const [sideState, setSideState] = useState(false);
 
-  return <Layout sideState={sideState} setSideState={setSideState} />;
+  return (
+    <Box sx={{ width: "100%" }}>
+      <MobileNavigation sideState={sideState} setSideState={setSideState} />
+      <Layout sideState={sideState} setSideState={setSideState} />
+    </Box>
+  );
 };
 export default LayoutDashboard;

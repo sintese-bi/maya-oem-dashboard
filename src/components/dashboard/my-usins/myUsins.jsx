@@ -1,12 +1,14 @@
 import {
   Block,
   Bolt,
+  FileCopy,
   ReportProblem,
   SignalWifiOff,
   SolarPower,
   Wifi,
 } from "@mui/icons-material";
-import { Card, Typography, Box, Grid } from "@mui/material";
+import { Card, Typography, Box, Grid, Avatar } from "@mui/material";
+import { BigNumberDashboard } from "src/components/shared/BigNumber";
 import { ChartUsinsBystate } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
 
@@ -26,258 +28,124 @@ export const MyUsins = ({
   handleChangeColumns,
 }) => {
   return (
-    <Grid
-      component={Card}
-      container
-      sx={{
-        width: "100%",
-        py: 4,
-        pl: 4,
-        pr: 1,
-      }}
-      spacing={1}
-    >
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={6}
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            gap: 1,
-          }}
-        >
-          <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
-            Minhas usinas hoje
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(1);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-            }}
-          >
-            Usinas: {allDevices.length}
-            <SolarPower fontSize="small" sx={{ ml: 2, color: "green" }} />
-          </Typography>
-          <Typography
-            sx={{
-              display: "flex",
-
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-            }}
-          >
-            Total produzido:
-            {realGenerationLastDay != 0
-              ? numbers(realGenerationLastDay, "KWh")
-              : realGenerationLastDay + "KWh"}
-            <Bolt fontSize="small" sx={{ ml: 2, color: "#F2E205" }} />
-          </Typography>
-          <Typography
-            sx={{
-              display: "flex",
-
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-            }}
-          >
-            Total esperado:
-            {estimatedGenerationLastDay != 0
-              ? numbers(estimatedGenerationLastDay, "KWh")
-              : estimatedGenerationLastDay + "KWh"}
-            <Bolt fontSize="small" sx={{ ml: 2, color: "#F2E205" }} />
-          </Typography>
-          <Typography
-            sx={{
-              display: "flex",
-
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-            }}
-          >
-            Desempenho: {percentLastDay}%
-          </Typography>
-
-          <Typography
-            onClick={() => {
-              handleChangeColumns(2);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-            }}
-          >
-            Portais: {brands.length}
-            <SolarPower fontSize="small" sx={{ ml: 2, color: "orange" }} />
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            gap: 1,
-          }}
-        >
-          <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
-            Status usinas hoje
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(6);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-            }}
-          >
-            Online: {online.length}
-            <Wifi
-              fontSize="small"
-              sx={{ ml: 2, color: "rgba(54, 162, 235, 1)" }}
-            />
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(5);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-            }}
-          >
-            Offline: {offline.length}
-            <SignalWifiOff
-              fontSize="small"
-              sx={{ ml: 2, color: "rgba(255, 99, 132, 1)" }}
-            />
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(8);
-            }}
-            sx={{
-              display: "flex",
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-            }}
-          >
-            Inativo: {unactived.length}
-            <Block
-              fontSize="small"
-              sx={{ ml: 2, color: "rgba(60, 179, 113, 1)" }}
-            />
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(7);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-              fontWeight: "bold",
-              opacity: 0.6,
-            }}
-          >
-            Sem Inversor: {notDefined.length}
-            <Block
-              fontSize="small"
-              sx={{ ml: 2, color: "rgba(255, 206, 86, 1)" }}
-            />
-          </Typography>
-          <Typography
-            onClick={() => {
-              handleChangeColumns(4);
-            }}
-            sx={{
-              display: "flex",
-              fontSize: "16px",
-              fontWeight: "bold",
-              opacity: 0.6,
-              cursor: "pointer",
-              "&:hover": {
-                transition: "1s",
-                fontSize: "14px",
-                opacity: 1,
-              },
-            }}
-          >
-            Alertas: {alerts.length}
-            <ReportProblem fontSize="small" sx={{ ml: 2 }} />
-          </Typography>
-        </Box>
+    <Grid container columns={{ xs: 12, sm: 12, md: 12, lg: 12 }} spacing={2}>
+      <Grid item xs={6} sx={{ width: "100%" }}>
+        <BigNumberDashboard
+          type={1}
+          title="Usinas"
+          btn={false}
+          value={allDevices.length}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <SolarPower />
+            </Avatar>
+          }
+        />
+      </Grid>
+      <Grid item xs={6} sx={{ width: "100%" }}>
+        <BigNumberDashboard
+          type={2}
+          title="Portais"
+          btn={false}
+          value={brands.length}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            ></Avatar>
+          }
+        />
+      </Grid>
+      <Grid item xs={6} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={6}
+          title="Online"
+          btn={false}
+          value={online.length}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <Wifi />
+            </Avatar>
+          }
+        />
       </Grid>
 
-      <Grid
-        item
-        xs={12}
-        sm={12}
-        md={12}
-        lg={6}
-        sx={{ width: "50%", height: 240 }}
-      >
-        <ChartUsinsBystate
-          usinsByState={usinsByState}
+      <Grid item xs={6} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={5}
+          title="Offline"
+          btn={false}
+          value={offline.length}
           handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <SignalWifiOff />
+            </Avatar>
+          }
+        />
+      </Grid>
+      <Grid item xs={6} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={8}
+          title="Inativo"
+          btn={false}
+          value={unactived.length}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <Block />
+            </Avatar>
+          }
+        />
+      </Grid>
+      <Grid item xs={6} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={7}
+          title="Sem inversor"
+          btn={false}
+          value={notDefined.length}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <Block />
+            </Avatar>
+          }
         />
       </Grid>
     </Grid>

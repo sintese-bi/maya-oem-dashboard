@@ -69,6 +69,7 @@ export const PeriodDataUsins = ({
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        height: "100%",
         overflow: "scroll",
         gap: 2,
         py: 2,
@@ -115,14 +116,14 @@ export const PeriodDataUsins = ({
           <MenuItem value="months">Mês</MenuItem>
         </TextField>
       </Box>
-      <TotalMonthInfo
+      {/*<TotalMonthInfo
         useName={useName}
         realGenerationFiltered={realGenerationFiltered}
         estimatedGenerationFiltered={estimatedGenerationFiltered}
         percentGenerationFiltered={percentGenerationFiltered}
         startDate={startDate}
         endDate={endDate}
-      />
+          />*/}
       <Grid
         container
         spacing={4}
@@ -157,18 +158,20 @@ export const PeriodDataUsins = ({
             sx={{
               display: "flex",
               justifyContent: "center",
-              alignItems: "center",
+              alignItems: "self-start",
               flexDirection: "column",
               mb: 2,
             }}
           >
-            <Typography>
-              Total: {numbers(realGenerationFiltered, "KWh")}
+            <Typography variant="body2" fontWeight={"bold"}>
+              TOTAL: {numbers(realGenerationFiltered, "KWh")}
             </Typography>
-            <Typography>
-              Esperado: {numbers(estimatedGenerationFiltered, "KWh")}
+            <Typography variant="body2" fontWeight={"bold"}>
+              ESPERADO: {numbers(estimatedGenerationFiltered, "KWh")}
             </Typography>
-            <Typography>Desempenho: {percentGenerationFiltered}%</Typography>
+            <Typography variant="body2" fontWeight={"bold"}>
+              DESEMPENHO: {percentGenerationFiltered}%
+            </Typography>
           </Box>
           <ReportButton
             isLoadingReportGeneration={isLoadingReportGeneration}

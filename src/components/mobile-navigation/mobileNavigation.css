@@ -1,12 +1,25 @@
 #mobileNavigation{
+    display: none;
     flex-direction: row;
 }
 
+#mobile{
+    display: none;
+}
+
+@media screen and (max-width: 700px){
+    #mobile{
+        display: flex;
+    }
+    #mobileNavigation{
+        flex-direction: row;
+    }
+}
+
 @media screen and (max-width: 390px) {
+    
     #mobileNavigation{
         flex-direction: column;
         gap: 8px
     }
-
-
 }

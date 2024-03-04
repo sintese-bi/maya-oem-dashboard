@@ -110,13 +110,13 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
   };
 
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       {/* <DashboardSidebar onClose={toggleSidebar} open={isSidebarOpen}>
         {lgUp ? renderNavItems() : null}
       </DashboardSidebar> */}
 
       <AppBar
-        position="fixed"
+        position="relative"
         sx={{
           backgroundColor: theme.palette.background.paper,
           boxShadow: theme.shadows[3],
@@ -222,6 +222,6 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
           </Box>
         </Toolbar>
       </AppBar>
-    </>
+    </Box>
   );
 };
