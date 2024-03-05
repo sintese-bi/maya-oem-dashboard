@@ -6,7 +6,10 @@ import {
   mainItems,
   topItems,
 } from "src/modal-actions/modal-actions";
-import { routes } from "src/redirection-actions/redirection-actions";
+import {
+  handleRoutes,
+  routes,
+} from "src/redirection-actions/redirection-actions";
 import "./mobileNavigation.css";
 import { useState } from "react";
 import { Help } from "../help/help";
@@ -222,7 +225,7 @@ export const MobileNavigation = () => {
         alignItems: "center",
       }}
     >
-      {routes.map((route, index) => {
+      {handleRoutes().map((route, index) => {
         return (
           <Button
             sx={{ width: 200 }}
