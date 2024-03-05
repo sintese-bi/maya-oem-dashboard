@@ -25,7 +25,10 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 
 import "./nav.css";
-import { routes } from "src/redirection-actions/redirection-actions";
+import {
+  handleRoutes,
+  routes,
+} from "src/redirection-actions/redirection-actions";
 
 export const DashboardNavbar = ({ sideState, setSideState }) => {
   // PROPS DE CONTROLLER
@@ -46,7 +49,7 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
   }
 
   const renderNavItems = () =>
-    routes.map(
+    handleRoutes().map(
       (page) =>
         page.disabled && (
           <NavItem
