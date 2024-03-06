@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { getUserCookie } from "src/services/session";
 
+import xlsx from "src/assets/xslxPortais.xlsx";
+
 import { createDevice } from "src/store/actions/devices";
 import {
   getDashboard,
@@ -296,8 +298,31 @@ export const Portal = ({
             </Button>
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Button variant="contained" color="success">
-              Baixar modelo XLSX
+            <Button
+              variant="contained"
+              color="success"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 0,
+              }}
+            >
+              <a
+                href={xlsx}
+                download="portais.xlsx"
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "6px 10px 6px 10px",
+                }}
+              >
+                Baixar modelo xlsx
+              </a>
             </Button>
             <Button variant="outlined" color="success" component="label">
               Upload do arquivo
