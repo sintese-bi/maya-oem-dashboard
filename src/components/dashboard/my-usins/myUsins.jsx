@@ -160,8 +160,8 @@ export const MyUsins = ({
       <Grid item xs={4} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
-          title="Sem inversor"
-          btn={false}
+          title="Relatórios"
+          btn={true}
           value={`${reportsCounting}/${allDevices.length}`}
           handleChangeColumns={handleChangeColumns}
           icon={
@@ -181,7 +181,7 @@ export const MyUsins = ({
         <BigNumberDashboard
           type={7}
           title="Árvores salvas"
-          btn={false}
+          btn={true}
           value={treesSavedTotal}
           handleChangeColumns={handleChangeColumns}
           icon={
@@ -201,7 +201,7 @@ export const MyUsins = ({
         <BigNumberDashboard
           type={7}
           title="Economia do mês"
-          btn={false}
+          btn={true}
           value={numbers(monthEconomyTotal)}
           handleChangeColumns={handleChangeColumns}
           icon={

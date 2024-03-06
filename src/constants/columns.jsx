@@ -131,9 +131,7 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customHeadLabelRender: (data) => {
-        return (
-          <p style={{ fontWeight: "bolder" }}>Produção Estimada dia (KWh)</p>
-        );
+        return <p style={{ fontWeight: "bolder" }}>Produção real dia (KWh)</p>;
       },
     },
   },

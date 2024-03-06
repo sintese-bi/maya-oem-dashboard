@@ -78,7 +78,7 @@ export const PeriodDataUsins = ({
     >
       <Box sx={{ width: "100%" }}>
         <Typography variant="h5" sx={{ mb: 2, mt: 1 }}>
-          Produção mensal
+          Produção mensal de todas as usinas
         </Typography>
       </Box>
       <Box sx={{ display: "flex", width: "100%", mt: 4, mb: 6 }}>
