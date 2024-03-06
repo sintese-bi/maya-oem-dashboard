@@ -3,12 +3,16 @@
     flex-direction: column;
     width: 90%;
     height: 100%;
-    
     gap: 20px;
+}
+
+#modal {
+    display: none;
 }
 
 @media screen and (max-width: 700px){
     #index{
         width: 100%;    
     }
+    
 }

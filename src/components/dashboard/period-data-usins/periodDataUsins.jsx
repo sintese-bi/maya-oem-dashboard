@@ -163,13 +163,25 @@ export const PeriodDataUsins = ({
               mb: 2,
             }}
           >
-            <Typography variant="body2" fontWeight={"bold"}>
+            <Typography
+              variant="body2"
+              fontWeight={"bold"}
+              sx={{ color: "#F28444" }}
+            >
               TOTAL: {numbers(realGenerationFiltered, "KWh")}
             </Typography>
-            <Typography variant="body2" fontWeight={"bold"}>
+            <Typography
+              variant="body2"
+              fontWeight={"bold"}
+              sx={{ color: "#1C66A6" }}
+            >
               ESPERADO: {numbers(estimatedGenerationFiltered, "KWh")}
             </Typography>
-            <Typography variant="body2" fontWeight={"bold"}>
+            <Typography
+              variant="body2"
+              fontWeight={"bold"}
+              sx={{ color: "#208C4F" }}
+            >
               DESEMPENHO: {percentGenerationFiltered}%
             </Typography>
           </Box>

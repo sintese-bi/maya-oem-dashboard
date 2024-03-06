@@ -44,6 +44,7 @@ import { PeriodDataUsins } from "src/components/dashboard/period-data-usins/peri
 import AlertDevices from "src/components/alerts/AlertDevices";
 import { BigNumbers } from "src/components/dashboard/big-numbers/bigNumbers";
 import { DashboardContext } from "src/contexts/dashboard-context";
+import { ChartGenrealdaylasthour } from "src/components/shared/Charts";
 
 export default function Dashboard() {
   const {
@@ -86,7 +87,9 @@ export default function Dashboard() {
     navigate("/dashboard/devices");
   }
 
-  const { bignumbersumValues } = useSelector((state) => state.devices);
+  const { bignumbersumValues, genrealdaylasthourData } = useSelector(
+    (state) => state.devices
+  );
 
   const devicesTableRef = useRef(null);
   const adminGraphRef = useRef(null);
@@ -128,6 +131,8 @@ export default function Dashboard() {
             offline={usersAPIData.offline}
             alerts={usersAPIData.alerts}
             type={type}
+            monthEconomyTotal={monthEconomyTotal}
+            treesSavedTotal={treesSavedTotal}
             usinsByState={usinsByState}
             handleChangeColumns={setType}
           />
@@ -138,7 +143,9 @@ export default function Dashboard() {
       </Grid>
       <Grid container spacing={2} sx={{ maxHeight: 620 }}>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
-          <AlertDevices />
+          <ChartGenrealdaylasthour
+            genrealdaylasthourData={genrealdaylasthourData}
+          />
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
           <PeriodDataUsins
@@ -166,6 +173,10 @@ export default function Dashboard() {
           type={type}
           usinsByState={usinsByState}
         />
+      </Grid>
+
+      <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
+        <AlertDevices />
       </Grid>
 
       {/*

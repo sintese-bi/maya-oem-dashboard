@@ -295,6 +295,24 @@ export default function userReducer(state = initialState, action) {
         bignumbersumValues: [],
       };
 
+    case devices.GET_GENREALDAYLASTHOUR_REQUEST:
+      return {
+        ...state,
+        genrealdaylasthourData: [],
+      };
+
+    case devices.GET_GENREALDAYLASTHOUR_SUCCESS:
+      return {
+        ...state,
+        genrealdaylasthourData: result,
+      };
+
+    case devices.GET_GENREALDAYLASTHOUR_FAILURE:
+      return {
+        ...state,
+        genrealdaylasthourData: [],
+      };
+
     default:
       return state;
   }

@@ -131,7 +131,9 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customHeadLabelRender: (data) => {
-        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
+        return (
+          <p style={{ fontWeight: "bolder" }}>Produção Estimada dia (KWh)</p>
+        );
       },
     },
   },
