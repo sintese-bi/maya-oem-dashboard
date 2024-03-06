@@ -54,6 +54,32 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     });
 };
 
+export const genrealdaylasthour = (params) => (dispatch) => {
+  dispatch({ type: devices.GET_GENREALDAYLASTHOUR_REQUEST });
+
+  api
+    .post(`/genrealdaylasthour`, params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      console.log(data);
+      dispatch({ type: devices.GET_GENREALDAYLASTHOUR_SUCCESS, result: data });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - genrealdaylasthour";
+
+      toast.error(`${message} genrealdaylasthour`, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.GET_GENREALDAYLASTHOUR_FAILURE, message });
+    });
+};
+
 export const getAllDevices = (blUuids) => (dispatch) => {
   const allDevices = [];
   dispatch({ type: devices.GET_ALL_DEVICES_REQUEST });

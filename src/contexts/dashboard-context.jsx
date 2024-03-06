@@ -7,7 +7,7 @@ import {
   reportAdministratorRule,
 } from "src/reports/reportsRules/reportAdministratorRule";
 import { getUserCookie } from "src/services/session";
-import { bigNumberSum } from "src/store/actions/devices";
+import { bigNumberSum, genrealdaylasthour } from "src/store/actions/devices";
 import {
   brandInfo,
   getAllDevices,
@@ -171,6 +171,9 @@ export const DashboardProvider = ({ children }) => {
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
+    dispatch(
+      genrealdaylasthour({ use_uuid: "bb5a3f85-b637-4255-8cd9-04bce994c89e" })
+    );
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
     handleGetAllDevicesRequest();

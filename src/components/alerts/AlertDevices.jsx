@@ -59,7 +59,15 @@ export default function AlertDevices() {
   }, [useUuid]);
 
   return (
-    <Card sx={{ py: 2, paddingLeft: 2, overflow: "auto", height: "100%" }}>
+    <Card
+      sx={{
+        py: 2,
+        paddingLeft: 2,
+        overflow: "auto",
+        height: "100%",
+        width: "100%",
+      }}
+    >
       {devicesALerts.length !== 0 ? (
         <Box
           component="main"

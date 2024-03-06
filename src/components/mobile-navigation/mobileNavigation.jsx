@@ -329,6 +329,7 @@ export const MobileNavigation = () => {
         <Outlet />
       </Box>
       <Modal
+        id="modal"
         open={open}
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"

@@ -74,7 +74,15 @@ export default function Plants(props) {
     responsive: "simple",
     selectableRows: "none",
     setRowProps: (row) => {
-      if (row[10] > row[11]) {
+      if (row[6] > row[7]) {
+        return {
+          style: { background: "rgba(152, 251, 152, 0.2)" },
+        };
+      } else if (row[6] == 0) {
+        return {
+          style: { background: "rgba(255, 105, 97, 0.2)" },
+        };
+      } else {
         return {
           style: { background: "aliceblue" },
         };
