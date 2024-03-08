@@ -1199,7 +1199,8 @@ export const ChartsDashboard = (props) => {
       }}
     >
       <Chart
-        height={280}
+        height={300}
+        width={"100%"}
         type="bar"
         options={options}
         data={data}

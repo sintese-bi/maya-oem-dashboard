@@ -81,69 +81,76 @@ export const PeriodDataUsins = ({
           Produção mensal de todas as usinas
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", width: "100%", mt: 4, mb: 6 }}>
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Data Inicial"
-            value={startDate}
-            onChange={(startDate) => {
-              setStartDate(
-                startDate ? moment(startDate).format("YYYY-MM-DD") : ""
-              );
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-          <DatePicker
-            label="Data Final"
-            value={endDate}
-            onChange={(endDate) =>
-              setEndDate(endDate ? moment(endDate).format("YYYY-MM-DD") : "")
-            }
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        <TextField
-          sx={{ width: 200, backgroundColor: "transparent", ml: 4 }}
-          label="Filtrar por"
-          select
-          defaultValue="days"
-          variant="standard"
-          onChange={(e) => setOptionFilter(e.target.value)}
+
+      <Grid container spacing={2} sx={{ display: "flex", width: "100%" }}>
+        <Grid
+          item
+          lg={8}
+          md={8}
+          sm={12}
+          xs={12}
+          sx={{ display: "flex", gap: 1 }}
         >
-          <MenuItem value="days">Dias</MenuItem>
-          <MenuItem value="weeks">Semanas</MenuItem>
-          <MenuItem value="biweek">Quinzena</MenuItem>
-          <MenuItem value="months">Mês</MenuItem>
-        </TextField>
-      </Box>
-      {/*<TotalMonthInfo
-        useName={useName}
-        realGenerationFiltered={realGenerationFiltered}
-        estimatedGenerationFiltered={estimatedGenerationFiltered}
-        percentGenerationFiltered={percentGenerationFiltered}
-        startDate={startDate}
-        endDate={endDate}
-          />*/}
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DatePicker
+              label="Data Inicial"
+              value={startDate}
+              onChange={(startDate) => {
+                setStartDate(
+                  startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+                );
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <DatePicker
+              label="Data Final"
+              value={endDate}
+              onChange={(endDate) =>
+                setEndDate(endDate ? moment(endDate).format("YYYY-MM-DD") : "")
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item lg={4} md={4} sm={12} xs={12}>
+          <TextField
+            sx={{ width: "100%", backgroundColor: "transparent" }}
+            label="Filtrar por"
+            select
+            defaultValue="days"
+            variant="standard"
+            onChange={(e) => setOptionFilter(e.target.value)}
+          >
+            <MenuItem value="days">Dias</MenuItem>
+            <MenuItem value="weeks">Semanas</MenuItem>
+            <MenuItem value="biweek">Quinzena</MenuItem>
+            <MenuItem value="months">Mês</MenuItem>
+          </TextField>
+        </Grid>
+      </Grid>
+
       <Grid
         container
         spacing={4}
         sx={{
+          mt: 4,
           px: 2,
         }}
       >
-        <Grid item lg={8} md={8} sm={12} xs={12}>
+        <Grid item lg={8} md={12} sm={11} xs={11}>
           <ChartsDashboard
             startDate={startDate}
             endDate={endDate}
             optionFilter={optionFilter}
-            dataDevices={graphData.data}
+            dataDevices={graphData.totalByDate}
             isLoading={isLoadingGraph}
             adminGraphRef={adminGraphRef}
           />
         </Grid>
+
         <Grid
           lg={4}
-          md={4}
+          md={12}
           sm={12}
           xs={12}
           item

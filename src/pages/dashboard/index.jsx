@@ -141,12 +141,14 @@ export default function Dashboard() {
           <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
       </Grid>
+
       <Grid container spacing={2} sx={{ maxHeight: 620 }}>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
           <ChartGenrealdaylasthour
             genrealdaylasthourData={genrealdaylasthourData}
           />
         </Grid>
+
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
           <PeriodDataUsins
             startDate={startDate}
@@ -166,7 +168,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
+      <Grid container sx={{}} xs={12} id="list-usins">
         <ListUsins
           data={data}
           devicesTableRef={devicesTableRef}
