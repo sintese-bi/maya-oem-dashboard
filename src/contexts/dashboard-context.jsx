@@ -212,12 +212,13 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData.allDevices]);
 
   useEffect(() => {
-    if (usersAPIData.graphData.data !== undefined) {
+    if (usersAPIData.graphData.totalByDate !== undefined) {
       //formato = {"data":"valor"}
 
-      let sumPerDayRealGeneration = usersAPIData.graphData.data.somaPorDiaReal;
+      let sumPerDayRealGeneration =
+        usersAPIData.graphData.totalByDate.somaPorDiaReal;
       let sumPerDayEstimatedGeneration =
-        usersAPIData.graphData.data.somaPorDiaEstimada;
+        usersAPIData.graphData.totalByDate.somaPorDiaEstimada;
 
       //pegando apenas os valores
 

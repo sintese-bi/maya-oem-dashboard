@@ -6,6 +6,11 @@
     gap: 20px;
 }
 
+#list-usins{
+    margin-top: 80px;
+    width: 100% 
+}
+
 #modal {
     display: none;
 }
@@ -13,6 +18,10 @@
 @media screen and (max-width: 700px){
     #index{
         width: 100%;    
+    }
+    #list-usins{
+        margin-top: 30%;
+        width: 100% 
     }
     
 }

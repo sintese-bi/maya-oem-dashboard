@@ -38,7 +38,7 @@ export const MyUsins = ({
 
   return (
     <Grid container columns={{ xs: 12, sm: 12, md: 12, lg: 12 }} spacing={2}>
-      <Grid item xs={4} sx={{ width: "100%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "100%" }}>
         <BigNumberDashboard
           type={1}
           title="Usinas"
@@ -58,7 +58,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "100%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "100%" }}>
         <BigNumberDashboard
           type={2}
           title="Portais"
@@ -76,7 +76,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={6}
           title="Online"
@@ -97,7 +97,7 @@ export const MyUsins = ({
         />
       </Grid>
 
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={5}
           title="Offline"
@@ -117,7 +117,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={8}
           title="Inativo"
@@ -137,7 +137,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
           title="Sem inversor"
@@ -157,7 +157,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
           title="Relatórios"
@@ -177,7 +177,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
           title="Árvores salvas"
@@ -197,7 +197,7 @@ export const MyUsins = ({
           }
         />
       </Grid>
-      <Grid item xs={4} sx={{ width: "90%" }}>
+      <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
           title="Economia do mês"
