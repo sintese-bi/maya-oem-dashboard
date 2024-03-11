@@ -142,7 +142,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} sx={{ maxHeight: 620 }}>
+      <Grid container spacing={2} sx={{ height: 620 }}>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
           <ChartGenrealdaylasthour
             genrealdaylasthourData={genrealdaylasthourData}

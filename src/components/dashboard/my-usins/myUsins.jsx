@@ -202,7 +202,7 @@ export const MyUsins = ({
           type={7}
           title="Economia do mês"
           btn={true}
-          value={numbers(monthEconomyTotal)}
+          value={numbers(monthEconomyTotal, "R$")}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar

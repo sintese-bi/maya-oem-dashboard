@@ -3,7 +3,9 @@
     flex-direction: column;
     width: 90%;
     height: 100%;
+    padding: 10px 0px 10px 0px;
     gap: 20px;
+    margin-left: 130px;
 }
 
 #list-usins{
@@ -17,7 +19,9 @@
 
 @media screen and (max-width: 700px){
     #index{
-        width: 100%;    
+        width: 100%;  
+        margin-left: 0px;
+  
     }
     #list-usins{
         margin-top: 30%;

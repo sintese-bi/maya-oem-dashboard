@@ -41,27 +41,8 @@ const Layout = ({ sideState, setSideState }) => {
       }}
     >
       <DashboardNavbar sideState={sideState} setSideState={setSideState} />
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          height: "100vh",
-          justifyContent: "space-evenly",
-          gap: 10,
-        }}
-      >
-        <Side sideState={sideState} setSideState={setSideState} />
-        <Box
-          sx={{
-            py: 2,
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Outlet />
-        </Box>
-      </Box>
+      <Side sideState={sideState} setSideState={setSideState} />
+      <Outlet />
     </Box>
   );
 };
