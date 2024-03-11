@@ -26,7 +26,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
         <Button
           variant="contained"
           onClick={() => {
-            callingWebWorkers();
+            setOpen(!open);
           }}
           sx={{ my: 2 }}
         >

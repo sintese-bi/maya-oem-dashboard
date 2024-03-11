@@ -278,6 +278,11 @@ export const ChartGenrealdaylasthour = (props) => {
             text: "MWh",
             font: { size: 18, weight: "bold" },
           },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
         },
         x: {
           grid: {
@@ -287,6 +292,11 @@ export const ChartGenrealdaylasthour = (props) => {
             display: true,
             text: "Hrs",
             font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
           },
         },
       },
@@ -309,7 +319,7 @@ export const ChartGenrealdaylasthour = (props) => {
         >
           Relação horária de geração
         </Typography>
-        <Box width={"90%"} height={230}>
+        <Box width={"90%"} height={330}>
           <Chart type="bar" options={options} data={data} plugins={[plugin]} />
         </Box>
       </Card>
