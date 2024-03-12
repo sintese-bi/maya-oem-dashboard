@@ -7,7 +7,11 @@ import {
   reportAdministratorRule,
 } from "src/reports/reportsRules/reportAdministratorRule";
 import { getUserCookie } from "src/services/session";
-import { bigNumberSum, genrealdaylasthour } from "src/store/actions/devices";
+import {
+  bigNumberSum,
+  genrealdayDevicelasthour,
+  genrealdaylasthour,
+} from "src/store/actions/devices";
 import {
   brandInfo,
   getAllDevices,
@@ -171,9 +175,7 @@ export const DashboardProvider = ({ children }) => {
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
-    dispatch(
-      genrealdaylasthour({ use_uuid: "bb5a3f85-b637-4255-8cd9-04bce994c89e" })
-    );
+    dispatch(genrealdaylasthour({ use_uuid }));
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
     handleGetAllDevicesRequest();
@@ -201,7 +203,7 @@ export const DashboardProvider = ({ children }) => {
       handleGenerationTotalValues({
         realGenerationTotal: generationReal,
         estimatedGenerationTotal: generationEstimated,
-        monthEconomyTotal: (generationReal * 0.58).toFixed(2),
+        monthEconomyTotal: (generationReal * 0.96).toFixed(2),
         treesSavedTotal: (generationReal * 0.000504).toFixed(2),
       });
 

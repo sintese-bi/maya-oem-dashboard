@@ -10,7 +10,10 @@ import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 import { getUserCookie } from "src/services/session";
 import { PaymentWarn } from "src/components/shared/PaymentWarn";
 import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
-import { chartsToGenerationReports } from "../../components/shared/Charts";
+import {
+  ChartGenrealdayDevicelasthour,
+  chartsToGenerationReports,
+} from "../../components/shared/Charts";
 import {
   Backdrop,
   Box,
@@ -25,6 +28,7 @@ import {
   TextField,
   Button,
   Modal,
+  Card,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -37,7 +41,11 @@ import {
   DownloadForOffline,
   Cancel,
 } from "@mui/icons-material";
-import { getDevices, getCapacities } from "src/store/actions/devices";
+import {
+  getDevices,
+  getCapacities,
+  genrealdayDevicelasthour,
+} from "src/store/actions/devices";
 import { getGeneration } from "src/store/actions/generation";
 import { DeviceDetail } from "../../components/generation/DeviceDetail";
 import { GenerationBI } from "src/components/generation/GenerationBI";
@@ -56,7 +64,8 @@ const Generation = () => {
   const { isLoadingGeneration, generation, temperature } = useSelector(
     (state) => state.generation
   );
-  const { isLoadingDevices, devices } = useSelector((state) => state.devices);
+  const { isLoadingDevices, devices, genrealdayDeviceLasthourData } =
+    useSelector((state) => state.devices);
 
   const { useTypeMember } = getUserCookie();
 
@@ -139,6 +148,7 @@ const Generation = () => {
       );
     }
     setIsLoadingReport(true);
+    dispatch(genrealdayDevicelasthour({ devUuidState }));
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {
@@ -191,6 +201,11 @@ const Generation = () => {
             blUuidState={blUuidState}
           />
         </Box>
+        <Card sx={{ p: 3 }}>
+          <ChartGenrealdayDevicelasthour
+            genrealdayDeviceLasthourData={genrealdayDeviceLasthourData}
+          />
+        </Card>
         <Box sx={{ my: 10, width: "100%" }}>
           <GenerationBI
             setOptionFilter={setOptionFilter}

@@ -1,5 +1,14 @@
+
+#outlet{
+    margin-left: 110px;
+
+}
+
 @media screen and (max-width: 700px){
     #layout{
         display: none;
+    }
+    #outlet{
+        margin-left: 0px;
     }
 }
