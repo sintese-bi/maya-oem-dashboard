@@ -32,6 +32,7 @@ import {
   Title,
   Tooltip,
   ArcElement,
+  Filler,
 } from "chart.js";
 import { Bar, Chart, Line, Pie } from "react-chartjs-2";
 import { LoadingSkeletonCharts } from "../Loading";
@@ -54,7 +55,8 @@ ChartJS.register(
   LineElement,
   LineController,
   BarController,
-  ArcElement
+  ArcElement,
+  Filler
 );
 
 const TABS = {
@@ -196,15 +198,13 @@ export const ChartGenrealdaylasthour = (props) => {
       </Card>
     );
   } else {
-    const hours = Object.keys(genrealdaylasthourData.sumsPerHour);
-    const realGeneration = hours.map((hour) =>
-      (genrealdaylasthourData.sumsPerHour[hour].gen_real / 1000).toFixed()
+    const hours = genrealdaylasthourData.data.map((data) => data.hora);
+    const realGeneration = genrealdaylasthourData.data.map(
+      (data) => data.d2 / 1000
     );
-    const estimatedGeneration = hours.map((hour) =>
-      (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
-    );
-
-    console.log(realGeneration, estimatedGeneration);
+    //const estimatedGeneration = hours.map((hour) =>
+    //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
+    //);
 
     const data = {
       labels: hours,
@@ -215,9 +215,11 @@ export const ChartGenrealdaylasthour = (props) => {
           barPercentage: 0.4,
           label: "Geração real",
           data: realGeneration,
-          backgroundColor: "#8FC1B5",
+          borderColor: "#8FC1B5",
+          backgroundColor: "#dce6e3",
           type: "line",
           tension: 0.4,
+          fill: "start",
         },
       ],
     };
@@ -319,7 +321,175 @@ export const ChartGenrealdaylasthour = (props) => {
         >
           Relação horária de geração
         </Typography>
-        <Box width={"90%"} height={330}>
+        <Box width={"90%"} height={430}>
+          <Chart type="bar" options={options} data={data} plugins={[plugin]} />
+        </Box>
+      </Card>
+    );
+  }
+};
+
+export const ChartGenrealdayDevicelasthour = (props) => {
+  const theme = useTheme();
+  const { genrealdayDeviceLasthourData } = props;
+
+  if (genrealdayDeviceLasthourData === undefined) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box sx={{ height: 300 }}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  } else {
+    console.log(genrealdayDeviceLasthourData);
+    const hours = genrealdayDeviceLasthourData.data?.map(
+      (data) => data.hora_min
+    );
+    const realGeneration = genrealdayDeviceLasthourData.data?.map(
+      (data) => data.d2 / 1000
+    );
+    //const estimatedGeneration = hours.map((hour) =>
+    //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
+    //);
+
+    const data = {
+      labels: hours,
+      datasets: [
+        {
+          label: "Geração real",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração real",
+          data: realGeneration,
+          borderColor: "#8FC1B5",
+          backgroundColor: "#dce6e3",
+          type: "line",
+          tension: 0.4,
+          fill: "start",
+        },
+      ],
+    };
+
+    const plugin = {
+      id: "customCanvasBackgroundColor",
+      beforeDraw: (chart, args, options) => {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = options.color || "#99ffff";
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      },
+      legend: {
+        position: "top",
+      },
+    };
+
+    const options = {
+      animation: true,
+      cornerRadius: 20,
+      layout: { padding: 0 },
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        customCanvasBackgroundColor: {
+          color: "white",
+        },
+      },
+      yAxes: [
+        {
+          ticks: {
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+          },
+        },
+      ],
+      tooltips: {
+        backgroundColor: theme.palette.background.paper,
+        bodyFontColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        enabled: true,
+        footerFontColor: theme.palette.text.secondary,
+        intersect: false,
+        mode: "index",
+        titleFontColor: theme.palette.text.primary,
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "MWh",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "Hrs",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+      },
+    };
+
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Relação horária de geração
+        </Typography>
+        <Box width={"90%"} height={430}>
           <Chart type="bar" options={options} data={data} plugins={[plugin]} />
         </Box>
       </Card>

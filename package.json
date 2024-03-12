@@ -50,7 +50,7 @@
     "pako": "^2.1.0",
     "queue": "^7.0.0",
     "react": "^18.2.0",
-    "react-chartjs-2": "^4.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-datetime": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",

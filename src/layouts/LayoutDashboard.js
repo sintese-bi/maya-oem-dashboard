@@ -42,7 +42,9 @@ const Layout = ({ sideState, setSideState }) => {
     >
       <DashboardNavbar sideState={sideState} setSideState={setSideState} />
       <Side sideState={sideState} setSideState={setSideState} />
-      <Outlet />
+      <Box id="outlet">
+        <Outlet />
+      </Box>
     </Box>
   );
 };

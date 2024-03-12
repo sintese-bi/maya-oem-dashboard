@@ -3,6 +3,7 @@ import { devices } from "../typesActions/types";
 import api, { configRequest } from "../../services/api";
 
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export const getDevices = (blUuid) => (dispatch) => {
   dispatch({ type: devices.GET_DEVICES_REQUEST });
@@ -57,12 +58,19 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
 export const genrealdaylasthour = (params) => (dispatch) => {
   dispatch({ type: devices.GET_GENREALDAYLASTHOUR_REQUEST });
 
-  api
-    .post(`/genrealdaylasthour`, params, configRequest())
+  axios
+    .get(
+      `https://app2.mayaoem.com.br/v2/user?user=a7ed2d10-4340-43df-824d-63ca16979114`,
+      params,
+      configRequest()
+    )
     .then((res) => {
       const { data } = res;
-      console.log(data);
-      dispatch({ type: devices.GET_GENREALDAYLASTHOUR_SUCCESS, result: data });
+      const transformedDataValues = data.replace(/NaN/g, 0);
+      dispatch({
+        type: devices.GET_GENREALDAYLASTHOUR_SUCCESS,
+        result: JSON.parse(transformedDataValues),
+      });
     })
     .catch((error) => {
       const { response: err } = error;
@@ -77,6 +85,39 @@ export const genrealdaylasthour = (params) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: devices.GET_GENREALDAYLASTHOUR_FAILURE, message });
+    });
+};
+
+export const genrealdayDevicelasthour = (params) => (dispatch) => {
+  dispatch({ type: devices.GET_GENREALDAYDEVICELASTHOUR_REQUEST });
+
+  axios
+    .get(
+      `https://app2.mayaoem.com.br/v2/device?device=${params.devUuidState}`,
+      params,
+      configRequest()
+    )
+    .then((res) => {
+      const { data } = res;
+
+      dispatch({
+        type: devices.GET_GENREALDAYDEVICELASTHOUR_SUCCESS,
+        result: data,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - genrealdaylasthour";
+
+      toast.error(`${message} genrealdaylasthour`, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.GET_GENREALDAYDEVICELASTHOUR_FAILURE, message });
     });
 };
 

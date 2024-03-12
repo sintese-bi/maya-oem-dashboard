@@ -313,6 +313,25 @@ export default function userReducer(state = initialState, action) {
         genrealdaylasthourData: [],
       };
 
+    case devices.GET_GENREALDAYDEVICELASTHOUR_REQUEST:
+      return {
+        ...state,
+        genrealdayDeviceLasthourData: [],
+      };
+
+    case devices.GET_GENREALDAYDEVICELASTHOUR_SUCCESS:
+      console.log(result);
+      return {
+        ...state,
+        genrealdayDeviceLasthourData: result,
+      };
+
+    case devices.GET_GENREALDAYDEVICELASTHOUR_FAILURE:
+      return {
+        ...state,
+        genrealdayDeviceLasthourData: [],
+      };
+
     default:
       return state;
   }
