@@ -139,7 +139,7 @@ export const DashboardProvider = ({ children }) => {
       usersAPIData.capacity,
       realGenerationTotal,
       estimatedGenerationTotal,
-      usersAPIData.dataDevices,
+      usersAPIData.devices,
       usersAPIData.allDevices,
       percentLastDay,
       startDateReport,

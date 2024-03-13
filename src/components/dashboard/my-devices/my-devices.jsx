@@ -17,7 +17,7 @@ export const MyDevices = ({
   percent,
   type,
   handleChangeColumns,
-  dataDevices,
+  devices,
   allDevices,
   brands,
   capacityTotal,
@@ -80,7 +80,7 @@ export const MyDevices = ({
           percent={percent}
           type={type}
           handleChangeColumns={handleChangeColumns}
-          dataDevices={dataDevices}
+          devices={devices}
           allDevices={allDevices}
           brands={brands}
           capacityTotal={capacityTotal}

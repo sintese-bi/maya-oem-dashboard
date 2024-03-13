@@ -76,7 +76,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           >
             <Cancel onClick={() => setOpen(false)} sx={{ cursor: "pointer" }} />
           </Box>
-          <TopUsins dataDevices={allDevices} />
+          <TopUsins devices={allDevices} />
         </Card>
       </Modal>
     </Card>

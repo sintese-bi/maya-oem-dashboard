@@ -62,6 +62,7 @@ export const PeriodDataUsins = ({
       );
     }
   }, [startDate, endDate, optionFilter, useUuid]);
+
   return (
     <Card
       sx={{
@@ -142,7 +143,7 @@ export const PeriodDataUsins = ({
             startDate={startDate}
             endDate={endDate}
             optionFilter={optionFilter}
-            dataDevices={graphData.totalByDate}
+            devices={graphData.data?.totalByDate}
             isLoading={isLoadingGraph}
             adminGraphRef={adminGraphRef}
           />

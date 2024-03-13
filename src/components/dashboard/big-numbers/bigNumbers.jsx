@@ -55,7 +55,7 @@ export const BigNumbers = ({
           btn={true}
           type={9}
           handleChangeColumns={handleChangeColumns}
-          value={numbers(monthEconomyTotal, "R$")}
+          value={monthEconomyTotal}
           icon={
             <Avatar
               sx={{

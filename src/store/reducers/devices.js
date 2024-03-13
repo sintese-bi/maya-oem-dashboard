@@ -125,7 +125,7 @@ export default function userReducer(state = initialState, action) {
         }
       }
 
-      let datesInfo = deviceData[0].generation.map((gen) => {
+      let datesInfo = deviceData.map((gen) => {
         return (
           moment(gen.gen_date).format("DD") +
           "/" +
@@ -134,7 +134,7 @@ export default function userReducer(state = initialState, action) {
       });
 
       let monthsInfo = [];
-      deviceData[0].generation.map((gen) => {
+      deviceData.map((gen) => {
         let monthAlreadyCount = monthsInfo.filter(
           (data) =>
             data ==
@@ -182,11 +182,10 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingDevicesGeneration: false,
         devicesGeneration:
-          deviceData[0].generation.length !== 0
-            ? Object.assign(
-                handlesGeneration(deviceData[0], type, day, label),
-                { deviceName: deviceName }
-              )
+          deviceData.length !== 0
+            ? Object.assign(handlesGeneration(deviceData, type, day, label), {
+                deviceName: deviceName,
+              })
             : {
                 label,
                 realGeneration: [],
@@ -320,7 +319,6 @@ export default function userReducer(state = initialState, action) {
       };
 
     case devices.GET_GENREALDAYDEVICELASTHOUR_SUCCESS:
-      console.log(result);
       return {
         ...state,
         genrealdayDeviceLasthourData: result,

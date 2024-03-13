@@ -211,7 +211,6 @@ export default function ListUsers() {
   }, []);
 
   useEffect(() => {
-    console.log(data);
     setClients(data);
   }, [data]);
 

@@ -4,9 +4,8 @@ import { sunArrayPercentage } from "./utils";
 
 // ESTRUTURANDO DADOS PARA O GRAFICO DE PROJETADA VS REAL (Kwh)
 export const handlesGeneration = (data, type, day, label) => {
-  const estimated = data.generation[0]?.gen_estimated
-    ? data.generation[0]?.gen_estimated
-    : 0;
+  console.log(data);
+  const estimated = data[0].gen_estimated ? data[0]?.gen_estimated : 0;
 
   const realGeneration = Array(day).fill(0);
   const estimatedGeneration = Array(day).fill(estimated);
@@ -25,7 +24,7 @@ export const handlesGeneration = (data, type, day, label) => {
 
   // FORMATANDO OS DADOS CONFORME O TIPO DO FILTRO mês OU ano
   if (type === "month") {
-    data.generation.map((gen) => {
+    data.map((gen) => {
       label.filter((day, index) => {
         let dayBooleano =
           moment(gen.gen_date).format("DD") +
@@ -48,7 +47,7 @@ export const handlesGeneration = (data, type, day, label) => {
   } else {
     label.filter((data, index) => {
       let sunGenReal = { value: 0, date: "" };
-      data.generation.map((gen) => {
+      data.map((gen) => {
         let mothBooleano =
           moment(gen.gen_date).format("MM") +
             "/" +

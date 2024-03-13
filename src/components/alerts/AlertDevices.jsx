@@ -28,7 +28,7 @@ export default function AlertDevices() {
   );
 
   const {
-    dataDevices,
+    devices,
     selectedUser,
     //useCodePagarMe
   } = useSelector((state) => state.users);
@@ -38,18 +38,18 @@ export default function AlertDevices() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (dataDevices.length !== 0) {
-      let devicesWithAlerts = dataDevices.filter((data) => data.alert !== 0);
+    if (devices.length !== 0) {
+      let devicesWithAlerts = devices.filter((data) => data.alert !== 0);
       setData(devicesWithAlerts);
     }
-  }, [dataDevices]);
+  }, [devices]);
 
   useEffect(() => {
     dispatch(getDevicesAlerts(data));
   }, [data]);
 
   useEffect(() => {
-    if (dataDevices.length === 0) {
+    if (devices.length === 0) {
       selectedUser.length != 0
         ? dispatch(
             getDashboard(selectedUser[0]?.useUuidState, "alert-devices.jsx")

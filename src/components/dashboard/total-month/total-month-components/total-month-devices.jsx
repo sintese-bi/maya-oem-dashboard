@@ -44,7 +44,7 @@ export default function Plants(props) {
   const {
     isLoading,
     brands,
-    dataDevices,
+    devices,
     generationBelowEstimated,
     alerts,
     notDefined,
@@ -275,6 +275,10 @@ export default function Plants(props) {
     setEndDate(moment().format("YYYY-MM-DD"));
     setOpen(!open);
   }
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (isLoading) {
     return (
