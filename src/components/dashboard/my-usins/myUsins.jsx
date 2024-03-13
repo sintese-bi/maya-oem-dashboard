@@ -22,6 +22,7 @@ export const MyUsins = ({
   estimatedGenerationLastDay,
   percentLastDay,
   allDevices,
+  devices,
   brands,
   notDefined,
   unactived,
@@ -43,7 +44,7 @@ export const MyUsins = ({
           type={1}
           title="Usinas"
           btn={false}
-          value={allDevices.length}
+          value={devices.length}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar
