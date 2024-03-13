@@ -25,7 +25,7 @@ export function reportAdministratorRule(
   capacity,
   realGeneration,
   estimatedGeneration,
-  dataDevices,
+  devices,
   allDevices,
   percent,
   startDateReport,
@@ -33,20 +33,19 @@ export function reportAdministratorRule(
   optionFilter,
   setIsLoadingReportGeneration
 ) {
-  let realGenerationDay = dataDevices.map((data) => {
+  let realGenerationDay = devices.map((data) => {
     let generationRealValue = data.generationRealDay;
     return generationRealValue;
   });
 
-  reportAdministrator.graphData["realGeneration"] =
-    graphData.realGeneration;
+  reportAdministrator.graphData["realGeneration"] = graphData.realGeneration;
 
   reportAdministrator.generationRealTotalValue = numbers(
     realGeneration.toFixed(2),
     "KWh"
   );
 
-  let estimatedGenerationDay = dataDevices.map((data) => {
+  let estimatedGenerationDay = devices.map((data) => {
     let generationEstimatedValue = data.generationEstimatedDay;
     return generationEstimatedValue;
   });

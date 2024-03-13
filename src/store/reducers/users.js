@@ -26,7 +26,7 @@ const initialState = {
   data: [],
   brands: [],
   blUuids: [],
-  dataDevices: [],
+  devices: [],
   allDevices: [],
   graphData: [],
   generationBelowEstimated: [],
@@ -53,7 +53,7 @@ const initialState = {
 
 export default function userReducer(state = initialState, action) {
   const { payload, brandListUser, profileLevel, result } = action;
-  const { brand_login } = result?.info || [];
+  const { devicesData } = result || { devicesData: [] };
   const allBrands = result?.brands?.brand_login;
 
   switch (action.type) {
@@ -204,52 +204,21 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_USER_BRANDS_SUCCESS:
-      const dataResult = brand_login
-        .map((item) => {
-          const res = item.devices.map((dev) => {
-            let sumRealWeek = 0;
-            let sumRealMonth = 0;
-
-            dev.generation.forEach((item) => {
-              if (
-                moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
-                moment(item.gen_date) <= moment()
-              ) {
-                sumRealWeek += item.gen_real;
-              }
-            });
-            dev.generation.forEach((item) => (sumRealMonth += item.gen_real));
-
-            const generationRealDay = dev.generation.filter(
-              (item) =>
-                item.gen_date ===
-                moment().subtract(1, "day").format("YYYY-MM-DD")
-            );
-
-            return {
-              brand: dev.dev_brand,
-              blUuid: item.bl_uuid,
-              name: dev.dev_name,
-              uuid: dev.dev_uuid,
-              generationRealDay:
-                generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real
-                  : 0,
-              generationRealWeek: sumRealWeek,
-              generationRealMonth: sumRealMonth,
-              generationEstimated:
-                dev.generation.length !== 0
-                  ? dev.generation[0].gen_estimated
-                  : 0,
-              alert: dev.alerts.length,
-              staName: dev?.status ? dev?.status.sta_name : "Não informado!",
-              staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
-            };
-          });
-
-          return res;
-        })
-        .flat();
+      const dataResult = devicesData.map((device) => {
+        return {
+          brand: device.dev_brand,
+          blUuid: device.brand_login.bl_uuid,
+          name: device.dev_name,
+          uuid: device.dev_uuid,
+          generationRealDay: device.gen_real_day,
+          generationRealWeek: device.weeklySum.gen_real,
+          generationRealMonth: device.monthlySum.gen_real,
+          generationEstimated: device.gen_estimated_day,
+          alert: device.alerts.length,
+          staName: device?.status ? device?.status.sta_name : "Não informado!",
+          staCode: device?.status ? device?.status.sta_code : "Não informado!",
+        };
+      });
 
       return {
         ...state,
@@ -322,88 +291,31 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_ALL_DEVICES_SUCCESS:
-      const daysPassedAllDevices = moment().date();
-      const allDevices = brand_login
-        .map((item) => {
-          const devicesNotDeleted = item.devices.filter(
-            (dev) => dev.dev_deleted !== true
-          );
-          const res = devicesNotDeleted.map((dev) => {
-            const generationEstimatedDay =
-              dev.generation.length !== 0 ? dev.generation[0].gen_estimated : 0;
-
-            let sumRealWeek = 0;
-            let sumEstimatedlWeek =
-              generationEstimatedDay * Math.min(7, daysPassedAllDevices);
-
-            let sumRealMonth = 0;
-            let sumEstimatedMonth =
-              generationEstimatedDay * daysPassedAllDevices;
-
-            dev.generation.forEach((item) => {
-              if (
-                moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
-                moment(item.gen_date) <= moment()
-              ) {
-                sumRealWeek += item.gen_real;
-              }
-            });
-            dev.generation.forEach((item) => {
-              sumRealMonth += item.gen_real;
-            });
-
-            const generationRealDay = dev.generation.filter(
-              (item) => item.gen_date === moment().format("YYYY-MM-DD")
-            );
-
-            const alerts =
-              dev.alerts.length !== 0
-                ? dev.alerts.filter((item) => {
-                    const alertDate = moment(item.alert_created_at).format(
-                      "YYYY-MM-DD"
-                    );
-                    const today = moment().format("YYYY-MM-DD");
-                    return alertDate === today;
-                  })
-                : [];
-
-            return {
-              brand: item.bl_name,
-              blUuid: item.bl_uuid,
-              name: dev.dev_name,
-              dev_lat: dev.dev_lat,
-              dev_long: dev.dev_long,
-              dev_image: dev.dev_image,
-              email: dev.dev_email,
-              capacity: parseFloat(
-                dev.dev_capacity !== null ? dev.dev_capacity.toFixed(2) : 0
-              ),
-              address: dev.dev_address,
-              uuid: dev.dev_uuid,
-              generationRealDay:
-                generationRealDay.length !== 0
-                  ? parseFloat(generationRealDay[0].gen_real.toFixed(2))
-                  : 0,
-              generationRealWeek: parseFloat(sumRealWeek.toFixed(2)),
-              generationRealMonth: parseFloat(sumRealMonth.toFixed(2)),
-              generationEstimatedDay: parseFloat(
-                generationEstimatedDay?.toFixed(2)
-              ),
-              generationEstimatedlWeek: parseFloat(
-                sumEstimatedlWeek.toFixed(2)
-              ),
-              generationEstimatedMonth: parseFloat(
-                sumEstimatedMonth.toFixed(2)
-              ),
-              alert: alerts.length,
-              staName: dev?.status ? dev?.status.sta_name : "Não informado!",
-              staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
-            };
-          });
-
-          return res;
-        })
-        .flat();
+      const allDevices = devicesData.map((device) => {
+        let deviceItem = {
+          brand: device.dev_brand,
+          blUuid: device.brand_login.bl_uuid,
+          name: device.dev_name,
+          uuid: device.dev_uuid,
+          address: device.dev_address,
+          generationRealDay: Number(device.gen_real_day),
+          generationRealWeek: Number(device.weeklySum.gen_real),
+          generationRealMonth: Number(device.monthlySum.gen_real),
+          generationEstimated: Number(device.gen_estimated_day),
+          generationEstimatedlWeek: Number(device.weeklySum.gen_estimated),
+          generationEstimatedMonth: Number(device.monthlySum.gen_estimated),
+          alert: device.alerts.length,
+          staName: device?.status ? device?.status.sta_name : "Não informado!",
+          staCode: device?.status ? device?.status.sta_code : "Não informado!",
+          name: device.dev_name,
+          dev_lat: device.dev_lat,
+          dev_long: device.dev_long,
+          dev_image: device.dev_image,
+          email: device.dev_email,
+          capacity: Number(device.dev_capacity),
+        };
+        return deviceItem;
+      });
 
       const brands = [...new Set(allBrands.map((item) => item.bl_name))];
       const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))];
@@ -483,94 +395,46 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isDashboardDataLoading: true,
-        dataDevices: [],
+        devices: [],
       };
 
     case users.GET_DASHBOARD_SUCCESS:
-      const daysPassed = moment().date();
-      const dataDevices = brand_login
-        .map((item) => {
-          const devicesNotDeleted = item.devices.filter(
-            (dev) => dev.dev_deleted !== true
-          );
-          const res = devicesNotDeleted.map((dev) => {
-            const generationEstimatedDay =
-              dev.generation.length !== 0 && dev.generation[0].gen_real != 0
-                ? dev.generation[0].gen_estimated
-                : 0;
-
-            let sumRealWeek = 0;
-            let sumEstimatedlWeek =
-              generationEstimatedDay * Math.min(7, daysPassed);
-
-            let sumRealMonth = 0;
-            let sumEstimatedMonth = generationEstimatedDay * daysPassed;
-
-            dev.generation.forEach((item) => {
-              if (
-                moment(item.gen_date) >= moment().subtract(7, "day").toDate() &&
-                moment(item.gen_date) <= moment()
-              ) {
-                sumRealWeek += item.gen_real;
-              }
-            });
-            dev.generation.forEach((item) => {
-              sumRealMonth += item.gen_real;
-            });
-
-            const generationRealDay = dev.generation.filter(
-              (item) => item.gen_date === moment().format("YYYY-MM-DD")
-            );
-
-            const alerts =
-              dev.alerts.length !== 0
-                ? dev.alerts.filter((item) => {
-                    const alertDate = moment(item.alert_created_at).format(
-                      "YYYY-MM-DD"
-                    );
-                    const today = moment().format("YYYY-MM-DD");
-                    return alertDate === today;
-                  })
-                : [];
-
-            return {
-              brand: dev.dev_brand,
-              blUuid: item.bl_uuid,
-              name: dev.dev_name,
-              capacity: dev.dev_capacity,
-              uuid: dev.dev_uuid,
-              generationRealDay:
-                generationRealDay.length !== 0
-                  ? generationRealDay[0].gen_real
-                  : 0,
-              generationRealWeek: sumRealWeek,
-              generationRealMonth: sumRealMonth,
-              generationEstimatedDay: generationEstimatedDay
-                ? generationEstimatedDay
-                : 0,
-              generationEstimatedlWeek: sumEstimatedlWeek,
-              generationEstimatedMonth: sumEstimatedMonth,
-              alert: alerts.length,
-              staName: dev?.status ? dev?.status.sta_name : "Não informado!",
-              staCode: dev?.status ? dev?.status.sta_code : "Não informado!",
-            };
-          });
-
-          return res;
-        })
-        .flat();
+      const devices = devicesData.map((device) => {
+        return {
+          brand: device.dev_brand,
+          blUuid: device.brand_login.bl_uuid,
+          name: device.dev_name,
+          uuid: device.dev_uuid,
+          address: device.dev_address,
+          generationRealDay: Number(device.gen_real_day),
+          generationRealWeek: Number(device.weeklySum.gen_real),
+          generationRealMonth: Number(device.monthlySum.gen_real),
+          generationEstimated: Number(device.gen_estimated_day),
+          generationEstimatedlWeek: Number(device.weeklySum.gen_estimated),
+          generationEstimatedMonth: Number(device.monthlySum.gen_estimated),
+          alert: device.alerts.length,
+          staName: device?.status ? device?.status.sta_name : "Não informado!",
+          staCode: device?.status ? device?.status.sta_code : "Não informado!",
+          name: device.dev_name,
+          dev_lat: device.dev_lat,
+          dev_long: device.dev_long,
+          dev_image: device.dev_image,
+          email: device.dev_email,
+          capacity: Number(device.dev_capacity),
+        };
+      });
 
       return {
         ...state,
         isDashboardDataLoading: false,
-        dataDevices,
+        devices,
       };
 
     case users.GET_DASHBOARD_FAILURE:
       return {
         ...state,
         isDashboardDataLoading: false,
-        dataDevices: [],
+        devices: [],
       };
 
     case users.GRAPH_REQUEST:

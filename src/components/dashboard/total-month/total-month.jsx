@@ -344,7 +344,7 @@ export const TotalMonth = ({
                   startDate={startDate}
                   endDate={endDate}
                   optionFilter={optionFilter}
-                  dataDevices={graphData.data}
+                  devices={graphData.data}
                   isLoading={isLoadingGraph}
                   adminGraphRef={adminGraphRef}
                 />

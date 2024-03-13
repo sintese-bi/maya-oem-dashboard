@@ -363,12 +363,11 @@ export const ChartGenrealdayDevicelasthour = (props) => {
       </Card>
     );
   } else {
-    console.log(genrealdayDeviceLasthourData);
     const hours = genrealdayDeviceLasthourData.data?.map(
       (data) => data.hora_min
     );
     const realGeneration = genrealdayDeviceLasthourData.data?.map(
-      (data) => data.d2 / 1000
+      (data) => data.d2
     );
     //const estimatedGeneration = hours.map((hour) =>
     //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
@@ -445,7 +444,7 @@ export const ChartGenrealdayDevicelasthour = (props) => {
           },
           title: {
             display: true,
-            text: "MWh",
+            text: "KWh",
             font: { size: 18, weight: "bold" },
           },
           ticks: {
@@ -487,7 +486,7 @@ export const ChartGenrealdayDevicelasthour = (props) => {
           color="textPrimary"
           sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
         >
-          Relação horária de geração
+          Produção horária de todas as usinas
         </Typography>
         <Box width={"90%"} height={430}>
           <Chart type="bar" options={options} data={data} plugins={[plugin]} />
@@ -1004,11 +1003,11 @@ export const chartsToGenerationReports = async () => {
 };
 
 export const ChartsDashboardHorizontal = (props) => {
-  const { dataDevices } = props;
+  const { devices } = props;
   const [topDevices, setTopDevices] = useState([]);
 
   useEffect(() => {
-    let realAndEstimatedDivision = dataDevices.map((data) => {
+    let realAndEstimatedDivision = devices.map((data) => {
       let real = Number(
         data.generationRealMonth.replace(/\Kwh/g, "")
       ).toFixed();
@@ -1026,7 +1025,7 @@ export const ChartsDashboardHorizontal = (props) => {
       (a, b) => b.divisionPercentage - a.divisionPercentage
     );
     setTopDevices(realAndEstimatedDivision.slice(0, 5));
-  }, [dataDevices]);
+  }, [devices]);
 
   const data = {
     labels: topDevices.map((data) => data.name),
@@ -1109,234 +1108,14 @@ export const ChartsDashboard = (props) => {
   const {
     startDate,
     endDate,
-    dataDevices,
+    devices,
     isLoading,
     optionFilter,
     adminGraphRef,
   } = props;
   const theme = useTheme();
 
-  const realData = dataDevices?.somaPorDiaReal || {};
-  const estimatedData = dataDevices?.somaPorDiaEstimada || {};
-
-  // Obter as datas e ordená-las
-  const sortedDates = Object.keys(realData).sort(
-    (a, b) => new Date(a) - new Date(b)
-  );
-
-  // Mapear as datas para os valores correspondentes
-
-  const realValuesTemp = sortedDates.map((data) => {
-    return {
-      value: realData[data],
-      date: moment(data).format("MM/DD/YYYY"),
-    };
-  });
-
-  const estimatedValuesTemp = sortedDates.map((data) => {
-    return estimatedData[data];
-  });
-
-  let filteredWeekValues = handleWeekFilter(
-    startDate,
-    endDate,
-    realValuesTemp,
-    estimatedValuesTemp
-  );
-
-  let filteredMonthValues = handleMonthFilter(
-    startDate,
-    endDate,
-    realValuesTemp,
-    estimatedValuesTemp
-  );
-
-  let filteredQuinzenasValues = handleQuinzenaFilter(
-    startDate,
-    endDate,
-    realValuesTemp,
-    estimatedValuesTemp
-  );
-
-  const filterPeriodData = () => {
-    switch (optionFilter) {
-      case "days":
-        return {
-          data: {
-            realGeneration: realValuesTemp.map((data) =>
-              (Number(data.value) / 1000).toFixed(4)
-            ),
-            estimatedGeneration: estimatedValuesTemp.map((data) =>
-              (data / 1000).toFixed(4)
-            ),
-          },
-          period: "Dias",
-        };
-        break;
-      case "weeks":
-        return {
-          data: {
-            realGeneration: filteredWeekValues.data.realGeneration.map(
-              (data) => data / 1000
-            ),
-            estimatedGeneration:
-              filteredWeekValues.data.estimatedGeneration.map(
-                (data) => data / 1000
-              ),
-          },
-          period: "Semanas",
-        };
-        break;
-      case "months":
-        return {
-          data: {
-            realGeneration: filteredMonthValues.data.realGeneration,
-            estimatedGeneration: filteredMonthValues.data.estimatedGeneration,
-          },
-          period: "Meses",
-        };
-        break;
-      case "biweek":
-        return {
-          data: {
-            realGeneration: filteredQuinzenasValues.data.realGeneration,
-            estimatedGeneration:
-              filteredQuinzenasValues.data.estimatedGeneration,
-          },
-          period: "Quinzenas",
-        };
-        break;
-      default:
-        break;
-    }
-  };
-
-  const filterPeriod = () => {
-    switch (optionFilter) {
-      case "days":
-        return realValuesTemp?.map((data) =>
-          moment(data.date, "MM/DD/YYYY").format("DD/MM")
-        );
-        break;
-      case "weeks":
-        return filteredWeekValues.weeks.map((data) => {
-          let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
-            data.endWeek
-          ).format("DD/MM")}`;
-          return date;
-        });
-        break;
-      case "months":
-        return filteredMonthValues.months.map((data) => {
-          let date = `${moment(data.startMonth).format("DD/MM")} - ${moment(
-            data.endMonth
-          ).format("DD/MM")}`;
-          return date;
-        });
-        break;
-      case "biweek":
-        return filteredQuinzenasValues.quinzenas.map((data) => {
-          let date = `${moment(data.startQuinzena).format("DD/MM")} - ${moment(
-            data.endQuinzena
-          ).format("DD/MM")}`;
-          return date;
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const labelsTemp = filterPeriod();
-  const periodData = filterPeriodData();
-
-  const data = {
-    labels: labelsTemp,
-    datasets: [
-      {
-        label: "Geração real",
-        maxBarThickness: 16,
-        barPercentage: 0.4,
-        label: "Geração real",
-        data: periodData.data?.realGeneration,
-        backgroundColor: "#8FC1B5",
-      },
-      {
-        barThickness: 16,
-        borderRadius: 2,
-        categoryPercentage: 0.5,
-        label: "Geração estimada",
-        maxBarThickness: 22,
-        barPercentage: 0.4,
-        label: "Geração estimada",
-        data: periodData.data?.estimatedGeneration,
-        backgroundColor: "#265C4B",
-        type: "line",
-      },
-    ],
-  };
-
-  const plugin = {
-    id: "customCanvasBackgroundColor",
-    beforeDraw: (chart, args, options) => {
-      const { ctx } = chart;
-      ctx.save();
-      ctx.globalCompositeOperation = "destination-over";
-      ctx.fillStyle = options.color || "#99ffff";
-      ctx.fillRect(0, 0, chart.width, chart.height);
-      ctx.restore();
-    },
-    legend: {
-      position: "top",
-    },
-  };
-
-  const options = {
-    animation: true,
-    cornerRadius: 20,
-    layout: { padding: 0 },
-    maintainAspectRatio: false,
-    responsive: true,
-    plugins: {
-      customCanvasBackgroundColor: {
-        color: "white",
-      },
-    },
-    yAxes: [
-      {
-        ticks: {
-          fontColor: theme.palette.text.secondary,
-          beginAtZero: true,
-          min: 0,
-        },
-      },
-    ],
-    tooltips: {
-      backgroundColor: theme.palette.background.paper,
-      bodyFontColor: theme.palette.text.secondary,
-      borderColor: theme.palette.divider,
-      borderWidth: 1,
-      enabled: true,
-      footerFontColor: theme.palette.text.secondary,
-      intersect: false,
-      mode: "index",
-      titleFontColor: theme.palette.text.primary,
-    },
-    scales: {
-      y: {
-        grid: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: "MWh",
-          font: { size: 18, weight: "bold" },
-        },
-      },
-    },
-  };
-
-  if (isLoading) {
+  if (devices === undefined) {
     return (
       <Card
         sx={{
@@ -1367,28 +1146,245 @@ export const ChartsDashboard = (props) => {
         </Box>
       </Card>
     );
-  }
+  } else {
+    // Obter as datas e ordená-las
+    const sortedDates = Object.keys(devices).sort(
+      (a, b) => new Date(a) - new Date(b)
+    );
 
-  return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <Chart
-        height={300}
-        width={"100%"}
-        type="bar"
-        options={options}
-        data={data}
-        ref={adminGraphRef}
-        plugins={[plugin]}
-      />
-    </Card>
-  );
+    // Mapear as datas para os valores correspondentes
+
+    const realValuesTemp = sortedDates.map((data) => {
+      return {
+        value: devices[data].gen_real,
+        date: moment(data).format("MM/DD/YYYY"),
+      };
+    });
+
+    const estimatedValuesTemp = sortedDates.map((data) => {
+      return devices[data].gen_estimated;
+    });
+
+    let filteredWeekValues = handleWeekFilter(
+      startDate,
+      endDate,
+      realValuesTemp,
+      estimatedValuesTemp
+    );
+
+    let filteredMonthValues = handleMonthFilter(
+      startDate,
+      endDate,
+      realValuesTemp,
+      estimatedValuesTemp
+    );
+
+    let filteredQuinzenasValues = handleQuinzenaFilter(
+      startDate,
+      endDate,
+      realValuesTemp,
+      estimatedValuesTemp
+    );
+
+    const filterPeriodData = () => {
+      switch (optionFilter) {
+        case "days":
+          return {
+            data: {
+              realGeneration: realValuesTemp.map((data) =>
+                (Number(data.value) / 1000).toFixed(4)
+              ),
+              estimatedGeneration: estimatedValuesTemp.map((data) =>
+                (data / 1000).toFixed(4)
+              ),
+            },
+            period: "Dias",
+          };
+          break;
+        case "weeks":
+          return {
+            data: {
+              realGeneration: filteredWeekValues.data.realGeneration.map(
+                (data) => data / 1000
+              ),
+              estimatedGeneration:
+                filteredWeekValues.data.estimatedGeneration.map(
+                  (data) => data / 1000
+                ),
+            },
+            period: "Semanas",
+          };
+          break;
+        case "months":
+          return {
+            data: {
+              realGeneration: filteredMonthValues.data.realGeneration,
+              estimatedGeneration: filteredMonthValues.data.estimatedGeneration,
+            },
+            period: "Meses",
+          };
+          break;
+        case "biweek":
+          return {
+            data: {
+              realGeneration: filteredQuinzenasValues.data.realGeneration,
+              estimatedGeneration:
+                filteredQuinzenasValues.data.estimatedGeneration,
+            },
+            period: "Quinzenas",
+          };
+          break;
+        default:
+          break;
+      }
+    };
+
+    const filterPeriod = () => {
+      switch (optionFilter) {
+        case "days":
+          return realValuesTemp?.map((data) =>
+            moment(data.date, "MM/DD/YYYY").format("DD/MM")
+          );
+          break;
+        case "weeks":
+          return filteredWeekValues.weeks.map((data) => {
+            let date = `${moment(data.startWeek).format("DD/MM")} - ${moment(
+              data.endWeek
+            ).format("DD/MM")}`;
+            return date;
+          });
+          break;
+        case "months":
+          return filteredMonthValues.months.map((data) => {
+            let date = `${moment(data.startMonth).format("DD/MM")} - ${moment(
+              data.endMonth
+            ).format("DD/MM")}`;
+            return date;
+          });
+          break;
+        case "biweek":
+          return filteredQuinzenasValues.quinzenas.map((data) => {
+            let date = `${moment(data.startQuinzena).format(
+              "DD/MM"
+            )} - ${moment(data.endQuinzena).format("DD/MM")}`;
+            return date;
+          });
+          break;
+        default:
+          break;
+      }
+    };
+
+    const labelsTemp = filterPeriod();
+    const periodData = filterPeriodData();
+
+    const data = {
+      labels: labelsTemp,
+      datasets: [
+        {
+          label: "Geração real",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração real",
+          data: periodData.data?.realGeneration,
+          backgroundColor: "#8FC1B5",
+        },
+        {
+          barThickness: 16,
+          borderRadius: 2,
+          categoryPercentage: 0.5,
+          label: "Geração estimada",
+          maxBarThickness: 22,
+          barPercentage: 0.4,
+          label: "Geração estimada",
+          data: periodData.data?.estimatedGeneration,
+          backgroundColor: "#265C4B",
+          type: "line",
+        },
+      ],
+    };
+
+    const plugin = {
+      id: "customCanvasBackgroundColor",
+      beforeDraw: (chart, args, options) => {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = options.color || "#99ffff";
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      },
+      legend: {
+        position: "top",
+      },
+    };
+
+    const options = {
+      animation: true,
+      cornerRadius: 20,
+      layout: { padding: 0 },
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        customCanvasBackgroundColor: {
+          color: "white",
+        },
+      },
+      yAxes: [
+        {
+          ticks: {
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+          },
+        },
+      ],
+      tooltips: {
+        backgroundColor: theme.palette.background.paper,
+        bodyFontColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        enabled: true,
+        footerFontColor: theme.palette.text.secondary,
+        intersect: false,
+        mode: "index",
+        titleFontColor: theme.palette.text.primary,
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "MWh",
+            font: { size: 18, weight: "bold" },
+          },
+        },
+      },
+    };
+
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <Chart
+          height={300}
+          width={"100%"}
+          type="bar"
+          options={options}
+          data={data}
+          ref={adminGraphRef}
+          plugins={[plugin]}
+        />
+      </Card>
+    );
+  }
 };
 
 export const ChartUsinsBystate = (props) => {
@@ -1477,11 +1473,11 @@ export const ChartUsinsBystate = (props) => {
 };
 
 export const AdmnistratorGraph = (props) => {
-  const { dataDevices, adminGraphRef } = props;
+  const { devices, adminGraphRef } = props;
   const theme = useTheme();
 
-  const realData = dataDevices?.somaPorDiaReal || {};
-  const estimatedData = dataDevices?.somaPorDiaEstimada || {};
+  const realData = devices?.somaPorDiaReal || {};
+  const estimatedData = devices?.somaPorDiaEstimada || {};
 
   const sortedDates = Object.keys(realData).sort(
     (a, b) => new Date(a) - new Date(b)

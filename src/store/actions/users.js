@@ -426,7 +426,7 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
       const { data } = res;
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
-        result: { info: data.result, brands: data.brand },
+        result: { devicesData: data.devicesData, brands: data.brand },
       });
     })
     .catch((error) => {
@@ -450,10 +450,9 @@ export const getDashboard = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}/yes`, configRequest())
     .then((res) => {
       const { data } = res;
-
       dispatch({
         type: users.GET_DASHBOARD_SUCCESS,
-        result: { info: data.result, brands: data.brand },
+        result: { devicesData: data.devicesData, brands: data.brand },
       });
     })
     .catch((error) => {

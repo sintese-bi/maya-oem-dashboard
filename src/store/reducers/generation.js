@@ -30,6 +30,8 @@ export default function userReducer(state = initialState, action) {
       const { deviceData, latestTemp } = result;
       const { type } = args;
 
+      console.log(deviceData);
+
       function dateOrder(dateA, dateB) {
         const form = "DD/MM";
         const date1 = moment(dateA, form);
@@ -58,7 +60,7 @@ export default function userReducer(state = initialState, action) {
         }
       }
 
-      let datesInfo = deviceData[0]?.generation.map((gen) => {
+      let datesInfo = deviceData.map((gen) => {
         return (
           moment(gen.gen_date).format("DD") +
           "/" +
@@ -67,7 +69,7 @@ export default function userReducer(state = initialState, action) {
       });
 
       let monthsInfo = [];
-      deviceData[0]?.generation.map((gen) => {
+      deviceData.map((gen) => {
         let monthAlreadyCount = monthsInfo.filter(
           (data) =>
             data ==
@@ -112,8 +114,8 @@ export default function userReducer(state = initialState, action) {
       return {
         isLoadingGeneration: false,
         generation:
-          deviceData[0].generation.length !== 0
-            ? handlesGeneration(deviceData[0], type, day, label)
+          deviceData.length !== 0
+            ? handlesGeneration(deviceData, type, day, label)
             : {
                 label,
                 realGeneration: [],

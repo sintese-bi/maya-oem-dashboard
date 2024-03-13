@@ -69,7 +69,7 @@ export function AlertsDefineComponent({
     isLoadingAlertFrequency,
     percentage,
     frequencyName,
-    dataDevices,
+    devices,
     //useCodePagarMe
   } = useSelector((state) => state.users);
 

@@ -19,7 +19,7 @@ import { DeleteDevice } from "src/components/dashboard/total-month/total-month-c
 import { SendEmail } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-send-email";
 import { Box } from "@mui/system";
 
-export const TopUsins = ({ dataDevices, ref, type, title }) => {
+export const TopUsins = ({ devices, ref, type, title }) => {
   const [data, setData] = useState([]);
 
   const options = {
@@ -357,17 +357,17 @@ export const TopUsins = ({ dataDevices, ref, type, title }) => {
 
   useEffect(() => {
     setData(
-      dataDevices
+      devices
         .sort((a, b) => b.generationRealMonth - a.generationRealMonth)
         .slice(0, 4)
     );
-  }, [dataDevices]);
+  }, [devices]);
 
   return (
     <Card sx={{ width: "100%" }}>
       <MUIDataTable
         title={"Principais usinas"}
-        data={data}
+        data={[]}
         columns={columns}
         options={options}
       />
