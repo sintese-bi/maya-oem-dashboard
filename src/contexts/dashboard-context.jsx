@@ -207,7 +207,7 @@ export const DashboardProvider = ({ children }) => {
         treesSavedTotal: (generationReal * 0.000504).toFixed(2),
       });
 
-      setData(usersAPIData.allDevices);
+      setData(usersAPIData.devices);
     }
 
     handleUsinsByStateData();

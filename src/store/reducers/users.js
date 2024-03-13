@@ -317,34 +317,10 @@ export default function userReducer(state = initialState, action) {
         return deviceItem;
       });
 
-      const brands = [...new Set(allBrands.map((item) => item.bl_name))];
-      const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))];
-
-      const generationBelowEstimated = allDevices.filter(
-        (item) => item.generationRealWeek < item.generationEstimatedlWeek
-      );
-
-      const alerts = allDevices.filter((item) => item.alert !== 0);
-
-      const offline = allDevices.filter((item) => item.staCode === "offline");
-      const notDefined = allDevices.filter(
-        (item) => item.staCode === "Não informado!"
-      );
-      const unactived = allDevices.filter((item) => item.staName === "Inativo");
-      const online = allDevices.filter((item) => item.staCode === "online");
-
       return {
         ...state,
         isAllDevicesDataLoading: false,
-        brands,
-        blUuids,
         allDevices,
-        generationBelowEstimated,
-        alerts,
-        notDefined,
-        unactived,
-        offline,
-        online,
       };
 
     case users.GET_ALL_DEVICES_FAILURE:
@@ -424,10 +400,34 @@ export default function userReducer(state = initialState, action) {
         };
       });
 
+      const brands = [...new Set(allBrands.map((item) => item.bl_name))];
+      const blUuids = [...new Set(allBrands.map((item) => item.bl_uuid))];
+
+      const generationBelowEstimated = devices.filter(
+        (item) => item.generationRealWeek < item.generationEstimatedlWeek
+      );
+
+      const alerts = devices.filter((item) => item.alert !== 0);
+
+      const offline = devices.filter((item) => item.staCode === "offline");
+      const notDefined = devices.filter(
+        (item) => item.staCode === "Não informado!"
+      );
+      const unactived = devices.filter((item) => item.staName === "Inativo");
+      const online = devices.filter((item) => item.staCode === "online");
+
       return {
         ...state,
         isDashboardDataLoading: false,
         devices,
+        alerts,
+        brands,
+        blUuids,
+        generationBelowEstimated,
+        notDefined,
+        unactived,
+        offline,
+        online,
       };
 
     case users.GET_DASHBOARD_FAILURE:

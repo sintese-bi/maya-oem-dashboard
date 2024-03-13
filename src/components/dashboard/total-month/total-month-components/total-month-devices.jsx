@@ -157,7 +157,7 @@ export default function Plants(props) {
     } else {
       switch (type) {
         case 1:
-          setData(handleTransformColumnData(allDevices));
+          setData(handleTransformColumnData(devices));
           devicesRef.current.scrollIntoView();
           break;
         case 2:
@@ -203,7 +203,7 @@ export default function Plants(props) {
         case 9:
           setData(
             handleTransformColumnData(
-              allDevices.filter((data) => data.staCode != "online")
+              devices.filter((data) => data.staCode != "online")
             )
           );
           devicesRef.current.scrollIntoView();
@@ -261,8 +261,8 @@ export default function Plants(props) {
   }, [type]);
 
   useEffect(() => {
-    setData(handleTransformColumnData(allDevices));
-  }, [allDevices]);
+    setData(handleTransformColumnData(devices));
+  }, [devices]);
 
   useEffect(() => {
     if (profileLevel != "admin") {

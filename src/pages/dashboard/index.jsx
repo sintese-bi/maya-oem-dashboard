@@ -135,6 +135,7 @@ export default function Dashboard() {
             treesSavedTotal={treesSavedTotal}
             usinsByState={usinsByState}
             handleChangeColumns={setType}
+            devices={usersAPIData.devices}
           />
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 526 }}>
