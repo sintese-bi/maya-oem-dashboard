@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { BigNumberDashboard } from "src/components/shared/BigNumber";
 import { ChartUsinsBystate } from "src/components/shared/Charts";
 import { numbers } from "src/helpers/utils";
+import { number } from "yup";
 
 export const MyUsins = ({
   realGenerationLastDay,
@@ -183,7 +184,7 @@ export const MyUsins = ({
           type={7}
           title="Árvores salvas"
           btn={true}
-          value={treesSavedTotal}
+          value={numbers(treesSavedTotal)}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar

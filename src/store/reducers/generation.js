@@ -30,8 +30,6 @@ export default function userReducer(state = initialState, action) {
       const { deviceData, latestTemp } = result;
       const { type } = args;
 
-      console.log(deviceData);
-
       function dateOrder(dateA, dateB) {
         const form = "DD/MM";
         const date1 = moment(dateA, form);

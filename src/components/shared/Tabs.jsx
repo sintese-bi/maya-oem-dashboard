@@ -37,7 +37,7 @@ const Tabs = () => {
       sx={{
         m: 1,
         display: "flex",
-        flexFlow: { xs: "column", lg: "row" },
+
         gap: 1,
       }}
     >

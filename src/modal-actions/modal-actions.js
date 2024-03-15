@@ -7,6 +7,7 @@ import {
   Info,
   Person,
   Settings,
+  ShoppingCart,
   SolarPower,
 } from "@mui/icons-material";
 
@@ -71,10 +72,10 @@ export const mainItems = [
 ];
 
 export const bottomItems = [
-  //{
-  //  label: "MAYA WATCH PRO",
-  //  icon: <ShoppingCart fontSize="small" />,
-  //  disabled: true,
-  //  action: "assignPlan",
-  //},
+  {
+    label: "MAYA WATCH PRO",
+    icon: <ShoppingCart fontSize="small" />,
+    disabled: true,
+    action: "assignPlan",
+  },
 ];

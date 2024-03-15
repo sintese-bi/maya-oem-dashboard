@@ -202,6 +202,7 @@ export const ChartGenrealdaylasthour = (props) => {
     const realGeneration = genrealdaylasthourData.data.map(
       (data) => data.d2 / 1000
     );
+    const alerts = genrealdaylasthourData.data?.map((data) => data.alert);
     //const estimatedGeneration = hours.map((hour) =>
     //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
     //);
@@ -216,7 +217,13 @@ export const ChartGenrealdaylasthour = (props) => {
           label: "Geração real",
           data: realGeneration,
           borderColor: "#8FC1B5",
-          backgroundColor: "#dce6e3",
+          backgroundColor: alerts.map((data) => {
+            if (data == 0) {
+              return "#dce6e3";
+            } else {
+              return "red";
+            }
+          }),
           type: "line",
           tension: 0.4,
           fill: "start",
@@ -238,7 +245,6 @@ export const ChartGenrealdaylasthour = (props) => {
         position: "top",
       },
     };
-
     const options = {
       animation: true,
       cornerRadius: 20,
@@ -248,6 +254,19 @@ export const ChartGenrealdaylasthour = (props) => {
       plugins: {
         customCanvasBackgroundColor: {
           color: "white",
+        },
+        tooltip: {
+          displayColors: false,
+          enabled: true,
+          intersect: false,
+          callbacks: {
+            label: function (context) {
+              var index = context.dataIndex;
+              return `valor: ${data.datasets[0].data[index].toFixed(2)}  ${
+                alerts[context.dataIndex] != 0 ? " - em alerta" : ""
+              }`;
+            },
+          },
         },
       },
       yAxes: [
@@ -269,173 +288,15 @@ export const ChartGenrealdaylasthour = (props) => {
         intersect: false,
         mode: "index",
         titleFontColor: theme.palette.text.primary,
-      },
-      scales: {
-        y: {
-          grid: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: "MWh",
-            font: { size: 18, weight: "bold" },
-          },
-          ticks: {
-            font: {
-              size: 15, // Tamanho da fonte para o eixo X
-            },
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var datasetLabel =
+              data.datasets[tooltipItem.datasetIndex].label || "";
+            var value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return datasetLabel + ": " + value;
           },
         },
-        x: {
-          grid: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: "Hrs",
-            font: { size: 18, weight: "bold" },
-          },
-          ticks: {
-            font: {
-              size: 15, // Tamanho da fonte para o eixo X
-            },
-          },
-        },
-      },
-    };
-
-    return (
-      <Card
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
-        >
-          Relação horária de geração
-        </Typography>
-        <Box width={"90%"} height={430}>
-          <Chart type="bar" options={options} data={data} plugins={[plugin]} />
-        </Box>
-      </Card>
-    );
-  }
-};
-
-export const ChartGenrealdayDevicelasthour = (props) => {
-  const theme = useTheme();
-  const { genrealdayDeviceLasthourData } = props;
-
-  if (genrealdayDeviceLasthourData === undefined) {
-    return (
-      <Card
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          height: 460,
-          flexDirection: "column",
-          bgcolor: "background.paper",
-          px: 3,
-          pt: 4,
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          sx={{
-            fontWeight: "bold",
-            fontSize: "20px",
-            textAlign: "center",
-            mb: "4",
-          }}
-        >
-          Gerando gráfico
-        </Typography>
-        <Box sx={{ height: 300 }}>
-          <LoadingSkeletonCharts />
-        </Box>
-      </Card>
-    );
-  } else {
-    const hours = genrealdayDeviceLasthourData.data?.map(
-      (data) => data.hora_min
-    );
-    const realGeneration = genrealdayDeviceLasthourData.data?.map(
-      (data) => data.d2
-    );
-    //const estimatedGeneration = hours.map((hour) =>
-    //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
-    //);
-
-    const data = {
-      labels: hours,
-      datasets: [
-        {
-          label: "Geração real",
-          maxBarThickness: 16,
-          barPercentage: 0.4,
-          label: "Geração real",
-          data: realGeneration,
-          borderColor: "#8FC1B5",
-          backgroundColor: "#dce6e3",
-          type: "line",
-          tension: 0.4,
-          fill: "start",
-        },
-      ],
-    };
-
-    const plugin = {
-      id: "customCanvasBackgroundColor",
-      beforeDraw: (chart, args, options) => {
-        const { ctx } = chart;
-        ctx.save();
-        ctx.globalCompositeOperation = "destination-over";
-        ctx.fillStyle = options.color || "#99ffff";
-        ctx.fillRect(0, 0, chart.width, chart.height);
-        ctx.restore();
-      },
-      legend: {
-        position: "top",
-      },
-    };
-
-    const options = {
-      animation: true,
-      cornerRadius: 20,
-      layout: { padding: 0 },
-      maintainAspectRatio: false,
-      responsive: true,
-      plugins: {
-        customCanvasBackgroundColor: {
-          color: "white",
-        },
-      },
-      yAxes: [
-        {
-          ticks: {
-            fontColor: theme.palette.text.secondary,
-            beginAtZero: true,
-            min: 0,
-          },
-        },
-      ],
-      tooltips: {
-        backgroundColor: theme.palette.background.paper,
-        bodyFontColor: theme.palette.text.secondary,
-        borderColor: theme.palette.divider,
-        borderWidth: 1,
-        enabled: true,
-        footerFontColor: theme.palette.text.secondary,
-        intersect: false,
-        mode: "index",
-        titleFontColor: theme.palette.text.primary,
       },
       scales: {
         y: {
@@ -486,7 +347,205 @@ export const ChartGenrealdayDevicelasthour = (props) => {
           color="textPrimary"
           sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
         >
-          Produção horária de todas as usinas
+          Relação horária de geração
+        </Typography>
+        <Box width={"90%"} height={520}>
+          <Chart type="bar" options={options} data={data} plugins={[plugin]} />
+        </Box>
+      </Card>
+    );
+  }
+};
+
+export const ChartGenrealdayDevicelasthour = (props) => {
+  const theme = useTheme();
+  const { genrealdayDeviceLasthourData } = props;
+
+  if (genrealdayDeviceLasthourData === undefined) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          height: 460,
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          px: 3,
+          pt: 4,
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            mb: "4",
+          }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box sx={{ height: 300 }}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  } else {
+    const hours = genrealdayDeviceLasthourData.data?.map(
+      (data) => data.hora_min
+    );
+    const realGeneration = genrealdayDeviceLasthourData.data?.map(
+      (data) => data.d2
+    );
+
+    const alerts =
+      genrealdayDeviceLasthourData.data?.map((data) => data.alert) || [];
+    //const estimatedGeneration = hours.map((hour) =>
+    //  (genrealdaylasthourData.sumsPerHour[hour].gen_estimated / 1000).toFixed()
+    //);
+
+    const data = {
+      labels: hours,
+      datasets: [
+        {
+          label: "Geração real",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração real",
+          data: realGeneration,
+          borderColor: "#8FC1B5",
+          backgroundColor: alerts?.map((data) => {
+            if (data == 0) {
+              return "#dce6e3";
+            } else {
+              return "red";
+            }
+          }),
+          type: "line",
+          tension: 0.4,
+          fill: "start",
+        },
+      ],
+    };
+
+    const plugin = {
+      id: "customCanvasBackgroundColor",
+      beforeDraw: (chart, args, options) => {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = options.color || "#99ffff";
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      },
+      legend: {
+        position: "top",
+      },
+    };
+
+    const options = {
+      animation: true,
+      cornerRadius: 20,
+      layout: { padding: 0 },
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        customCanvasBackgroundColor: {
+          color: "white",
+        },
+        tooltip: {
+          displayColors: false,
+          enabled: true,
+          intersect: false,
+          callbacks: {
+            label: function (context) {
+              var index = context.dataIndex;
+              return `valor: ${data.datasets[0].data[index].toFixed(2)}  ${
+                alerts[context.dataIndex] != 0 ? " - em alerta" : ""
+              }`;
+            },
+          },
+        },
+      },
+      yAxes: [
+        {
+          ticks: {
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+          },
+        },
+      ],
+      tooltips: {
+        backgroundColor: theme.palette.background.paper,
+        bodyFontColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        enabled: true,
+        footerFontColor: theme.palette.text.secondary,
+        intersect: false,
+        mode: "index",
+        titleFontColor: theme.palette.text.primary,
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var datasetLabel =
+              data.datasets[tooltipItem.datasetIndex].label || "";
+            var value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return datasetLabel + ": " + value;
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "KWh",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "Hrs",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+      },
+    };
+
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Produção horária
         </Typography>
         <Box width={"90%"} height={430}>
           <Chart type="bar" options={options} data={data} plugins={[plugin]} />
@@ -865,7 +924,7 @@ export const ChartsLinear = (props) => {
         },
         title: {
           display: true,
-          text: "MWh",
+          text: "KWh",
           font: { size: 18, weight: "bold" },
         },
       },
@@ -960,7 +1019,7 @@ export const ChartsLinear = (props) => {
         </Typography>
         <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
           <Chart
-            height={280}
+            height={380}
             type="bar"
             options={options}
             data={data}
@@ -1374,7 +1433,7 @@ export const ChartsDashboard = (props) => {
         }}
       >
         <Chart
-          height={300}
+          height={380}
           width={"100%"}
           type="bar"
           options={options}

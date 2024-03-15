@@ -64,6 +64,11 @@ export const DashboardProvider = ({ children }) => {
   // dados do usuário vindo to cookies do site
   const userData = getUserCookie();
 
+  // dados de geração com alertas vindo da api externa (saulo/felipe)
+
+  const [devicesGenerationWithAlerts, setDevicesGenerationWithAlerts] =
+    useState([]);
+
   // dados da API
   const dispatch = useDispatch();
   const usersAPIData = useSelector((state) => state.users);
@@ -214,35 +219,30 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData.allDevices]);
 
   useEffect(() => {
-    if (usersAPIData.graphData.totalByDate !== undefined) {
-      //formato = {"data":"valor"}
+    if (usersAPIData.graphData?.data !== undefined) {
+      const devices = usersAPIData.graphData.data.totalByDate;
+      const sortedDates = Object.keys(devices);
+      // Mapear as datas para os valores correspondentes
 
-      let sumPerDayRealGeneration =
-        usersAPIData.graphData.totalByDate.somaPorDiaReal;
-      let sumPerDayEstimatedGeneration =
-        usersAPIData.graphData.totalByDate.somaPorDiaEstimada;
-
-      //pegando apenas os valores
-
-      let sumPerDayRealGenerationValues = Object.values(
-        sumPerDayRealGeneration
+      const sumPerDayRealGeneration = sortedDates.map(
+        (data) => devices[data].gen_real
       );
-      let sumPerDayEstimatedGenerationValues = Object.values(
-        sumPerDayEstimatedGeneration
+
+      const sumPerDayEstimatedGeneration = sortedDates.map(
+        (data) => devices[data].gen_estimated
       );
 
       //usando reduce para somar todos os valores
 
-      let generationRealMonthTemp = sumPerDayRealGenerationValues.reduce(
+      let generationRealMonthTemp = sumPerDayRealGeneration.reduce(
         (total, element) => total + element,
         0
       );
 
-      let generationEstimatedMonthTemp =
-        sumPerDayEstimatedGenerationValues.reduce(
-          (total, element) => total + element,
-          0
-        );
+      let generationEstimatedMonthTemp = sumPerDayEstimatedGeneration.reduce(
+        (total, element) => total + element,
+        0
+      );
 
       // preparando os valores para obedecerem as condições de formatação da nossa função numbers, precisa ter 2 casas á direita da vírgula
 
@@ -289,6 +289,17 @@ export const DashboardProvider = ({ children }) => {
   }, [devicesAPIData.bignumbersumValues]);
 
   useEffect(() => {
+    if (devicesAPIData.genrealdaylasthourData?.data != undefined) {
+      let generationWithAlerts =
+        devicesAPIData.genrealdaylasthourData.data.filter(
+          (data) => data.alert == 0
+        );
+
+      setDevicesGenerationWithAlerts(generationWithAlerts);
+    }
+  }, [devicesAPIData.genrealdaylasthourData]);
+
+  useEffect(() => {
     setInterval(() => {
       handleBrandInfoRequest();
     }, 18e5);
@@ -316,6 +327,7 @@ export const DashboardProvider = ({ children }) => {
         estimatedGenerationLastDay,
         percentLastDay,
         usinsByState,
+        devicesGenerationWithAlerts,
         setIsLoadingReportGeneration,
         setData,
         setType,

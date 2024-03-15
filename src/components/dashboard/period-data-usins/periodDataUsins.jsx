@@ -134,7 +134,7 @@ export const PeriodDataUsins = ({
         container
         spacing={4}
         sx={{
-          mt: 4,
+          mt: 2,
           px: 2,
         }}
       >

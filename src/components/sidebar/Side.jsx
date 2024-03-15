@@ -370,6 +370,49 @@ export const Side = ({ sideState, setSideState }) => {
                 )}
               </ListItem>
             ))}
+            {bottomItems.map((data, index) => (
+              <ListItem key={data?.label}>
+                {sideState ? (
+                  <Button
+                    startIcon={data?.icon}
+                    variant="contained"
+                    onClick={() => {
+                      if (data?.action == "deletePlants") {
+                        window.scrollTo(0, 2000);
+                      } else {
+                        setAction(data?.action);
+                        handleModalState(data?.action);
+                      }
+                    }}
+                  >
+                    {data?.label}
+                  </Button>
+                ) : (
+                  <Button
+                    sx={{
+                      color: "neutral.700",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      if (data?.action == "deletePlants") {
+                        window.scrollTo(0, 2000);
+                      } else {
+                        setAction(data?.action);
+                        handleModalState(data?.action);
+                      }
+                    }}
+                  >
+                    {data?.icon}
+                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                      {data?.label}
+                    </Typography>
+                  </Button>
+                )}
+              </ListItem>
+            ))}
           </List>
         </Box>
 

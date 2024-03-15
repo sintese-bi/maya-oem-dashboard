@@ -45,6 +45,7 @@ import AlertDevices from "src/components/alerts/AlertDevices";
 import { BigNumbers } from "src/components/dashboard/big-numbers/bigNumbers";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import { ChartGenrealdaylasthour } from "src/components/shared/Charts";
+import { AlertsModal } from "src/components/alerts-modal/alerts-modal";
 
 export default function Dashboard() {
   const {
@@ -67,6 +68,7 @@ export default function Dashboard() {
     estimatedGenerationLastDay,
     percentLastDay,
     usinsByState,
+    devicesGenerationWithAlerts,
     setIsLoadingReportGeneration,
     setData,
     setType,
@@ -181,6 +183,8 @@ export default function Dashboard() {
       <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
         <AlertDevices />
       </Grid>
+
+      <AlertsModal devicesGenerationWithAlerts={devicesGenerationWithAlerts} />
 
       {/*
       <Grid container spacing={4} sx={{ marginTop: 2 }}>
