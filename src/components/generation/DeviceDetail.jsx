@@ -251,11 +251,10 @@ export const DeviceDetail = (props) => {
       </Box>
 
       {!editInputs ? (
-        <Grid container>
-          <Grid item xs>
+        <Grid container spacing={1}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
             <List
               sx={{
-                width: "90%",
                 bgcolor: "background.paper",
               }}
             >
@@ -284,12 +283,10 @@ export const DeviceDetail = (props) => {
               </ListItem>
             </List>
           </Grid>
-          <Divider orientation="vertical" flexItem />
-          <Grid item xs sx={{ m: 1 }}>
+
+          <Grid item lg={6} md={6} sm={12} xs={12}>
             <List
               sx={{
-                width: "100%",
-                maxWidth: 360,
                 bgcolor: "background.paper",
               }}
             >

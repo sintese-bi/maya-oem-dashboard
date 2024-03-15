@@ -205,6 +205,7 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
               variant="body1"
               sx={{
                 width: 236,
+                display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",
                 color: "black",

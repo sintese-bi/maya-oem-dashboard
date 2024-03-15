@@ -113,7 +113,7 @@ export const GenerationBI = ({
           )}
         </Grid>
       */}
-        <Grid item xs={3}>
+        <Grid item lg={3} md={3} sm={6} xs={12}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -131,7 +131,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item lg={3} md={3} sm={6} xs={12}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -149,7 +149,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item lg={3} md={3} sm={6} xs={12}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (
@@ -168,7 +168,7 @@ export const GenerationBI = ({
             />
           )}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item lg={3} md={3} sm={6} xs={12}>
           {isLoadingDevices ? (
             <LoadingSkeletonBigNumbers />
           ) : (

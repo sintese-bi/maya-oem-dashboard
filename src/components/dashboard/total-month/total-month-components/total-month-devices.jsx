@@ -276,10 +276,6 @@ export default function Plants(props) {
     setOpen(!open);
   }
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (isLoading) {
     return (
       <Backdrop

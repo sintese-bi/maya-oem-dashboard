@@ -85,8 +85,8 @@ export default function AlertDevices() {
               <TableHead>
                 <TableRow>
                   <TableCell>Dispositivo/Usuário</TableCell>
-                  <TableCell>Inversor</TableCell>
                   <TableCell>Mensagem do alerta</TableCell>
+                  <TableCell>Inversor</TableCell>
                   <TableCell>Data do alerta</TableCell>
                 </TableRow>
               </TableHead>

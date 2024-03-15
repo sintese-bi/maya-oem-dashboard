@@ -4,7 +4,6 @@ import { sunArrayPercentage } from "./utils";
 
 // ESTRUTURANDO DADOS PARA O GRAFICO DE PROJETADA VS REAL (Kwh)
 export const handlesGeneration = (data, type, day, label) => {
-  console.log(data);
   const estimated = data[0].gen_estimated ? data[0]?.gen_estimated : 0;
 
   const realGeneration = Array(day).fill(0);

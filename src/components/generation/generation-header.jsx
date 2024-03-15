@@ -73,6 +73,7 @@ export const GenerationHeader = ({
         justifyContent: "space-between",
         flexWrap: "wrap",
         mt: 3,
+        gap: 2,
       }}
     >
       <Box
