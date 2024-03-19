@@ -1,7 +1,9 @@
 
 #outlet{
-    margin-left: 110px;
-
+    margin-left: 130px;
+    overflow: scroll;
+    width: 90%;
+    height: 90vh;
 }
 
 @media screen and (max-width: 700px){

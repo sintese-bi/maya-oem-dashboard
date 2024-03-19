@@ -330,7 +330,7 @@ export const MobileNavigation = () => {
       </Box>
       <Modal
         id="modal"
-        open={open}
+        open={true}
         onClose={handleModalState}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
