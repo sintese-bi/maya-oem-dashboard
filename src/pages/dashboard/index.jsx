@@ -46,6 +46,7 @@ import { BigNumbers } from "src/components/dashboard/big-numbers/bigNumbers";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import { ChartGenrealdaylasthour } from "src/components/shared/Charts";
 import { AlertsModal } from "src/components/alerts-modal/alerts-modal";
+import { DeletedDevicesModal } from "src/components/deleted-devices-modal/deletedDevicesModal";
 
 export default function Dashboard() {
   const {
@@ -145,6 +146,15 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
+      <Grid container sx={{}} xs={12} id="list-usins">
+        <ListUsins
+          data={data}
+          devicesTableRef={devicesTableRef}
+          type={type}
+          usinsByState={usinsByState}
+        />
+      </Grid>
+
       <Grid container spacing={2} sx={{ height: 620 }}>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
           <ChartGenrealdaylasthour
@@ -171,20 +181,13 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{}} xs={12} id="list-usins">
-        <ListUsins
-          data={data}
-          devicesTableRef={devicesTableRef}
-          type={type}
-          usinsByState={usinsByState}
-        />
-      </Grid>
-
       <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
         <AlertDevices />
       </Grid>
 
       <AlertsModal devicesGenerationWithAlerts={devicesGenerationWithAlerts} />
+
+      <DeletedDevicesModal />
 
       {/*
       <Grid container spacing={4} sx={{ marginTop: 2 }}>

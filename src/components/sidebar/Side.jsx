@@ -188,7 +188,7 @@ export const Side = ({ sideState, setSideState }) => {
         break;
       case "configSetup":
         return (
-          <Box sx={{ width: "92vw" }}>
+          <Box>
             <DefineCapacityAndDevicesEmails
               secondaryAction={secondaryAction}
               setSecondaryAction={setSecondaryAction}

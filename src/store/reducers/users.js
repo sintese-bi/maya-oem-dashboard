@@ -49,6 +49,7 @@ const initialState = {
   brandInfoData: [],
   massEmailFinished: true,
   invoiceValuesData: [],
+  deletedDevices: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -313,14 +314,20 @@ export default function userReducer(state = initialState, action) {
           dev_image: device.dev_image,
           email: device.dev_email,
           capacity: Number(device.dev_capacity),
+          deleted: device.dev_deleted,
         };
         return deviceItem;
       });
+
+      let deletedDevices = allDevices.filter(
+        (device) => device.deleted == true
+      );
 
       return {
         ...state,
         isAllDevicesDataLoading: false,
         allDevices,
+        deletedDevices,
       };
 
     case users.GET_ALL_DEVICES_FAILURE:
@@ -385,7 +392,7 @@ export default function userReducer(state = initialState, action) {
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
-          generationEstimated: Number(device.gen_estimated_day),
+          generationEstimatedDay: Number(device.gen_estimated_day),
           generationEstimatedlWeek: Number(device.weeklySum.gen_estimated),
           generationEstimatedMonth: Number(device.monthlySum.gen_estimated),
           alert: device.alerts.length,
