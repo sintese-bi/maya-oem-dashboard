@@ -284,6 +284,7 @@ export const Side = ({ sideState, setSideState }) => {
             width: sideState ? 236 : 100,
           }}
         >
+          <Toolbar />
           <List
             sx={{
               display: "flex",

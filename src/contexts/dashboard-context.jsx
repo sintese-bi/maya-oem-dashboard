@@ -106,6 +106,10 @@ export const DashboardProvider = ({ children }) => {
     dispatch(invoiceValues({ use_uuid }));
   }
 
+  function handleGenRealLastHours() {
+    dispatch(genrealdaylasthour(use_uuid));
+  }
+
   function handleMassEmail() {
     dispatch(massEmail());
     handleReportCountingRequest();
@@ -180,7 +184,7 @@ export const DashboardProvider = ({ children }) => {
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
-    dispatch(genrealdaylasthour({ use_uuid }));
+    handleGenRealLastHours();
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
     handleGetAllDevicesRequest();

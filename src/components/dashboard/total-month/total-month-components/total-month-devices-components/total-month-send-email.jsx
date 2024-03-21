@@ -166,11 +166,10 @@ export const SendEmail = ({
 }) => {
   const dispatch = useDispatch();
 
-  const [deviceInfo, setDeviceInfo] = useState({});
   const [action, setAction] = useState("generateReport");
   const [open, setOpen] = useState(false);
   const [emailIsUpdated, setEmailIsUpdated] = useState(false);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedDevice, setSelectedDevice] = useState([]);
   const [optionFilter, setOptionFilter] = useState("days");
   const [generationRealTotal, setGenerationRealTotal] = useState("");
   const [generationEstimatedTotal, setGenerationEstimatedTotalt] = useState("");
@@ -185,10 +184,6 @@ export const SendEmail = ({
     moment().startOf("month").format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-
-  function handleChartLinearData(props) {
-    dispatch(getAllDevicesGeneration(props));
-  }
 
   function handleModalState() {
     setStartDate(moment().startOf("month").format("YYYY-MM-DD"));
@@ -216,28 +211,28 @@ export const SendEmail = ({
     setAction("confirmEmail");
     reportDeviceRule(
       devicesGeneration,
-      useNameState,
-      capacity,
+      selectedDevice[0].useNameState,
+      selectedDevice[0].capacity,
       setIsLoadingReport,
       startDateTemp,
       endDateTemp,
-      address,
-      deviceName
+      selectedDevice[0].address,
+      selectedDevice[0].deviceName
     );
   }
 
   useEffect(() => {
-    if (selectedDevice) {
+    if (selectedDevice.length != 0) {
       dispatch(
         getAllDevicesGeneration(
-          Object.assign(selectedDevice, {
+          Object.assign(selectedDevice[0], {
             startDate: startDate,
             endDate: endDate,
           })
         )
       );
     }
-  }, [startDate, endDate, optionFilter]);
+  }, [selectedDevice]);
 
   useEffect(() => {
     setGenerationEstimatedTotalt(
@@ -252,12 +247,6 @@ export const SendEmail = ({
     );
   }, [devicesGeneration]);
 
-  useEffect(() => {
-    if (devices.length !== 0) {
-      setDeviceInfo(devices[0]);
-    }
-  }, [devices, devUuidState]);
-
   //useEffect(() => {
   //  dispatch(getDevices(blUuidState));
   //}, [blUuidState]);
@@ -265,13 +254,6 @@ export const SendEmail = ({
   //useEffect(() => {
   //  dispatch(getCapacities(devUuidState));
   //}, [devUuidState]);
-
-  useEffect(() => {
-    if (open) {
-      dispatch(getDevices(blUuidState));
-      dispatch(getCapacities(devUuidState));
-    }
-  }, [open]);
 
   const {
     register,
@@ -294,7 +276,12 @@ export const SendEmail = ({
     const { email } = values;
     try {
       dispatch(updateEmail({ dev_uuid: devUuidState, email }));
-      dispatch(storeReport({ dev_uuid: devUuidState }));
+      dispatch(
+        storeReport({
+          dev_uuid: devUuidState,
+          use_uuid: getUserCookie().useUuid,
+        })
+      );
       setAction("reportPreview");
     } catch (error) {
       alert(error);
@@ -392,20 +379,18 @@ export const SendEmail = ({
     <>
       <Avatar
         onClick={() => {
-          handleChartLinearData({
-            blUuid: blUuidState,
-            startDate,
-            endDate,
-            devUuid: devUuidState,
-            type: optionFilter,
-            name: "undefined",
-          });
-          setSelectedDevice({
-            blUuid: blUuidState,
-            devUuid: devUuidState,
-            type: optionFilter,
-            name: "undefined",
-          });
+          setSelectedDevice([
+            {
+              devUuidState,
+              blUuidState,
+              data,
+              useNameState,
+              capacity,
+              address,
+              email,
+              deviceName,
+            },
+          ]);
           setOpen(!open);
         }}
       >

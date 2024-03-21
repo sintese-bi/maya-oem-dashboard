@@ -164,7 +164,7 @@ export const MyUsins = ({
           type={7}
           title="Relatórios"
           btn={true}
-          value={`${reportsCounting}/${allDevices.length}`}
+          value={`${reportsCounting}/${devices.length}`}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar

@@ -14,7 +14,7 @@ const config = {
 
 export const reportCounting = (params) => (dispatch) => {
   api
-    .get("/reportcounting", configRequest())
+    .post("/reportcounting", params, configRequest())
     .then((res) => {
       dispatch({
         type: users.GET_REPORT_COUNTING,

@@ -13,6 +13,9 @@ import { ModalPlantsGraph } from "src/components/dashboard/total-month/total-mon
 import { DeleteDevice } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-delete-devices";
 import { SendEmail } from "src/components/dashboard/total-month/total-month-components/total-month-devices-components/total-month-send-email";
 import { Box } from "@mui/system";
+import { useDispatch } from "react-redux";
+import { getDashboard } from "src/store/actions/users";
+import { useEffect } from "react";
 
 export const columnsDevices = [
   {
