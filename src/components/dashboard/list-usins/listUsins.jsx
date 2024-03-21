@@ -7,6 +7,8 @@ import { useContext, useEffect, useState } from "react";
 import { callingWebWorkers } from "src/web-workers";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import { set } from "react-hook-form";
+import MUIDataTable from "mui-datatables";
+import { columnsDevices } from "src/constants/columns";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const { handleMassEmail } = useContext(DashboardContext);
@@ -19,6 +21,50 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
   }, [massEmailFinished]);
+
+  const options = {
+    sortOrder: {
+      name: "capacity",
+      direction: "desc",
+    },
+    filter: true,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 50, 100, 200, 300],
+    filterType: "dropdown",
+    responsive: "simple",
+    selectableRows: "none",
+    setRowProps: (row) => {
+      if (row[6] > row[7]) {
+        return {
+          style: { background: "rgba(152, 251, 152, 0.2)" },
+        };
+      } else if (row[6] == 0) {
+        return {
+          style: { background: "rgba(255, 105, 97, 0.2)" },
+        };
+      } else {
+        return {
+          style: { background: "aliceblue" },
+        };
+      }
+    },
+  };
+
+  const {
+    isLoading,
+    brands,
+    devices,
+    generationBelowEstimated,
+    alerts,
+    notDefined,
+    unactived,
+    offline,
+    online,
+  } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    console.log(devices);
+  }, [devices]);
 
   return (
     <Card sx={{ p: 1, width: "100%" }}>

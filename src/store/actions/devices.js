@@ -60,7 +60,7 @@ export const genrealdaylasthour = (params) => (dispatch) => {
 
   axios
     .get(
-      `https://app2.mayaoem.com.br/v2/user?user=a7ed2d10-4340-43df-824d-63ca16979114`,
+      `https://app2.mayaoem.com.br/v2/user?user=${params}`,
       params,
       configRequest()
     )
@@ -220,11 +220,12 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
   dispatch({ type: devices.GET_ALL_DEVICES_GENERATION_REQUEST });
   api
     .get(
-      `/generationandtemperature?blUuid=${props.blUuid}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuid}&type=month`,
+      `/generationandtemperature?blUuid=${props.blUuidState}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuidState}&type=month`,
       configRequest()
     )
     .then((res) => {
       const { data } = res;
+
       dispatch({
         type: devices.GET_ALL_DEVICES_GENERATION_SUCCESS,
         result: Object.assign(data, { deviceName: props.name }),

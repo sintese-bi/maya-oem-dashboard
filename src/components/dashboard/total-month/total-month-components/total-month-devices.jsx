@@ -56,10 +56,6 @@ export default function Plants(props) {
 
   const [columns, setColumns] = useState(columnsDevices);
 
-  const { devicesGeneration, isLoadingDevicesGeneration } = useSelector(
-    (state) => state.devices
-  );
-
   const dispatch = useDispatch();
 
   const options = {
@@ -244,19 +240,6 @@ export default function Plants(props) {
   }
 
   useEffect(() => {
-    if (selectedDevice) {
-      dispatch(
-        getAllDevicesGeneration(
-          Object.assign(selectedDevice, {
-            startDate: startDate,
-            endDate: endDate,
-          })
-        )
-      );
-    }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
     handleChangeColumns(type);
   }, [type]);
 
@@ -310,51 +293,6 @@ export default function Plants(props) {
           </Button>
         </Grid>
       </Grid>
-      <Modal
-        open={open}
-        onClose={handleModalState}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <Box
-          sx={{
-            bgcolor: "background.paper",
-            p: 4,
-            overflowY: "auto",
-          }}
-          minHeight={100}
-          maxHeight={200}
-        >
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <DatePicker
-              label="Data Inicial"
-              value={startDate}
-              onChange={(startDate) =>
-                setStartDate(
-                  startDate ? moment(startDate).format("YYYY-MM-DD") : ""
-                )
-              }
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <DatePicker
-              label="Data Final"
-              value={endDate}
-              onChange={(endDate) =>
-                setEndDate(endDate ? moment(endDate).format("YYYY-MM-DD") : "")
-              }
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-          <ChartsLinear
-            startDate={startDate}
-            endDate={endDate}
-            generation={devicesGeneration}
-            optionFilter={optionFilter}
-            isLoading={isLoadingDevicesGeneration}
-          />
-        </Box>
-      </Modal>
     </Box>
   );
 }
