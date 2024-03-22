@@ -248,15 +248,17 @@ export const AdministratorReport = () => {
 
   const yAxis = maxEstimated > maxReal ? maxEstimated : maxReal;
 
-  let division = Math.ceil(yAxis / 10);
+  let division = Math.ceil(yAxis / 100);
   let result = [];
   for (let i = 0; i <= division; i++) {
     if (i == division) {
       result.push(Math.ceil(Number(yAxis.toFixed())));
     } else {
-      result.push(i * 10);
+      result.push(i * 100);
     }
   }
+
+  console.log(result, division);
 
   return (
     <Document>
@@ -398,6 +400,7 @@ export const AdministratorReport = () => {
                       width: "100%",
                       height: "100px",
                       display: "flex",
+                      position: "relative",
                       justifyContent: "space-between",
                       alignItems: "center",
                       gap: 1,
@@ -412,6 +415,7 @@ export const AdministratorReport = () => {
                         justifyContent: "space-between",
                         alignItems: "center",
                         widh: "12px",
+                        bottom: "0px",
                       }}
                     >
                       <View
@@ -439,13 +443,13 @@ export const AdministratorReport = () => {
                       </View>
                       <View
                         style={{
-                          width: "30px",
+                          width: "40px",
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
                           flexDirection: "column",
                           marginTop: "auto",
-                          height: `${yAxis + 42}px`,
+                          height: `${42 + yAxis / 100}px`,
                           borderRight: "1px solid #545353",
                         }}
                       >
@@ -497,7 +501,7 @@ export const AdministratorReport = () => {
                                     width: "8px",
                                     height: `${
                                       realValue != 0
-                                        ? 42 + realValue
+                                        ? 42 + realValue / 100
                                         : realValue
                                     }px`,
                                     backgroundColor: "#6CE5E8",
@@ -514,7 +518,8 @@ export const AdministratorReport = () => {
                                         ? 42 +
                                           periodData.data?.estimatedGeneration[
                                             index
-                                          ]
+                                          ] /
+                                            100
                                         : periodData.data?.estimatedGeneration[
                                             index
                                           ]

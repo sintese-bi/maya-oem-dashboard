@@ -92,15 +92,13 @@ export const Side = ({ sideState, setSideState }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [action, setAction] = useState(
-    deletedDevices.length != 0 ? "deletedPlants" : "alertFrequency"
+    firstTime ? "alertFrequency" : "deletedPlants"
   );
   const [secondaryAction, setSecondaryAction] = useState(
     "AlertsDefineComponent"
   );
   const [welcome, setWelcome] = useState(true);
-  const [open, setOpen] = useState(
-    firstTime ? true : deletedDevices.length != 0 ? true : false
-  );
+  const [open, setOpen] = useState(true);
 
   const toggleDrawer = (open) => (event) => {
     if (

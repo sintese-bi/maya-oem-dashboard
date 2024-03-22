@@ -381,8 +381,8 @@ export const SendEmail = ({
         onClick={() => {
           setSelectedDevice([
             {
-              devUuidState,
-              blUuidState,
+              devUuid: devUuidState,
+              blUuid: blUuidState,
               data,
               useNameState,
               capacity,

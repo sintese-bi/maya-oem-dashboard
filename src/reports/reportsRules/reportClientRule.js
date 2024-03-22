@@ -83,6 +83,8 @@ export function reportClientRule(
     }
   }
 
+  console.log(capacity);
+
   reportClient.useName = useName;
   reportClient.estimatedGenerationTotal = numbers(
     estimatedGenerationNumber,

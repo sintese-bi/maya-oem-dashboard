@@ -1,5 +1,12 @@
 import { Close } from "@mui/icons-material";
-import { Box, Card, Modal } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,8 +16,10 @@ export const DeletedDevicesModal = ({
   setTitle,
   setDescription,
   setOpen,
-  deletedDevices,
+  welcome,
 }) => {
+  const { deletedDevices } = useSelector((state) => state.users);
+
   const columns = [
     {
       name: "uuid",
@@ -39,6 +48,24 @@ export const DeletedDevicesModal = ({
         filter: true,
       },
     },
+    {
+      name: "recoveryButton",
+      label: "Recuperação de planta",
+      options: {
+        display: true,
+        viewColumns: true,
+        filter: true,
+        customBodyRender: () => {
+          return (
+            <Box>
+              <Button variant="outlined" color="success">
+                Recuperar planta
+              </Button>
+            </Box>
+          );
+        },
+      },
+    },
   ];
 
   const options = {
@@ -52,8 +79,30 @@ export const DeletedDevicesModal = ({
     print: false,
   };
 
+  if (deletedDevices.length == 0) {
+    return (
+      <Box
+        sx={{
+          overflow: "auto",
+          height: "70vh",
+          width: "70vw",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+          Agurdando plantas deletadas...
+        </Typography>
+        <CircularProgress color="inherit" />
+      </Box>
+    );
+  }
+
   return (
-    <Box sx={{ overflow: "auto", height: "90%" }}>
+    <Box sx={{ overflow: "auto", height: "70vh", width: "70vw" }}>
       <MUIDataTable
         title={"Devices deletados"}
         data={deletedDevices}

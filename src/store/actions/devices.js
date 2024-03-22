@@ -219,7 +219,7 @@ export const getAllDevicesGeneration = (props) => (dispatch) => {
   dispatch({ type: devices.GET_ALL_DEVICES_GENERATION_REQUEST });
   api
     .get(
-      `/generationandtemperature?blUuid=${props.blUuidState}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuidState}&type=month`,
+      `/generationandtemperature?blUuid=${props.blUuid}&startDate=${props.startDate}&endDate=${props.endDate}&devUuid=${props.devUuid}&type=month`,
       configRequest()
     )
     .then((res) => {

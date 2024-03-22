@@ -13,6 +13,7 @@ import {
   genrealdaylasthour,
 } from "src/store/actions/devices";
 import {
+  alertFrequency,
   brandInfo,
   getAllDevices,
   getAllDevicesFromUser,
@@ -162,6 +163,10 @@ export const DashboardProvider = ({ children }) => {
     );
   }
 
+  function handleAlertsFrequency() {
+    dispatch(alertFrequency(use_uuid));
+  }
+
   function handleUsinsByStateData() {
     let devicesWithAddress = usersAPIData.allDevices.filter(
       (data) => data.address !== null && data.address.includes("-")
@@ -207,6 +212,7 @@ export const DashboardProvider = ({ children }) => {
     handleReportCountingRequest();
     handleInvoiceValuesRequest();
     handleDeletedDevices();
+    handleAlertsFrequency();
   }, [use_uuid]);
 
   useEffect(() => {
@@ -358,6 +364,7 @@ export const DashboardProvider = ({ children }) => {
         handleAdminReportGeneration,
         handleBrandInfoRequest,
         handleMassEmail,
+        handleAlertsFrequency,
       }}
     >
       {children}
