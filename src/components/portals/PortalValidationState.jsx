@@ -8,7 +8,7 @@ export const PortalValidationState = ({
   const [validated, setValidated] = useState("notValidated");
 
   const content = (login, validationState, bl_name) => {
-    switch ("notValidated") {
+    switch (validationState) {
       case "notValidated":
         return (
           <Box
@@ -75,7 +75,7 @@ export const PortalValidationState = ({
               mb: 2,
               py: 2,
               px: 1,
-              bgcolor: "whitesmoke",
+              bgcolor: "#c1e3ca",
               borderRadius: "10px",
             }}
           >
