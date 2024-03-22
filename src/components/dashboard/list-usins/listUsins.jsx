@@ -62,10 +62,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     online,
   } = useSelector((state) => state.users);
 
-  useEffect(() => {
-    console.log(devices);
-  }, [devices]);
-
   return (
     <Card sx={{ p: 1, width: "100%" }}>
       <Box sx={{ width: "100%", display: "flex", gap: 4 }}>

@@ -92,10 +92,6 @@ export function AlertsDefineComponent({
   }
 
   useEffect(() => {
-    dispatch(alertFrequency(useUuid));
-  }, [useUuid]);
-
-  useEffect(() => {
     if (percentage && frequencyName) {
       if (useTypeMember) {
         setValue("percentage", percentage);

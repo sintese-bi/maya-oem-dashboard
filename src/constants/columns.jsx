@@ -334,12 +334,12 @@ export const columnsDevices = [
       filter: true,
       sort: true,
       customHeadLabelRender: (data) => {
-        return <p style={{ fontWeight: "bolder" }}>Boleto Quitado ?</p>;
-      },
-      customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography sx={{ mr: 2 }}>Deletar planta</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
+              Deletar planta
+            </Typography>
+
             <Tooltip title="ao deletar planta ela apenas deixa de ser monitorada e não excluída do portal do inversor">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>

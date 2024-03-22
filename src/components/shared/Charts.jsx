@@ -937,7 +937,7 @@ export const ChartsLinear = (props) => {
         barPercentage: 0.4,
         data: periodData.data?.realGeneration,
         borderColor: "#5048E5",
-        backgroundColor: "#5048E5",
+        backgroundColor: "#8FC1B5",
       },
       {
         label: "Geração estimada",
@@ -947,7 +947,7 @@ export const ChartsLinear = (props) => {
         maxBarThickness: 22,
         barPercentage: 0.4,
         data: periodData.data?.estimatedGeneration,
-        backgroundColor: "#14B8A6",
+        backgroundColor: "#265C4B",
         type: "line",
       },
     ],
@@ -1011,9 +1011,7 @@ export const ChartsLinear = (props) => {
             fontSize: "20px",
             textAlign: "center",
           }}
-        >
-          Relação da geração real e geração estimada
-        </Typography>
+        ></Typography>
         <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
           <Chart
             height={380}
