@@ -29,6 +29,10 @@ export const DashboardProvider = ({ children }) => {
   const [isLoadingReportGeneration, setIsLoadingReportGeneration] =
     useState(true);
 
+  // devices deletados do usuário
+
+  const [deletedDevices, setDeletedDevices] = useState([]);
+
   // data serve para guardar os dados principais do dashboard, como todos os devices, e o type é o responsável pela filtragem desses dados
 
   const [data, setData] = useState([]);
@@ -175,6 +179,10 @@ export const DashboardProvider = ({ children }) => {
     setUsinsByState(devicesAddressState);
   }
 
+  function handleDeletedDevices() {
+    setDeletedDevices(usersAPIData.deletedDevices);
+  }
+
   useEffect(() => {
     set_use_uuid(
       usersAPIData.selectedUser.length != 0
@@ -182,6 +190,12 @@ export const DashboardProvider = ({ children }) => {
         : userData?.useUuid
     );
   }, [userData?.useUuid, usersAPIData.selectedUser]);
+
+  useEffect(() => {
+    if (usersAPIData?.deletedDevices.length != 0) {
+      handleDeletedDevices();
+    }
+  }, [usersAPIData?.deletedDevices]);
 
   useEffect(() => {
     handleGenRealLastHours();
@@ -192,6 +206,7 @@ export const DashboardProvider = ({ children }) => {
     handleBrandInfoRequest();
     handleReportCountingRequest();
     handleInvoiceValuesRequest();
+    handleDeletedDevices();
   }, [use_uuid]);
 
   useEffect(() => {
@@ -266,8 +281,6 @@ export const DashboardProvider = ({ children }) => {
     }
   }, [usersAPIData.graphData]);
 
-  useEffect(() => {}, [usersAPIData.selectedUser]);
-
   useEffect(() => {
     if (devicesAPIData.bignumbersumValues.realGeneration !== undefined) {
       let lastRealGenerationDay =
@@ -332,6 +345,7 @@ export const DashboardProvider = ({ children }) => {
         percentLastDay,
         usinsByState,
         devicesGenerationWithAlerts,
+        deletedDevices,
         setIsLoadingReportGeneration,
         setData,
         setType,

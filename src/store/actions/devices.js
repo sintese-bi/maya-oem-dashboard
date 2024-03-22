@@ -99,7 +99,6 @@ export const genrealdayDevicelasthour = (params) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
-
       dispatch({
         type: devices.GET_GENREALDAYDEVICELASTHOUR_SUCCESS,
         result: data,

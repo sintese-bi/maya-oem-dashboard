@@ -168,31 +168,28 @@ export const ChartGenrealdaylasthour = (props) => {
   const theme = useTheme();
   const { genrealdaylasthourData } = props;
 
-  if (genrealdaylasthourData === undefined) {
+  if (
+    genrealdaylasthourData === undefined ||
+    genrealdaylasthourData.length == 0
+  ) {
     return (
       <Card
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          height: 460,
           flexDirection: "column",
-          bgcolor: "background.paper",
-          px: 3,
-          pt: 4,
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
         }}
       >
         <Typography
           color="textPrimary"
-          sx={{
-            fontWeight: "bold",
-            fontSize: "20px",
-            textAlign: "center",
-            mb: "4",
-          }}
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
         >
           Gerando gráfico
         </Typography>
-        <Box sx={{ height: 300 }}>
+        <Box width={"90%"} height={520}>
           <LoadingSkeletonCharts />
         </Box>
       </Card>
@@ -361,7 +358,7 @@ export const ChartGenrealdayDevicelasthour = (props) => {
   const theme = useTheme();
   const { genrealdayDeviceLasthourData } = props;
 
-  if (genrealdayDeviceLasthourData === undefined) {
+  if (genrealdayDeviceLasthourData?.data === undefined) {
     return (
       <Card
         sx={{
@@ -385,7 +382,7 @@ export const ChartGenrealdayDevicelasthour = (props) => {
         >
           Gerando gráfico
         </Typography>
-        <Box sx={{ height: 300 }}>
+        <Box width={"90%"} height={430}>
           <LoadingSkeletonCharts />
         </Box>
       </Card>

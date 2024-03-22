@@ -4,14 +4,13 @@ import MUIDataTable from "mui-datatables";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-export const DeletedDevicesModal = () => {
-  const { deletedDevices } = useSelector((state) => state.users);
-  const [open, setOpen] = useState(false);
-
-  function handleAlertsModal() {
-    setOpen(false);
-  }
-
+export const DeletedDevicesModal = ({
+  setAction,
+  setTitle,
+  setDescription,
+  setOpen,
+  deletedDevices,
+}) => {
   const columns = [
     {
       name: "uuid",
@@ -54,35 +53,13 @@ export const DeletedDevicesModal = () => {
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleAlertsModal}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card sx={{ px: 4, pb: 4, height: "80vh", width: "90%" }}>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            py: 2,
-          }}
-        >
-          <Close sx={{ cursor: "pointer" }} onClick={handleAlertsModal} />
-        </Box>
-        <Box sx={{ overflow: "auto", height: "90%" }}>
-          <MUIDataTable
-            title={"Devices deletados"}
-            data={deletedDevices}
-            columns={columns}
-            options={options}
-          />
-        </Box>
-      </Card>
-    </Modal>
+    <Box sx={{ overflow: "auto", height: "90%" }}>
+      <MUIDataTable
+        title={"Devices deletados"}
+        data={deletedDevices}
+        columns={columns}
+        options={options}
+      />
+    </Box>
   );
 };

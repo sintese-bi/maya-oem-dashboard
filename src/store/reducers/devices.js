@@ -17,6 +17,7 @@ const initialState = {
   devicesGeneration: [],
   deviceDelete: true,
   bignumbersumValues: [],
+  genrealdayDeviceLasthourData: [],
 };
 
 export default function userReducer(state = initialState, action) {

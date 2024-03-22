@@ -5,7 +5,7 @@ import {
   useNavigate,
   Outlet,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./side.css";
 import {
   getUserCookie,
@@ -71,6 +71,10 @@ import {
   mainItems,
   topItems,
 } from "src/modal-actions/modal-actions";
+import { DeletedDevicesModal } from "../deleted-devices-modal/deletedDevicesModal";
+import { useSelector } from "react-redux";
+import { deleteDevice } from "src/store/actions/devices";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -82,14 +86,21 @@ export const Side = ({ sideState, setSideState }) => {
     useCityState,
     useTelephone,
   } = getUserCookie();
+
+  const { deletedDevices } = useContext(DashboardContext);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [action, setAction] = useState("alertFrequency");
+  const [action, setAction] = useState(
+    deletedDevices.length != 0 ? "deletedPlants" : "alertFrequency"
+  );
   const [secondaryAction, setSecondaryAction] = useState(
     "AlertsDefineComponent"
   );
   const [welcome, setWelcome] = useState(true);
-  const [open, setOpen] = useState(firstTime ? true : false);
+  const [open, setOpen] = useState(
+    firstTime ? true : deletedDevices.length != 0 ? true : false
+  );
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -108,6 +119,23 @@ export const Side = ({ sideState, setSideState }) => {
 
   const ModalContent = () => {
     switch (action) {
+      case "deletedPlants":
+        return (
+          <Box>
+            <DeletedDevicesModal
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+              welcome={welcome}
+              setOpen={setOpen}
+              open={open}
+              setTitle={setTitle}
+              setDescription={setDescription}
+              setAction={setAction}
+              deletedDevices={deletedDevices}
+            />
+          </Box>
+        );
+        break;
       case "alertFrequency":
         return (
           <Box>
