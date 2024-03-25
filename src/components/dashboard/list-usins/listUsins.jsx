@@ -34,11 +34,11 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     responsive: "simple",
     selectableRows: "none",
     setRowProps: (row) => {
-      if (row[6] > row[7]) {
+      if (row[7] > row[8]) {
         return {
           style: { background: "rgba(152, 251, 152, 0.2)" },
         };
-      } else if (row[6] == 0) {
+      } else if (row[7] == 0) {
         return {
           style: { background: "rgba(255, 105, 97, 0.2)" },
         };
