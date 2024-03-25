@@ -3,7 +3,10 @@ import { BigNumber } from "../shared/BigNumber";
 import { LoadingSkeletonBigNumbers } from "../Loading";
 import { numbers } from "src/helpers/utils";
 import { Box, Grid, Typography, MenuItem, TextField } from "@mui/material";
-import { ChartsLinear } from "src/components/shared/Charts";
+import {
+  ChartGenrealdayDevicelasthour,
+  ChartsLinear,
+} from "src/components/shared/Charts";
 
 import {
   Bolt,
@@ -14,6 +17,7 @@ import {
 import moment from "moment";
 
 export const GenerationBI = ({
+  genrealdayDeviceLasthourData,
   startDate,
   endDate,
   optionFilter,
@@ -276,14 +280,23 @@ export const GenerationBI = ({
           <MenuItem value="biweek">Quinzena</MenuItem>
           <MenuItem value="months">Mês</MenuItem>
         </TextField>
-        <ChartsLinear
-          startDate={startDate}
-          endDate={endDate}
-          optionFilter={optionFilter}
-          generation={generation}
-          isLoading={isLoading}
-          graphRef={graphRef}
-        />
+        <Grid container>
+          <Grid item lg={6} md={6} sm={12}>
+            <ChartGenrealdayDevicelasthour
+              genrealdayDeviceLasthourData={genrealdayDeviceLasthourData}
+            />
+          </Grid>
+          <Grid item lg={6} md={6} sm={12}>
+            <ChartsLinear
+              startDate={startDate}
+              endDate={endDate}
+              optionFilter={optionFilter}
+              generation={generation}
+              isLoading={isLoading}
+              graphRef={graphRef}
+            />
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

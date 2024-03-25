@@ -332,7 +332,7 @@ export const Portal = ({
                     const formData = new FormData();
                     formData.append("arquivo", e.target.files[0]);
                     formData.append("use_uuid", useUuid);
-                    dispatch(xlsxPortal(formData));
+                    dispatch(xlsxPortal(formData, handleBrandInfoRequest));
                   }
                 }}
                 sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}

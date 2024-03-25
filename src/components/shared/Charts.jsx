@@ -997,7 +997,6 @@ export const ChartsLinear = (props) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "80%",
           width: "100%",
           flexDirection: "column",
           px: 1,
@@ -1012,9 +1011,9 @@ export const ChartsLinear = (props) => {
             textAlign: "center",
           }}
         ></Typography>
-        <Box sx={{ height: "100%", width: "100%", mt: 4, mb: 4 }}>
+        <Box sx={{ height: 460, width: "100%", mt: 4, mb: 4 }}>
           <Chart
-            height={380}
+            height={430}
             type="bar"
             options={options}
             data={data}

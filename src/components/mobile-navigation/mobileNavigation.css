@@ -1,15 +1,18 @@
 #mobileNavigation{
     display: none;
-    flex-direction: row;
 }
 
 #mobile{
     display: none;
 }
 
+
 @media screen and (max-width: 700px){
     #mobile{
+        width: 100%;
         display: flex;
+        justify-content: center;
+        align-items: center;
     }
     #mobileNavigation{
         flex-direction: row;
