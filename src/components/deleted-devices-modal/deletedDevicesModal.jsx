@@ -77,9 +77,14 @@ export const DeletedDevicesModal = ({
     selectableRows: "none",
     download: false,
     print: false,
+    textLabels: {
+      body: {
+        noMatch: "Nenhum dado encontrado", // this would be whatever you want the message to say
+      },
+    },
   };
 
-  if (deletedDevices.length == 0) {
+  if (deletedDevices == undefined) {
     return (
       <Box
         sx={{
