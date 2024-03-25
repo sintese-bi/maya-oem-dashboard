@@ -80,6 +80,8 @@ const Generation = () => {
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
+    console.log(generation);
+    console.log(datInfo[0]);
     setDeviceInfo(datInfo[0]);
     dispatch(
       getGeneration({
@@ -201,13 +203,10 @@ const Generation = () => {
             blUuidState={blUuidState}
           />
         </Box>
-        <Card sx={{ p: 3 }}>
-          <ChartGenrealdayDevicelasthour
-            genrealdayDeviceLasthourData={genrealdayDeviceLasthourData}
-          />
-        </Card>
+
         <Box sx={{ my: 10, width: "100%" }}>
           <GenerationBI
+            genrealdayDeviceLasthourData={genrealdayDeviceLasthourData}
             setOptionFilter={setOptionFilter}
             graphRef={graphRef}
             startDate={startDate}

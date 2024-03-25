@@ -66,6 +66,7 @@ export const genrealdaylasthour = (params) => (dispatch) => {
     )
     .then((res) => {
       const { data } = res;
+      console.log(data);
       const transformedDataValues = data.replace(/NaN/g, 0);
       dispatch({
         type: devices.GET_GENREALDAYLASTHOUR_SUCCESS,

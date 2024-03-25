@@ -325,7 +325,7 @@ export const MobileNavigation = () => {
 
         <ModalActions />
       </Box>
-      <Box sx={{ py: 10, px: 2 }}>
+      <Box sx={{ py: 10 }} id="outlet">
         <Outlet />
       </Box>
       <Modal

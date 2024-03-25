@@ -685,16 +685,17 @@ export const helpCenter = (params) => (dispatch) => {
     });
 };
 
-export const xlsxPortal = (params) => (dispatch) => {
+export const xlsxPortal = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: users.XLSX_PORTAL_REQUEST });
   api
     .post("/xlsxportal", params, configRequest())
     .then((res) => {
       const { data } = res;
-
       toast.success(data.message, {
         duration: 5000,
       });
+
+      handleBrandInfoRequest();
 
       dispatch({
         type: users.XLSX_PORTAL_SUCCESS,
@@ -871,6 +872,7 @@ export const updateBrands = (params) => (dispatch) => {
     .post("/updatebrands", params, configRequest())
     .then((res) => {
       const { data } = res;
+      handleBrandInfoRequest();
       toast.success(data.message, {
         duration: 5000,
       });

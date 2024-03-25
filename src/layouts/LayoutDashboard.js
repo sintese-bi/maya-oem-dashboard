@@ -15,23 +15,6 @@ import "./layout.css";
 
 // STYLE
 
-const MobileLayout = ({ sideState, setSideState }) => {
-  return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        position: "fixed",
-        bgcolor: "background.paper",
-      }}
-    >
-      <DashboardNavbar sideState={sideState} setSideState={setSideState} />
-
-      <Side sideState={sideState} setSideState={setSideState} />
-    </Box>
-  );
-};
-
 const Layout = ({ sideState, setSideState }) => {
   return (
     <Box
