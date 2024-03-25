@@ -197,7 +197,7 @@ export const DashboardProvider = ({ children }) => {
   }, [userData?.useUuid, usersAPIData.selectedUser]);
 
   useEffect(() => {
-    if (usersAPIData?.deletedDevices.length != 0) {
+    if (usersAPIData?.deletedDevices?.length != 0) {
       handleDeletedDevices();
     }
   }, [usersAPIData?.deletedDevices]);

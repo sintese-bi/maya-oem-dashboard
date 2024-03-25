@@ -37,6 +37,18 @@ export const columnsDevices = [
     },
   },
   {
+    name: "index",
+    label: "Numeração",
+    options: {
+      filter: true,
+      sort: true,
+      align: "center",
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Numeração</p>;
+      },
+    },
+  },
+  {
     name: "brand",
     label: "Nome da marca",
     options: {
@@ -58,8 +70,8 @@ export const columnsDevices = [
               state={{
                 devUuidState: dataTable.rowData[0],
                 blUuidState: dataTable.rowData[1],
-                useNameState: dataTable.rowData[2],
-                capacity: dataTable.rowData[4],
+                useNameState: dataTable.rowData[3],
+                capacity: dataTable.rowData[5],
               }}
               underline="hover"
             >
@@ -117,7 +129,7 @@ export const columnsDevices = [
       customBodyRender: (name, dataTable) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
-            {Number(dataTable.rowData[12]) == 0 ? (
+            {Number(dataTable.rowData[13]) == 0 ? (
               <CheckBox sx={{ color: "success.light" }} />
             ) : (
               <ReportProblem sx={{ color: "warning.light" }} />
@@ -284,7 +296,7 @@ export const columnsDevices = [
             <ModalPlantsGraph
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
-              useNameState={dataTable.rowData[2]}
+              useNameState={dataTable.rowData[3]}
             />
           </Stack>
         );
@@ -316,11 +328,11 @@ export const columnsDevices = [
               devUuidState={dataTable.rowData[0]}
               blUuidState={dataTable.rowData[1]}
               data={dataTable.rowData}
-              useNameState={dataTable.rowData[2]}
-              capacity={dataTable.rowData[4]}
-              address={dataTable.rowData[17]}
-              email={dataTable.rowData[18]}
-              deviceName={dataTable.rowData[3]}
+              useNameState={dataTable.rowData[3]}
+              capacity={dataTable.rowData[5]}
+              address={dataTable.rowData[18]}
+              email={dataTable.rowData[19]}
+              deviceName={dataTable.rowData[4]}
             />
           </Stack>
         );

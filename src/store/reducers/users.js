@@ -49,7 +49,7 @@ const initialState = {
   brandInfoData: [],
   massEmailFinished: true,
   invoiceValuesData: [],
-  deletedDevices: [],
+  deletedDevices: undefined,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -382,8 +382,9 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
-      const devices = devicesData.map((device) => {
+      const devices = devicesData.map((device, index) => {
         return {
+          index: index + 1,
           brand: device.dev_brand,
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
