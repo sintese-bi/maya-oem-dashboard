@@ -290,12 +290,14 @@ export const GenerationBI = ({
           </TextField>
         </Box>
         <Grid container>
+          {/* 
           <Grid item lg={6} md={6} sm={12}>
             <ChartGenrealdayDevicelasthour
               genrealdayDeviceLasthourData={genrealdayDeviceLasthourData}
             />
           </Grid>
-          <Grid item lg={6} md={6} sm={12}>
+          */}
+          <Grid item lg={12} md={12} sm={12}>
             <ChartsLinear
               startDate={startDate}
               endDate={endDate}

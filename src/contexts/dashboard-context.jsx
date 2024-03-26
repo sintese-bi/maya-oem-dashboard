@@ -203,7 +203,7 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData?.deletedDevices]);
 
   useEffect(() => {
-    handleGenRealLastHours();
+    //handleGenRealLastHours();
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
     handleGetAllDevicesRequest();
