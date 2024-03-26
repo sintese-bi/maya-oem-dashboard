@@ -150,7 +150,7 @@ const Generation = () => {
       );
     }
     setIsLoadingReport(true);
-    dispatch(genrealdayDevicelasthour({ devUuidState }));
+    //dispatch(genrealdayDevicelasthour({ devUuidState }));
   }, [startDate, endDate, blUuidState, devUuidState, deviceInfo, optionFilter]);
 
   useEffect(() => {

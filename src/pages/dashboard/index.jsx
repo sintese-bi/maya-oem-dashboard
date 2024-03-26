@@ -156,13 +156,15 @@ export default function Dashboard() {
       </Grid>
 
       <Grid container spacing={2} sx={{ height: 620 }}>
-        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
-          <ChartGenrealdaylasthour
-            genrealdaylasthourData={genrealdaylasthourData}
-          />
-        </Grid>
+        {/*
+          <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
+            <ChartGenrealdaylasthour
+              genrealdaylasthourData={genrealdaylasthourData}
+            />
+          </Grid>
+        */}
 
-        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
+        <Grid item xs={12} md={12} sm={12} lg={12} sx={{ height: "100%" }}>
           <PeriodDataUsins
             startDate={startDate}
             endDate={endDate}
