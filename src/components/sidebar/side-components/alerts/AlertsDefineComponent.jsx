@@ -29,6 +29,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
+import toast from "react-hot-toast";
 
 const validateSchema = Yup.object().shape({
   percentage: Yup.number()
@@ -86,8 +87,8 @@ export function AlertsDefineComponent({
   });
 
   async function onSubmit(values) {
-    dispatch(patchAlertFrequency({ values, useUuid }));
-
+    //dispatch(patchAlertFrequency({ values, useUuid }));
+    toast.success("Função temporariamente desativada!");
     setSecondaryAction("DefineAlertEmail");
   }
 
