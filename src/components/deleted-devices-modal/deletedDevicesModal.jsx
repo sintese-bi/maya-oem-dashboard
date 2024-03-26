@@ -20,6 +20,11 @@ export const DeletedDevicesModal = ({
 }) => {
   const { deletedDevices } = useSelector((state) => state.users);
 
+  useEffect(() => {
+    setTitle("Plantas deletadas");
+    setDescription("");
+  }, []);
+
   const columns = [
     {
       name: "uuid",
@@ -36,6 +41,15 @@ export const DeletedDevicesModal = ({
       options: {
         display: false,
         viewColumns: false,
+        filter: true,
+      },
+    },
+    {
+      name: "brand",
+      label: "Portal",
+      options: {
+        display: true,
+        viewColumns: true,
         filter: true,
       },
     },

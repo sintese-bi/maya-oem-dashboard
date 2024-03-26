@@ -58,7 +58,11 @@ export const mainItems = [
     icon: <AttachMoney fontSize="small" />,
     action: "module-fatura",
   },
-
+  {
+    label: "Plantas deletadas",
+    icon: <SolarPower fontSize="small" />,
+    action: "deletedPlants",
+  },
   {
     label: "Módulo de O&M",
     icon: <SolarPower fontSize="small" />,

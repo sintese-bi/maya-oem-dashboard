@@ -263,23 +263,32 @@ export const GenerationBI = ({
             )}
           </Grid>
               </Box>*/}
-        <TextField
+        <Box
           sx={{
-            width: 200,
-            backgroundColor: "transparent",
-            ml: 1,
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            px: 4,
           }}
-          label="Filtrar período do gráfico por"
-          select
-          defaultValue="days"
-          variant="standard"
-          onChange={(e) => setOptionFilter(e.target.value)}
         >
-          <MenuItem value="days">Dias</MenuItem>
-          <MenuItem value="weeks">Semanas</MenuItem>
-          <MenuItem value="biweek">Quinzena</MenuItem>
-          <MenuItem value="months">Mês</MenuItem>
-        </TextField>
+          <TextField
+            sx={{
+              width: 200,
+              backgroundColor: "transparent",
+              ml: 1,
+            }}
+            label="Filtrar período do gráfico por"
+            select
+            defaultValue="days"
+            variant="standard"
+            onChange={(e) => setOptionFilter(e.target.value)}
+          >
+            <MenuItem value="days">Dias</MenuItem>
+            <MenuItem value="weeks">Semanas</MenuItem>
+            <MenuItem value="biweek">Quinzena</MenuItem>
+            <MenuItem value="months">Mês</MenuItem>
+          </TextField>
+        </Box>
         <Grid container>
           <Grid item lg={6} md={6} sm={12}>
             <ChartGenrealdayDevicelasthour

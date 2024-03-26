@@ -119,7 +119,7 @@ export const Portal = ({
   }, []);
 
   const [brand, setBrand] = useState(
-    brandInfoData[0].filter((data) => data.bl_name == "AURORA")[0]
+    brandInfoData[0].filter((data) => data.bl_name == "aurora")[0]
   );
 
   useEffect(() => {

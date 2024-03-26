@@ -187,8 +187,6 @@ export default function Dashboard() {
 
       <AlertsModal devicesGenerationWithAlerts={devicesGenerationWithAlerts} />
 
-      <DeletedDevicesModal />
-
       {/*
       <Grid container spacing={4} sx={{ marginTop: 2 }}>
         <Grid
