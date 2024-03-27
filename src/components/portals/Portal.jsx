@@ -118,9 +118,7 @@ export const Portal = ({
     );
   }, []);
 
-  const [brand, setBrand] = useState(
-    brandInfoData[0].filter((data) => data.bl_name == "aurora")[0]
-  );
+  const [brand, setBrand] = useState(brandInfoData[0][0]);
 
   useEffect(() => {
     if (brandInfoData[1].length != 0) {
@@ -156,7 +154,7 @@ export const Portal = ({
                 label="Brands"
                 {...register("bl_name")}
                 select
-                defaultValue={brand.bl_name}
+                defaultValue={brand?.bl_name}
                 variant="standard"
                 onChange={(event) =>
                   setBrand(
