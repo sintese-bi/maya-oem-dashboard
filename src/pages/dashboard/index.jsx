@@ -155,7 +155,7 @@ export default function Dashboard() {
         />
       </Grid>
 
-      <Grid container spacing={2} sx={{ height: 620 }}>
+      <Grid container spacing={2}>
         {/*
           <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: "100%" }}>
             <ChartGenrealdaylasthour
@@ -186,8 +186,6 @@ export default function Dashboard() {
       <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
         <AlertDevices />
       </Grid>
-
-      <AlertsModal devicesGenerationWithAlerts={devicesGenerationWithAlerts} />
 
       {/*
       <Grid container spacing={4} sx={{ marginTop: 2 }}>

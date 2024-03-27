@@ -1,14 +1,32 @@
 import { Close, ForkRight } from "@mui/icons-material";
-import { Box, Card, Modal } from "@mui/material";
+import { Box, Card, CircularProgress, Modal, Typography } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export const AlertsModal = ({ devicesGenerationWithAlerts }) => {
-  const [open, setOpen] = useState(false);
+export const AlertsModal = ({
+  setAction,
+  setTitle,
+  setDescription,
+  setOpen,
+  welcome,
+}) => {
+  const [data, setData] = useState([]);
+  const { genrealdaylasthourData } = useSelector((state) => state.devices);
+  const { devices } = useSelector((state) => state.users);
 
-  function handleAlertsModal() {
-    setOpen(false);
-  }
+  useEffect(() => {
+    if (genrealdaylasthourData?.length !== 0) {
+      setData(
+        genrealdaylasthourData?.map((data) => {
+          return devices.filter((device) => device.uuid == data)[0];
+        })
+      );
+
+      setTitle("Plantas em alerta");
+      setDescription("");
+    }
+  }, [genrealdaylasthourData]);
 
   const options = {
     filter: true,
@@ -17,41 +35,46 @@ export const AlertsModal = ({ devicesGenerationWithAlerts }) => {
     filterType: "dropdown",
     responsive: "simple",
     selectableRows: "none",
+    download: false,
+    print: false,
+    textLabels: {
+      body: {
+        noMatch: "Nenhum dado encontrado", // this would be whatever you want the message to say
+      },
+    },
+    filter: true,
   };
 
+  const columns = [{}];
+
+  if (genrealdaylasthourData == undefined) {
+    return (
+      <Box
+        sx={{
+          overflow: "auto",
+          height: "70vh",
+          width: "70vw",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Typography sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+          Agurdando plantas em alerta...
+        </Typography>
+        <CircularProgress color="inherit" />
+      </Box>
+    );
+  }
+
   return (
-    <Modal
-      open={open}
-      onClose={handleAlertsModal}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card sx={{ px: 4, pb: 4 }}>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            py: 2,
-          }}
-        >
-          <Close
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              setOpen(false);
-            }}
-          />
-        </Box>
-        <MUIDataTable
-          title={"Devices em alertas"}
-          data={[]}
-          columns={[{}]}
-          options={options}
-        />
-      </Card>
-    </Modal>
+    <MUIDataTable
+      title={"Plantas em alertas"}
+      data={data}
+      columns={columns}
+      options={options}
+    />
   );
 };

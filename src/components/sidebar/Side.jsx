@@ -75,6 +75,7 @@ import { DeletedDevicesModal } from "../deleted-devices-modal/deletedDevicesModa
 import { useSelector } from "react-redux";
 import { deleteDevice } from "src/store/actions/devices";
 import { DashboardContext } from "src/contexts/dashboard-context";
+import { AlertsModal } from "../alerts-modal/alerts-modal";
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -134,6 +135,21 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
+      case "devicesWithAlert":
+        return (
+          <Box>
+            <AlertsModal
+              secondaryAction={secondaryAction}
+              setSecondaryAction={setSecondaryAction}
+              welcome={welcome}
+              setOpen={setOpen}
+              open={open}
+              setTitle={setTitle}
+              setDescription={setDescription}
+              setAction={setAction}
+            />
+          </Box>
+        );
       case "alertFrequency":
         return (
           <Box>
@@ -452,6 +468,7 @@ export const Side = ({ sideState, setSideState }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            p: 1,
           }}
         >
           <Box
@@ -476,11 +493,9 @@ export const Side = ({ sideState, setSideState }) => {
                 py: 2,
               }}
             >
-              <Box sx={{ width: "620px" }}>
-                <Typography variant="h2">{title}</Typography>
-                <Typography variant="body2" sx={{ width: "620px" }}>
-                  {description}
-                </Typography>
+              <Box sx={{ width: "620px" }} id="labelingModals">
+                <Typography variant="h4">{title}</Typography>
+                <Typography variant="body2">{description}</Typography>
               </Box>
               <Cancel
                 fontSize="large"

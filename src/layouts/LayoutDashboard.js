@@ -37,7 +37,7 @@ const LayoutDashboard = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <MobileNavigation sideState={sideState} setSideState={setSideState} />
+      {/*<MobileNavigation sideState={sideState} setSideState={setSideState} /> */}
       <Layout sideState={sideState} setSideState={setSideState} />
     </Box>
   );
