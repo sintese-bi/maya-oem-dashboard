@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { Edit, Cancel } from "@mui/icons-material";
@@ -85,16 +85,12 @@ export const UserInfo = ({
   }, []);
 
   return (
-    <Box sx={{}}>
+    <Box sx={{ display: "flex", gap: 4, flexDirection: "column" }}>
       {editUserData ? (
         <FormProvider {...methods}>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ width: 500, mt: 6, mb: 8 }}
-          >
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+            <Grid container sx={{ width: "100%" }} spacing={1}>
+              <Grid item lg={6} md={6} sm={6} xs={12} spacing={10}>
                 <TextField
                   defaultValue={userData.useName}
                   margin="normal"
@@ -102,6 +98,7 @@ export const UserInfo = ({
                   {...register("useName")}
                   error={!!errors.useName}
                   helperText={errors.useName?.message}
+                  sx={{ width: "100%" }}
                 />
                 <TextField
                   defaultValue={userData.useEmail}
@@ -111,9 +108,10 @@ export const UserInfo = ({
                   error={!!errors.useEmail}
                   helperText={errors.useEmail?.message}
                   type="email"
+                  sx={{ width: "100%" }}
                 />
-              </Box>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              </Grid>
+              <Grid item lg={6} md={6} sm={6} xs={12}>
                 <TextField
                   defaultValue={userData.useCityState}
                   margin="normal"
@@ -121,6 +119,7 @@ export const UserInfo = ({
                   {...register("useAddress")}
                   error={!!errors.useAddress}
                   helperText={errors.useAddress?.message}
+                  sx={{ width: "100%" }}
                 />
                 <TextField
                   defaultValue={userData.useTelephone}
@@ -129,89 +128,93 @@ export const UserInfo = ({
                   {...register("usePhone")}
                   error={!!errors.usePhone}
                   helperText={errors.usePhone?.message}
+                  sx={{ width: "100%" }}
                 />
-              </Box>
-            </Box>
-            <Button type="submit" variant="contained" sx={{ mt: 2, mb: 4 }}>
+              </Grid>
+            </Grid>
+            <Button type="submit" variant="contained">
               Atualizar dados
             </Button>
           </Box>
         </FormProvider>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            mb: 4,
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: 512,
-            mt: 6,
-            mb: 8,
-          }}
-        >
-          <Box
-            sx={{
-              height: 92,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
+        <Grid container rowSpacing={4} columnSpacing={6}>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <Typography variant="h4">{userData.useName}</Typography>
-            <Typography variant="body">{userData.useEmail}</Typography>
-          </Box>
-          <Box
-            sx={{
-              height: 92,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
+            <Box>
+              <Typography variant="h6" fontWeight={"bold"}>
+                Usuário
+              </Typography>
+              <Typography variant="body">{userData.useName}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={"bold"}>
+                Email
+              </Typography>
+              <Typography variant="body">{userData.useEmail}</Typography>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            sm={6}
+            xs={12}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <Typography variant="body" sx={{ mt: 2 }}>
-              {userData.useCityState}
-            </Typography>
-            <Typography variant="body">{userData.useTelephone}</Typography>
-          </Box>
-        </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={"bold"}>
+                Endereço
+              </Typography>
+              <Typography variant="body">{userData.useCityState}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={"bold"}>
+                Telefone
+              </Typography>
+              <Typography variant="body">{userData.useTelephone}</Typography>
+            </Box>
+          </Grid>
+        </Grid>
       )}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => handleCancelUserPlan()}
-        >
-          Cancelar MAYA WATCH PRO
-        </Button>
-        {editUserData ? (
+      <Grid container spacing={1}>
+        <Grid item lg={6} md={6} sm={6} xs={12}>
           <Button
-            variant="contained"
-            sx={{ cursor: "pointer" }}
-            onClick={() => setEditUserData(false)}
+            variant="outlined"
+            color="error"
+            onClick={() => handleCancelUserPlan()}
           >
-            Cancelar
-            <Cancel sx={{ ml: 2 }} />
+            Cancelar MAYA WATCH PRO
           </Button>
-        ) : (
-          <Button
-            variant="contained"
-            sx={{ cursor: "pointer" }}
-            onClick={() => setEditUserData(true)}
-          >
-            Editar dados
-            <Edit sx={{ ml: 2 }} />
-          </Button>
-        )}
-      </Box>
+        </Grid>
+        <Grid item lg={6} md={6} sm={6} xs={12}>
+          {editUserData ? (
+            <Button
+              variant="contained"
+              sx={{ cursor: "pointer" }}
+              onClick={() => setEditUserData(false)}
+            >
+              Cancelar
+              <Cancel sx={{ ml: 2 }} />
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ cursor: "pointer" }}
+              onClick={() => setEditUserData(true)}
+            >
+              Editar dados
+              <Edit sx={{ ml: 2 }} />
+            </Button>
+          )}
+        </Grid>
+      </Grid>
     </Box>
   );
 };

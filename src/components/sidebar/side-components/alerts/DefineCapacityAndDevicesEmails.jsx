@@ -122,9 +122,8 @@ export function DefineCapacityAndDevicesEmails({
 
   useEffect(() => {
     setTitle("Geração estimada das usinas");
-    setDescription(`Por favor, define o email e a potência de cada planta. Precisamos desses dados para o envio de alertas MAYA, e
-    para cálcularmos valores como a geração estimada da sua usina. Seus
-    dados estão seguros conosco! para pesquisar uma planta especifica utilizar a 'lupa' que aparece no campo superior direito da tabela (GERAÇÃO ESTIMADA DAS USINAS).`);
+    setDescription(`Defina o email e a potência das plantas. Esses dados são necessários para os alertas, e
+    para cálcularmos valores como a geração estimada. Para pesquisar uma planta utilize a 'lupa', no campo superior direito da tabela.`);
   }, []);
 
   useEffect(() => {
@@ -214,7 +213,7 @@ export function DefineCapacityAndDevicesEmails({
         sort: true,
         customBodyRender: (name, dataTable) => {
           return (
-            <Box sx={{ width: 294 }}>
+            <Box sx={{ width: 294, height: 40 }}>
               <TextField
                 type="text"
                 defaultValue={dataTable.rowData[2]}
@@ -258,7 +257,7 @@ export function DefineCapacityAndDevicesEmails({
         sort: true,
         customBodyRender: (name, dataTable) => {
           return (
-            <Box sx={{ width: 294 }}>
+            <Box sx={{ width: 294, height: 40 }}>
               <TextField
                 type="text"
                 defaultValue={autoCompleteState(
@@ -306,7 +305,7 @@ export function DefineCapacityAndDevicesEmails({
         sort: true,
         customBodyRender: (name, dataTable) => {
           return (
-            <Box sx={{ width: 72 }}>
+            <Box sx={{ width: 72, height: 40 }}>
               <TextField
                 type="number"
                 defaultValue={dataTable.rowData[4]}
@@ -408,7 +407,7 @@ export function DefineCapacityAndDevicesEmails({
                 }
                 alt="logo"
                 id={`logo-${dataTable.rowData[0]}`}
-                style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+                style={{ width: "80px", height: "40px", borderRadius: "50%" }}
               />
             </Box>
           );
@@ -441,6 +440,7 @@ export function DefineCapacityAndDevicesEmails({
       sx={{
         display: "flex",
         width: "100%",
+        height: "60vh",
         flexDirection: "column",
       }}
     >
@@ -448,8 +448,8 @@ export function DefineCapacityAndDevicesEmails({
         sx={{
           display: "grid",
           width: "100%",
-          height: 282,
           overflow: "auto",
+          maxWidth: "90vw",
           mb: 2,
           borderBottom: "1px",
         }}

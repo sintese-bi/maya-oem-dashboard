@@ -71,7 +71,6 @@ export const PeriodDataUsins = ({
         alignItems: "center",
         width: "100%",
         height: "100%",
-        overflow: "scroll",
         gap: 2,
         py: 2,
         px: 2,
