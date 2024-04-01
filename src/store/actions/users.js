@@ -59,7 +59,7 @@ export const massEmail = (params) => (dispatch) => {
   dispatch({ type: users.MASS_EMAIL_REQUEST });
 
   api
-    .get("/massemail", configRequest())
+    .post("/massemail", configRequest())
     .then((res) => {
       const { data } = res;
       dispatch({ type: users.MASS_EMAIL_SUCCESS });
@@ -370,7 +370,7 @@ export const patchAlertFrequency = (params) => (dispatch) => {
   dispatch({ type: users.PATH_ALERT_FREQUENCY_REQUEST });
 
   api
-    .patch("/alertFrequency", params)
+    .put("/alertFrequency", params)
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {
@@ -424,6 +424,7 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log("executed");
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
         result: { devicesData: data.devicesData, brands: data.brand },

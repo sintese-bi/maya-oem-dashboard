@@ -23,6 +23,7 @@ import {
   FormControlLabel,
   Radio,
   Input,
+  Grid,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { PortalValidationState } from "./PortalValidationState";
@@ -138,16 +139,10 @@ export const Portal = ({
           display: "flex",
           flexDirection: "column",
           justifyContent: "start",
-          width: 680,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-          }}
-        >
-          <Box sx={{ width: "50%" }}>
+        <Grid container sx={{ maxWidth: 800 }}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <TextField
                 sx={{ width: 200, backgroundColor: "transparent", px: 1 }}
@@ -185,6 +180,7 @@ export const Portal = ({
                 {...register("bl_login")}
                 error={!!errors.bl_login}
                 helperText={errors.bl_login?.message}
+                sx={{ lineHeight: { lg: 40, md: 40, sm: 50, xs: 50 } }}
               />
               <TextField
                 margin="normal"
@@ -193,13 +189,14 @@ export const Portal = ({
                 {...register("bl_password")}
                 error={!!errors.bl_password}
                 helperText={errors.bl_password?.message}
+                sx={{ lineHeight: { lg: 40, md: 40, sm: 50, xs: 50 } }}
               />
               <Box
                 sx={{
                   display: "flex",
-
                   flexDirection: "column",
-                  my: 4,
+                  gap: 2,
+                  my: 1,
                 }}
               >
                 <Typography variant="body2">
@@ -251,38 +248,40 @@ export const Portal = ({
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </Grid>
 
           {!validationWarningState ? null : (
-            <Box sx={{ width: "50%", height: 300, overflow: "scroll" }}>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
               <PortalValidationState
                 recentPortals={brandInfoData[1]}
                 setValidationWarningState={setValidationWarningState}
               />
-            </Box>
+            </Grid>
           )}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Box>
-            <Button
-              sx={{
-                width: "162px",
-              }}
-              type="submit"
-              variant="contained"
-            >
+        </Grid>
+        <Grid container spacing={1} sx={{ p: 1 }}>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            sm={12}
+            xs={12}
+            sx={{
+              display: "flex",
+              gap: 1,
+              flexDirection: {
+                lg: "row",
+                md: "row",
+                sm: "column",
+                xs: "column",
+              },
+            }}
+          >
+            <Button type="submit" variant="contained" sx={{ width: "100%" }}>
               Confirmar
             </Button>
             <Button
-              sx={{
-                width: "162px",
-              }}
+              sx={{ width: "100%" }}
               onClick={() => {
                 if (action == "createDevice") {
                   setAction("updateDevice");
@@ -293,18 +292,25 @@ export const Portal = ({
             >
               {action == "createDevice" ? "Atualizar portal?" : "Criar portal?"}
             </Button>
-          </Box>
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Button
-              variant="contained"
-              color="success"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                p: 0,
-              }}
-            >
+          </Grid>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            sm={12}
+            xs={12}
+            sx={{
+              display: "flex",
+              gap: 1,
+              flexDirection: {
+                lg: "row",
+                md: "row",
+                sm: "column",
+                xs: "column",
+              },
+            }}
+          >
+            <Button variant="contained" color="success" sx={{ width: "100%" }}>
               <a
                 href={xlsx}
                 download="portais.xlsx"
@@ -315,13 +321,17 @@ export const Portal = ({
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: "6px 10px 6px 10px",
                 }}
               >
                 Baixar modelo xlsx
               </a>
             </Button>
-            <Button variant="outlined" color="success" component="label">
+            <Button
+              variant="outlined"
+              color="success"
+              component="label"
+              sx={{ width: "100%" }}
+            >
               Upload do arquivo
               <Input
                 type="file"
@@ -336,8 +346,8 @@ export const Portal = ({
                 sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
               />
             </Button>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Box>
     </FormProvider>
   );

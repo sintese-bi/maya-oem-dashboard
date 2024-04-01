@@ -8,8 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DashboardContext } from "src/contexts/dashboard-context";
+import { deviceRecover } from "src/store/actions/devices";
 
 export const DeletedDevicesModal = ({
   setAction,
@@ -18,12 +20,24 @@ export const DeletedDevicesModal = ({
   setOpen,
   welcome,
 }) => {
+  const [data, setData] = useState([]);
   const { deletedDevices } = useSelector((state) => state.users);
+  const { handleGetAllDevicesRequest } = useContext(DashboardContext);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTitle("Plantas deletadas");
     setDescription("");
   }, []);
+
+  useEffect(() => {
+    if (deletedDevices !== undefined) setData(deletedDevices);
+  }, [deletedDevices]);
+
+  function handleDeletedDevice(uuid) {
+    setData(deletedDevices.filter((data) => data.uuid != uuid));
+  }
 
   const columns = [
     {
@@ -69,10 +83,21 @@ export const DeletedDevicesModal = ({
         display: true,
         viewColumns: true,
         filter: true,
-        customBodyRender: () => {
+        customBodyRender: (name, dataTable) => {
           return (
             <Box>
-              <Button variant="outlined" color="success">
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() =>
+                  dispatch(
+                    deviceRecover(
+                      { dev_uuid: dataTable.rowData[0] },
+                      handleDeletedDevice
+                    )
+                  )
+                }
+              >
                 Recuperar planta
               </Button>
             </Box>

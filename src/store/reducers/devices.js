@@ -295,6 +295,20 @@ export default function userReducer(state = initialState, action) {
         bignumbersumValues: [],
       };
 
+    case devices.DEVICE_RECOVER_REQUEST:
+      return {
+        ...state,
+      };
+
+    case devices.DEVICE_RECOVER_SUCCESS:
+      return {
+        ...state,
+      };
+    case devices.DEVICE_RECOVER_FAILURE:
+      return {
+        ...state,
+      };
+
     case devices.GET_GENREALDAYLASTHOUR_REQUEST:
       return {
         ...state,

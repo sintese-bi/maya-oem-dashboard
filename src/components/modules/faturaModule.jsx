@@ -28,7 +28,7 @@ const validateSchema = Yup.object().shape({
   voice_install: Yup.string().required("Campo é obrigatório."),
 });
 
-export const FaturaModulo = ({ setTitle, setDescription }) => {
+export const FaturaModulo = () => {
   const { invoiceValuesData } = useSelector((state) => state.users);
   const [acceptState, setAcceptState] = useState(true);
   const methods = useForm();
@@ -192,11 +192,6 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
     }
   }
 
-  useEffect(() => {
-    setTitle("Módulo de fatura");
-    setDescription("");
-  }, []);
-
   return (
     <FormProvider {...methods}>
       <Box
@@ -206,10 +201,11 @@ export const FaturaModulo = ({ setTitle, setDescription }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "60vh",
+
           gap: 10,
           width: "90vw",
           overflow: "scroll",
+          my: 2,
         }}
       >
         <Box

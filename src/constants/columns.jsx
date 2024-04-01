@@ -164,11 +164,24 @@ export const columnsDevices = [
     },
   },
   {
+    name: "perfomance",
+    label: "Desempenho",
+    options: {
+      filter: true,
+      sort: true,
+      customHeadLabelRender: (data) => {
+        return <p style={{ fontWeight: "bolder" }}>Desempenho (%)</p>;
+      },
+    },
+  },
+  {
     name: "generationRealWeek",
     label: "Produção real semana (KWh)",
     options: {
       filter: true,
       sort: true,
+      display: false,
+      viewColumns: false,
       customHeadLabelRender: (data) => {
         return (
           <p style={{ fontWeight: "bolder" }}>Produção real semana (KWh)</p>
@@ -182,6 +195,8 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      display: false,
+      viewColumns: false,
       customHeadLabelRender: (data) => {
         return (
           <p style={{ fontWeight: "bolder" }}>Produção Estimada semana (KWh)</p>
@@ -192,8 +207,10 @@ export const columnsDevices = [
   {
     name: "generationRealMonth",
     label: "Produção real mês (KWh)",
+    viewColumns: false,
     options: {
       filter: true,
+      display: false,
       sort: true,
       customHeadLabelRender: (data) => {
         return <p style={{ fontWeight: "bolder" }}>Produção real mês (KWh)</p>;
@@ -203,8 +220,10 @@ export const columnsDevices = [
   {
     name: "generationEstimatedMonth",
     label: "Produção Estimada mês (KWh)",
+    viewColumns: false,
     options: {
       filter: true,
+      display: false,
       sort: true,
       customHeadLabelRender: (data) => {
         return (
@@ -330,8 +349,8 @@ export const columnsDevices = [
               data={dataTable.rowData}
               useNameState={dataTable.rowData[3]}
               capacity={dataTable.rowData[5]}
-              address={dataTable.rowData[18]}
-              email={dataTable.rowData[19]}
+              address={dataTable.rowData[19]}
+              email={dataTable.rowData[20]}
               deviceName={dataTable.rowData[4]}
             />
           </Stack>

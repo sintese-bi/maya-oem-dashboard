@@ -116,7 +116,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassEmail() {
-    dispatch(massEmail());
+    dispatch(massEmail({ use_uuid }));
     handleReportCountingRequest();
   }
 
@@ -365,6 +365,7 @@ export const DashboardProvider = ({ children }) => {
         handleBrandInfoRequest,
         handleMassEmail,
         handleAlertsFrequency,
+        handleGetAllDevicesRequest,
       }}
     >
       {children}
