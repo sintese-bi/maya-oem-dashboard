@@ -1,4 +1,4 @@
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, AttachMoney } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { getUserCookie } from "src/services/session";
 
@@ -16,6 +16,13 @@ export function handleRoutes() {
       label: "Clientes",
       to: "/dashboard/users",
       icon: <AccountCircle fontSize="small" />,
+      disabled:
+        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
+    },
+    {
+      label: "Manager",
+      to: "/dashboard/manager",
+      icon: <AttachMoney fontSize="small" />,
       disabled:
         profileLevel === "admin" && useName == "Maya Energy" ? true : false,
     },

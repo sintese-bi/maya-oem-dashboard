@@ -213,12 +213,23 @@ export default function AlertPercentageForm({
                 fontSize: "14px",
                 fontWeight: "bold",
                 mt: 4,
+                flexDirection: {
+                  lg: "row",
+                  md: "row",
+                  sm: "column",
+                  xs: "column",
+                },
               }}
             >
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "end",
+                  justifyContent: {
+                    lg: "end",
+                    md: "end",
+                    sm: "center",
+                    xs: "center",
+                  },
                   alignItems: "center",
                   width: "50%",
                 }}
@@ -228,9 +239,15 @@ export default function AlertPercentageForm({
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "end",
+                  justifyContent: {
+                    lg: "end",
+                    md: "end",
+                    sm: "center",
+                    xs: "center",
+                  },
                   alignItems: "center",
                   width: "50%",
+                  gap: 1,
                 }}
               >
                 <Button

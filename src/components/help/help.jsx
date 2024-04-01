@@ -81,7 +81,20 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
               {errors.text?.message}
             </span>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "start", gap: 2, mt: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              gap: 2,
+              mt: 4,
+              flexDirection: {
+                lg: "row",
+                md: "row",
+                sm: "column",
+                xs: "column",
+              },
+            }}
+          >
             <Button variant="contained" type="submit">
               Enviar dúvida
             </Button>

@@ -298,7 +298,7 @@ export default function userReducer(state = initialState, action) {
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
           uuid: device.dev_uuid,
-          address: device.dev_address,
+          address: device.dev_address || "",
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
@@ -396,6 +396,10 @@ export default function userReducer(state = initialState, action) {
           generationEstimatedDay: Number(device.gen_estimated_day),
           generationEstimatedlWeek: Number(device.weeklySum.gen_estimated),
           generationEstimatedMonth: Number(device.monthlySum.gen_estimated),
+          perfomance: (
+            (Number(device.gen_real_day) / Number(device.gen_estimated_day)) *
+            100
+          ).toFixed(),
           alert: device.alerts.length,
           staName: device?.status ? device?.status.sta_name : "Não informado!",
           staCode: device?.status ? device?.status.sta_code : "Não informado!",

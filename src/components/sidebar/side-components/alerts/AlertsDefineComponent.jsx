@@ -30,6 +30,7 @@ import {
 import { useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 import toast from "react-hot-toast";
+import { width } from "@mui/system";
 
 const validateSchema = Yup.object().shape({
   percentage: Yup.number()
@@ -87,7 +88,7 @@ export function AlertsDefineComponent({
   });
 
   async function onSubmit(values) {
-    //dispatch(patchAlertFrequency({ values, useUuid }));
+    dispatch(patchAlertFrequency({ values, useUuid }));
     toast.success("Função temporariamente desativada!");
     setSecondaryAction("DefineAlertEmail");
   }
@@ -116,7 +117,7 @@ export function AlertsDefineComponent({
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Card
+      <Box
         sx={{
           width: "100%",
           display: "flex",
@@ -135,7 +136,7 @@ export function AlertsDefineComponent({
         >
           <List
             sx={{
-              width: "72%",
+              width: "100%",
               bgcolor: "background.paper",
             }}
           >
@@ -154,7 +155,7 @@ export function AlertsDefineComponent({
               </ListItemAvatar>
               <ToolTipNoAccess useTypeMember={useTypeMember}>
                 <TextField
-                  sx={{ width: 200 }}
+                  sx={{ width: "100%" }}
                   label="Limite percentual mínimo (%)"
                   type="number"
                   {...register("percentage")}
@@ -182,14 +183,13 @@ export function AlertsDefineComponent({
                 </Tooltip>
               </ListItemAvatar>
               <Controller
-                sx={{ width: 200 }}
                 control={control}
                 name="frequencyName"
                 render={({ field }) => (
                   <ToolTipNoAccess useTypeMember={useTypeMember}>
                     <TextField
+                      sx={{ width: "100%" }}
                       {...field}
-                      sx={{ width: 200 }}
                       label="Frequência de alertas"
                       error={!!errors.frequencyName}
                       helperText={errors.frequencyName?.message}
@@ -246,7 +246,11 @@ export function AlertsDefineComponent({
               startIcon={<SaveAs fontSize="small" />}
               type="submit"
               variant="contained"
-              sx={{ color: "primary", variant: "contained" }}
+              sx={{
+                color: "primary",
+                variant: "contained",
+                width: { lg: 200, md: 200, sm: "100%", xs: "100%" },
+              }}
             >
               Salvar
             </Button>
@@ -254,7 +258,7 @@ export function AlertsDefineComponent({
             <CircularProgress color="success" />
           )}
         </Grid>
-      </Card>
+      </Box>
     </Box>
   );
 }

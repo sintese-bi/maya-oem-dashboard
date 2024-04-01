@@ -22,6 +22,7 @@ import {
   AdminCalculator,
   ClientCalculator,
 } from "./components/calculator";
+import { FaturaModulo } from "./components/modules/faturaModule";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
 
           <Route element={<PrivateAdminRoute />}>
             <Route path="alertDevices" element={<AlertDevices />} />
+            <Route path="manager" element={<FaturaModulo />} />
             <Route path="investment/:brand" element={<Investment />} />
             <Route path="calculator" element={<HomePage />} />
             <Route path="calculator/client" element={<ClientCalculator />} />

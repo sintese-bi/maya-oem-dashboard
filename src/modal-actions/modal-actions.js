@@ -48,16 +48,16 @@ export const mainItems = [
   //  icon: <SettingsApplications fontSize="small" />,
   //  action: "configPortals",
   //},
-  {
-    label: "Deletar plantas",
-    icon: <Delete fontSize="small" />,
-    action: "deletePlants",
-  },
-  {
-    label: "Módulo de fatura",
-    icon: <AttachMoney fontSize="small" />,
-    action: "module-fatura",
-  },
+  //{
+  //  label: "Deletar plantas",
+  //  icon: <Delete fontSize="small" />,
+  //  action: "deletePlants",
+  //},
+  //{
+  //  label: "Módulo de fatura",
+  //  icon: <AttachMoney fontSize="small" />,
+  //  action: "module-fatura",
+  //},
   {
     label: "Plantas deletadas",
     icon: <SolarPower fontSize="small" />,

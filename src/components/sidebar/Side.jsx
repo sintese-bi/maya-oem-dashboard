@@ -6,6 +6,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
+import MayaLogo from "../../../src/assets/img/logo/maya-energy-logo.png";
 import "./side.css";
 import {
   getUserCookie,
@@ -276,6 +277,7 @@ export const Side = ({ sideState, setSideState }) => {
             />
           </Box>
         );
+        break;
       case "help":
         return (
           <Box sx={{ p: 4 }}>
@@ -475,10 +477,10 @@ export const Side = ({ sideState, setSideState }) => {
             sx={{
               bgcolor: "background.paper",
               pb: 6,
-              px: 4,
+              px: { lg: 4, md: 4, sm: 1, xs: 1 },
               display: "flex",
               flexDirection: "column",
-              gap: 6,
+              gap: 2,
               alignItems: "center",
               borderRadius: 1,
               border: 0,
@@ -490,11 +492,23 @@ export const Side = ({ sideState, setSideState }) => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
-                py: 2,
+                py: 1,
               }}
             >
               <Box sx={{ width: "620px" }} id="labelingModals">
-                <Typography variant="h4">{title}</Typography>
+                {action == "assignPlan" ? (
+                  <img
+                    src={MayaLogo}
+                    style={{
+                      height: "80px",
+                      width: "130px",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                    }}
+                  />
+                ) : (
+                  <Typography variant="h4">{title}</Typography>
+                )}
                 <Typography variant="body2">{description}</Typography>
               </Box>
               <Cancel
@@ -508,7 +522,7 @@ export const Side = ({ sideState, setSideState }) => {
 
             <Box
               sx={{
-                P: 4,
+                py: 2,
                 width: "100%",
                 height: "100%",
               }}

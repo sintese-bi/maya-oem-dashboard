@@ -90,7 +90,7 @@ export const UserInfo = ({
         <FormProvider {...methods}>
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid container sx={{ width: "100%" }} spacing={1}>
-              <Grid item lg={6} md={6} sm={6} xs={12} spacing={10}>
+              <Grid item lg={6} md={6} sm={6} xs={12}>
                 <TextField
                   defaultValue={userData.useName}
                   margin="normal"

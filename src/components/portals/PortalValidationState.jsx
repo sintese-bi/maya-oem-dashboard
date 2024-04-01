@@ -93,7 +93,15 @@ export const PortalValidationState = ({
   };
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{
+        p: 2,
+        overflow: "auto",
+        display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+        flexDirection: "column",
+        maxHeight: { lg: 360, md: 360, sm: 260, xs: 260 },
+      }}
+    >
       {recentPortals.map((portal, index) => {
         return (
           <Box
