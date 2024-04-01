@@ -59,7 +59,7 @@ export const massEmail = (params) => (dispatch) => {
   dispatch({ type: users.MASS_EMAIL_REQUEST });
 
   api
-    .post("/massemail", configRequest())
+    .post("/massemail", params, configRequest())
     .then((res) => {
       const { data } = res;
       dispatch({ type: users.MASS_EMAIL_SUCCESS });
