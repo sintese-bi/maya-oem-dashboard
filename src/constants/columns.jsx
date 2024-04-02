@@ -114,6 +114,7 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      viewColumns: false,
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -127,9 +128,10 @@ export const columnsDevices = [
         );
       },
       customBodyRender: (name, dataTable) => {
+        console.log(dataTable.rowData);
         return (
           <Stack direction="row" alignItems="center" gap={1}>
-            {Number(dataTable.rowData[13]) == 0 ? (
+            {Number(dataTable.rowData[12]) == 0 ? (
               <CheckBox sx={{ color: "success.light" }} />
             ) : (
               <ReportProblem sx={{ color: "warning.light" }} />

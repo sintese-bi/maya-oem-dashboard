@@ -200,7 +200,8 @@ export const DeviceReport = () => {
               ></Image>
             </View>
           </View>
-          <View
+          {/*
+            <View
             style={{
               display: "flex",
               justifyContent: "center",
@@ -427,6 +428,7 @@ export const DeviceReport = () => {
               </Text>
             </View>
           </View>
+          */}
           <View style={styles.cardsRow}>
             <View style={styles.card}>
               <View>

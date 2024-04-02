@@ -322,7 +322,7 @@ export const ClientReport = () => {
               ></Image>
             </View>
           </View>
-          <View
+          {/*<View
             style={{
               display: "flex",
               flexDirection: "column",
@@ -584,7 +584,7 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
           <View style={styles.cardsRow}>
             <View style={styles.card}>
               <View>
