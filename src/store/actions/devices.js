@@ -55,37 +55,38 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     });
 };
 
-export const deviceRecover = (params, handleDeletedDevice) => (dispatch) => {
-  dispatch({ type: devices.DEVICE_RECOVER_REQUEST });
-  api
-    .put("/devicerecover", params, configRequest())
-    .then((res) => {
-      const { data } = res;
-      console.log(data);
-      toast.success(data.message, {
-        duration: 5000,
-      });
-      handleDeletedDevice(dispatch.dev_uuid);
-      dispatch({
-        type: devices.DEVICE_RECOVER_SUCCESS,
-        result: data,
-      });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      console.log(error);
+export const deviceRecover =
+  (params, handleGetAllDevicesRequest) => (dispatch) => {
+    dispatch({ type: devices.DEVICE_RECOVER_REQUEST });
+    api
+      .put("/devicerecover", params, configRequest())
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        toast.success(data.message, {
+          duration: 5000,
+        });
+        handleGetAllDevicesRequest();
+        dispatch({
+          type: devices.DEVICE_RECOVER_SUCCESS,
+          result: data,
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        console.log(error);
 
-      const message =
-        err && err.data
-          ? err.data.message
-          : "Erro desconhecido - deviceRecover";
+        const message =
+          err && err.data
+            ? err.data.message
+            : "Erro desconhecido - deviceRecover";
 
-      toast.error(`${message} deviceRecover`, {
-        duration: 5000,
+        toast.error(`${message} deviceRecover`, {
+          duration: 5000,
+        });
+        dispatch({ type: devices.DEVICE_RECOVER_FAILURE, message });
       });
-      dispatch({ type: devices.DEVICE_RECOVER_FAILURE, message });
-    });
-};
+  };
 
 export const genrealdaylasthour = (params) => (dispatch) => {
   dispatch({ type: devices.GET_GENREALDAYLASTHOUR_REQUEST });

@@ -6,7 +6,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import MayaLogo from "../../../src/assets/img/logo/maya-energy-logo.png";
+import MayaLogo from "../../../src/assets/img/logo/maya-watch-logo.png";
 import "./side.css";
 import {
   getUserCookie,
@@ -500,8 +500,8 @@ export const Side = ({ sideState, setSideState }) => {
                   <img
                     src={MayaLogo}
                     style={{
-                      height: "80px",
-                      width: "130px",
+                      height: "100px",
+                      width: "200px",
                       marginTop: "10px",
                       marginBottom: "10px",
                     }}

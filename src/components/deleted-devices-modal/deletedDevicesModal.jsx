@@ -35,10 +35,6 @@ export const DeletedDevicesModal = ({
     if (deletedDevices !== undefined) setData(deletedDevices);
   }, [deletedDevices]);
 
-  function handleDeletedDevice(uuid) {
-    setData(deletedDevices.filter((data) => data.uuid != uuid));
-  }
-
   const columns = [
     {
       name: "uuid",
@@ -93,7 +89,7 @@ export const DeletedDevicesModal = ({
                   dispatch(
                     deviceRecover(
                       { dev_uuid: dataTable.rowData[0] },
-                      handleDeletedDevice
+                      handleGetAllDevicesRequest
                     )
                   )
                 }
@@ -149,7 +145,7 @@ export const DeletedDevicesModal = ({
     <Box sx={{ overflow: "auto", height: "70vh", width: "70vw" }}>
       <MUIDataTable
         title={"Devices deletados"}
-        data={deletedDevices}
+        data={data}
         columns={columns}
         options={options}
       />

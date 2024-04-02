@@ -203,11 +203,11 @@ export default function Login() {
                       Esqueceu a senha?
                     </Link>
                   </Grid>
-                  <Grid item>
+                  {/*<Grid item>
                     <Link href="/register" variant="body2">
                       {"Não tem uma conta? Contrate agora!"}
                     </Link>
-                  </Grid>
+                </Grid>*/}
                 </Grid>
               </Box>
             </FormProvider>

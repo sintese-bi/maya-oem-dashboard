@@ -311,7 +311,8 @@ export const AdministratorReport = () => {
               zIndex: 1,
             }}
           >
-            <View
+            {/*
+              <View
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -562,6 +563,7 @@ export const AdministratorReport = () => {
                 </View>
               </View>
             </View>
+            */}
             <View
               style={{
                 display: "flex",

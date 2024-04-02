@@ -382,6 +382,7 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
+      console.log(devicesData);
       const devices = devicesData.map((device, index) => {
         return {
           index: index + 1,
@@ -396,10 +397,7 @@ export default function userReducer(state = initialState, action) {
           generationEstimatedDay: Number(device.gen_estimated_day),
           generationEstimatedlWeek: Number(device.weeklySum.gen_estimated),
           generationEstimatedMonth: Number(device.monthlySum.gen_estimated),
-          perfomance: (
-            (Number(device.gen_real_day) / Number(device.gen_estimated_day)) *
-            100
-          ).toFixed(),
+          perfomance: device.gen_performance.toFixed(),
           alert: device.alerts.length,
           staName: device?.status ? device?.status.sta_name : "Não informado!",
           staCode: device?.status ? device?.status.sta_code : "Não informado!",

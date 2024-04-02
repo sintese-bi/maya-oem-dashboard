@@ -175,7 +175,7 @@ export const MayaWatchPro = ({ setTitle, setDescription }) => {
               view
             </iframe>
             <Button
-              to={`https://buy.stripe.com/7sI5nX7NB0mwaZydR9?prefilled_email=${useEmail}`}
+              to={`https://buy.stripe.com/7sIeYxc3R8T21oYcNz?prefilled_email=${useEmail}`}
               target="_blank"
               component={Link}
               sx={{ mb: 2, width: "90%" }}
