@@ -88,8 +88,15 @@ export function AlertsDefineComponent({
   });
 
   async function onSubmit(values) {
-    dispatch(patchAlertFrequency({ values, useUuid }));
-    toast.success("Função temporariamente desativada!");
+    const { percentage, frequencyName } = values;
+    dispatch(
+      patchAlertFrequency({
+        use_percentage: percentage,
+        use_date:
+          frequencyName == "day" ? "1" : frequencyName == "week" ? "2" : "3",
+        use_uuid: useUuid,
+      })
+    );
     setSecondaryAction("DefineAlertEmail");
   }
 

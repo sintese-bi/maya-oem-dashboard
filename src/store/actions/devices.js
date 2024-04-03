@@ -56,7 +56,7 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
 };
 
 export const deviceRecover =
-  (params, handleGetAllDevicesRequest) => (dispatch) => {
+  (params, handleGetAllDeletedDevicesRequest) => (dispatch) => {
     dispatch({ type: devices.DEVICE_RECOVER_REQUEST });
     api
       .put("/devicerecover", params, configRequest())
@@ -66,7 +66,7 @@ export const deviceRecover =
         toast.success(data.message, {
           duration: 5000,
         });
-        handleGetAllDevicesRequest();
+        handleGetAllDeletedDevicesRequest();
         dispatch({
           type: devices.DEVICE_RECOVER_SUCCESS,
           result: data,

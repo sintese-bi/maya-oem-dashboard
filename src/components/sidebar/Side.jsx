@@ -94,7 +94,7 @@ export const Side = ({ sideState, setSideState }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [action, setAction] = useState(
-    firstTime ? "alertFrequency" : "deletedPlants"
+    firstTime ? "alertFrequency" : "devicesWithAlert"
   );
   const [secondaryAction, setSecondaryAction] = useState(
     "AlertsDefineComponent"

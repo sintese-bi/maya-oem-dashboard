@@ -1,4 +1,4 @@
-import { Box, Button, Card, Modal, Tooltip } from "@mui/material";
+import { Box, Button, Card, Modal, TextField, Tooltip } from "@mui/material";
 import Plants from "../total-month/total-month-components/total-month-devices";
 import { TopUsins } from "../top-usins/topUsins";
 import { useSelector } from "react-redux";
@@ -9,9 +9,16 @@ import { DashboardContext } from "src/contexts/dashboard-context";
 import { set } from "react-hook-form";
 import MUIDataTable from "mui-datatables";
 import { columnsDevices } from "src/constants/columns";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
-  const { handleMassEmail } = useContext(DashboardContext);
+  const [massiveEmailDate, setMasssiveEmailDate] = useState(
+    moment().format("YYYY-MM-DD")
+  );
+  const { handleMassEmail, handlePostUseDateReport } =
+    useContext(DashboardContext);
   const [open, setOpen] = useState(false);
   const { allDevices, massEmailFinished } = useSelector((state) => state.users);
 
@@ -21,6 +28,11 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
   }, [massEmailFinished]);
+
+  useEffect(() => {
+    if (massiveEmailDate != moment().format("YYYY-MM-DD"))
+      handlePostUseDateReport(massiveEmailDate);
+  }, [massiveEmailDate]);
 
   const options = {
     sortOrder: {
@@ -89,6 +101,24 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           >
             {"Envio massivo de relatórios"}
           </Button>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Tooltip title="Essa funcionalidade agenda uma data de sua escolha para o envio massivo de relatórios acontecer.">
+            <Info fontSize="small" />
+          </Tooltip>
+
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DatePicker
+              label="Agendar envio massivo"
+              value={massiveEmailDate}
+              onChange={(massiveEmailDate) =>
+                setMasssiveEmailDate(
+                  moment(massiveEmailDate).format("YYYY-MM-DD")
+                )
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Box>
       </Box>
       <Plants
