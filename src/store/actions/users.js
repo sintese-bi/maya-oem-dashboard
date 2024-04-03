@@ -340,6 +340,29 @@ export const getUsers = () => (dispatch) => {
     });
 };
 
+export const postUseDateReport = (params) => (dispatch) => {
+  api
+    .post("/emailscheduler", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(`${data.message}`, {
+        duration: 5000,
+      });
+      dispatch({
+        type: users.POST_USE_DATE_REPORT_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
 // LISTAGEM DE USUARIOS E SUAS BRANDS
 export const getUserBrands = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_USER_BRANDS_REQUEST });
@@ -365,12 +388,37 @@ export const getUserBrands = (uuid) => (dispatch) => {
     });
 };
 
+export const getAllDeletedDevices = (use_uuid) => (dispatch) => {
+  dispatch({ type: users.GET_ALL_DELETED_DEVICES_REQUEST });
+
+  api
+    .get(`/dashboard/${use_uuid}/no`, configRequest())
+    .then((res) => {
+      const { data } = res;
+
+      dispatch({
+        result: data.devicesData,
+        type: users.GET_ALL_DELETED_DEVICES_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.GET_ALL_DELETED_DEVICES_FAILURE, message });
+    });
+};
+
 // ATUALIZAR PROJEÇÃO E FEREQUENCIA DE ALERTA DE GERAÇÃO
 export const patchAlertFrequency = (params) => (dispatch) => {
   dispatch({ type: users.PATH_ALERT_FREQUENCY_REQUEST });
 
   api
-    .put("/alertFrequency", params)
+    .put("/alertFrequency", params, configRequest())
     .then((res) => {
       const { data } = res;
       toast.success(data.message, {

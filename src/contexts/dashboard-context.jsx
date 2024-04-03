@@ -15,12 +15,14 @@ import {
 import {
   alertFrequency,
   brandInfo,
+  getAllDeletedDevices,
   getAllDevices,
   getAllDevicesFromUser,
   getCapacities,
   getDashboard,
   invoiceValues,
   massEmail,
+  postUseDateReport,
   reportCounting,
 } from "src/store/actions/users";
 
@@ -99,6 +101,10 @@ export const DashboardProvider = ({ children }) => {
     dispatch(getAllDevices(use_uuid));
   }
 
+  function handleGetAllDeletedDevicesRequest() {
+    dispatch(getAllDeletedDevices(use_uuid));
+  }
+
   function handleGetAllDevicesFromUserRequest() {
     dispatch(getAllDevicesFromUser({ use_uuid }));
   }
@@ -167,6 +173,10 @@ export const DashboardProvider = ({ children }) => {
     dispatch(alertFrequency(use_uuid));
   }
 
+  function handlePostUseDateReport(use_report_date) {
+    dispatch(postUseDateReport({ use_uuid, use_report_date }));
+  }
+
   function handleUsinsByStateData() {
     let devicesWithAddress = usersAPIData.allDevices.filter(
       (data) => data.address !== null && data.address.includes("-")
@@ -207,6 +217,7 @@ export const DashboardProvider = ({ children }) => {
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
     handleGetAllDevicesRequest();
+    handleGetAllDeletedDevicesRequest();
     handleGetAllDevicesFromUserRequest();
     handleBrandInfoRequest();
     handleReportCountingRequest();
@@ -366,6 +377,8 @@ export const DashboardProvider = ({ children }) => {
         handleMassEmail,
         handleAlertsFrequency,
         handleGetAllDevicesRequest,
+        handleGetAllDeletedDevicesRequest,
+        handlePostUseDateReport,
       }}
     >
       {children}

@@ -316,9 +316,14 @@ export default function userReducer(state = initialState, action) {
       };
 
     case devices.GET_GENREALDAYLASTHOUR_SUCCESS:
+      const devicesWithAlerts = result.map((data) => {
+        return {
+          uuid: data,
+        };
+      });
       return {
         ...state,
-        genrealdaylasthourData: result,
+        genrealdaylasthourData: devicesWithAlerts,
       };
 
     case devices.GET_GENREALDAYLASTHOUR_FAILURE:

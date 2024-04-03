@@ -19,7 +19,7 @@ export const AlertsModal = ({
     if (genrealdaylasthourData?.length !== 0) {
       setData(
         genrealdaylasthourData?.map((data) => {
-          return devices.filter((device) => device.uuid == data)[0];
+          return devices.filter((device) => device.uuid == data.uuid)[0];
         })
       );
 
@@ -45,7 +45,32 @@ export const AlertsModal = ({
     filter: true,
   };
 
-  const columns = [{}];
+  const columns = [
+    {
+      name: "uuid",
+      label: "ID do Dispositivos/usuário",
+      options: {
+        display: false,
+        filter: true,
+      },
+    },
+    {
+      name: "blUuid",
+      label: "Brand id",
+      options: {
+        display: false,
+        filter: true,
+      },
+    },
+    {
+      name: "name",
+      label: "Planta",
+      options: {
+        display: true,
+        filter: true,
+      },
+    },
+  ];
 
   if (genrealdaylasthourData == undefined) {
     return (
@@ -70,11 +95,13 @@ export const AlertsModal = ({
   }
 
   return (
-    <MUIDataTable
-      title={"Plantas em alertas"}
-      data={data}
-      columns={columns}
-      options={options}
-    />
+    <Box sx={{ overflow: "auto", height: "70vh", width: "70vw" }}>
+      <MUIDataTable
+        title={"Plantas em alertas"}
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    </Box>
   );
 };

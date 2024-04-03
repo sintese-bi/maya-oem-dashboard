@@ -319,15 +319,10 @@ export default function userReducer(state = initialState, action) {
         return deviceItem;
       });
 
-      let deletedDevices = allDevices.filter(
-        (device) => device.deleted == true
-      );
-
       return {
         ...state,
         isAllDevicesDataLoading: false,
         allDevices,
-        deletedDevices,
       };
 
     case users.GET_ALL_DEVICES_FAILURE:
@@ -445,6 +440,36 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isDashboardDataLoading: false,
         devices: [],
+      };
+
+    case users.GET_ALL_DELETED_DEVICES_REQUEST:
+      return {
+        ...state,
+        deletedDevices: [],
+      };
+
+    case users.POST_USE_DATE_REPORT_SUCCESS:
+      return { ...state };
+
+    case users.GET_ALL_DELETED_DEVICES_SUCCESS:
+      console.log(result);
+      const deletedDevicesData = result.map((data) => {
+        return {
+          uuid: data.dev_uuid,
+          blUuid: data.brand_login.bl_uuid,
+          brand: data.brand_login.bl_name,
+          name: data.dev_name,
+        };
+      });
+      return {
+        ...state,
+        deletedDevices: deletedDevicesData,
+      };
+
+    case users.GET_ALL_DELETED_DEVICES_FAILURE:
+      return {
+        ...state,
+        deletedDevices: undefined,
       };
 
     case users.GRAPH_REQUEST:

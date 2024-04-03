@@ -22,7 +22,7 @@ export const DeletedDevicesModal = ({
 }) => {
   const [data, setData] = useState([]);
   const { deletedDevices } = useSelector((state) => state.users);
-  const { handleGetAllDevicesRequest } = useContext(DashboardContext);
+  const { handleGetAllDeletedDevicesRequest } = useContext(DashboardContext);
 
   const dispatch = useDispatch();
 
@@ -89,7 +89,7 @@ export const DeletedDevicesModal = ({
                   dispatch(
                     deviceRecover(
                       { dev_uuid: dataTable.rowData[0] },
-                      handleGetAllDevicesRequest
+                      handleGetAllDeletedDevicesRequest
                     )
                   )
                 }
