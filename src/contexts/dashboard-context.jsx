@@ -9,6 +9,7 @@ import {
 import { getUserCookie } from "src/services/session";
 import {
   bigNumberSum,
+  createDevice,
   genrealdayDevicelasthour,
   genrealdaylasthour,
 } from "src/store/actions/devices";
@@ -24,6 +25,7 @@ import {
   massEmail,
   postUseDateReport,
   reportCounting,
+  updateBrands,
 } from "src/store/actions/users";
 
 export const DashboardContext = createContext({});
@@ -171,6 +173,18 @@ export const DashboardProvider = ({ children }) => {
 
   function handleAlertsFrequency() {
     dispatch(alertFrequency(use_uuid));
+  }
+
+  function handleCreateDevice(params) {
+    dispatch(
+      createDevice(Object.assign(params, { use_uuid }), handleBrandInfoRequest)
+    );
+  }
+
+  function handleUpdateDevice(params) {
+    dispatch(
+      updateBrands(Object.assign(params, { use_uuid }), handleBrandInfoRequest)
+    );
   }
 
   function handlePostUseDateReport(use_report_date) {
@@ -379,6 +393,8 @@ export const DashboardProvider = ({ children }) => {
         handleGetAllDevicesRequest,
         handleGetAllDeletedDevicesRequest,
         handlePostUseDateReport,
+        handleCreateDevice,
+        handleUpdateDevice,
       }}
     >
       {children}

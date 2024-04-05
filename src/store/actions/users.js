@@ -448,6 +448,7 @@ export const alertFrequency = (uuid) => (dispatch) => {
     .get(`/alertFrequency/${uuid}`)
     .then((res) => {
       const { data } = res;
+      console.log(data);
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
         result: data,

@@ -307,6 +307,8 @@ export const Reports = ({ setTitle, setDescription }) => {
       options: {
         filter: true,
         sort: true,
+        viewColumns: false,
+        display: false,
         customHeadLabelRender: () => {
           return (
             <Box sx={{ display: "flex", alignItems: "center" }}>

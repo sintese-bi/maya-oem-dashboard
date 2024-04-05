@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { SaveAs } from "@mui/icons-material";
 import { getUserCookie } from "src/services/session";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { portalemailLogins } from "src/store/actions/users";
 import { useEffect } from "react";
 
@@ -36,6 +36,8 @@ export function DefineAlertEmail({
     resolver: yupResolver(validateSchema),
   });
 
+  const { useAlertEmail } = useSelector((state) => state.users);
+
   async function onSubmit(values) {
     const { email } = values;
 
@@ -60,6 +62,7 @@ export function DefineAlertEmail({
       <TextField
         {...register("email")}
         sx={{ width: "100%" }}
+        defaultValue={useAlertEmail}
         margin="normal"
         label="Email"
         type="email"
