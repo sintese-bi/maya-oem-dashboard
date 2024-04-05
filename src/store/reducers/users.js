@@ -267,6 +267,7 @@ export default function userReducer(state = initialState, action) {
         isLoadingAlertFrequency: false,
         percentage: result?.use_percentage,
         frequencyName: result?.use_frequency_name,
+        useAlertEmail: result?.use_alert_email,
       };
 
     case users.GET_ALERT_FREQUENCY_FAILURE:

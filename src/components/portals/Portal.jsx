@@ -43,8 +43,12 @@ export const Portal = ({
   welcome,
 }) => {
   const { brandInfoData } = useSelector((state) => state.users);
-  const { handleBrandInfoRequest, handleMassEmail } =
-    useContext(DashboardContext);
+  const {
+    handleBrandInfoRequest,
+    handleMassEmail,
+    handleCreateDevice,
+    handleUpdateDevice,
+  } = useContext(DashboardContext);
   const [validationWarningState, setValidationWarningState] = useState(false);
 
   const [brandData, setBrandData] = useState([]);
@@ -70,36 +74,15 @@ export const Portal = ({
 
     try {
       if (action == "createDevice") {
-        dispatch(
-          createDevice(
-            {
-              bl_login,
-              bl_password,
-              bl_name,
-              use_uuid: useUuid,
-
-              bl_quant:
-                portalHasMoreThanOneUsin == "true"
-                  ? parseFloat("1")
-                  : parseFloat("2"),
-            },
-            handleBrandInfoRequest
-          )
-        );
+        handleCreateDevice({
+          ...values,
+          bl_quant: portalHasMoreThanOneUsin == "true" ? 1 : 2,
+        });
       } else {
-        dispatch(
-          updateBrands(
-            {
-              bl_login,
-              bl_password,
-              bl_name,
-              use_uuid: useUuid,
-
-              bl_quant: portalHasMoreThanOneUsin == "true" ? 1 : 2,
-            },
-            handleBrandInfoRequest
-          )
-        );
+        handleUpdateDevice({
+          ...values,
+          bl_quant: portalHasMoreThanOneUsin == "true" ? 1 : 2,
+        });
       }
 
       if (welcome) setSecondaryAction("DefineCapacityAndDevicesEmails");

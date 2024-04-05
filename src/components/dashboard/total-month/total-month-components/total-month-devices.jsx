@@ -260,6 +260,75 @@ export default function Plants(props) {
     setOpen(!open);
   }
 
+  function MuiDataTableTitle() {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          gap: 5,
+        }}
+      >
+        <Typography variant="h5">Listagem de usinas</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: "aliceblue",
+              height: 15,
+              width: 15,
+              border: "1px solid rgba(0,0,0,0.1)",
+            }}
+          ></Box>
+          <Typography>Desempenho acima de 100%</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: "rgba(255, 105, 97, 0.2)",
+              height: 15,
+              width: 15,
+              border: "1px solid rgba(0,0,0,0.1)",
+            }}
+          ></Box>
+          <Typography>Desempenho entre 1-100%</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: "rgba(152, 251, 152, 0.2)",
+              height: 15,
+              width: 15,
+              border: "1px solid rgba(0,0,0,0.1)",
+            }}
+          ></Box>
+          <Typography>Desempenho 0%</Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   if (isLoading) {
     return (
       <Backdrop
@@ -284,7 +353,7 @@ export default function Plants(props) {
       <Grid container spacing={3} sx={{ width: "100%" }} ref={devicesTableRef}>
         <Grid item xs={12} ref={devicesRef}>
           <MUIDataTable
-            title={title}
+            title={<MuiDataTableTitle />}
             data={data}
             columns={columns}
             options={options}
