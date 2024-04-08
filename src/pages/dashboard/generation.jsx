@@ -210,7 +210,9 @@ const Generation = () => {
             setOptionFilter={setOptionFilter}
             graphRef={graphRef}
             startDate={startDate}
+            setStartDate={setStartDate}
             endDate={endDate}
+            setEndDate={setEndDate}
             optionFilter={optionFilter}
             generation={generation}
             isLoading={isLoadingGeneration}

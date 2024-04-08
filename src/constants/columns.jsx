@@ -128,7 +128,6 @@ export const columnsDevices = [
         );
       },
       customBodyRender: (name, dataTable) => {
-        console.log(dataTable.rowData);
         return (
           <Stack direction="row" alignItems="center" gap={1}>
             {Number(dataTable.rowData[12]) == 0 ? (

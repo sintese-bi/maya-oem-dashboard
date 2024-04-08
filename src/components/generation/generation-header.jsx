@@ -76,12 +76,14 @@ export const GenerationHeader = ({
         gap: 2,
       }}
     >
+      {/* 
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
         }}
       >
+        
         <FormControl sx={{ mr: 1, width: 200 }}>
           <InputLabel>Lista de Usuários</InputLabel>
           <NativeSelect
@@ -99,7 +101,7 @@ export const GenerationHeader = ({
               ))}
           </NativeSelect>
         </FormControl>
-
+        
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
             label="Data Inicial"
@@ -121,6 +123,7 @@ export const GenerationHeader = ({
           />
         </LocalizationProvider>
       </Box>
+      */}
       <ToolTipNoAccess useTypeMember={useTypeMember}>
         <Box
           sx={{

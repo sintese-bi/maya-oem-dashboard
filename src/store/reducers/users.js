@@ -50,6 +50,7 @@ const initialState = {
   massEmailFinished: true,
   invoiceValuesData: [],
   deletedDevices: undefined,
+  updatingEmailAndCapacity: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -378,7 +379,6 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_DASHBOARD_SUCCESS:
-      console.log(devicesData);
       const devices = devicesData.map((device, index) => {
         return {
           index: index + 1,
@@ -453,7 +453,6 @@ export default function userReducer(state = initialState, action) {
       return { ...state };
 
     case users.GET_ALL_DELETED_DEVICES_SUCCESS:
-      console.log(result);
       const deletedDevicesData = result.map((data) => {
         return {
           uuid: data.dev_uuid,
@@ -671,7 +670,19 @@ export default function userReducer(state = initialState, action) {
     case users.INVOICE_USER_FAILURE:
       return { ...state };
 
-    case users.UPDATE_EMAIL_CAPACITY_DEVICE:
+    case users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST:
+      return {
+        ...state,
+        updatingEmailAndCapacity: true,
+      };
+
+    case users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS:
+      return {
+        ...state,
+        updatingEmailAndCapacity: false,
+      };
+
+    case users.UPDATE_EMAIL_CAPACITY_DEVICE_FAILURE:
       return {
         ...state,
       };
