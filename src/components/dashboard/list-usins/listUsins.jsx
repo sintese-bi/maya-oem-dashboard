@@ -46,7 +46,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     responsive: "simple",
     selectableRows: "none",
     setRowProps: (row) => {
-      console.log(row);
       if (row[7] < row[8]) {
         return {
           style: { background: "rgba(152, 251, 152, 0.2)" },

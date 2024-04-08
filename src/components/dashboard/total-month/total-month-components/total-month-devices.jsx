@@ -70,7 +70,6 @@ export default function Plants(props) {
     responsive: "simple",
     selectableRows: "none",
     setRowProps: (row) => {
-      console.log(row);
       if (row[7] < row[8] && row[7] != 0) {
         return {
           style: { background: "rgba(152, 251, 152, 0.2)" },

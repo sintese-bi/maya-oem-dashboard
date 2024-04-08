@@ -3,6 +3,7 @@ import { Box, Card, CircularProgress, Modal, Typography } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { columnsDevices } from "src/constants/columns";
 
 export const AlertsModal = ({
   setAction,
@@ -45,32 +46,7 @@ export const AlertsModal = ({
     filter: true,
   };
 
-  const columns = [
-    {
-      name: "uuid",
-      label: "ID do Dispositivos/usuário",
-      options: {
-        display: false,
-        filter: true,
-      },
-    },
-    {
-      name: "blUuid",
-      label: "Brand id",
-      options: {
-        display: false,
-        filter: true,
-      },
-    },
-    {
-      name: "name",
-      label: "Planta",
-      options: {
-        display: true,
-        filter: true,
-      },
-    },
-  ];
+  const columns = columnsDevices;
 
   if (genrealdaylasthourData == undefined) {
     return (

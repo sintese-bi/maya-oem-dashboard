@@ -3,6 +3,9 @@ import { BigNumber } from "../shared/BigNumber";
 import { LoadingSkeletonBigNumbers } from "../Loading";
 import { numbers } from "src/helpers/utils";
 import { Box, Grid, Typography, MenuItem, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import {
   ChartGenrealdayDevicelasthour,
   ChartsLinear,
@@ -19,7 +22,9 @@ import moment from "moment";
 export const GenerationBI = ({
   genrealdayDeviceLasthourData,
   startDate,
+  setStartDate,
   endDate,
+  setEndDate,
   optionFilter,
   generation,
   isLoading,
@@ -269,6 +274,7 @@ export const GenerationBI = ({
             display: "flex",
             justifyContent: "flex-end",
             px: 4,
+            gap: 2,
           }}
         >
           <TextField
@@ -288,6 +294,26 @@ export const GenerationBI = ({
             <MenuItem value="biweek">Quinzena</MenuItem>
             <MenuItem value="months">Mês</MenuItem>
           </TextField>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DatePicker
+              label="Data Inicial"
+              value={startDate}
+              onChange={(startDate) =>
+                setStartDate(
+                  startDate ? moment(startDate).format("YYYY-MM-DD") : ""
+                )
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <DatePicker
+              label="Data Final"
+              value={endDate}
+              onChange={(endDate) =>
+                setEndDate(endDate ? moment(endDate).format("YYYY-MM-DD") : "")
+              }
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Box>
         <Grid container>
           {/* 

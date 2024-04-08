@@ -448,7 +448,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
     .get(`/alertFrequency/${uuid}`)
     .then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
         result: data,
@@ -473,7 +472,6 @@ export const getAllDevices = (uuid, component) => (dispatch) => {
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log("executed");
       dispatch({
         type: users.GET_ALL_DEVICES_SUCCESS,
         result: { devicesData: data.devicesData, brands: data.brand },
@@ -586,25 +584,24 @@ export const updateUser = (params) => (dispatch) => {
 };
 
 export const updateEmailAndCapacity = (params) => (dispatch) => {
+  dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
   api
     .post("/updateplants", params, configRequest())
     .then((res) => {
       const { data } = res;
-      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE });
+      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS });
       toast.success(data.message, {
         duration: 3000,
       });
     })
     .catch((error) => {
       const { response: err } = error;
-      console.log(error);
-
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 
       toast.error(message, {
         duration: 5000,
       });
-      dispatch({ type: users.POST_REGISTER_FAILURE, message });
+      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_FAILURE, message });
     });
 };
 

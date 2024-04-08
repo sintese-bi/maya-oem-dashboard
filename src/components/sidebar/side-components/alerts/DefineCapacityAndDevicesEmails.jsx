@@ -32,6 +32,7 @@ export function DefineCapacityAndDevicesEmails({
   setSecondaryAction,
 }) {
   const { usersAPIData } = useContext(DashboardContext);
+  const { updatingEmailAndCapacity } = useSelector((state) => state.users);
   const [deviceChanged, setDeviceChanged] = useState([]);
   let devices = [];
   var scrolled = false;
@@ -150,8 +151,11 @@ export function DefineCapacityAndDevicesEmails({
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
     dispatch(updateEmailAndCapacity({ arrayplants }));
-    setOpen(false);
   }
+
+  useEffect(() => {
+    console.log(updatingEmailAndCapacity);
+  }, [updatingEmailAndCapacity]);
 
   useEffect(() => {
     allDevicesFromUserRef.current = usersAPIData.allDevicesFromUser;
@@ -428,6 +432,22 @@ export function DefineCapacityAndDevicesEmails({
       >
         <CircularProgress color="success" size={80} />
         <Typography>Carregando dados</Typography>
+      </Box>
+    );
+  }
+
+  if (updatingEmailAndCapacity) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress color="success" size={80} />
+        <Typography>Alteração em andamento</Typography>
       </Box>
     );
   }
