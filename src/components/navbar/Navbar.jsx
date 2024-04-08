@@ -4,9 +4,11 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
 // COMPONENTS
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography, Input } from "@mui/material";
 // import { DashboardSidebar } from "./Sidebar";
 import { NavItem } from "./NavItem";
+
+import Maya from "src/assets/img/logo/maya-watch-logo.png";
 
 // ASSETS
 import { theme } from "src/theme";
@@ -31,6 +33,8 @@ import {
 } from "src/redirection-actions/redirection-actions";
 
 export const DashboardNavbar = ({ sideState, setSideState }) => {
+  const user_logo = Maya;
+
   // PROPS DE CONTROLLER
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,7 +70,34 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
     if (location.pathname === "/dashboard") {
       return (
         <>
-          <AccountCircle fontSize="small" /> {name}
+          <Button component="label" sx={{ width: 110, height: 40 }}>
+            <img
+              src={user_logo}
+              alt=""
+              srcset=""
+              id="user_logo"
+              style={{ width: 110, height: 40 }}
+            />
+            <Input
+              type="file"
+              onChange={(e) => {
+                if (e.target.files.length != 0) {
+                  var reader = new FileReader();
+                  reader.addEventListener("loadend", () => {
+                    document.getElementById("user_logo").src = reader.result;
+                    //localStorage.setItem(
+                    //  "user_logo",
+                    //  JSON.stringify(reader.result)
+                    //);
+                  });
+                  reader.readAsDataURL(e.target.files[0]);
+                }
+              }}
+              sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}
+            />
+          </Button>
+
+          {/**<AccountCircle fontSize="small" /> {name} */}
         </>
       );
     } else if (brand) {

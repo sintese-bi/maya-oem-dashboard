@@ -29,6 +29,7 @@ export const MyUsins = ({
   unactived,
   online,
   offline,
+  capacityTotal,
   alerts,
   type,
   usinsByState,
@@ -37,6 +38,7 @@ export const MyUsins = ({
   treesSavedTotal,
 }) => {
   const { reportsCounting } = useSelector((state) => state.users);
+  const { genrealdaylasthourData } = useSelector((state) => state.devices);
 
   return (
     <Grid container columns={{ xs: 12, sm: 12, md: 12, lg: 12 }} spacing={2}>
@@ -205,6 +207,46 @@ export const MyUsins = ({
           title="Economia do mês"
           btn={true}
           value={numbers(monthEconomyTotal, "R$")}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <AttachMoney />
+            </Avatar>
+          }
+        />
+      </Grid>
+      <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={7}
+          title="Potência"
+          btn={true}
+          value={numbers(capacityTotal, "KWp")}
+          handleChangeColumns={handleChangeColumns}
+          icon={
+            <Avatar
+              sx={{
+                backgroundColor: "success.main",
+                height: 56,
+                width: 56,
+              }}
+            >
+              <AttachMoney />
+            </Avatar>
+          }
+        />
+      </Grid>
+      <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
+        <BigNumberDashboard
+          type={7}
+          title="Plantas em alerta"
+          btn={true}
+          value={genrealdaylasthourData?.length}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar

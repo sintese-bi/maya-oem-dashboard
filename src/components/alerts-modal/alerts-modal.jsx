@@ -48,7 +48,7 @@ export const AlertsModal = ({
 
   const columns = columnsDevices;
 
-  if (genrealdaylasthourData == undefined) {
+  if (data == undefined) {
     return (
       <Box
         sx={{

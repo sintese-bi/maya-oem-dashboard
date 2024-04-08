@@ -55,6 +55,7 @@ export const DashboardProvider = ({ children }) => {
   const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0);
   const [monthEconomyTotal, setMonthEconomyTotal] = useState(0);
   const [treesSavedTotal, setTreesSavedTotal] = useState(0);
+  const [capacityTotal, setCapacityTotal] = useState(0);
 
   // dados de geração do último dia
 
@@ -171,6 +172,14 @@ export const DashboardProvider = ({ children }) => {
     );
   }
 
+  function handleTotalCapacity() {
+    const capacity = usersAPIData.devices.reduce(
+      (total, element) => total + element.capacity,
+      0
+    );
+    setCapacityTotal(capacity.toFixed(2));
+  }
+
   function handleAlertsFrequency() {
     dispatch(alertFrequency(use_uuid));
   }
@@ -243,6 +252,12 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {
     dispatch(getCapacities(usersAPIData.blUuids));
   }, [usersAPIData.blUuids]);
+
+  useEffect(() => {
+    if (usersAPIData.devices.length != 0) {
+      handleTotalCapacity();
+    }
+  }, [usersAPIData.devices]);
 
   useEffect(() => {
     if (usersAPIData.allDevices.length !== 0) {
@@ -377,6 +392,7 @@ export const DashboardProvider = ({ children }) => {
         usinsByState,
         devicesGenerationWithAlerts,
         deletedDevices,
+        capacityTotal,
         setIsLoadingReportGeneration,
         setData,
         setType,
