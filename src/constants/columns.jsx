@@ -109,8 +109,8 @@ export const columnsDevices = [
     },
   },
   {
-    name: "deviceSituation",
-    label: "Alerta de geração",
+    name: "staName",
+    label: "Situação",
     options: {
       filter: true,
       sort: true,
@@ -119,23 +119,12 @@ export const columnsDevices = [
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography sx={{ mr: 2, fontWeight: "bolder" }}>
-              Alerta de geração{" "}
+              Situação
             </Typography>
-            <Tooltip title="usinas que não produziram o esperado no dia anterior">
+            <Tooltip title="Estado de cada planta">
               <Info sx={{ fontSize: "16px" }} />
             </Tooltip>
           </Box>
-        );
-      },
-      customBodyRender: (name, dataTable) => {
-        return (
-          <Stack direction="row" alignItems="center" gap={1}>
-            {Number(dataTable.rowData[12]) == 0 ? (
-              <CheckBox sx={{ color: "success.light" }} />
-            ) : (
-              <ReportProblem sx={{ color: "warning.light" }} />
-            )}
-          </Stack>
         );
       },
     },

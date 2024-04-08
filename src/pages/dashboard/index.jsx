@@ -69,6 +69,7 @@ export default function Dashboard() {
     estimatedGenerationLastDay,
     percentLastDay,
     usinsByState,
+    capacityTotal,
     devicesGenerationWithAlerts,
     setIsLoadingReportGeneration,
     setData,
@@ -99,7 +100,6 @@ export default function Dashboard() {
 
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
-  const [capacityTotal, setCapacityTotal] = useState(0);
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
 
@@ -139,9 +139,10 @@ export default function Dashboard() {
             usinsByState={usinsByState}
             handleChangeColumns={setType}
             devices={usersAPIData.devices}
+            capacityTotal={capacityTotal}
           />
         </Grid>
-        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 526 }}>
+        <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 703 }}>
           <LocationUsins allDevices={usersAPIData.allDevices} />
         </Grid>
       </Grid>
