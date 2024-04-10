@@ -91,13 +91,13 @@ export const AdministratorReport = () => {
       borderRadius: "50px",
     },
     madeBy: {
-      marginTop: "100px",
+      marginTop: "50%",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       width: "50%",
-      top: "100px",
+      bottom: "0px",
     },
     light: {
       height: "10px",
@@ -258,8 +258,6 @@ export const AdministratorReport = () => {
     }
   }
 
-  console.log(result, division);
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -303,9 +301,8 @@ export const AdministratorReport = () => {
               display: "flex",
               flexDirection: "column",
               width: "100vw",
-              height: "50vh",
+              height: "40vh",
               paddingHorizontal: "10px",
-              paddingTop: "22px",
               justifyContent: "center",
               alignItems: "center",
               zIndex: 1,
@@ -626,7 +623,8 @@ export const AdministratorReport = () => {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  width: "68%",
+                  marginBottom: "16px",
+                  width: "98%",
                 }}
               >
                 <View style={styles.card}>
@@ -653,10 +651,165 @@ export const AdministratorReport = () => {
                     src="https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/brightness/-74/-/contrast/500/-/saturation/86/-/filter/ferand/100/-/preview/3000x3000/"
                   ></Image>
                 </View>
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>
+                      EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
+                    </Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.carbon}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/17b3e20c-e6a4-4807-90b2-024841485e69/-/gamma/0/-/preview/3000x3000/"
+                  ></Image>
+                </View>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "98%",
+                }}
+              >
+                <View style={styles.card}>
+                  <View>
+                    <Text style={styles.cardLabel}>
+                      ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
+                    </Text>
+                    <Text style={styles.cardNumber}>
+                      {reportAdministrator.savedtree}
+                    </Text>
+                  </View>
+                  <Image
+                    style={styles.icon}
+                    src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
+                  ></Image>
+                </View>
               </View>
             </View>
           </View>
           <View
+            style={{
+              marginTop: "20px",
+              width: "100%",
+              padding: "10px",
+              justifyContent: "flex-start",
+              display: "flex",
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: "12px",
+                marginBottom: "26px",
+              }}
+            >
+              Listagem de plantas
+            </Text>
+            <View
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: "5px",
+              }}
+            >
+              <Text
+                style={{ width: "20%", fontSize: "8px", textAlign: "center" }}
+              >
+                DEVICE
+              </Text>
+              <Text
+                style={{ width: "20%", fontSize: "8px", textAlign: "center" }}
+              >
+                POTÊNCIA
+              </Text>
+              <Text
+                style={{ width: "20%", fontSize: "8px", textAlign: "center" }}
+              >
+                GERAÇÃO REAL
+              </Text>
+              <Text
+                style={{ width: "20%", fontSize: "8px", textAlign: "center" }}
+              >
+                GERAÇÃO ESTIMADA
+              </Text>
+              <Text
+                style={{ width: "20%", fontSize: "8px", textAlign: "center" }}
+              >
+                DESEMPENHO
+              </Text>
+            </View>
+            {reportAdministrator.devices.map((data, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: "5px",
+                    padding: "12px 5px 12px 5px",
+                    backgroundColor: reportAdministrator.color,
+                    color: "white",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <Text
+                    style={{
+                      width: "20%",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.name}
+                  </Text>
+                  <Text
+                    style={{
+                      width: "20%",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.capacity} KWp
+                  </Text>
+                  <Text
+                    style={{
+                      width: "20%",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.generationRealDay} KWh
+                  </Text>
+                  <Text
+                    style={{
+                      width: "20%",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.generationEstimatedDay} KWh
+                  </Text>
+                  <Text
+                    style={{
+                      width: "20%",
+                      fontSize: "10px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.perfomance} %
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+          {/**<View
             style={{
               display: "flex",
               alignItems: "center",
@@ -695,52 +848,14 @@ export const AdministratorReport = () => {
                 Parabéns usuário, por sua enorme contribuição ao mundo.
               </Text>
             </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                paddingHorizontal: "8px",
-                justifyContent: "space-around",
-                width: "72%",
-              }}
-            >
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    EMISSÃO DE CARBONO ECONOMIZADA NA ATMOSFERA
-                  </Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.carbon}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/17b3e20c-e6a4-4807-90b2-024841485e69/-/gamma/0/-/preview/3000x3000/"
-                ></Image>
-              </View>
-              <View style={styles.card}>
-                <View>
-                  <Text style={styles.cardLabel}>
-                    ÁRVORES SALVAS PELA ECONOMIA DE CARBONO
-                  </Text>
-                  <Text style={styles.cardNumber}>
-                    {reportAdministrator.savedtree}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.icon}
-                  src="https://ucarecdn.com/efd49320-e555-4813-af4b-bfffce905f67/-/gamma/0/-/contrast/-100/-/saturation/382/-/filter/gavin/100/-/preview/3000x3000/"
-                ></Image>
-              </View>
-            </View>
-          </View>
-          <View style={styles.madeBy}>
+          </View> */}
+          {/** <View style={styles.madeBy}>
             <Text style={styles.madeByText}>POWERED BY: MAYA TECH S.A</Text>
             <Image
               style={{ width: "60px", height: "24px" }}
               src="https://ucarecdn.com/8961b481-f63f-4b00-96ee-a79fa1ba3470/-/brightness/-50/-/filter/briaril/100/-/preview/3000x3000/"
             ></Image>
-          </View>
+          </View> */}
         </View>
       </Page>
     </Document>

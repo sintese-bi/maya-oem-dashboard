@@ -414,32 +414,35 @@ export const getAllDeletedDevices = (use_uuid) => (dispatch) => {
 };
 
 // ATUALIZAR PROJEÇÃO E FEREQUENCIA DE ALERTA DE GERAÇÃO
-export const patchAlertFrequency = (params) => (dispatch) => {
-  dispatch({ type: users.PATH_ALERT_FREQUENCY_REQUEST });
+export const patchAlertFrequency =
+  (params, handleAlertsFrequency) => (dispatch) => {
+    dispatch({ type: users.PATH_ALERT_FREQUENCY_REQUEST });
 
-  api
-    .put("/alertFrequency", params, configRequest())
-    .then((res) => {
-      const { data } = res;
-      toast.success(data.message, {
-        duration: 5000,
-      });
+    api
+      .put("/alertFrequency", params, configRequest())
+      .then((res) => {
+        const { data } = res;
+        toast.success(data.message, {
+          duration: 5000,
+        });
+        handleAlertsFrequency();
 
-      dispatch({
-        type: users.PATH_ALERT_FREQUENCY_SUCCESS,
-      });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      console.log(error);
+        dispatch({
+          type: users.PATH_ALERT_FREQUENCY_SUCCESS,
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        console.log(error);
 
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
-      toast.error(message, {
-        duration: 5000,
+        const message =
+          err && err.data ? err.data.message : "Erro desconhecido";
+        toast.error(message, {
+          duration: 5000,
+        });
+        dispatch({ type: users.PATH_ALERT_FREQUENCY_FAILURE, message });
       });
-      dispatch({ type: users.PATH_ALERT_FREQUENCY_FAILURE, message });
-    });
-};
+  };
 
 export const alertFrequency = (uuid) => (dispatch) => {
   dispatch({ type: users.GET_ALERT_FREQUENCY_REQUEST });
@@ -825,34 +828,36 @@ export const cancelUserPlan = (use_uuid) => (dispatch) => {
     });
 };
 
-export const portalemailLogins = (params) => (dispatch) => {
-  dispatch({ type: users.UPDATE_USER_EMAIL_REQUEST });
-  api
-    .post("/usealertemail", params, configRequest())
-    .then((res) => {
-      const { data } = res;
-      toast.success(data.message, {
-        duration: 5000,
-      });
-      dispatch({
-        type: users.UPDATE_USER_EMAIL_SUCCESS,
-      });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      console.log(error);
+export const portalemailLogins =
+  (params, handleAlertsFrequency) => (dispatch) => {
+    dispatch({ type: users.UPDATE_USER_EMAIL_REQUEST });
+    api
+      .post("/usealertemail", params, configRequest())
+      .then((res) => {
+        const { data } = res;
+        toast.success(data.message, {
+          duration: 5000,
+        });
+        handleAlertsFrequency();
+        dispatch({
+          type: users.UPDATE_USER_EMAIL_SUCCESS,
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        console.log(error);
 
-      const message =
-        err && err.data
-          ? err.data.message
-          : "Erro desconhecido - portalemailLogins";
+        const message =
+          err && err.data
+            ? err.data.message
+            : "Erro desconhecido - portalemailLogins";
 
-      toast.error(message, {
-        duration: 5000,
+        toast.error(message, {
+          duration: 5000,
+        });
+        dispatch({ type: users.UPDATE_USER_EMAIL_FAILURE, message });
       });
-      dispatch({ type: users.UPDATE_USER_EMAIL_FAILURE, message });
-    });
-};
+  };
 
 export const getAllDevicesFromUser = (params) => (dispatch) => {
   dispatch({ type: users.GET_ALL_DEVICES_FROM_USER_REQUEST });

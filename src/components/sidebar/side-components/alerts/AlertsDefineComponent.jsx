@@ -27,10 +27,11 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { alertFrequency, patchAlertFrequency } from "src/store/actions/users";
 import toast from "react-hot-toast";
 import { width } from "@mui/system";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 const validateSchema = Yup.object().shape({
   percentage: Yup.number()
@@ -74,6 +75,7 @@ export function AlertsDefineComponent({
     devices,
     //useCodePagarMe
   } = useSelector((state) => state.users);
+  const { handlePatchAlertFrequency } = useContext(DashboardContext);
 
   const {
     register,
@@ -89,14 +91,11 @@ export function AlertsDefineComponent({
 
   async function onSubmit(values) {
     const { percentage, frequencyName } = values;
-    dispatch(
-      patchAlertFrequency({
-        use_percentage: percentage,
-        use_date:
-          frequencyName == "day" ? "1" : frequencyName == "week" ? "2" : "3",
-        use_uuid: useUuid,
-      })
-    );
+    handlePatchAlertFrequency({
+      use_percentage: percentage,
+      use_date: frequencyName,
+    });
+
     setSecondaryAction("DefineAlertEmail");
   }
 
@@ -107,7 +106,7 @@ export function AlertsDefineComponent({
         setValue("frequencyName", frequencyName);
       } else {
         setValue("percentage", 80);
-        setValue("frequencyName", "month");
+        setValue("frequencyName", "3");
       }
     }
   }, [percentage, frequencyName]);
@@ -200,13 +199,8 @@ export function AlertsDefineComponent({
                       label="Frequência de alertas"
                       error={!!errors.frequencyName}
                       helperText={errors.frequencyName?.message}
-                      value={
-                        watch("frequencyName") !== undefined
-                          ? watch("frequencyName")
-                          : "month"
-                      }
                       select
-                      defaultValue="month"
+                      defaultValue={"2"}
                       variant="standard"
                       disabled={
                         isLoadingAlertFrequency == false &&
@@ -216,7 +210,7 @@ export function AlertsDefineComponent({
                       }
                     >
                       <MenuItem
-                        value="day"
+                        value="1"
                         sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -225,7 +219,7 @@ export function AlertsDefineComponent({
                         Dia
                       </MenuItem>
                       <MenuItem
-                        value="week"
+                        value="2"
                         sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -234,7 +228,7 @@ export function AlertsDefineComponent({
                         Semanal
                       </MenuItem>
                       <MenuItem
-                        value="month"
+                        value="3"
                         sx={{
                           display: "flex",
                           justifyContent: "space-between",
