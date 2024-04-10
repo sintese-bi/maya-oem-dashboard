@@ -28,6 +28,7 @@ import {
   postUseDateReport,
   reportCounting,
   updateBrands,
+  uselogo,
 } from "src/store/actions/users";
 
 export const DashboardContext = createContext({});
@@ -171,6 +172,10 @@ export const DashboardProvider = ({ children }) => {
     );
   }
 
+  function handleUseLogo() {
+    dispatch(uselogo({ use_uuid }));
+  }
+
   function handleAdminReportGeneration(props) {
     let startDateReport = moment(startDate).format("YYYY-MM-DD");
     let endDateReport = moment(endDate).format("YYYY-MM-DD");
@@ -264,6 +269,7 @@ export const DashboardProvider = ({ children }) => {
     handleInvoiceValuesRequest();
     handleDeletedDevices();
     handleAlertsFrequency();
+    handleUseLogo();
   }, [use_uuid]);
 
   useEffect(() => {

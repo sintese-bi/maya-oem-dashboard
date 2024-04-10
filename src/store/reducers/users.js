@@ -284,6 +284,12 @@ export default function userReducer(state = initialState, action) {
         frequencyName: [],
       };
 
+    case users.GET_USER_LOGO:
+      return {
+        ...state,
+        use_logo: result,
+      };
+
     // -------------------
 
     case users.GET_ALL_DEVICES_REQUEST:

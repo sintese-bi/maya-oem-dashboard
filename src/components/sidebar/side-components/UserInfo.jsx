@@ -7,7 +7,7 @@ import { FormProvider, useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { cancelUserPlan, updateUser } from "src/store/actions/users";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const validateSchema = Yup.object().shape({
   useName: Yup.string()

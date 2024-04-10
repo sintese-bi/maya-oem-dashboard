@@ -200,7 +200,11 @@ export function AlertsDefineComponent({
                       error={!!errors.frequencyName}
                       helperText={errors.frequencyName?.message}
                       select
-                      defaultValue={"2"}
+                      value={
+                        watch("frequencyName") !== undefined
+                          ? watch("frequencyName")
+                          : frequencyName
+                      }
                       variant="standard"
                       disabled={
                         isLoadingAlertFrequency == false &&
