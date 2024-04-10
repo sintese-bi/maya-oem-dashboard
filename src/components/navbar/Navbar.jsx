@@ -33,7 +33,9 @@ import {
 } from "src/redirection-actions/redirection-actions";
 
 export const DashboardNavbar = ({ sideState, setSideState }) => {
-  const user_logo = Maya;
+  const { use_logo } = useSelector((state) => state.users);
+
+  const user_logo = use_logo ? use_logo : Maya;
 
   // PROPS DE CONTROLLER
   const location = useLocation();

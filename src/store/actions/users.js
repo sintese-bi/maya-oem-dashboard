@@ -148,7 +148,9 @@ export const auth = (params) => (dispatch) => {
           use_type_member,
           use_city_state,
           use_telephone,
+          use_logo,
         } = result.use_data;
+        console.log(result.use_data);
         localStorage.setItem(
           "userDevicesIsReady",
           result.use_devices_amount != 0 ? true : false
@@ -193,6 +195,7 @@ export const auth = (params) => (dispatch) => {
               useName: use_name,
               useEmail: use_email,
               useTypeMember: use_type_member,
+              use_logo: use_logo,
             },
             use_devices_amount: result.use_devices_amount,
           },
@@ -284,6 +287,28 @@ export const show = (uuid) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: users.GET_SHOW_FAILURE, message });
+    });
+};
+
+export const uselogo = (params) => (dispatch) => {
+  api
+    .post("/uselogo", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      dispatch({
+        type: users.GET_USER_LOGO,
+        result: data.message.use_logo,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
     });
 };
 
@@ -451,6 +476,7 @@ export const alertFrequency = (uuid) => (dispatch) => {
     .get(`/alertFrequency/${uuid}`)
     .then((res) => {
       const { data } = res;
+
       dispatch({
         type: users.GET_ALERT_FREQUENCY_SUCCESS,
         result: data,
@@ -458,7 +484,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
     })
     .catch((error) => {
       const { response: err } = error;
-      console.log(error);
 
       const message = err && err.data ? err.data.message : "Erro desconhecido";
 

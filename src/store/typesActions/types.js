@@ -115,6 +115,8 @@ export const users = {
   DELETE_USER_FAILURE: "@api/DELETE_USER_FAILURE",
 
   GET_BRAND_INFO: "@api/GET_BRAND_INFO",
+
+  GET_USER_LOGO: "@api/GET_USER_LOGO",
 };
 
 export const investment = {
