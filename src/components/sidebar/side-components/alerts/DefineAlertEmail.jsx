@@ -6,7 +6,8 @@ import { SaveAs } from "@mui/icons-material";
 import { getUserCookie } from "src/services/session";
 import { useDispatch, useSelector } from "react-redux";
 import { portalemailLogins } from "src/store/actions/users";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 const validateSchema = Yup.object().shape({
   email: Yup.string()
@@ -37,6 +38,7 @@ export function DefineAlertEmail({
   });
 
   const { useAlertEmail } = useSelector((state) => state.users);
+  const { handlePortalEmailLogin } = useContext(DashboardContext);
 
   async function onSubmit(values) {
     const { email } = values;
@@ -46,7 +48,7 @@ export function DefineAlertEmail({
     } else {
       setSecondaryAction("AlertsDefineComponent");
     }
-    dispatch(portalemailLogins({ use_uuid: useUuid, use_alert_email: email }));
+    handlePortalEmailLogin(email);
   }
 
   useEffect(() => {

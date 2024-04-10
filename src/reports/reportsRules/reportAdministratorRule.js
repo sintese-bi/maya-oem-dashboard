@@ -18,6 +18,7 @@ export const reportAdministrator = {
   logo: "",
   carbon: "",
   color: "",
+  devices: [],
 };
 
 export function reportAdministratorRule(
@@ -33,6 +34,8 @@ export function reportAdministratorRule(
   optionFilter,
   setIsLoadingReportGeneration
 ) {
+  reportAdministrator.devices = devices;
+
   let realGenerationDay = devices.map((data) => {
     let generationRealValue = data.generationRealDay;
     return generationRealValue;

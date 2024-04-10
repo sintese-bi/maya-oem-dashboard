@@ -23,6 +23,8 @@ import {
   getDashboard,
   invoiceValues,
   massEmail,
+  patchAlertFrequency,
+  portalemailLogins,
   postUseDateReport,
   reportCounting,
   updateBrands,
@@ -152,6 +154,21 @@ export const DashboardProvider = ({ children }) => {
     setRealGenerationFiltered(props.realGenerationFiltered);
     SetEstimatedGenerationFiltered(props.estimatedGenerationFiltered);
     SetPercentGenerationFiltered(props.percentGenerationFiltered);
+  }
+
+  function handlePortalEmailLogin(use_alert_email) {
+    dispatch(
+      portalemailLogins({ use_uuid, use_alert_email }, handleAlertsFrequency)
+    );
+  }
+
+  function handlePatchAlertFrequency(params) {
+    dispatch(
+      patchAlertFrequency(
+        Object.assign(params, { use_uuid }),
+        handleAlertsFrequency
+      )
+    );
   }
 
   function handleAdminReportGeneration(props) {
@@ -411,6 +428,8 @@ export const DashboardProvider = ({ children }) => {
         handlePostUseDateReport,
         handleCreateDevice,
         handleUpdateDevice,
+        handlePortalEmailLogin,
+        handlePatchAlertFrequency,
       }}
     >
       {children}

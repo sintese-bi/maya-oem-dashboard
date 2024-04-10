@@ -267,7 +267,12 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoadingAlertFrequency: false,
         percentage: result?.use_percentage,
-        frequencyName: result?.use_frequency_name,
+        frequencyName:
+          result?.use_frequency_name == "day"
+            ? "1"
+            : result?.use_frequency_name == "week"
+            ? "2"
+            : "3",
         useAlertEmail: result?.use_alert_email,
       };
 
