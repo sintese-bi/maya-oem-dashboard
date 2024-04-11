@@ -231,7 +231,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleUsinsByStateData() {
-    let devicesWithAddress = usersAPIData.allDevices.filter(
+    let devicesWithAddress = usersAPIData.devices.filter(
       (data) => data.address !== null && data.address.includes("-")
     );
     let devicesAddressState = brazilStates.map((state) => {
@@ -269,7 +269,7 @@ export const DashboardProvider = ({ children }) => {
     handleGenRealLastHours();
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
-    handleGetAllDevicesRequest();
+    //handleGetAllDevicesRequest();
     handleGetAllDeletedDevicesRequest();
     handleGetAllDevicesFromUserRequest();
     handleBrandInfoRequest();
@@ -291,12 +291,12 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData.devices]);
 
   useEffect(() => {
-    if (usersAPIData.allDevices.length !== 0) {
-      const generationReal = usersAPIData.allDevices.reduce(
+    if (usersAPIData.devices.length !== 0) {
+      const generationReal = usersAPIData.devices.reduce(
         (total, element) => total + element.generationRealMonth,
         0
       );
-      const generationEstimated = usersAPIData.allDevices.reduce(
+      const generationEstimated = usersAPIData.devices.reduce(
         (total, element) => total + element.generationEstimatedMonth,
         0
       );
@@ -312,7 +312,7 @@ export const DashboardProvider = ({ children }) => {
     }
 
     handleUsinsByStateData();
-  }, [usersAPIData.allDevices]);
+  }, [usersAPIData.devices]);
 
   useEffect(() => {
     if (usersAPIData.graphData?.data !== undefined) {

@@ -72,7 +72,7 @@ export function reportAdministratorRule(
     "KWp"
   );
 
-  reportAdministrator.devicesLength = allDevices.length;
+  reportAdministrator.devicesLength = devices.length;
 
   reportAdministrator.requistionStartDate = startDateReport;
   reportAdministrator.requisitionEndDate = endDateReport;

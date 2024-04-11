@@ -224,7 +224,7 @@ export const MyUsins = ({
       <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
-          title="Potência"
+          title="Potência todas as usinas"
           btn={true}
           value={numbers(capacityTotal, "KWp")}
           handleChangeColumns={handleChangeColumns}

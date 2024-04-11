@@ -14,13 +14,25 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
+  const {
+    isLoading,
+    brands,
+    devices,
+    generationBelowEstimated,
+    massEmailFinished,
+    alerts,
+    notDefined,
+    unactived,
+    offline,
+    online,
+  } = useSelector((state) => state.users);
+
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
     moment().format("YYYY-MM-DD")
   );
   const { handleMassEmail, handlePostUseDateReport } =
     useContext(DashboardContext);
   const [open, setOpen] = useState(false);
-  const { allDevices, massEmailFinished } = useSelector((state) => state.users);
 
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
@@ -61,18 +73,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
       }
     },
   };
-
-  const {
-    isLoading,
-    brands,
-    devices,
-    generationBelowEstimated,
-    alerts,
-    notDefined,
-    unactived,
-    offline,
-    online,
-  } = useSelector((state) => state.users);
 
   return (
     <Card sx={{ p: 1, width: "100%" }}>
@@ -148,7 +148,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           >
             <Cancel onClick={() => setOpen(false)} sx={{ cursor: "pointer" }} />
           </Box>
-          <TopUsins devices={allDevices} />
+          <TopUsins devices={devices} />
         </Card>
       </Modal>
     </Card>

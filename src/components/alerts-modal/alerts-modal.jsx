@@ -17,17 +17,22 @@ export const AlertsModal = ({
   const { devices } = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (genrealdaylasthourData?.length !== 0) {
-      setData(
-        genrealdaylasthourData?.map((data) => {
-          return devices.filter((device) => device.uuid == data.uuid)[0];
-        })
-      );
+    if (genrealdaylasthourData.length !== 0 && devices.length !== 0) {
+      let filteredDevices = genrealdaylasthourData.map((data) => {
+        let test = devices.filter((device) => device.uuid == data.uuid)[0];
+        return test;
+      });
 
-      setTitle("Plantas em alerta");
+      setData(filteredDevices);
+
+      setTitle(`Plantas em alerta: ${filteredDevices.length}`);
       setDescription("");
     }
   }, [genrealdaylasthourData]);
+
+  useEffect(() => {
+    //console.log(data);
+  }, [data]);
 
   const options = {
     filter: true,
@@ -48,7 +53,7 @@ export const AlertsModal = ({
 
   const columns = columnsDevices;
 
-  if (data == undefined) {
+  if (data.length == 0) {
     return (
       <Box
         sx={{
