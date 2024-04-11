@@ -29,15 +29,15 @@ export const Reports = ({ setTitle, setDescription }) => {
     usersAPIData,
   } = useContext(DashboardContext);
 
-  const { allDevices, massEmailFinished } = useSelector((state) => state.users);
+  const { devices, massEmailFinished } = useSelector((state) => state.users);
 
   const [data, setData] = useState([]);
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
 
   useEffect(() => {
-    setData(allDevices);
-  }, [allDevices]);
+    setData(devices);
+  }, [devices]);
 
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
@@ -412,7 +412,7 @@ export const Reports = ({ setTitle, setDescription }) => {
       >
         <Typography variant="body" sx={{ fontWeight: "bold" }}>
           Contagem de relatórios:{" "}
-          {`${usersAPIData.reportsCounting}/${usersAPIData.allDevices.length}`}
+          {`${usersAPIData.reportsCounting}/${usersAPIData.devices.length}`}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

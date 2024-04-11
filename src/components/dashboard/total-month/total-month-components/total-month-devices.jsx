@@ -249,7 +249,7 @@ export default function Plants(props) {
 
   useEffect(() => {
     if (profileLevel != "admin") {
-      dispatch(getAllDevices(useUuid));
+      dispatch(getDashboard(useUuid));
     }
   }, [useUuid]);
 

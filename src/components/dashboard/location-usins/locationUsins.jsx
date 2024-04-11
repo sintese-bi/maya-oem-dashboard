@@ -9,7 +9,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { numbers } from "src/helpers/utils";
 
-export const LocationUsins = ({ allDevices }) => {
+export const LocationUsins = ({ devices }) => {
   const [data, setData] = useState([]);
   var greenIcon = L.icon({
     iconUrl: UsinIcon,
@@ -22,11 +22,11 @@ export const LocationUsins = ({ allDevices }) => {
   });
 
   useEffect(() => {
-    let devicesWithLatAndLong = allDevices.filter(
+    let devicesWithLatAndLong = devices.filter(
       (data) => data.dev_lat && data.dev_long != null
     );
     setData(devicesWithLatAndLong);
-  }, [allDevices]);
+  }, [devices]);
 
   return (
     <MapContainer
