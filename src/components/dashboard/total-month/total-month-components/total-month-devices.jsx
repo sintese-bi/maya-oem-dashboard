@@ -298,7 +298,7 @@ export default function Plants(props) {
         >
           <Box
             sx={{
-              bgcolor: "rgba(255, 105, 97, 0.2)",
+              bgcolor: "rgba(152, 251, 152, 0.2)",
               height: 15,
               width: 15,
               border: "1px solid rgba(0,0,0,0.1)",
@@ -316,7 +316,7 @@ export default function Plants(props) {
         >
           <Box
             sx={{
-              bgcolor: "rgba(152, 251, 152, 0.2)",
+              bgcolor: "rgba(255, 105, 97, 0.2)",
               height: 15,
               width: 15,
               border: "1px solid rgba(0,0,0,0.1)",
