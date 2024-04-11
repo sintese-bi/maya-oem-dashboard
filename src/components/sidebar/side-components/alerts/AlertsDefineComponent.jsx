@@ -36,11 +36,10 @@ import { DashboardContext } from "src/contexts/dashboard-context";
 const validateSchema = Yup.object().shape({
   percentage: Yup.number()
     .when("frequencyName", {
-      is: "day",
+      is: "1",
       then: Yup.number()
         .typeError("Insira um número")
-        .min(0, "O valor mínimo é 0")
-        .max(20, "O valor máximo é 20")
+        .min(20, "O valor mínimo é 20")
         .nullable()
         .transform((value, originalValue) =>
           originalValue === "" ? null : value

@@ -295,9 +295,36 @@ export const uselogo = (params) => (dispatch) => {
     .post("/uselogo", params, configRequest())
     .then((res) => {
       const { data } = res;
+      console.log(data.message.use_logo);
       dispatch({
         type: users.GET_USER_LOGO,
         result: data.message.use_logo,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message = err && err.data ? err.data.message : "Erro desconhecido";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+    });
+};
+
+export const updateLogo = (params, handleUseLogo) => (dispatch) => {
+  dispatch({ type: users.UPDATE_LOGO });
+  api
+    .put("/updatelogo", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      toast.success(`${data.message}`, {
+        duration: 5000,
+      });
+      handleUseLogo();
+      dispatch({
+        type: users.UPDATE_LOGO,
       });
     })
     .catch((error) => {

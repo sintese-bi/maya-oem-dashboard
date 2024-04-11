@@ -28,6 +28,7 @@ import {
   postUseDateReport,
   reportCounting,
   updateBrands,
+  updateLogo,
   uselogo,
 } from "src/store/actions/users";
 
@@ -174,6 +175,13 @@ export const DashboardProvider = ({ children }) => {
 
   function handleUseLogo() {
     dispatch(uselogo({ use_uuid }));
+  }
+
+  function handleUpdateLogo(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("use_uuid", use_uuid);
+    dispatch(updateLogo(formData, handleUseLogo));
   }
 
   function handleAdminReportGeneration(props) {
@@ -436,6 +444,7 @@ export const DashboardProvider = ({ children }) => {
         handleUpdateDevice,
         handlePortalEmailLogin,
         handlePatchAlertFrequency,
+        handleUpdateLogo,
       }}
     >
       {children}

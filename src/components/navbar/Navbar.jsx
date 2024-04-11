@@ -4,7 +4,15 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { getUserCookie, removeUserCookie } from "src/services/session";
 
 // COMPONENTS
-import { AppBar, Box, Button, Toolbar, Typography, Input } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Toolbar,
+  Typography,
+  Input,
+  CircularProgress,
+} from "@mui/material";
 // import { DashboardSidebar } from "./Sidebar";
 import { NavItem } from "./NavItem";
 
@@ -31,17 +39,26 @@ import {
   handleRoutes,
   routes,
 } from "src/redirection-actions/redirection-actions";
+import { useContext, useEffect, useState } from "react";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 export const DashboardNavbar = ({ sideState, setSideState }) => {
   const { use_logo } = useSelector((state) => state.users);
 
-  const user_logo = use_logo ? use_logo : Maya;
+  const [user_logo, set_user_logo] = useState();
+
+  useEffect(() => {
+    if (use_logo !== undefined) {
+      set_user_logo(use_logo);
+    }
+  }, [use_logo]);
 
   // PROPS DE CONTROLLER
   const location = useLocation();
   const navigate = useNavigate();
 
   const { selectedUser } = useSelector((state) => state.users);
+  const { handleUpdateLogo } = useContext(DashboardContext);
   const { profileLevel, useName } = getUserCookie();
 
   const name =
@@ -73,13 +90,20 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
       return (
         <>
           <Button component="label" sx={{ width: 110, height: 40 }}>
-            <img
-              src={user_logo}
-              alt=""
-              srcset=""
-              id="user_logo"
-              style={{ width: 110, height: 40 }}
-            />
+            {user_logo !== undefined ? (
+              <img
+                src={
+                  use_logo !== null ? `data:image/png;base64,${use_logo}` : Maya
+                }
+                alt=""
+                srcset=""
+                id="user_logo"
+                style={{ width: 110, height: 40 }}
+              />
+            ) : (
+              <CircularProgress color="inherit" size={20} />
+            )}
+
             <Input
               type="file"
               onChange={(e) => {
@@ -87,12 +111,9 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                   var reader = new FileReader();
                   reader.addEventListener("loadend", () => {
                     document.getElementById("user_logo").src = reader.result;
-                    //localStorage.setItem(
-                    //  "user_logo",
-                    //  JSON.stringify(reader.result)
-                    //);
                   });
                   reader.readAsDataURL(e.target.files[0]);
+                  handleUpdateLogo(e.target.files[0]);
                 }
               }}
               sx={{ visibility: "hidden", overflow: "hidden", width: 0 }}

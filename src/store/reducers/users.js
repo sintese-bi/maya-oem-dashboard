@@ -290,6 +290,11 @@ export default function userReducer(state = initialState, action) {
         use_logo: result,
       };
 
+    case users.UPDATE_LOGO:
+      return {
+        ...state,
+      };
+
     // -------------------
 
     case users.GET_ALL_DEVICES_REQUEST:

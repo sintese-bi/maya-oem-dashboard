@@ -117,6 +117,8 @@ export const users = {
   GET_BRAND_INFO: "@api/GET_BRAND_INFO",
 
   GET_USER_LOGO: "@api/GET_USER_LOGO",
+
+  UPDATE_LOGO: "@api/UPDATE_LOGO",
 };
 
 export const investment = {
