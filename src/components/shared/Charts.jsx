@@ -1207,7 +1207,13 @@ export const ChartsDashboard = (props) => {
 
     // Mapear as datas para os valores correspondentes
 
+    let unity = "KWh";
+
     const realValuesTemp = sortedDates.map((data) => {
+      if (devices[data].gen_real >= 1000) {
+        unity = "MWh";
+      }
+
       return {
         value: devices[data].gen_real,
         date: moment(data).format("MM/DD/YYYY"),
@@ -1244,12 +1250,16 @@ export const ChartsDashboard = (props) => {
         case "days":
           return {
             data: {
-              realGeneration: realValuesTemp.map((data) =>
-                (Number(data.value) / 1000).toFixed(4)
-              ),
-              estimatedGeneration: estimatedValuesTemp.map((data) =>
-                (data / 1000).toFixed(4)
-              ),
+              realGeneration:
+                unity == "MWh"
+                  ? realValuesTemp.map((data) =>
+                      (Number(data.value) / 1000).toFixed(4)
+                    )
+                  : realValuesTemp.map((data) => Number(data.value).toFixed(4)),
+              estimatedGeneration:
+                unity == "MWh"
+                  ? estimatedValuesTemp.map((data) => (data / 1000).toFixed(4))
+                  : estimatedValuesTemp.map((data) => data.toFixed(4)),
             },
             period: "Dias",
           };
@@ -1410,7 +1420,7 @@ export const ChartsDashboard = (props) => {
           },
           title: {
             display: true,
-            text: "MWh",
+            text: unity,
             font: { size: 18, weight: "bold" },
           },
         },
