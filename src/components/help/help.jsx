@@ -61,12 +61,12 @@ export const Help = ({ setTitle, setDescription, setOpen, open }) => {
             error={!!errors.use_email}
             helperText={errors.use_email?.message}
           />
-          <Box sx={{ width: "100%", height: 120 }}>
+          <Box sx={{ width: "100%", height: 110 }}>
             <TextareaAutosize
               maxRows={4}
               style={{
                 width: "100%",
-                height: "100%",
+                height: "110px",
                 resize: "none",
                 padding: "20px 10px 20px 10px",
                 borderRadius: "5px",

@@ -9,6 +9,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Button,
+  Radio,
 } from "@mui/material";
 import {
   InsertDriveFile,
@@ -22,6 +23,7 @@ import { Document, PDFViewer, Page } from "@react-pdf/renderer";
 import AcceptTerm from "src/assets/accept-term.pdf";
 
 export const MayaWatchPro = ({ setTitle, setDescription }) => {
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [action, setAction] = useState("assignAction");
   useEffect(() => {
     setTitle("Maya Watch PRO");
@@ -174,6 +176,38 @@ export const MayaWatchPro = ({ setTitle, setDescription }) => {
               This browser does not support PDFs. Please download the PDF to
               view
             </iframe>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                my: 2,
+                gap: 2,
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <p style={{ fontWeight: "bold", fontSize: "0.8rem" }}>
+                Você está de acordo com nossos termos?
+              </p>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <p>Sim</p>
+                <Radio
+                  checked={acceptedTerms}
+                  value="true"
+                  name="radio-buttons"
+                  inputProps={{ "aria-label": "A" }}
+                  onChange={(e) => {
+                    setAcceptedTerms(e.target.value);
+                  }}
+                />
+              </Box>
+            </Box>
             <Button
               to={`https://buy.stripe.com/7sIeYxc3R8T21oYcNz?prefilled_email=${useEmail}`}
               target="_blank"
@@ -182,6 +216,7 @@ export const MayaWatchPro = ({ setTitle, setDescription }) => {
               variant="contained"
               disableRipple
               color="success"
+              disabled={!acceptedTerms}
             >
               Prosseguir
             </Button>
