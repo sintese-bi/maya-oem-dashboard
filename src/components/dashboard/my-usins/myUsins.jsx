@@ -243,9 +243,9 @@ export const MyUsins = ({
       </Grid>
       <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
-          type={7}
+          type={10}
           title="Plantas em alerta"
-          btn={true}
+          btn={false}
           value={genrealdaylasthourData?.length}
           handleChangeColumns={handleChangeColumns}
           icon={

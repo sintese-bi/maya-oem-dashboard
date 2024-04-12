@@ -53,6 +53,7 @@ export default function Plants(props) {
     online,
     allDevices,
   } = useSelector((state) => state.users);
+  const { genrealdaylasthourData } = useSelector((state) => state.devices);
 
   const [columns, setColumns] = useState(columnsDevices);
 
@@ -200,6 +201,16 @@ export default function Plants(props) {
           setData(
             handleTransformColumnData(
               devices.filter((data) => data.staCode != "online")
+            )
+          );
+          devicesRef.current.scrollIntoView();
+          break;
+        case 10:
+          setData(
+            handleTransformColumnData(
+              genrealdaylasthourData.map((device) => {
+                return devices.filter((data) => data.uuid == device.uuid)[0];
+              })
             )
           );
           devicesRef.current.scrollIntoView();

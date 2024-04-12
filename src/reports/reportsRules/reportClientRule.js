@@ -42,12 +42,14 @@ export function reportClientRule(
   deviceName
 ) {
   const { useName } = getUserCookie();
-  let estimatedGenerationNumber = generation.estimatedGeneration
-    .reduce((total, element) => total + element, 0)
-    ?.toFixed(2);
-  let realGenerationNumber = generation.realGeneration
-    .reduce((total, element) => total + Number(element.value), 0)
-    ?.toFixed(2);
+  let estimatedGenerationNumber =
+    generation.estimatedGeneration
+      .reduce((total, element) => total + element, 0)
+      ?.toFixed(2) || "0";
+  let realGenerationNumber =
+    generation.realGeneration
+      .reduce((total, element) => total + Number(element.value), 0)
+      ?.toFixed(2) || "0";
 
   reportClient.graphData["realGeneration"] = generation.realGeneration;
   reportClient.graphData["estimatedGeneration"] =
@@ -65,13 +67,13 @@ export function reportClientRule(
         return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${
           unity == "MWh"
             ? numbers((realGenerationNumber / 1000).toFixed(2))
-            : numbers(realGenerationNumber.toFixed(2))
+            : numbers(realGenerationNumber)
         }${unity}.`;
       } else {
         return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${
           unity == "MWh"
             ? numbers((realGenerationNumber / 1000).toFixed(2))
-            : numbers(realGenerationNumber.toFixed(2))
+            : numbers(realGenerationNumber)
         }${unity}.`;
       }
     } else {
@@ -94,8 +96,6 @@ export function reportClientRule(
       return `Acima`;
     }
   }
-
-  console.log(capacity);
 
   reportClient.useName = useName;
   reportClient.estimatedGenerationTotal = numbers(

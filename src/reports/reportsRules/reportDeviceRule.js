@@ -54,20 +54,32 @@ export function reportDeviceRule(
     generation.estimatedGeneration;
 
   function handleSituation(percent) {
+    let unity = "KWh";
+
+    if (realGenerationNumber >= 1000) {
+      unity = "MWh";
+    }
+
     if (percent < 100) {
       if (percent >= 80) {
-        return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
-          (realGenerationNumber / 1000).toFixed(2)
-        )}Mwh.`;
+        return `A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${
+          unity == "MWh"
+            ? numbers((realGenerationNumber / 1000).toFixed(2))
+            : numbers(realGenerationNumber)
+        }${unity}.`;
       } else {
-        return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${numbers(
-          (realGenerationNumber / 1000).toFixed(2)
-        )}Mwh.`;
+        return `Sua usina não está produzindo conforme esperado, fique atento aos próximos dias de monitoramento e observe a produção da sua usina. Sua produtividade no período escolhido é de ${
+          unity == "MWh"
+            ? numbers((realGenerationNumber / 1000).toFixed(2))
+            : numbers(realGenerationNumber)
+        }${unity}.`;
       }
     } else {
-      return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${numbers(
-        (realGenerationNumber / 1000).toFixed(2)
-      )}Mwh.`;
+      return `Parabéns! A produção da sua usina esta dentro do esperado. Sua produtividade no período escolhido é de ${
+        unity == "MWh"
+          ? numbers((realGenerationNumber / 1000).toFixed(2))
+          : numbers(realGenerationNumber.toFixed(2))
+      }${unity}.`;
     }
   }
 
