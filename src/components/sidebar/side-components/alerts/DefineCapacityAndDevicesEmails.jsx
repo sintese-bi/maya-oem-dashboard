@@ -170,9 +170,9 @@ export function DefineCapacityAndDevicesEmails({
 
           return {
             ...allDevicesFromUserItem,
-            ic_city: temp[0].ic_city,
-            ic_states: temp[0].ic_states,
-            dev_capacity: temp[0].dev_capacity,
+            ic_city: temp[0]?.ic_city,
+            ic_states: temp[0]?.ic_states,
+            dev_capacity: temp[0]?.dev_capacity,
           };
         }
       );
