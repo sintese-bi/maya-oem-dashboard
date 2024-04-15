@@ -707,7 +707,7 @@ export const AdministratorReport = () => {
                 marginBottom: "26px",
               }}
             >
-              Listagem de plantas
+              Listagem de plantas com desempenho de hoje
             </Text>
             <View
               style={{
