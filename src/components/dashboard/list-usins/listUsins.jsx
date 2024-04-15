@@ -77,7 +77,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   return (
     <Card sx={{ p: 1, width: "100%" }}>
       <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
-        <Button
+        {/**<Button
           variant="contained"
           onClick={() => {
             setOpen(!open);
@@ -118,7 +118,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-        </Box>
+        </Box> */}
       </Box>
       <Plants
         title={"Listagem de usinas"}

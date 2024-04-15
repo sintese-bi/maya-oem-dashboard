@@ -26,12 +26,12 @@ export const mainItems = [
     disabled: true,
     action: "device",
   },
-  {
-    label: "Relatórios",
-    icon: <FileCopy fontSize="small" />,
-    disabled: true,
-    action: "reports",
-  },
+  //{
+  //  label: "Relatórios",
+  //  icon: <FileCopy fontSize="small" />,
+  //  disabled: true,
+  //  action: "reports",
+  //},
   {
     label: "Configurar alertas",
     icon: <Info fontSize="small" />,
