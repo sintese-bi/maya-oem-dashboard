@@ -178,6 +178,7 @@ export default function Dashboard() {
             estimatedGenerationFiltered={estimatedGenerationFiltered}
             percentGenerationFiltered={percentGenerationFiltered}
             isLoadingReportGeneration={isLoadingReportGeneration}
+            setIsLoadingReportGeneration={setIsLoadingReportGeneration}
             useTypeMember={userData.useTypeMember}
             handleAdminReportGeneration={handleAdminReportGeneration}
           />

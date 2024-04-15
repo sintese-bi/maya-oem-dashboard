@@ -32,6 +32,7 @@ export const PeriodDataUsins = ({
   percentGenerationFiltered,
   handleAdminReportGeneration,
   isLoadingReportGeneration,
+  setIsLoadingReportGeneration,
   useTypeMember,
 }) => {
   const { graphData, isLoadingGraph, selectedUser } = useSelector(
@@ -196,6 +197,7 @@ export const PeriodDataUsins = ({
             isLoadingReportGeneration={isLoadingReportGeneration}
             useTypeMember={useTypeMember}
             handleAdminReportGeneration={handleAdminReportGeneration}
+            setIsLoadingReportGeneration={setIsLoadingReportGeneration}
           />
         </Grid>
       </Grid>

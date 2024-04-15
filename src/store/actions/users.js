@@ -523,7 +523,6 @@ export const alertFrequency = (uuid) => (dispatch) => {
 
 export const getAllDevices = (uuid, component) => (dispatch) => {
   dispatch({ type: users.GET_ALL_DEVICES_REQUEST });
-  console.log("kraiiiiiiiiiii");
   api
     .get(`/dashboard/${uuid}`, configRequest())
     .then((res) => {
@@ -970,7 +969,7 @@ export const deleteUser = (params, getUsers) => (dispatch) => {
     });
 };
 
-export const updateBrands = (params) => (dispatch) => {
+export const updateBrands = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: users.UPDATE_BRAND });
 
   api

@@ -18,13 +18,22 @@ export const ReportButton = ({
   handleAdminReportGeneration,
   isLoadingReportGeneration,
   useTypeMember,
+  setIsLoadingReportGeneration,
 }) => {
   const [selectedColor, setSelectedColor] = useState("");
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+
   function handleUploadLogo() {
     setOpen(false);
   }
+
+  const handleClick = (url) => {
+    setTimeout(() => {
+      setIsLoadingReportGeneration(true);
+    }, [1500]);
+  };
+
   return (
     <Box
       sx={{
@@ -77,6 +86,9 @@ export const ReportButton = ({
                       startIcon={<DownloadForOffline fontSize="small" />}
                       variant={useTypeMember ? "outlined" : ""}
                       sx={{ width: "100%" }}
+                      onClick={() => {
+                        handleClick(url);
+                      }}
                     >
                       Relatório gerencial
                     </Button>
