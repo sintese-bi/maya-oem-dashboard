@@ -38,11 +38,11 @@ export const mainItems = [
     disabled: true,
     action: "alertFrequency",
   },
-  {
-    label: "Configurar plantas",
-    icon: <Settings fontSize="small" />,
-    action: "configSetup",
-  },
+  //{
+  //  label: "Configurar plantas",
+  //  icon: <Settings fontSize="small" />,
+  //  action: "configSetup",
+  //},
   //{
   //  label: "Configurar portais",
   //  icon: <SettingsApplications fontSize="small" />,

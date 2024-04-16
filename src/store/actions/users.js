@@ -4,6 +4,7 @@ import { getUserCookie, setUserCookie } from "../../services/session";
 import api, { configRequest } from "../../services/api";
 
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const config = {
   headers: {
@@ -638,27 +639,43 @@ export const updateUser = (params) => (dispatch) => {
     });
 };
 
-export const updateEmailAndCapacity = (params) => (dispatch) => {
-  dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
-  api
-    .post("/updateplants", params, configRequest())
-    .then((res) => {
-      const { data } = res;
-      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS });
-      toast.success(data.message, {
-        duration: 3000,
-      });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      const message = err && err.data ? err.data.message : "Erro desconhecido";
+export const updateEmailAndCapacity =
+  (params, handleGetDashboardRequest) => (dispatch) => {
+    const stateAndCityNotUndefined = params.arrayplants.filter(
+      (device) => device.dev_address !== undefined
+    );
 
-      toast.error(message, {
-        duration: 5000,
-      });
-      dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_FAILURE, message });
+    stateAndCityNotUndefined.map((device) => {
+      const dev_uuid = device.dev_uuid;
+      const city_name = device.dev_address;
+      axios.post(
+        `https://app2.mayaoem.com.br/v2/updateLocation`,
+        { dev_uuid, city_name },
+        configRequest()
+      );
     });
-};
+
+    dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
+    api
+      .post("/updateplants", params, configRequest())
+      .then((res) => {
+        const { data } = res;
+        dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS });
+        toast.success(data.message, {
+          duration: 3000,
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        const message =
+          err && err.data ? err.data.message : "Erro desconhecido";
+
+        toast.error(message, {
+          duration: 5000,
+        });
+        dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_FAILURE, message });
+      });
+  };
 
 export const getGraphData = (params) => (dispatch) => {
   dispatch({ type: users.GRAPH_REQUEST });

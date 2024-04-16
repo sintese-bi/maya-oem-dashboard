@@ -445,6 +445,7 @@ export const DashboardProvider = ({ children }) => {
         handlePortalEmailLogin,
         handlePatchAlertFrequency,
         handleUpdateLogo,
+        handleGetDashboardRequest,
       }}
     >
       {children}
