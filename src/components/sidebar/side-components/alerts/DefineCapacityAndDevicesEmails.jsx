@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Avatar,
   Backdrop,
   Box,
@@ -24,6 +25,7 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import MUIDataTable from "mui-datatables";
 import { DashboardContext } from "src/contexts/dashboard-context";
+import citiesData from "src/services/municipios";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -31,7 +33,8 @@ export function DefineCapacityAndDevicesEmails({
   setDescription,
   setSecondaryAction,
 }) {
-  const { usersAPIData } = useContext(DashboardContext);
+  const { usersAPIData, handleGetDashboardRequest } =
+    useContext(DashboardContext);
   const { updatingEmailAndCapacity } = useSelector((state) => state.users);
   const [deviceChanged, setDeviceChanged] = useState([]);
   let devices = [];
@@ -75,6 +78,7 @@ export function DefineCapacityAndDevicesEmails({
       (data) => {
         return {
           dev_uuid: data.dev_uuid,
+          dev_address: data.dev_address,
           ic_city: data.ic_city,
           ic_states: data.ic_states,
         };
@@ -150,15 +154,16 @@ export function DefineCapacityAndDevicesEmails({
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
-    dispatch(updateEmailAndCapacity({ arrayplants }));
+    dispatch(
+      updateEmailAndCapacity(
+        { arrayplants: devices },
+        handleGetDashboardRequest
+      )
+    );
   }
 
   useEffect(() => {
-    console.log(updatingEmailAndCapacity);
-  }, [updatingEmailAndCapacity]);
-
-  useEffect(() => {
-    allDevicesFromUserRef.current = usersAPIData.allDevicesFromUser;
+    allDevicesFromUserRef.current = usersAPIData.devices;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
       let setupDataWithAddressData = usersAPIData.allDevicesFromUser.map(
@@ -210,91 +215,57 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "ic_city",
+      name: "dev_address",
       label: "Cidade",
       options: {
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
+          let selectedCity;
+
+          function setSelectedCity(value) {
+            selectedCity = value;
+
+            let deviceInfo = devices.filter(
+              (item) => item.dev_uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].dev_address = selectedCity;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.dev_uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].dev_address = selectedCity;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+
           return (
             <Box sx={{ width: 294, height: 40 }}>
-              <TextField
-                type="text"
-                defaultValue={dataTable.rowData[2]}
-                label="Cidade"
-                sx={{ width: "100%" }}
-                onChange={(e) => {
-                  let city = e.target.value;
-
-                  let deviceInfo = devices.filter(
-                    (item) => item.dev_uuid === dataTable.rowData[0]
-                  );
-
-                  if (deviceInfo.length != 0) {
-                    deviceInfo[0].ic_city = city;
-
-                    const indiceObjetoExistente = devices.findIndex(
-                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
-                    );
-
-                    devices[indiceObjetoExistente] = deviceInfo[0];
-                  } else {
-                    let newDeviceToAdd = data.filter(
-                      (item) => item.dev_uuid === dataTable.rowData[0]
-                    );
-                    newDeviceToAdd[0].ic_city = city;
-
-                    devices.push(newDeviceToAdd[0]);
-                  }
-                }}
-              />
-            </Box>
-          );
-        },
-      },
-    },
-    {
-      name: "ic_states",
-      label: "Estado",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (name, dataTable) => {
-          return (
-            <Box sx={{ width: 294, height: 40 }}>
-              <TextField
-                type="text"
-                defaultValue={autoCompleteState(
-                  dataTable.rowData[2],
-                  dataTable.rowData[3]
+              <Autocomplete
+                name="address"
+                options={citiesData}
+                getOptionLabel={(city) => `${city.ic_city} - ${city.ic_states}`} // Exibir nome do município e estado
+                value={selectedCity}
+                onChange={(event, newValue) =>
+                  setSelectedCity(`${newValue.ic_city}-${newValue.ic_states}`)
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Endereço de Instalação"
+                    variant="outlined"
+                    sx={{ width: 300 }}
+                  />
                 )}
-                label="Estado"
-                sx={{ width: "100%" }}
-                onChange={(e) => {
-                  e.target.value = e.target.value.toUpperCase();
-                  let state = e.target.value;
-
-                  let deviceInfo = devices.filter(
-                    (item) => item.dev_uuid === dataTable.rowData[0]
-                  );
-
-                  if (deviceInfo.length != 0) {
-                    deviceInfo[0].ic_states = state;
-
-                    const indiceObjetoExistente = devices.findIndex(
-                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
-                    );
-
-                    devices[indiceObjetoExistente] = deviceInfo[0];
-                  } else {
-                    let newDeviceToAdd = data.filter(
-                      (item) => item.dev_uuid === dataTable.rowData[0]
-                    );
-                    newDeviceToAdd[0].ic_states = state;
-
-                    devices.push(newDeviceToAdd[0]);
-                  }
-                }}
               />
             </Box>
           );
