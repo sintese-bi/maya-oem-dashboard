@@ -4,6 +4,10 @@ import { Route, Routes } from "react-router-dom";
 import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
+import energySchema from "src/assets/img/enery-schema.png";
+import Tree from "src/assets/img/TREE.png";
+import Cloud from "src/assets/img/CLOUD.png";
+
 // PAGINAS
 import PasswordRecovery from "./pages/passwordRecovery";
 import Login from "./pages/Login";
@@ -34,6 +38,8 @@ import {
   PDFViewer,
   Font,
 } from "@react-pdf/renderer";
+import { ChartGenrealdaylasthour } from "./components/shared/Charts";
+import { useEffect, useRef, useState } from "react";
 
 Font.register({
   family: "Open Sans",
@@ -160,6 +166,14 @@ const Report = () => {
       borderRadius: "40px",
       height: "300px",
     },
+    energyStream: {
+      display: "flex",
+      justifyContent: "space-around",
+      padding: "120px 0px 120px 0px",
+      flexDirection: "row",
+      backgroundColor: "white",
+      borderRadius: "40px",
+    },
     energyFieldsItem: {
       width: "300px",
       display: "flex",
@@ -170,162 +184,353 @@ const Report = () => {
       padding: "20px 40px 20px 40px",
     },
   });
+  const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
+  const [graphDailyBase64, setGraphDailyBase64] = useState("");
+
+  useEffect(() => {
+    if (graphMonthlyBase64 != "" && graphDailyBase64 != "") {
+      console.log(graphMonthlyBase64, graphDailyBase64);
+    }
+  }, [graphMonthlyBase64, graphDailyBase64]);
 
   return (
-    <PDFViewer
-      style={{
-        height: "85vh",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Document>
-        <Page
-          size="A0"
-          style={{ backgroundColor: "#f5f5f5", padding: "40px 0px 40px 0px" }}
-        >
-          <View style={styles.header}>
-            <View style={styles.apresentation}>
-              <Text style={styles.titleText}>Felipe</Text>
-              <Text style={styles.biggerWeakText}>
-                Segue os resultados da sua Usina:
-              </Text>
-            </View>
-            <View style={styles.unityAndPeriod}>
-              <View style={styles.unityAndPeriodItem}>
-                <Text style={styles.biggerWeakText}>Unidade</Text>
-                <Text style={styles.strongText}>Felipe VGP - 4 kWp</Text>
+    <>
+      <PDFViewer
+        style={{
+          height: "85vh",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Document>
+          <Page
+            size="A0"
+            style={{ backgroundColor: "#f5f5f5", padding: "40px 0px 40px 0px" }}
+          >
+            <View style={styles.header}>
+              <View style={styles.apresentation}>
+                <Text style={styles.titleText}>Felipe</Text>
+                <Text style={styles.biggerWeakText}>
+                  Segue os resultados da sua Usina:
+                </Text>
               </View>
-              <View style={styles.unityAndPeriodItem}>
-                <Text style={styles.biggerWeakText}>Período</Text>
-                <Text style={styles.titleText}>FEV/2024</Text>
-                <Text style={styles.strongText}>08/02/2024 a 11/03/2024</Text>
-              </View>
-            </View>
-            <View style={styles.logo}>
-              <Image
-                style={{ width: "80%", height: "80%" }}
-                src={
-                  "https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
-                }
-              ></Image>
-            </View>
-          </View>
-          <View style={styles.smallerBigNumbers}>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>
-                PAGARIA SEM A USINA (R$)
-              </Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>183,18</Text>
-              </View>
-            </View>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>115,62</Text>
-              </View>
-            </View>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>67,56</Text>
-              </View>
-            </View>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>
-                CONSUMO TOTAL (KWH)
-              </Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>272,82</Text>
-              </View>
-            </View>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>GERAÇÃO (KWH)</Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>235,82</Text>
-              </View>
-            </View>
-            <View style={styles.smallerBigNumbersItem}>
-              <Text style={styles.smallerBigNumbersLabel}>DESEMPENHO (%)</Text>
-              <View style={styles.smallerBigNumbersBox}>
-                <Text style={styles.smallerBigNumbersBoxResult}>117,45</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.energyAndCreditField}>
-            <View style={styles.energy}>
-              <Text style={styles.strongText}>ENERGIA (kWh)</Text>
-              <View style={styles.energyFields}>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>
-                    CONSUMIDA DA CONCESSIONÁRIA
-                  </Text>
-                  <Text style={styles.strongText}>220,00</Text>
+              <View style={styles.unityAndPeriod}>
+                <View style={styles.unityAndPeriodItem}>
+                  <Text style={styles.biggerWeakText}>Unidade</Text>
+                  <Text style={styles.strongText}>Felipe VGP - 4 kWp</Text>
                 </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>INJETADA </Text>
-                  <Text style={styles.strongText}>183,00</Text>
+                <View style={styles.unityAndPeriodItem}>
+                  <Text style={styles.biggerWeakText}>Período</Text>
+                  <Text style={styles.titleText}>FEV/2024</Text>
+                  <Text style={styles.strongText}>08/02/2024 a 11/03/2024</Text>
                 </View>
               </View>
-              <View style={styles.energyFields}>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>FATURADA</Text>
-                  <Text style={styles.strongText}>170,00</Text>
+              <View style={styles.logo}>
+                <Image
+                  style={{ width: "80%", height: "80%" }}
+                  src={
+                    "https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
+                  }
+                ></Image>
+              </View>
+            </View>
+            <View style={styles.smallerBigNumbers}>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>
+                  PAGARIA SEM A USINA (R$)
+                </Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>183,18</Text>
                 </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>COMPENSADA</Text>
-                  <Text style={styles.strongText}>50,00</Text>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>115,62</Text>
+                </View>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>67,56</Text>
+                </View>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>
+                  CONSUMO TOTAL (KWH)
+                </Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>272,82</Text>
+                </View>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>GERAÇÃO (KWH)</Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>235,82</Text>
+                </View>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>
+                  DESEMPENHO (%)
+                </Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>117,45</Text>
                 </View>
               </View>
             </View>
-            <View style={styles.energy}>
+            <View style={styles.energyAndCreditField}>
+              <View style={styles.energy}>
+                <Text style={styles.strongText}>ENERGIA (kWh)</Text>
+                <View style={styles.energyFields}>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>
+                      CONSUMIDA DA CONCESSIONÁRIA
+                    </Text>
+                    <Text style={styles.strongText}>220,00</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>INJETADA </Text>
+                    <Text style={styles.strongText}>183,00</Text>
+                  </View>
+                </View>
+                <View style={styles.energyFields}>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>FATURADA</Text>
+                    <Text style={styles.strongText}>170,00</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>COMPENSADA</Text>
+                    <Text style={styles.strongText}>50,00</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.energy}>
+                <Text style={styles.strongText}>
+                  ENERGIA (kWh) CRÉDITO DE ENERGIA (kWh)
+                </Text>
+                <View style={styles.energyFields}>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>ANTERIOR</Text>
+                    <Text style={styles.strongText}>0</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>COMPENSADO(-)</Text>
+                    <Text style={styles.strongText}>0</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>
+                      TRANSFERIDO (-) OU RECEBIDO (+)
+                    </Text>
+                    <Text style={styles.strongText}>-37,00</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>EXPIRADO</Text>
+                    <Text style={styles.strongText}>0</Text>
+                  </View>
+                </View>
+                <View style={styles.energyFields}>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>ATUAL</Text>
+                    <Text style={styles.strongText}>0</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>
+                      ATUAL EXPIRAÇÃO VENCIMENTO
+                    </Text>
+                    <Text style={styles.strongText}>0</Text>
+                  </View>
+                  <View style={styles.energyFieldsItem}>
+                    <Text style={styles.weakText}>VENCIMENTO</Text>
+                    <Text style={styles.strongText}>02/2029</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.energyAndCreditField}>
+              <View style={styles.energy}>
+                <Text style={styles.strongText}>FLUXO DE ENERGIA (kWh)</Text>
+                <View style={styles.energyStream}>
+                  <Image
+                    src={energySchema}
+                    style={{ height: "500px", width: "660px" }}
+                  />
+                </View>
+              </View>
+              <View style={styles.energy}>
+                <Text style={styles.strongText}>CONSUMO (kWh)</Text>
+                <View style={styles.energyStream}>
+                  <View style={{ height: "500px", width: "660px" }}></View>
+                </View>
+              </View>
+            </View>
+            <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
               <Text style={styles.strongText}>
-                ENERGIA (kWh) CRÉDITO DE ENERGIA (kWh)
+                Sua contribuição para o mundo
               </Text>
-              <View style={styles.energyFields}>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>ANTERIOR</Text>
-                  <Text style={styles.strongText}>0</Text>
+              <View
+                style={{
+                  width: "100%",
+                  padding: "30px 0px 30px 0px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+                  marginTop: "140px",
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    padding: "20px 100px 20px 100px",
+                    height: "300px",
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    gap: "100px",
+                  }}
+                >
+                  <Image
+                    src={Tree}
+                    style={{ height: "120px", width: "120px" }}
+                  />
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "300px",
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: "100px", fontFamily: "Open Sans" }}
+                    >
+                      0
+                    </Text>
+                    <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
+                      Árvores foram cultivadas
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>COMPENSADO(-)</Text>
-                  <Text style={styles.strongText}>0</Text>
-                </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>
-                    TRANSFERIDO (-) OU RECEBIDO (+)
-                  </Text>
-                  <Text style={styles.strongText}>-37,00</Text>
-                </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>EXPIRADO</Text>
-                  <Text style={styles.strongText}>0</Text>
-                </View>
-              </View>
-              <View style={styles.energyFields}>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>ATUAL</Text>
-                  <Text style={styles.strongText}>0</Text>
-                </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>
-                    ATUAL EXPIRAÇÃO VENCIMENTO
-                  </Text>
-                  <Text style={styles.strongText}>0</Text>
-                </View>
-                <View style={styles.energyFieldsItem}>
-                  <Text style={styles.weakText}>VENCIMENTO</Text>
-                  <Text style={styles.strongText}>02/2029</Text>
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    padding: "20px 100px 20px 100px",
+                    height: "300px",
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    gap: "100px",
+                  }}
+                >
+                  <Image
+                    src={Cloud}
+                    style={{ height: "120px", width: "120px" }}
+                  />
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "300px",
+                      padding: "0px 10px 0px 10px",
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: "100px", fontFamily: "Open Sans" }}
+                    >
+                      0,05
+                    </Text>
+                    <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
+                      Toneladas de CO2 evitados
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </Page>
-      </Document>
-    </PDFViewer>
+            <View style={{ marginTop: "260px", padding: "0px 50px 0px 50px" }}>
+              <Text style={styles.strongText}>PRODUÇÃO MENSAL (kWh)</Text>
+              <View
+                style={{
+                  width: "100%",
+                  padding: "30px 0px 30px 0px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  marginTop: "100px",
+                  borderRadius: "20px",
+                }}
+              >
+                <Image src={graphDailyBase64} />
+              </View>
+            </View>
+            <View style={{ marginTop: "260px", padding: "0px 50px 0px 50px" }}>
+              <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
+              <View
+                style={{
+                  width: "100%",
+                  padding: "30px 0px 30px 0px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  marginTop: "100px",
+                  borderRadius: "20px",
+                }}
+              >
+                <Image src={graphMonthlyBase64} />
+              </View>
+            </View>
+          </Page>
+        </Document>
+      </PDFViewer>
+      <ChartGenrealdaylasthour
+        setGraphMonthlyBase64={() => {}}
+        setGraphDailyBase64={setGraphDailyBase64}
+        genrealdaylasthourData={{
+          data: [
+            { d2: "1200", hora: "12h", alert: "" },
+            { d2: "1100", hora: "13h", alert: "" },
+            { d2: "1120", hora: "14h", alert: "" },
+            { d2: "1250", hora: "15h", alert: "" },
+            { d2: "1520", hora: "16h", alert: "" },
+            { d2: "1140", hora: "17h", alert: "" },
+            { d2: "1413", hora: "18h", alert: "" },
+            { d2: "1000", hora: "19h", alert: "" },
+            { d2: "1230", hora: "20h", alert: "" },
+            { d2: "1730", hora: "21h", alert: "" },
+            { d2: "1000", hora: "22h", alert: "" },
+            { d2: "2000", hora: "23h", alert: "" },
+          ],
+        }}
+      />
+      <ChartGenrealdaylasthour
+        setGraphMonthlyBase64={setGraphMonthlyBase64}
+        setGraphDailyBase64={() => {}}
+        genrealdaylasthourData={{
+          data: [
+            { d2: "1400", hora: "01", alert: "" },
+            { d2: "1500", hora: "02", alert: "" },
+            { d2: "1020", hora: "03", alert: "" },
+            { d2: "950", hora: "04", alert: "" },
+            { d2: "1520", hora: "05", alert: "" },
+            { d2: "1035", hora: "06", alert: "" },
+            { d2: "403", hora: "07", alert: "" },
+            { d2: "1000", hora: "08", alert: "" },
+            { d2: "1302", hora: "09", alert: "" },
+            { d2: "1730", hora: "10", alert: "" },
+            { d2: "1000", hora: "11", alert: "" },
+            { d2: "2000", hora: "12", alert: "" },
+          ],
+        }}
+      />
+    </>
   );
 };
 

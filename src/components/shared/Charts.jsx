@@ -166,7 +166,8 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
 
 export const ChartGenrealdaylasthour = (props) => {
   const theme = useTheme();
-  const { genrealdaylasthourData } = props;
+  const { genrealdaylasthourData, setGraphMonthlyBase64, setGraphDailyBase64 } =
+    props;
 
   if (
     genrealdaylasthourData === undefined ||
@@ -221,7 +222,7 @@ export const ChartGenrealdaylasthour = (props) => {
               return "red";
             }
           }),
-          type: "line",
+
           tension: 0.4,
           fill: "start",
         },
@@ -243,7 +244,23 @@ export const ChartGenrealdaylasthour = (props) => {
       },
     };
     const options = {
-      animation: true,
+      animation: {
+        onComplete: function (animation) {
+          const chart = animation.chart;
+          const canvas = chart.canvas;
+
+          // Convertendo o conteúdo do canvas em base64.
+          const base64Image = canvas.toDataURL("image/jpeg");
+
+          // Atualizando o estado com a string base64.
+
+          setGraphDailyBase64(base64Image);
+          setGraphMonthlyBase64(base64Image);
+
+          // Apagando o gráfico
+          chart.destroy();
+        },
+      },
       cornerRadius: 20,
       layout: { padding: 0 },
       maintainAspectRatio: false,
@@ -346,9 +363,14 @@ export const ChartGenrealdaylasthour = (props) => {
         >
           Relação horária de geração
         </Typography>
-        <Box width={"90%"} height={520}>
-          <Chart type="bar" options={options} data={data} plugins={[plugin]} />
-        </Box>
+
+        <Chart
+          type="bar"
+          options={options}
+          data={data}
+          plugins={[plugin]}
+          height={520}
+        />
       </Card>
     );
   }

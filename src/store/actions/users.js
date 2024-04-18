@@ -661,6 +661,7 @@ export const updateEmailAndCapacity =
       .then((res) => {
         const { data } = res;
         dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS });
+        handleGetDashboardRequest();
         toast.success(data.message, {
           duration: 3000,
         });
