@@ -196,7 +196,6 @@ export const MayaWatchPro = ({ setTitle, setDescription }) => {
                   alignItems: "center",
                 }}
               >
-                <p>Sim</p>
                 <Radio
                   checked={acceptedTerms}
                   value="true"

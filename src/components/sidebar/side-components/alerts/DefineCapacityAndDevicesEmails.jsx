@@ -221,7 +221,7 @@ export function DefineCapacityAndDevicesEmails({
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
-          let selectedCity;
+          let selectedCity = dataTable.rowData[2];
 
           function setSelectedCity(value) {
             selectedCity = value;
@@ -253,11 +253,11 @@ export function DefineCapacityAndDevicesEmails({
               <Autocomplete
                 name="address"
                 options={citiesData}
-                getOptionLabel={(city) => `${city.ic_city} - ${city.ic_states}`} // Exibir nome do município e estado
+                getOptionLabel={(city) => {
+                  return `${city.ic_city}-${city.ic_states}`;
+                }} // Exibir nome do município e estado
                 value={selectedCity}
-                onChange={(event, newValue) =>
-                  setSelectedCity(`${newValue.ic_city}-${newValue.ic_states}`)
-                }
+                onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
