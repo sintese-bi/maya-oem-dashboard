@@ -25,7 +25,6 @@ export const LocationUsins = ({ devices }) => {
     let devicesWithLatAndLong = devices.filter(
       (data) => data.dev_lat && data.dev_long != null
     );
-    console.log(devicesWithLatAndLong);
     setData(devicesWithLatAndLong);
   }, [devices]);
 

@@ -196,13 +196,12 @@ export const SendEmail = ({
   }
 
   function handleDeleteDevice(reportData) {
-    console.log(reportData);
-    //dispatch(
-    //  reportgenerationEmai({
-    //    dev_uuid: devUuidState,
-    //    base64: reportData.split(",")[1],
-    //  })
-    //);
+    dispatch(
+      reportgenerationEmai({
+        dev_uuid: devUuidState,
+        base64: reportData.split(",")[1],
+      })
+    );
     setOpen(false);
   }
 

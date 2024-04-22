@@ -77,8 +77,8 @@ export function DefineCapacityAndDevicesEmails({
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices)).map(
       (data) => {
         return {
-          dev_uuid: data.dev_uuid,
-          dev_address: data.dev_address,
+          dev_uuid: data.uuid,
+          dev_address: data.address,
           ic_city: data.ic_city,
           ic_states: data.ic_states,
         };
@@ -145,7 +145,7 @@ export function DefineCapacityAndDevicesEmails({
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
       (data) => {
         return {
-          dev_uuid: data.dev_uuid,
+          dev_uuid: data.uuid,
           ic_city: data.ic_city,
           ic_states: data.ic_states,
         };
@@ -166,15 +166,16 @@ export function DefineCapacityAndDevicesEmails({
     allDevicesFromUserRef.current = usersAPIData.devices;
     const setupData = JSON.parse(localStorage.getItem("setupData"));
     if (setupData !== null) {
-      let setupDataWithAddressData = usersAPIData.allDevicesFromUser.map(
+      let setupDataWithAddressData = usersAPIData.devices.map(
         (allDevicesFromUserItem) => {
           const temp = setupData.filter(
             (setupDataItem) =>
-              setupDataItem.dev_uuid == allDevicesFromUserItem.dev_uuid
+              setupDataItem.dev_uuid == allDevicesFromUserItem.uuid
           );
 
           return {
             ...allDevicesFromUserItem,
+            address: temp[0]?.dev_address,
             ic_city: temp[0]?.ic_city,
             ic_states: temp[0]?.ic_states,
             dev_capacity: temp[0]?.dev_capacity,
@@ -184,9 +185,9 @@ export function DefineCapacityAndDevicesEmails({
 
       setData(setupDataWithAddressData);
     } else {
-      setData(usersAPIData.allDevicesFromUser);
+      setData(usersAPIData.devices);
     }
-  }, [usersAPIData.allDevicesFromUser]);
+  }, [usersAPIData.devices]);
 
   const options = {
     filter: true,
@@ -199,7 +200,7 @@ export function DefineCapacityAndDevicesEmails({
 
   const columns = [
     {
-      name: "dev_uuid",
+      name: "uuid",
       label: "ID do Dispositivos/usuário",
       options: {
         display: "false",
@@ -207,7 +208,7 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "dev_name",
+      name: "name",
       label: "Planta",
       options: {
         filter: true,
@@ -215,34 +216,37 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "dev_address",
+      name: "address",
       label: "Cidade",
       options: {
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
-          let selectedCity = dataTable.rowData[2];
+          let selectedCity = {
+            ic_states: dataTable.rowData[2]?.split("-")[1],
+            ic_city: dataTable.rowData[2]?.split("-")[0],
+          };
 
           function setSelectedCity(value) {
             selectedCity = value;
 
             let deviceInfo = devices.filter(
-              (item) => item.dev_uuid === dataTable.rowData[0]
+              (item) => item.uuid === dataTable.rowData[0]
             );
 
             if (deviceInfo.length != 0) {
-              deviceInfo[0].dev_address = selectedCity;
+              deviceInfo[0].address = `${selectedCity.ic_city}-${selectedCity.ic_states}`;
 
               const indiceObjetoExistente = devices.findIndex(
-                (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                (item) => item.uuid === deviceInfo[0].dev_uuid
               );
 
               devices[indiceObjetoExistente] = deviceInfo[0];
             } else {
               let newDeviceToAdd = data.filter(
-                (item) => item.dev_uuid === dataTable.rowData[0]
+                (item) => item.uuid === dataTable.rowData[0]
               );
-              newDeviceToAdd[0].dev_address = selectedCity;
+              newDeviceToAdd[0].address = `${selectedCity.ic_city}-${selectedCity.ic_states}`;
 
               devices.push(newDeviceToAdd[0]);
             }
@@ -256,7 +260,7 @@ export function DefineCapacityAndDevicesEmails({
                 getOptionLabel={(city) => {
                   return `${city.ic_city}-${city.ic_states}`;
                 }} // Exibir nome do município e estado
-                value={selectedCity}
+                defaultValue={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField
@@ -273,7 +277,7 @@ export function DefineCapacityAndDevicesEmails({
       },
     },
     {
-      name: "dev_capacity",
+      name: "capacity",
       label: "Potência",
       options: {
         filter: true,
@@ -290,22 +294,22 @@ export function DefineCapacityAndDevicesEmails({
                   let capacity = e.target.value;
 
                   let deviceInfo = devices.filter(
-                    (item) => item.dev_uuid === dataTable.rowData[0]
+                    (item) => item.uuid === dataTable.rowData[0]
                   );
 
                   if (deviceInfo.length != 0) {
-                    deviceInfo[0].dev_capacity = capacity;
+                    deviceInfo[0].capacity = capacity;
 
                     const indiceObjetoExistente = devices.findIndex(
-                      (item) => item.dev_uuid === deviceInfo[0].dev_uuid
+                      (item) => item.uuid === deviceInfo[0].dev_uuid
                     );
 
                     devices[indiceObjetoExistente] = deviceInfo[0];
                   } else {
                     let newDeviceToAdd = data.filter(
-                      (item) => item.dev_uuid === dataTable.rowData[0]
+                      (item) => item.uuid === dataTable.rowData[0]
                     );
-                    newDeviceToAdd[0].dev_capacity = capacity;
+                    newDeviceToAdd[0].capacity = capacity;
 
                     devices.push(newDeviceToAdd[0]);
                   }

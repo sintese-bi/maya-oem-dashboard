@@ -285,13 +285,13 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData.blUuids]);
 
   useEffect(() => {
-    if (usersAPIData.devices.length != 0) {
+    if (usersAPIData.devices !== undefined) {
       handleTotalCapacity();
     }
   }, [usersAPIData.devices]);
 
   useEffect(() => {
-    if (usersAPIData.devices.length !== 0) {
+    if (usersAPIData.devices !== undefined) {
       const generationReal = usersAPIData.devices.reduce(
         (total, element) => total + element.generationRealMonth,
         0
@@ -309,9 +309,8 @@ export const DashboardProvider = ({ children }) => {
       });
 
       setData(usersAPIData.devices);
+      handleUsinsByStateData();
     }
-
-    handleUsinsByStateData();
   }, [usersAPIData.devices]);
 
   useEffect(() => {

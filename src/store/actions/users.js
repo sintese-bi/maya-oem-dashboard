@@ -151,7 +151,6 @@ export const auth = (params) => (dispatch) => {
           use_telephone,
           use_logo,
         } = result.use_data;
-        console.log(result.use_data);
         localStorage.setItem(
           "userDevicesIsReady",
           result.use_devices_amount != 0 ? true : false
@@ -296,7 +295,6 @@ export const uselogo = (params) => (dispatch) => {
     .post("/uselogo", params, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data.message.use_logo);
       dispatch({
         type: users.GET_USER_LOGO,
         result: data.message.use_logo,
@@ -645,15 +643,15 @@ export const updateEmailAndCapacity =
       (device) => device.dev_address !== undefined
     );
 
-    stateAndCityNotUndefined.map((device) => {
-      const dev_uuid = device.dev_uuid;
-      const city_name = device.dev_address;
-      axios.post(
-        `https://app2.mayaoem.com.br/v2/updateLocation`,
-        { dev_uuid, city_name },
-        configRequest()
-      );
-    });
+    //stateAndCityNotUndefined.map((device) => {
+    //  const dev_uuid = device.dev_uuid;
+    //  const city_name = device.dev_address;
+    //  axios.post(
+    //    `https://app2.mayaoem.com.br/v2/updateLocation`,
+    //    { dev_uuid, city_name },
+    //    configRequest()
+    //  );
+    //});
 
     dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
     api
