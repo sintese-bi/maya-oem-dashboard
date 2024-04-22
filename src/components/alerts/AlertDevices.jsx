@@ -48,16 +48,6 @@ export default function AlertDevices() {
     dispatch(getDevicesAlerts(data));
   }, [data]);
 
-  useEffect(() => {
-    if (devices.length === 0) {
-      selectedUser.length != 0
-        ? dispatch(
-            getDashboard(selectedUser[0]?.useUuidState, "alert-devices.jsx")
-          )
-        : dispatch(getDashboard(useUuid, "alert-devices.jsx"));
-    }
-  }, [useUuid]);
-
   return (
     <Card
       sx={{

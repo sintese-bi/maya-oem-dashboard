@@ -80,8 +80,6 @@ const Generation = () => {
 
   function handleSelectDevices(useUuid) {
     const datInfo = devices.filter((evt) => evt.dev_uuid === useUuid);
-    console.log(generation);
-    console.log(datInfo[0]);
     setDeviceInfo(datInfo[0]);
     dispatch(
       getGeneration({

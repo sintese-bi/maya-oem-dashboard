@@ -187,12 +187,6 @@ const Report = () => {
   const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
   const [graphDailyBase64, setGraphDailyBase64] = useState("");
 
-  useEffect(() => {
-    if (graphMonthlyBase64 != "" && graphDailyBase64 != "") {
-      console.log(graphMonthlyBase64, graphDailyBase64);
-    }
-  }, [graphMonthlyBase64, graphDailyBase64]);
-
   return (
     <>
       <PDFViewer

@@ -103,8 +103,6 @@ export default function Dashboard() {
 
   // condição de carregamento, caso os dados da dashboard n estejam pronto, uma tela de carregamento é acionada
 
-  //openWebScoketConnection();
-
   if (usersAPIData.isDashboardDataLoading) {
     return (
       <Backdrop
@@ -115,6 +113,8 @@ export default function Dashboard() {
       </Backdrop>
     );
   }
+
+  //openWebScoketConnection();
 
   return (
     <Box id="index">

@@ -260,7 +260,7 @@ export default function Plants(props) {
 
   useEffect(() => {
     if (profileLevel != "admin") {
-      dispatch(getDashboard(useUuid));
+      dispatch(getDashboard(useUuid, "total-month-devices.jsx"));
     }
   }, [useUuid]);
 

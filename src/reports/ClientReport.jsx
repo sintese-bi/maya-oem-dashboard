@@ -118,14 +118,6 @@ export const ClientReport = () => {
     },
   });
 
-  useEffect(() => {
-    console.log(
-      reportClient.requistionStartDate,
-      reportClient.requisitionEndDate,
-      reportClient.graphData
-    );
-  }, []);
-
   const startDate = reportClient.requistionStartDate;
   const endDate = reportClient.requisitionEndDate;
 
@@ -269,8 +261,6 @@ export const ClientReport = () => {
       result.push(i * 100);
     }
   }
-
-  console.log(periodData);
 
   return (
     <Document>

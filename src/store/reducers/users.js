@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 const initialState = {
   message: "",
   isLoading: false,
-  isDashboardDataLoading: false,
+  isDashboardDataLoading: true,
   isAllDevicesDataLoading: false,
   isLoadingGraph: false,
   loading: false,
@@ -26,7 +26,6 @@ const initialState = {
   data: [],
   brands: [],
   blUuids: [],
-  devices: [],
   allDevices: [],
   graphData: [],
   generationBelowEstimated: [],
