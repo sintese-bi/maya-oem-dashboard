@@ -25,13 +25,17 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     unactived,
     offline,
     online,
+    massive_reports_status,
   } = useSelector((state) => state.users);
 
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
     moment().format("YYYY-MM-DD")
   );
-  const { handleMassEmail, handlePostUseDateReport } =
-    useContext(DashboardContext);
+  const {
+    handleMassEmail,
+    handlePostUseDateReport,
+    handleMassiveReportsStatusRequest,
+  } = useContext(DashboardContext);
   const [open, setOpen] = useState(false);
 
   const [massEmailFinishedState, setMassEmailFinishedState] =
@@ -76,8 +80,8 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
-        {/**<Button
+      {/** }<Box sx={{ width: "100%", display: "flex", gap: 4 }}>
+        <Button
           variant="contained"
           onClick={() => {
             setOpen(!open);
@@ -91,7 +95,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
-            disabled={!massEmailFinishedState ? true : false}
+            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
@@ -108,6 +112,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
+              disabled={massive_reports_status == "completed" ? false : true}
               label="Agendar envio massivo"
               value={massiveEmailDate}
               onChange={(massiveEmailDate) =>
@@ -118,8 +123,9 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-        </Box> */}
+        </Box>
       </Box>
+            **/}
       <Plants
         title={"Listagem de usinas"}
         data={data}

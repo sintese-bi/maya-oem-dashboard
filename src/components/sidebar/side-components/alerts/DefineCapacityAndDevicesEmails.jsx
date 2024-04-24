@@ -326,6 +326,8 @@ export function DefineCapacityAndDevicesEmails({
       options: {
         filter: true,
         sort: true,
+        display: false,
+        viewColumn: false,
         customBodyRender: (name, dataTable) => {
           return (
             <Box

@@ -23,6 +23,7 @@ import {
   getDashboard,
   invoiceValues,
   massEmail,
+  massiveReportsStatus,
   patchAlertFrequency,
   portalemailLogins,
   postUseDateReport,
@@ -108,6 +109,10 @@ export const DashboardProvider = ({ children }) => {
     dispatch(getAllDevices(use_uuid));
   }
 
+  function handleMassiveReportsStatusRequest() {
+    //dispatch(massiveReportsStatus({ use_uuid }));
+  }
+
   function handleGetAllDeletedDevicesRequest() {
     dispatch(getAllDeletedDevices(use_uuid));
   }
@@ -129,7 +134,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassEmail() {
-    dispatch(massEmail({ use_uuid }));
+    dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
     handleReportCountingRequest();
   }
 
@@ -228,6 +233,7 @@ export const DashboardProvider = ({ children }) => {
 
   function handlePostUseDateReport(use_report_date) {
     dispatch(postUseDateReport({ use_uuid, use_report_date }));
+    handleMassiveReportsStatusRequest();
   }
 
   function handleUsinsByStateData() {
@@ -266,6 +272,7 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData?.deletedDevices]);
 
   useEffect(() => {
+    handleMassiveReportsStatusRequest();
     handleGenRealLastHours();
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
@@ -445,6 +452,7 @@ export const DashboardProvider = ({ children }) => {
         handlePatchAlertFrequency,
         handleUpdateLogo,
         handleGetDashboardRequest,
+        handleMassiveReportsStatusRequest,
       }}
     >
       {children}

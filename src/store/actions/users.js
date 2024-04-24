@@ -56,31 +56,32 @@ export const brandInfo = (params) => (dispatch) => {
     });
 };
 
-export const massEmail = (params) => (dispatch) => {
-  dispatch({ type: users.MASS_EMAIL_REQUEST });
+export const massEmail =
+  (params, handleMassiveReportsStatusRequest) => (dispatch) => {
+    dispatch({ type: users.MASS_EMAIL_REQUEST });
 
-  api
-    .post("/massemail", params, configRequest())
-    .then((res) => {
-      const { data } = res;
-      dispatch({ type: users.MASS_EMAIL_SUCCESS });
+    api
+      .post("/massemail", params, configRequest())
+      .then((res) => {
+        const { data } = res;
+        dispatch({ type: users.MASS_EMAIL_SUCCESS });
+        handleMassiveReportsStatusRequest();
+        toast.success(data.message, {
+          duration: 5000,
+        });
+      })
+      .catch((error) => {
+        const { response: err } = error;
+        console.log(error);
 
-      toast.success(data.message, {
-        duration: 5000,
+        const message =
+          err && err.data ? err.data.message : "Erro desconhecido - brandInfo";
+
+        toast.error(message, {
+          duration: 5000,
+        });
       });
-    })
-    .catch((error) => {
-      const { response: err } = error;
-      console.log(error);
-
-      const message =
-        err && err.data ? err.data.message : "Erro desconhecido - brandInfo";
-
-      toast.error(message, {
-        duration: 5000,
-      });
-    });
-};
+  };
 
 export const invoiceValues = (params) => (dispatch) => {
   dispatch({ type: users.GET_INVOICE_VALUES_REQUEST });
@@ -568,6 +569,33 @@ export const getDashboard = (uuid, component) => (dispatch) => {
         duration: 5000,
       });
       dispatch({ type: users.GET_DASHBOARD_FAILURE, message });
+    });
+};
+
+export const massiveReportsStatus = (params) => (dispatch) => {
+  dispatch({ type: users.GET_MASSIVE_REPORTS_STATUS_REQUEST });
+
+  api
+    .post("/massiveReportsStatus", params, configRequest())
+    .then((res) => {
+      const { data } = res;
+      console.log(data);
+      dispatch({
+        result: data.use_massive_reports_status,
+        type: users.GET_MASSIVE_REPORTS_STATUS_SUCCESS,
+      });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data ? err.data.message : "Erro desconhecido - invoice";
+
+      toast.error(message, {
+        duration: 5000,
+      });
+      dispatch({ type: users.GET_MASSIVE_REPORTS_STATUS_FAILURE });
     });
 };
 

@@ -458,6 +458,24 @@ export default function userReducer(state = initialState, action) {
         devices: [],
       };
 
+    case users.GET_MASSIVE_REPORTS_STATUS_REQUEST:
+      return {
+        ...state,
+        massive_reports_status: undefined,
+      };
+
+    case users.GET_MASSIVE_REPORTS_STATUS_SUCCESS:
+      return {
+        ...state,
+        massive_reports_status: result,
+      };
+
+    case users.GET_MASSIVE_REPORTS_STATUS_FAILURE:
+      return {
+        ...state,
+        massive_reports_status: undefined,
+      };
+
     case users.GET_ALL_DELETED_DEVICES_REQUEST:
       return {
         ...state,
