@@ -76,11 +76,11 @@ export function DefineCapacityAndDevicesEmails({
 
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices)).map(
       (data) => {
+        console.log(data);
         return {
           dev_uuid: data.uuid,
-          dev_address: data.address,
-          ic_city: data.ic_city,
-          ic_states: data.ic_states,
+          capacity: data.capacity,
+          address: data.address,
         };
       }
     );
@@ -144,16 +144,16 @@ export function DefineCapacityAndDevicesEmails({
 
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
       (data) => {
+        console.log(data);
         return {
           dev_uuid: data.uuid,
-          ic_city: data.ic_city,
-          ic_states: data.ic_states,
+          address: data.address,
+          capacity: data.capacity,
         };
       }
     );
 
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
-
     dispatch(
       updateEmailAndCapacity(
         { arrayplants: devices },
@@ -175,14 +175,11 @@ export function DefineCapacityAndDevicesEmails({
 
           return {
             ...allDevicesFromUserItem,
-            address: temp[0]?.dev_address,
-            ic_city: temp[0]?.ic_city,
-            ic_states: temp[0]?.ic_states,
-            dev_capacity: temp[0]?.dev_capacity,
+            address: temp[0]?.address,
+            capacity: temp[0]?.capacity,
           };
         }
       );
-
       setData(setupDataWithAddressData);
     } else {
       setData(usersAPIData.devices);
@@ -284,10 +281,10 @@ export function DefineCapacityAndDevicesEmails({
         sort: true,
         customBodyRender: (name, dataTable) => {
           return (
-            <Box sx={{ width: 72, height: 40 }}>
+            <Box sx={{ width: 82, height: 40 }}>
               <TextField
                 type="number"
-                defaultValue={dataTable.rowData[4]}
+                defaultValue={dataTable.rowData[3]}
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
