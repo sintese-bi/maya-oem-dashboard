@@ -144,7 +144,6 @@ export function DefineCapacityAndDevicesEmails({
 
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
       (data) => {
-        console.log(data);
         return {
           dev_uuid: data.uuid,
           address: data.address,
@@ -185,6 +184,10 @@ export function DefineCapacityAndDevicesEmails({
       setData(usersAPIData.devices);
     }
   }, [usersAPIData.devices]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const options = {
     filter: true,
@@ -257,6 +260,13 @@ export function DefineCapacityAndDevicesEmails({
                 getOptionLabel={(city) => {
                   return `${city.ic_city}-${city.ic_states}`;
                 }} // Exibir nome do município e estado
+                isOptionEqualToValue={(option, value) => {
+                  if (
+                    option.ic_states == value.ic_states ||
+                    value.ic_states == ""
+                  )
+                    return true;
+                }}
                 defaultValue={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
@@ -394,7 +404,7 @@ export function DefineCapacityAndDevicesEmails({
     },
   ];
 
-  if (data.length == 0) {
+  if (usersAPIData.isDashboardDataLoading) {
     return (
       <Box
         sx={{
