@@ -671,15 +671,15 @@ export const updateEmailAndCapacity =
       (device) => device.dev_address !== undefined
     );
 
-    //stateAndCityNotUndefined.map((device) => {
-    //  const dev_uuid = device.dev_uuid;
-    //  const city_name = device.dev_address;
-    //  axios.post(
-    //    `https://app2.mayaoem.com.br/v2/updateLocation`,
-    //    { dev_uuid, city_name },
-    //    configRequest()
-    //  );
-    //});
+    stateAndCityNotUndefined.map((device) => {
+      const dev_uuid = device.dev_uuid;
+      const city_name = device.dev_address;
+      axios.post(
+        `https://app2.mayaoem.com.br/v2/updateLocation`,
+        { dev_uuid, city_name },
+        configRequest()
+      );
+    });
 
     dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
     api
