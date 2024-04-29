@@ -185,10 +185,6 @@ export function DefineCapacityAndDevicesEmails({
     }
   }, [usersAPIData.devices]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const options = {
     filter: true,
     rowsPerPage: 10,
@@ -267,7 +263,7 @@ export function DefineCapacityAndDevicesEmails({
                   )
                     return true;
                 }}
-                defaultValue={selectedCity}
+                value={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField
@@ -294,7 +290,7 @@ export function DefineCapacityAndDevicesEmails({
             <Box sx={{ width: 82, height: 40 }}>
               <TextField
                 type="number"
-                defaultValue={dataTable.rowData[3]}
+                value={dataTable.rowData[3]}
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
