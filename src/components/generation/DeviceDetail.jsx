@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { getUserCookie } from "src/services/session";
 import * as Yup from "yup";
@@ -37,6 +37,7 @@ import BoltIcon from "@mui/icons-material/Bolt";
 import BusinessIcon from "@mui/icons-material/Business";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NumbersIcon from "@mui/icons-material/Numbers";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 // SCHEMA DE VALIDAÇÃO DE CAMPOS
 const validateSchema = Yup.object().shape({
@@ -54,7 +55,7 @@ export const DeviceDetail = (props) => {
     devUuid,
     blUuidState,
   } = props;
-
+  const { handleGetDashboardRequest } = useContext(DashboardContext);
   const [selectedCity, setSelectedCity] = useState(null);
   const { profileLevel } = getUserCookie() || null;
   const [isSaved, setIsSaved] = useState(false);
@@ -78,16 +79,21 @@ export const DeviceDetail = (props) => {
     setIsSaved(true);
 
     try {
-      const response = await api.get(
-        `/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
-        {
-          params: {
-            potSistema: values.inverterPower,
-            devUuid: devUuid,
-            name: values.name,
-          },
-        }
-      );
+      const response = await api
+        .get(
+          `/irrcoef/${devUuid}/${selectedCity.ic_states}/${selectedCity.ic_city}`,
+          {
+            params: {
+              potSistema: values.inverterPower,
+              devUuid: devUuid,
+              name: values.name,
+            },
+          }
+        )
+        .then(() => {
+          handleGetDashboardRequest();
+          localStorage.removeItem("setupData");
+        });
 
       // O valor estimado da geração será retornado na resposta do servidor.
       const gen_estimated1 = response.data;

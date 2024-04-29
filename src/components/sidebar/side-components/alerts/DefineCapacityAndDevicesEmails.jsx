@@ -144,7 +144,6 @@ export function DefineCapacityAndDevicesEmails({
 
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arrayplants)).map(
       (data) => {
-        console.log(data);
         return {
           dev_uuid: data.uuid,
           address: data.address,
@@ -257,7 +256,14 @@ export function DefineCapacityAndDevicesEmails({
                 getOptionLabel={(city) => {
                   return `${city.ic_city}-${city.ic_states}`;
                 }} // Exibir nome do município e estado
-                defaultValue={selectedCity}
+                isOptionEqualToValue={(option, value) => {
+                  if (
+                    option.ic_states == value.ic_states ||
+                    value.ic_states == ""
+                  )
+                    return true;
+                }}
+                value={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField
@@ -284,7 +290,7 @@ export function DefineCapacityAndDevicesEmails({
             <Box sx={{ width: 82, height: 40 }}>
               <TextField
                 type="number"
-                defaultValue={dataTable.rowData[3]}
+                value={dataTable.rowData[3]}
                 label="Potência"
                 sx={{ width: "100%" }}
                 onChange={(e) => {
@@ -394,7 +400,7 @@ export function DefineCapacityAndDevicesEmails({
     },
   ];
 
-  if (data.length == 0) {
+  if (usersAPIData.isDashboardDataLoading) {
     return (
       <Box
         sx={{
