@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ClientReport } from "src/reports/ClientReport";
@@ -51,11 +51,13 @@ import { DeviceDetail } from "../../components/generation/DeviceDetail";
 import { GenerationBI } from "src/components/generation/GenerationBI";
 import Tabs from "../../components/shared/Tabs";
 import { GenerationHeader } from "src/components/generation/generation-header";
+import { DashboardContext } from "src/contexts/dashboard-context";
 
 const Generation = () => {
   const location = useLocation();
   const { blUuidState, devUuidState, useNameState, capacity } =
     location.state || {};
+
   const graphRef = useRef(null);
   const [selectedDevUuid, setSelectedDevUuid] = useState(devUuidState);
   const [open, setOpen] = useState(false);
