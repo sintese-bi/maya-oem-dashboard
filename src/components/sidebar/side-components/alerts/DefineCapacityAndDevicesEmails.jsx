@@ -155,6 +155,7 @@ export function DefineCapacityAndDevicesEmails({
       }
     );
 
+    console.log(devices);
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
     dispatch(
       updateEmailAndCapacity(
@@ -267,7 +268,7 @@ export function DefineCapacityAndDevicesEmails({
                   )
                     return true;
                 }}
-                value={selectedCity}
+                defaultValue={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField

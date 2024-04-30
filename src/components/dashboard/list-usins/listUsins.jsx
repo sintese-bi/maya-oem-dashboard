@@ -80,7 +80,8 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
+      {/**
+       * <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
         <Button
           variant="contained"
           onClick={() => {
@@ -126,6 +127,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
         </Box>
       </Box>
 
+       */}
       <Plants
         title={"Listagem de usinas"}
         data={data}

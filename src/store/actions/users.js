@@ -666,14 +666,16 @@ export const updateUser = (params) => (dispatch) => {
 };
 
 export const updateEmailAndCapacity =
-  (params, handleGetDashboardRequest) => (dispatch) => {
+  (params, handleGetDashboardRequest, getDevices) => (dispatch) => {
     const stateAndCityNotUndefined = params.arrayplants.filter(
-      (device) => device.dev_address !== undefined
+      (device) => device.address !== undefined
     );
 
+    console.log(stateAndCityNotUndefined);
+
     stateAndCityNotUndefined.map((device) => {
-      const dev_uuid = device.dev_uuid;
-      const city_name = device.dev_address;
+      const dev_uuid = device.uuid;
+      const city_name = device.address;
       axios.post(
         `https://app2.mayaoem.com.br/v2/updateLocation`,
         { dev_uuid, city_name },
