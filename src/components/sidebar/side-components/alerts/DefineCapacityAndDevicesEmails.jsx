@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import MUIDataTable from "mui-datatables";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import citiesData from "src/services/municipios";
+import { getDevices } from "src/store/actions/devices";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -33,6 +34,8 @@ export function DefineCapacityAndDevicesEmails({
   setDescription,
   setSecondaryAction,
 }) {
+  const { blUuidState, devUuidState, useNameState, capacity } =
+    location.state || {};
   const { usersAPIData, handleGetDashboardRequest } =
     useContext(DashboardContext);
   const { updatingEmailAndCapacity } = useSelector((state) => state.users);
@@ -152,11 +155,13 @@ export function DefineCapacityAndDevicesEmails({
       }
     );
 
+    console.log(devices);
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
     dispatch(
       updateEmailAndCapacity(
         { arrayplants: devices },
-        handleGetDashboardRequest
+        handleGetDashboardRequest,
+        getDevices
       )
     );
   }
@@ -263,7 +268,7 @@ export function DefineCapacityAndDevicesEmails({
                   )
                     return true;
                 }}
-                value={selectedCity}
+                defaultValue={selectedCity}
                 onChange={(event, newValue) => setSelectedCity(newValue)}
                 renderInput={(params) => (
                   <TextField

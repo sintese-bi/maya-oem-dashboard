@@ -110,7 +110,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassiveReportsStatusRequest() {
-    //dispatch(massiveReportsStatus({ use_uuid }));
+    dispatch(massiveReportsStatus({ use_uuid }));
   }
 
   function handleGetAllDeletedDevicesRequest() {
