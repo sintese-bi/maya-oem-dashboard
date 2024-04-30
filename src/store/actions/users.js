@@ -5,6 +5,7 @@ import api, { configRequest } from "../../services/api";
 
 import toast from "react-hot-toast";
 import axios from "axios";
+import { getDevices } from "./devices";
 
 const config = {
   headers: {
@@ -687,6 +688,7 @@ export const updateEmailAndCapacity =
         const { data } = res;
         dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_SUCCESS });
         handleGetDashboardRequest();
+        dispatch(getDevices(params.arrayplants[0].blUuid));
         toast.success(data.message, {
           duration: 3000,
         });
