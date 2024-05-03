@@ -62,7 +62,6 @@ export const deviceRecover =
       .put("/devicerecover", params, configRequest())
       .then((res) => {
         const { data } = res;
-        console.log(data);
         toast.success(data.message, {
           duration: 5000,
         });

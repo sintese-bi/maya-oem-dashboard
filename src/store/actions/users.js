@@ -579,9 +579,9 @@ export const massiveReportsStatus = (params) => (dispatch) => {
     .post("/massiveReportsStatus", params, configRequest())
     .then((res) => {
       const { data } = res;
-      console.log(data);
+      const { use_massive_reports_status, amount_of_reports } = data;
       dispatch({
-        result: data.use_massive_reports_status,
+        result: { use_massive_reports_status, amount_of_reports },
         type: users.GET_MASSIVE_REPORTS_STATUS_SUCCESS,
       });
     })
@@ -671,17 +671,15 @@ export const updateEmailAndCapacity =
       (device) => device.address !== undefined
     );
 
-    console.log(stateAndCityNotUndefined);
-
-    stateAndCityNotUndefined.map((device) => {
-      const dev_uuid = device.uuid;
-      const city_name = device.address;
-      axios.post(
-        `https://app2.mayaoem.com.br/v2/updateLocation`,
-        { dev_uuid, city_name },
-        configRequest()
-      );
-    });
+    //stateAndCityNotUndefined.map((device) => {
+    //  const dev_uuid = device.uuid;
+    //  const city_name = device.address;
+    //  axios.post(
+    //    `https://app2.mayaoem.com.br/v2/updateLocation`,
+    //    { dev_uuid, city_name },
+    //    configRequest()
+    //  );
+    //});
 
     dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
     api

@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { reportAdministratorRule } from "src/reports/reportsRules/reportAdministratorRule";
 import { TotalMonth } from "src/components/dashboard/total-month/total-month";
 
-import { openWebScoketConnection } from "src/services/web-socket";
-
 import "./index.css";
 
 // QUERYS

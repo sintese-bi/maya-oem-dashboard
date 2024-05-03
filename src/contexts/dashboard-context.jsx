@@ -1,4 +1,5 @@
 import moment from "moment";
+import { openWebSocketConnection } from "src/services/web-socket";
 import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { brazilStates } from "src/constants/states";
@@ -110,7 +111,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassiveReportsStatusRequest() {
-    //dispatch(massiveReportsStatus({ use_uuid }));
+    dispatch(massiveReportsStatus({ use_uuid }));
   }
 
   function handleGetAllDeletedDevicesRequest() {
@@ -136,6 +137,7 @@ export const DashboardProvider = ({ children }) => {
   function handleMassEmail() {
     dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
     handleReportCountingRequest();
+    handleMassiveReportsStatusRequest();
   }
 
   function handleReportCountingRequest() {
