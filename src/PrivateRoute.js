@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { getUserCookie } from "./services/session";
 import { DashboardProvider } from "./contexts/dashboard-context";
+import { WebSocketProvider } from "./contexts/web-scoket";
 
 export default function PrivateRoute() {
   // SE O USUARIO NAO ESTIVER LOGADO, REDIRECIONA PARA TELA DE LOGIN
@@ -10,7 +11,9 @@ export default function PrivateRoute() {
 
   return (
     <DashboardProvider>
-      <Outlet />
+      <WebSocketProvider>
+        <Outlet />
+      </WebSocketProvider>
     </DashboardProvider>
   );
 }
