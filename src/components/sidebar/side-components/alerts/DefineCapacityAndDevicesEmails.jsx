@@ -27,6 +27,9 @@ import MUIDataTable from "mui-datatables";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import citiesData from "src/services/municipios";
 import { getDevices } from "src/store/actions/devices";
+import { Address } from "./DefineCapacityFields/Address";
+import { Capacity } from "./DefineCapacityFields/Capacity";
+import { InstallNumber } from "./DefineCapacityFields/InstallNumber";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -79,7 +82,6 @@ export function DefineCapacityAndDevicesEmails({
 
     let arrayplantsWithNoBase64 = JSON.parse(JSON.stringify(arraydevices)).map(
       (data) => {
-        console.log(data);
         return {
           dev_uuid: data.uuid,
           capacity: data.capacity,
@@ -154,8 +156,6 @@ export function DefineCapacityAndDevicesEmails({
         };
       }
     );
-
-    console.log(devices);
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
     dispatch(
       updateEmailAndCapacity(
@@ -223,20 +223,15 @@ export function DefineCapacityAndDevicesEmails({
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
-          let selectedCity = {
-            ic_states: dataTable.rowData[2]?.split("-")[1],
-            ic_city: dataTable.rowData[2]?.split("-")[0],
-          };
-
-          function setSelectedCity(value) {
-            selectedCity = value;
+          function setValues(value) {
+            let selectedCity = value;
 
             let deviceInfo = devices.filter(
               (item) => item.uuid === dataTable.rowData[0]
             );
 
             if (deviceInfo.length != 0) {
-              deviceInfo[0].address = `${selectedCity.ic_city}-${selectedCity.ic_states}`;
+              deviceInfo[0].address = `${selectedCity?.ic_city}-${selectedCity?.ic_states}`;
 
               const indiceObjetoExistente = devices.findIndex(
                 (item) => item.uuid === deviceInfo[0].dev_uuid
@@ -253,34 +248,7 @@ export function DefineCapacityAndDevicesEmails({
             }
           }
 
-          return (
-            <Box sx={{ width: 294, height: 40 }}>
-              <Autocomplete
-                name="address"
-                options={citiesData}
-                getOptionLabel={(city) => {
-                  return `${city.ic_city}-${city.ic_states}`;
-                }} // Exibir nome do município e estado
-                isOptionEqualToValue={(option, value) => {
-                  if (
-                    option.ic_states == value.ic_states ||
-                    value.ic_states == ""
-                  )
-                    return true;
-                }}
-                defaultValue={selectedCity}
-                onChange={(event, newValue) => setSelectedCity(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Endereço de Instalação"
-                    variant="outlined"
-                    sx={{ width: 300 }}
-                  />
-                )}
-              />
-            </Box>
-          );
+          return <Address value={dataTable.rowData[2]} setValues={setValues} />;
         },
       },
     },
@@ -291,39 +259,36 @@ export function DefineCapacityAndDevicesEmails({
         filter: true,
         sort: true,
         customBodyRender: (name, dataTable) => {
+          function setValuesCapacity(capacityValue) {
+            let capacity = capacityValue;
+
+            let deviceInfo = devices.filter(
+              (item) => item.uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].capacity = capacity;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].capacity = capacity;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+
           return (
-            <Box sx={{ width: 82, height: 40 }}>
-              <TextField
-                type="number"
-                value={dataTable.rowData[3]}
-                label="Potência"
-                sx={{ width: "100%" }}
-                onChange={(e) => {
-                  let capacity = e.target.value;
-
-                  let deviceInfo = devices.filter(
-                    (item) => item.uuid === dataTable.rowData[0]
-                  );
-
-                  if (deviceInfo.length != 0) {
-                    deviceInfo[0].capacity = capacity;
-
-                    const indiceObjetoExistente = devices.findIndex(
-                      (item) => item.uuid === deviceInfo[0].dev_uuid
-                    );
-
-                    devices[indiceObjetoExistente] = deviceInfo[0];
-                  } else {
-                    let newDeviceToAdd = data.filter(
-                      (item) => item.uuid === dataTable.rowData[0]
-                    );
-                    newDeviceToAdd[0].capacity = capacity;
-
-                    devices.push(newDeviceToAdd[0]);
-                  }
-                }}
-              />
-            </Box>
+            <Capacity
+              value={dataTable.rowData[3]}
+              setValuesCapacity={setValuesCapacity}
+            />
           );
         },
       },
@@ -399,6 +364,46 @@ export function DefineCapacityAndDevicesEmails({
                 style={{ width: "80px", height: "40px", borderRadius: "50%" }}
               />
             </Box>
+          );
+        },
+      },
+    },
+    {
+      name: "dev_install",
+      label: "Número de Instalação",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          function setValuesInstallNumber(install_number) {
+            let dev_install = install_number;
+
+            let deviceInfo = devices.filter(
+              (item) => item.uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].dev_install = dev_install;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].dev_install = dev_install;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+          return (
+            <InstallNumber
+              value={dataTable.rowData[5]}
+              setValuesInstallNumber={setValuesInstallNumber}
+            />
           );
         },
       },

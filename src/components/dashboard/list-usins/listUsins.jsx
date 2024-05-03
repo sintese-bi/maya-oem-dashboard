@@ -1,4 +1,13 @@
-import { Box, Button, Card, Modal, TextField, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  LinearProgress,
+  Modal,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Plants from "../total-month/total-month-components/total-month-devices";
 import { TopUsins } from "../top-usins/topUsins";
 import { useSelector } from "react-redux";
@@ -12,8 +21,11 @@ import { columnsDevices } from "src/constants/columns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import { amountOfSentEmails } from "src/services/web-socket";
+import { WebSocketContext } from "src/contexts/web-scoket";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
+  const [amountOfSentEmails, setAmountOfSentEmails] = useState(0);
   const {
     isLoading,
     brands,
@@ -26,6 +38,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     offline,
     online,
     massive_reports_status,
+    amount_of_reports,
   } = useSelector((state) => state.users);
 
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
@@ -36,10 +49,41 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     handlePostUseDateReport,
     handleMassiveReportsStatusRequest,
   } = useContext(DashboardContext);
+
   const [open, setOpen] = useState(false);
 
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
+
+  useEffect(() => {
+    var exampleSocket = new WebSocket("ws://localhost:8081", "protocolOne");
+
+    exampleSocket.onopen = function (event) {
+      exampleSocket.send(
+        "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
+      );
+    };
+
+    exampleSocket.onmessage = (message) => {
+      setAmountOfSentEmails(message.data); // Update the state
+    };
+
+    exampleSocket.onerror = (err) => {
+      console.log(err);
+    };
+
+    // Clean-up function
+    return () => {
+      exampleSocket.close(); // Close the WebSocket connection when the component unmounts
+    };
+  }, []); // Empty dependency array to run the effect only once
+
+  useEffect(() => {
+    if (amountOfSentEmails >= 100) {
+      setAmountOfSentEmails(0);
+      handleMassiveReportsStatusRequest();
+    }
+  }, [amountOfSentEmails]);
 
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
@@ -78,9 +122,29 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     },
   };
 
+  const normalise = (value) =>
+    ((value - 0) * amount_of_reports) / (amount_of_reports - 0);
+
+  function LinearProgressWithLabel(props) {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ width: "300px", mr: 1 }}>
+          <LinearProgress
+            variant="determinate"
+            value={normalise(props.value)}
+          />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="body2" color="text.secondary">{`${Math.round(
+            props.value
+          )}%`}</Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Card sx={{ p: 1, width: "100%" }}>
-      *{" "}
       <Box sx={{ width: "100%", display: "flex", gap: 4 }}>
         <Button
           variant="contained"
@@ -96,14 +160,30 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
-            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
               handleMassEmail();
+              if (massive_reports_status == "executing") {
+                setAmountOfSentEmails(0);
+              }
             }}
           >
-            {"Envio massivo de relatórios"}
+            {massive_reports_status !== "executing" ? (
+              "Envio massivo de relatórios"
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="body2">Cancelar envio</Typography>
+                <LinearProgressWithLabel value={amountOfSentEmails} />
+              </Box>
+            )}
           </Button>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -126,6 +206,10 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           </LocalizationProvider>
         </Box>
       </Box>
+<<<<<<< HEAD
+=======
+
+>>>>>>> ae5b24f1db258ab02f5bbe2f08c3377768aa8524
       <Plants
         title={"Listagem de usinas"}
         data={data}
