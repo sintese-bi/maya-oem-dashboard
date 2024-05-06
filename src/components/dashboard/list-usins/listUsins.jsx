@@ -206,10 +206,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           </LocalizationProvider>
         </Box>
       </Box>
-<<<<<<< HEAD
-=======
-
->>>>>>> ae5b24f1db258ab02f5bbe2f08c3377768aa8524
       <Plants
         title={"Listagem de usinas"}
         data={data}
