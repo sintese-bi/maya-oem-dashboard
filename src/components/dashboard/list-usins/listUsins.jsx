@@ -55,35 +55,35 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
 
-  useEffect(() => {
-    var exampleSocket = new WebSocket("ws://localhost:8081", "protocolOne");
+  //useEffect(() => {
+  //  var exampleSocket = new WebSocket("ws://localhost:8081", "protocolOne");
+  //
+  //  exampleSocket.onopen = function (event) {
+  //    exampleSocket.send(
+  //      "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
+  //    );
+  //  };
+  //
+  //  exampleSocket.onmessage = (message) => {
+  //    setAmountOfSentEmails(message.data); // Update the state
+  //  };
+  //
+  //  exampleSocket.onerror = (err) => {
+  //    console.log(err);
+  //  };
+  //
+  //  // Clean-up function
+  //  return () => {
+  //    exampleSocket.close(); // Close the WebSocket connection when the component unmounts
+  //  };
+  //}, []); // Empty dependency array to run the effect only once
 
-    exampleSocket.onopen = function (event) {
-      exampleSocket.send(
-        "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
-      );
-    };
-
-    exampleSocket.onmessage = (message) => {
-      setAmountOfSentEmails(message.data); // Update the state
-    };
-
-    exampleSocket.onerror = (err) => {
-      console.log(err);
-    };
-
-    // Clean-up function
-    return () => {
-      exampleSocket.close(); // Close the WebSocket connection when the component unmounts
-    };
-  }, []); // Empty dependency array to run the effect only once
-
-  useEffect(() => {
-    if (amountOfSentEmails >= 100) {
-      setAmountOfSentEmails(0);
-      handleMassiveReportsStatusRequest();
-    }
-  }, [amountOfSentEmails]);
+  //useEffect(() => {
+  //  if (amountOfSentEmails >= 100) {
+  //    setAmountOfSentEmails(0);
+  //    handleMassiveReportsStatusRequest();
+  //  }
+  //}, [amountOfSentEmails]);
 
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
@@ -160,30 +160,19 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
+            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
               handleMassEmail();
-              if (massive_reports_status == "executing") {
-                setAmountOfSentEmails(0);
-              }
+              //if (massive_reports_status == "executing") {
+              //  setAmountOfSentEmails(0);
+              //}
             }}
           >
-            {massive_reports_status !== "executing" ? (
-              "Envio massivo de relatórios"
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="body2">Cancelar envio</Typography>
-                <LinearProgressWithLabel value={amountOfSentEmails} />
-              </Box>
-            )}
+            {massive_reports_status !== "executing"
+              ? "Envio massivo de relatórios"
+              : "Envio massivo em andamento"}
           </Button>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
