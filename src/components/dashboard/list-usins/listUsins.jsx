@@ -56,7 +56,10 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     useState(massEmailFinished);
 
   useEffect(() => {
-    var exampleSocket = new WebSocket("ws://localhost:8081", "protocolOne");
+    var exampleSocket = new WebSocket(
+      "wss://email.mayaoem.com.br",
+      "protocolOne"
+    );
 
     exampleSocket.onopen = function (event) {
       exampleSocket.send(
@@ -206,10 +209,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           </LocalizationProvider>
         </Box>
       </Box>
-<<<<<<< HEAD
-=======
-
->>>>>>> ae5b24f1db258ab02f5bbe2f08c3377768aa8524
       <Plants
         title={"Listagem de usinas"}
         data={data}

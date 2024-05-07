@@ -40,6 +40,7 @@ import {
 } from "@react-pdf/renderer";
 import { ChartGenrealdaylasthour } from "./components/shared/Charts";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 Font.register({
   family: "Open Sans",
@@ -187,6 +188,12 @@ const Report = () => {
   const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
   const [graphDailyBase64, setGraphDailyBase64] = useState("");
 
+  const { report_client_data } = useSelector((state) => state.devices);
+
+  useEffect(() => {
+    console.log(report_client_data);
+  }, [report_client_data]);
+
   return (
     <>
       <PDFViewer
@@ -205,7 +212,9 @@ const Report = () => {
           >
             <View style={styles.header}>
               <View style={styles.apresentation}>
-                <Text style={styles.titleText}>Felipe</Text>
+                <Text style={styles.titleText}>
+                  {report_client_data["Nome_usina"]}
+                </Text>
                 <Text style={styles.biggerWeakText}>
                   Segue os resultados da sua Usina:
                 </Text>
@@ -217,7 +226,9 @@ const Report = () => {
                 </View>
                 <View style={styles.unityAndPeriodItem}>
                   <Text style={styles.biggerWeakText}>Período</Text>
-                  <Text style={styles.titleText}>FEV/2024</Text>
+                  <Text style={styles.titleText}>
+                    {report_client_data["Período"]}
+                  </Text>
                   <Text style={styles.strongText}>08/02/2024 a 11/03/2024</Text>
                 </View>
               </View>
@@ -236,19 +247,25 @@ const Report = () => {
                   PAGARIA SEM A USINA (R$)
                 </Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>183,18</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Pagou_sem_Usina"]}
+                  </Text>
                 </View>
               </View>
               <View style={styles.smallerBigNumbersItem}>
                 <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>115,62</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Pago"]}
+                  </Text>
                 </View>
               </View>
               <View style={styles.smallerBigNumbersItem}>
                 <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>67,56</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Economia"]}
+                  </Text>
                 </View>
               </View>
               <View style={styles.smallerBigNumbersItem}>
@@ -256,13 +273,17 @@ const Report = () => {
                   CONSUMO TOTAL (KWH)
                 </Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>272,82</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Consumo_total"]}
+                  </Text>
                 </View>
               </View>
               <View style={styles.smallerBigNumbersItem}>
                 <Text style={styles.smallerBigNumbersLabel}>GERAÇÃO (KWH)</Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>235,82</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Geração"]}
+                  </Text>
                 </View>
               </View>
               <View style={styles.smallerBigNumbersItem}>
@@ -270,7 +291,9 @@ const Report = () => {
                   DESEMPENHO (%)
                 </Text>
                 <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>117,45</Text>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Desempenho"]}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -307,7 +330,9 @@ const Report = () => {
                 <View style={styles.energyFields}>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ANTERIOR</Text>
-                    <Text style={styles.strongText}>0</Text>
+                    <Text style={styles.strongText}>
+                      {report_client_data["Saldo_anterior"]}
+                    </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>COMPENSADO(-)</Text>
@@ -317,7 +342,9 @@ const Report = () => {
                     <Text style={styles.weakText}>
                       TRANSFERIDO (-) OU RECEBIDO (+)
                     </Text>
-                    <Text style={styles.strongText}>-37,00</Text>
+                    <Text style={styles.strongText}>
+                      {report_client_data["Transferido"]}
+                    </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>EXPIRADO</Text>
@@ -327,7 +354,9 @@ const Report = () => {
                 <View style={styles.energyFields}>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ATUAL</Text>
-                    <Text style={styles.strongText}>0</Text>
+                    <Text style={styles.strongText}>
+                      {report_client_data["Saldo_atual"]}
+                    </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>
@@ -459,9 +488,7 @@ const Report = () => {
                   marginTop: "100px",
                   borderRadius: "20px",
                 }}
-              >
-                <Image src={graphDailyBase64} />
-              </View>
+              ></View>
             </View>
             <View style={{ marginTop: "260px", padding: "0px 50px 0px 50px" }}>
               <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
@@ -477,53 +504,11 @@ const Report = () => {
                   marginTop: "100px",
                   borderRadius: "20px",
                 }}
-              >
-                <Image src={graphMonthlyBase64} />
-              </View>
+              ></View>
             </View>
           </Page>
         </Document>
       </PDFViewer>
-      <ChartGenrealdaylasthour
-        setGraphMonthlyBase64={() => {}}
-        setGraphDailyBase64={setGraphDailyBase64}
-        genrealdaylasthourData={{
-          data: [
-            { d2: "1200", hora: "12h", alert: "" },
-            { d2: "1100", hora: "13h", alert: "" },
-            { d2: "1120", hora: "14h", alert: "" },
-            { d2: "1250", hora: "15h", alert: "" },
-            { d2: "1520", hora: "16h", alert: "" },
-            { d2: "1140", hora: "17h", alert: "" },
-            { d2: "1413", hora: "18h", alert: "" },
-            { d2: "1000", hora: "19h", alert: "" },
-            { d2: "1230", hora: "20h", alert: "" },
-            { d2: "1730", hora: "21h", alert: "" },
-            { d2: "1000", hora: "22h", alert: "" },
-            { d2: "2000", hora: "23h", alert: "" },
-          ],
-        }}
-      />
-      <ChartGenrealdaylasthour
-        setGraphMonthlyBase64={setGraphMonthlyBase64}
-        setGraphDailyBase64={() => {}}
-        genrealdaylasthourData={{
-          data: [
-            { d2: "1400", hora: "01", alert: "" },
-            { d2: "1500", hora: "02", alert: "" },
-            { d2: "1020", hora: "03", alert: "" },
-            { d2: "950", hora: "04", alert: "" },
-            { d2: "1520", hora: "05", alert: "" },
-            { d2: "1035", hora: "06", alert: "" },
-            { d2: "403", hora: "07", alert: "" },
-            { d2: "1000", hora: "08", alert: "" },
-            { d2: "1302", hora: "09", alert: "" },
-            { d2: "1730", hora: "10", alert: "" },
-            { d2: "1000", hora: "11", alert: "" },
-            { d2: "2000", hora: "12", alert: "" },
-          ],
-        }}
-      />
     </>
   );
 };

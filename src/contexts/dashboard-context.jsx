@@ -13,6 +13,7 @@ import {
   createDevice,
   genrealdayDevicelasthour,
   genrealdaylasthour,
+  gettingReportData,
 } from "src/store/actions/devices";
 import {
   alertFrequency,
@@ -112,6 +113,10 @@ export const DashboardProvider = ({ children }) => {
 
   function handleMassiveReportsStatusRequest() {
     dispatch(massiveReportsStatus({ use_uuid }));
+  }
+
+  function handleGettingReportDataRequest() {
+    dispatch(gettingReportData());
   }
 
   function handleGetAllDeletedDevicesRequest() {
@@ -287,6 +292,7 @@ export const DashboardProvider = ({ children }) => {
     handleDeletedDevices();
     handleAlertsFrequency();
     handleUseLogo();
+    handleGettingReportDataRequest();
   }, [use_uuid]);
 
   useEffect(() => {
