@@ -57,7 +57,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   useEffect(() => {
     var exampleSocket = new WebSocket(
-      "wss://email.mayaoem.com.br",
+      "wss://test-render-damd.onrender.com",
       "protocolOne"
     );
 
@@ -77,7 +77,10 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
     // Clean-up function
     return () => {
-      exampleSocket.close(); // Close the WebSocket connection when the component unmounts
+      if (exampleSocket.readyState === 1) {
+        // <-- This is important
+        exampleSocket.close();
+      }
     };
   }, []); // Empty dependency array to run the effect only once
 
