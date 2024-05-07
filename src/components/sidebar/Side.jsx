@@ -100,7 +100,7 @@ export const Side = ({ sideState, setSideState }) => {
     "AlertsDefineComponent"
   );
   const [welcome, setWelcome] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(firstTime ? true : false);
 
   const toggleDrawer = (open) => (event) => {
     if (

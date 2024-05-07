@@ -82,7 +82,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   }, []); // Empty dependency array to run the effect only once
 
   useEffect(() => {
-    if (amountOfSentEmails >= 100) {
+    if (Math.round(amountOfSentEmails) >= 100) {
       setAmountOfSentEmails(0);
       handleMassiveReportsStatusRequest();
     }

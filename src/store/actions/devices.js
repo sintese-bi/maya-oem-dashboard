@@ -86,9 +86,9 @@ export const gettingReportData = (params) => (dispatch) => {
       const message =
         err && err.data
           ? err.data.message
-          : "Erro desconhecido - deviceRecover";
+          : "Erro desconhecido - gettingReportData";
 
-      toast.error(`${message} deviceRecover`, {
+      toast.error(`${message} gettingReportData`, {
         duration: 5000,
       });
       dispatch({ type: devices.GET_CLIENT_REPORT_DATA_FAILURE, message });

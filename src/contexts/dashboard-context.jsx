@@ -116,7 +116,7 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleGettingReportDataRequest() {
-    dispatch(gettingReportData());
+    //dispatch(gettingReportData());
   }
 
   function handleGetAllDeletedDevicesRequest() {
