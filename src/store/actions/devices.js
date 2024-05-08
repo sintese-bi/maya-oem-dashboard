@@ -76,8 +76,9 @@ export const gettingReportData = (params) => (dispatch) => {
       toast.success(data.message, {
         duration: 5000,
       });
-      dispatch({ type: devices.GET_CLIENT_REPORT_DATA_SUCCESS, result: data });
       console.log(data);
+
+      dispatch({ type: devices.GET_CLIENT_REPORT_DATA_SUCCESS, result: data });
     })
     .catch((error) => {
       const { response: err } = error;
