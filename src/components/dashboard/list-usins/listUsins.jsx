@@ -57,7 +57,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   useEffect(() => {
     var exampleSocket = new WebSocket(
-      "wss://test-render-damd.onrender.com",
+      "wss://websocket-test-dev-1.onrender.com/",
       "protocolOne"
     );
 
@@ -68,7 +68,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     };
 
     exampleSocket.onmessage = (message) => {
-      setAmountOfSentEmails(message.data); // Update the state
+      console.log(message.data); // Update the state
     };
 
     exampleSocket.onerror = (err) => {
