@@ -164,6 +164,387 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
   );
 };
 
+export const ChartGenerationMonthlyClientReport = (props) => {
+  const theme = useTheme();
+  const { monthlyData, setGraphMonthlyBase64 } = props;
+  if (monthlyData === undefined) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box width={"90%"} height={520}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  } else {
+    const labels = monthlyData.map((genItem) => {
+      return moment(genItem["day"]).format("DD/MM");
+    });
+
+    const genReal = monthlyData.map((genItem) => {
+      return genItem["latest_gen_real"];
+    });
+
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: "Geração real",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração real",
+          data: genReal,
+          borderColor: "#8FC1B5",
+          backgroundColor: "#dce6e3",
+          tension: 0.4,
+          fill: "start",
+        },
+      ],
+    };
+
+    const plugin = {
+      id: "customCanvasBackgroundColor",
+      beforeDraw: (chart, args, options) => {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = options.color || "#99ffff";
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      },
+      legend: {
+        position: "top",
+      },
+    };
+
+    const options = {
+      animation: {
+        onComplete: function (animation) {
+          const chart = animation.chart;
+          const canvas = chart.canvas;
+
+          // Convertendo o conteúdo do canvas em base64.
+          const base64Image = canvas.toDataURL("image/jpeg");
+
+          // Atualizando o estado com a string base64.
+          setGraphMonthlyBase64(base64Image);
+
+          // Apagando o gráfico
+          //chart.destroy();
+        },
+      },
+      cornerRadius: 20,
+      layout: { padding: 0 },
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        customCanvasBackgroundColor: {
+          color: "white",
+        },
+        tooltip: {
+          displayColors: false,
+          enabled: true,
+          intersect: false,
+        },
+      },
+      yAxes: [
+        {
+          ticks: {
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+          },
+        },
+      ],
+      tooltips: {
+        backgroundColor: theme.palette.background.paper,
+        bodyFontColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        enabled: true,
+        footerFontColor: theme.palette.text.secondary,
+        intersect: false,
+        mode: "index",
+        titleFontColor: theme.palette.text.primary,
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var datasetLabel =
+              data.datasets[tooltipItem.datasetIndex].label || "";
+            var value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return datasetLabel + ": " + value;
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "KWh",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "Dias",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+      },
+    };
+
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "620px",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Relação horária de geração
+        </Typography>
+
+        <Chart
+          type="bar"
+          options={options}
+          data={data}
+          plugins={[plugin]}
+          height={520}
+        />
+      </Card>
+    );
+  }
+};
+
+export const ChartGenerationDailyClientReport = (props) => {
+  const theme = useTheme();
+  const { dailyData, setGraphDailyBase64 } = props;
+  if (dailyData === undefined) {
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Gerando gráfico
+        </Typography>
+        <Box width={"90%"} height={520}>
+          <LoadingSkeletonCharts />
+        </Box>
+      </Card>
+    );
+  } else {
+    const labels = dailyData.map((genItem) => {
+      return moment(genItem["hour"]).format("HH:mm");
+    });
+
+    const genReal = dailyData.map((genItem) => {
+      return genItem["latest_gen_real"];
+    });
+
+    labels;
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: "Geração real",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração real",
+          data: genReal,
+          borderColor: "#8FC1B5",
+          backgroundColor: "#dce6e3",
+          tension: 0.4,
+          fill: "start",
+        },
+      ],
+    };
+
+    const plugin = {
+      id: "customCanvasBackgroundColor",
+      beforeDraw: (chart, args, options) => {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-over";
+        ctx.fillStyle = options.color || "#99ffff";
+        ctx.fillRect(0, 0, chart.width, chart.height);
+        ctx.restore();
+      },
+      legend: {
+        position: "top",
+      },
+    };
+
+    const options = {
+      animation: {
+        onComplete: function (animation) {
+          const chart = animation.chart;
+          const canvas = chart.canvas;
+
+          // Convertendo o conteúdo do canvas em base64.
+          const base64Image = canvas.toDataURL("image/jpeg");
+
+          // Atualizando o estado com a string base64.
+          setGraphDailyBase64(base64Image);
+
+          // Apagando o gráfico
+          //chart.destroy();
+        },
+      },
+      cornerRadius: 20,
+      layout: { padding: 0 },
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        customCanvasBackgroundColor: {
+          color: "white",
+        },
+        tooltip: {
+          displayColors: false,
+          enabled: true,
+          intersect: false,
+        },
+      },
+      yAxes: [
+        {
+          ticks: {
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+          },
+        },
+      ],
+      tooltips: {
+        backgroundColor: theme.palette.background.paper,
+        bodyFontColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        enabled: true,
+        footerFontColor: theme.palette.text.secondary,
+        intersect: false,
+        mode: "index",
+        titleFontColor: theme.palette.text.primary,
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var datasetLabel =
+              data.datasets[tooltipItem.datasetIndex].label || "";
+            var value =
+              data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            return datasetLabel + ": " + value;
+          },
+        },
+      },
+      scales: {
+        y: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "KWh",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "Horas",
+            font: { size: 18, weight: "bold" },
+          },
+          ticks: {
+            font: {
+              size: 15, // Tamanho da fonte para o eixo X
+            },
+          },
+        },
+      },
+    };
+
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "620px",
+        }}
+      >
+        <Typography
+          color="textPrimary"
+          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
+        >
+          Relação horária de geração
+        </Typography>
+
+        <Chart
+          type="bar"
+          options={options}
+          data={data}
+          plugins={[plugin]}
+          height={520}
+        />
+      </Card>
+    );
+  }
+};
+
 export const ChartGenrealdaylasthour = (props) => {
   const theme = useTheme();
   const { genrealdaylasthourData, setGraphMonthlyBase64, setGraphDailyBase64 } =
@@ -246,19 +627,19 @@ export const ChartGenrealdaylasthour = (props) => {
     const options = {
       animation: {
         onComplete: function (animation) {
-          const chart = animation.chart;
-          const canvas = chart.canvas;
-
-          // Convertendo o conteúdo do canvas em base64.
-          const base64Image = canvas.toDataURL("image/jpeg");
-
-          // Atualizando o estado com a string base64.
-
-          setGraphDailyBase64(base64Image);
-          setGraphMonthlyBase64(base64Image);
-
-          // Apagando o gráfico
-          chart.destroy();
+          //const chart = animation.chart;
+          //const canvas = chart.canvas;
+          //
+          //// Convertendo o conteúdo do canvas em base64.
+          //const base64Image = canvas.toDataURL("image/jpeg");
+          //
+          //// Atualizando o estado com a string base64.
+          //
+          //setGraphDailyBase64(base64Image);
+          //setGraphMonthlyBase64(base64Image);
+          //
+          //// Apagando o gráfico
+          //chart.destroy();
         },
       },
       cornerRadius: 20,

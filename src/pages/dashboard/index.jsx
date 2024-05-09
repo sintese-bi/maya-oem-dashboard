@@ -89,10 +89,6 @@ export default function Dashboard() {
     navigate("/dashboard/devices");
   }
 
-  const { bignumbersumValues, genrealdaylasthourData } = useSelector(
-    (state) => state.devices
-  );
-
   const devicesTableRef = useRef(null);
   const adminGraphRef = useRef(null);
 
@@ -111,8 +107,6 @@ export default function Dashboard() {
       </Backdrop>
     );
   }
-
-  //openWebScoketConnection();
 
   return (
     <Box id="index">
@@ -145,7 +139,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{}} xs={12} id="list-usins">
+      <Grid item sx={{}} xs={12} id="list-usins">
         <ListUsins
           data={data}
           devicesTableRef={devicesTableRef}
@@ -183,7 +177,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
+      <Grid container sx={{ mt: 6, width: "100%" }}>
         <AlertDevices />
       </Grid>
 

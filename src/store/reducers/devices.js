@@ -56,7 +56,7 @@ export default function userReducer(state = initialState, action) {
     case devices.GET_CLIENT_REPORT_DATA_SUCCESS:
       return {
         ...state,
-        report_client_data: [],
+        report_client_data: result,
       };
 
     case devices.GET_CLIENT_REPORT_DATA_FAILURE:
