@@ -23,6 +23,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { amountOfSentEmails } from "src/services/web-socket";
 import { WebSocketContext } from "src/contexts/web-scoket";
+import { configRequest } from "src/services/api";
+import { getUserCookie } from "src/services/session";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [amountOfSentEmails, setAmountOfSentEmails] = useState(0);
@@ -39,6 +41,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     online,
     massive_reports_status,
     amount_of_reports,
+    mass_email_amount_percentage,
   } = useSelector((state) => state.users);
 
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
@@ -55,37 +58,61 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
 
-  useEffect(() => {
-    var exampleSocket = new WebSocket(
-      "wss://websocket-test-dev-1.onrender.com/",
-      "protocolOne"
-    );
-
-    exampleSocket.onopen = function (event) {
-      exampleSocket.send(
-        "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
-      );
-    };
-
-    exampleSocket.onmessage = (message) => {
-      console.log(message.data); // Update the state
-    };
-
-    exampleSocket.onerror = (err) => {
-      console.log(err);
-    };
-
-    // Clean-up function
-    return () => {
-      if (exampleSocket.readyState === 1) {
-        // <-- This is important
-        exampleSocket.close();
-      }
-    };
-  }, []); // Empty dependency array to run the effect only once
+  const [opa, setOpa] = useState(0);
 
   useEffect(() => {
-    if (Math.round(amountOfSentEmails) >= 100) {
+    if (mass_email_amount_percentage) {
+      console.log(mass_email_amount_percentage);
+      setAmountOfSentEmails(mass_email_amount_percentage);
+    }
+    //const { useUuid } = getUserCookie();
+    //const eventSource = new EventSource(
+    //  `http://localhost:8082/v1/testeSSE/${useUuid}`
+    //);
+    //
+    //if (Math.round(opa) >= 100) {
+    //  eventSource.close();
+    //  return;
+    //}
+    //
+    //eventSource.onmessage = (event) => {
+    //  if (Math.round(event.data) >= 100) eventSource.close();
+    //  console.log("Received message:", event.data);
+    //};
+    //
+    //eventSource.onerror = async (error) => {
+    //  console.error("EventSource failed:", await error.message);
+    //};
+    //var exampleSocket = new WebSocket(
+    //  "wss://websocket-test-dev-1.onrender.com/",
+    //  "protocolOne"
+    //);
+    //
+    //exampleSocket.onopen = function (event) {
+    //  exampleSocket.send(
+    //    "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
+    //  );
+    //};
+    //
+    //exampleSocket.onmessage = (message) => {
+    //  console.log(message.data); // Update the state
+    //};
+    //
+    //exampleSocket.onerror = (err) => {
+    //  console.log(err);
+    //};
+    //
+    //// Clean-up function
+    //return () => {
+    //  if (exampleSocket.readyState === 1) {
+    //    // <-- This is important
+    //    exampleSocket.close();
+    //  }
+    //};
+  }, [mass_email_amount_percentage]); // Empty dependency array to run the effect only once
+
+  useEffect(() => {
+    if (amountOfSentEmails >= 100) {
       setAmountOfSentEmails(0);
       handleMassiveReportsStatusRequest();
     }
@@ -176,7 +203,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             }}
           >
             {massive_reports_status !== "executing" ? (
-              "Envio massivo de relatórios"
+              "Envio massivo de relatórios:"
             ) : (
               <Box
                 sx={{

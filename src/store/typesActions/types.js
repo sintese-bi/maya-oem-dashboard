@@ -123,6 +123,8 @@ export const users = {
   GET_USER_LOGO: "@api/GET_USER_LOGO",
 
   UPDATE_LOGO: "@api/UPDATE_LOGO",
+
+  MASS_EMAIL_AMOUNT_PERCENTAGE: "@api/MASS_EMAIL_AMOUNT_PERCENTAGE",
 };
 
 export const investment = {

@@ -191,12 +191,10 @@ export const ChartGenerationMonthlyClientReport = (props) => {
       </Card>
     );
   } else {
-    const labels = monthlyData.map((genItem) => {
-      return moment(genItem["day"]).format("DD/MM");
-    });
-
-    const genReal = monthlyData.map((genItem) => {
-      return genItem["latest_gen_real"];
+    const labels = Object.keys(monthlyData);
+    const values = Object.values(monthlyData);
+    const genReal = values.map((genItem) => {
+      return genItem["gen_real"];
     });
 
     const data = {
@@ -312,7 +310,7 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           },
           title: {
             display: true,
-            text: "Dias",
+            text: "Meses",
             font: { size: 18, weight: "bold" },
           },
           ticks: {
@@ -382,7 +380,7 @@ export const ChartGenerationDailyClientReport = (props) => {
     );
   } else {
     const labels = dailyData.map((genItem) => {
-      return moment(genItem["hour"]).format("HH:mm");
+      return moment(genItem["day"]).format("DD/MM");
     });
 
     const genReal = dailyData.map((genItem) => {
@@ -503,7 +501,7 @@ export const ChartGenerationDailyClientReport = (props) => {
           },
           title: {
             display: true,
-            text: "Horas",
+            text: "Dias",
             font: { size: 18, weight: "bold" },
           },
           ticks: {

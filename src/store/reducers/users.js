@@ -310,12 +310,13 @@ export default function userReducer(state = initialState, action) {
 
     case users.GET_ALL_DEVICES_SUCCESS:
       const allDevices = devicesData.map((device) => {
+        console.log(device.dev_address || "-");
         let deviceItem = {
           brand: device.dev_brand,
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
           uuid: device.dev_uuid,
-          address: device.dev_address || "",
+          address: device.dev_address || "-",
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
@@ -386,6 +387,12 @@ export default function userReducer(state = initialState, action) {
         invoiceValuesData: [],
       };
 
+    case users.MASS_EMAIL_AMOUNT_PERCENTAGE:
+      return {
+        ...state,
+        mass_email_amount_percentage: result,
+      };
+
     case users.GET_DASHBOARD_REQUEST:
       return {
         ...state,
@@ -401,7 +408,7 @@ export default function userReducer(state = initialState, action) {
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
           uuid: device.dev_uuid,
-          address: device.dev_address,
+          address: device.dev_address || "-",
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),

@@ -57,6 +57,35 @@ export const brandInfo = (params) => (dispatch) => {
     });
 };
 
+export const testSSE =
+  (use_uuid, handleMassiveReportsStatusRequest) => (dispatch) => {
+    const eventSource = new EventSource(
+      `http://localhost:8082/v1/testeSSE/${use_uuid}`
+    );
+
+    eventSource.onopen = (event) => {
+      toast.success("Envio massivo requesitado", {
+        duration: 5000,
+      });
+      handleMassiveReportsStatusRequest();
+    };
+
+    eventSource.onmessage = (event) => {
+      if (Math.round(event.data) >= 100) eventSource.close();
+      dispatch({
+        type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
+        result: Math.round(event.data),
+      });
+      console.log("Received message:", event.data);
+    };
+
+    eventSource.onerror = async (error) => {
+      toast.error(`EventSource failed:${error}`, {
+        duration: 3000,
+      });
+    };
+  };
+
 export const massEmail =
   (params, handleMassiveReportsStatusRequest) => (dispatch) => {
     dispatch({ type: users.MASS_EMAIL_REQUEST });

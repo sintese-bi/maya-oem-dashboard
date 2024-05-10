@@ -30,6 +30,7 @@ import {
   portalemailLogins,
   postUseDateReport,
   reportCounting,
+  testSSE,
   updateBrands,
   updateLogo,
   uselogo,
@@ -140,9 +141,9 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassEmail() {
-    dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
+    //dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
+    dispatch(testSSE(use_uuid, handleMassiveReportsStatusRequest));
     handleReportCountingRequest();
-    handleMassiveReportsStatusRequest();
   }
 
   function handleReportCountingRequest() {

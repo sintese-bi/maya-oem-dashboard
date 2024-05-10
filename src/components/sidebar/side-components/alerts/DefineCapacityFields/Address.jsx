@@ -4,8 +4,8 @@ import citiesData from "src/services/municipios";
 
 export const Address = ({ value, setValues }) => {
   const [selectedCity, setSelectedCity] = useState({
-    ic_states: value.split("-")[1],
-    ic_city: value.split("-")[0],
+    ic_states: value?.split("-")[1],
+    ic_city: value?.split("-")[0],
   });
 
   useEffect(() => {

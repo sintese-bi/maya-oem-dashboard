@@ -62,7 +62,7 @@ export const gettingReportData = (params) => (dispatch) => {
       "https://balance.mayaoem.com.br/plantinfo",
       {
         dev_uuid: "05870000-261c-4535-bdb0-46d99cc1632f",
-        periodo: "2024-05",
+        periodo: "2024-04",
         kwh: 0.96,
       },
       {
@@ -76,7 +76,7 @@ export const gettingReportData = (params) => (dispatch) => {
       toast.success(data.message, {
         duration: 5000,
       });
-
+      console.log(data);
       dispatch({ type: devices.GET_CLIENT_REPORT_DATA_SUCCESS, result: data });
     })
     .catch((error) => {

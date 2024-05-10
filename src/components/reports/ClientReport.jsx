@@ -172,8 +172,8 @@ export const ClientReport = () => {
 
   useEffect(() => {
     if (report_client_data !== undefined) {
-      setMonthlyData(report_client_data["Gráfico_Geracao_Mensal"]);
-      setDailyData(report_client_data["Gráfico_Geracao_Diario"]);
+      setMonthlyData(report_client_data["Gráfico_Geracao_Anual"]);
+      setDailyData(report_client_data["Gráfico_Geracao_Mensal"]);
     }
   }, [report_client_data]);
 
@@ -200,7 +200,7 @@ export const ClientReport = () => {
             <View style={styles.header}>
               <View style={styles.apresentation}>
                 <Text style={styles.titleText}>
-                  {/** {report_client_data["Nome_usina"]}*/}
+                  {report_client_data["Nome_usina"]}
                 </Text>
                 <Text style={styles.biggerWeakText}>
                   Segue os resultados da sua Usina:
@@ -209,14 +209,16 @@ export const ClientReport = () => {
               <View style={styles.unityAndPeriod}>
                 <View style={styles.unityAndPeriodItem}>
                   <Text style={styles.biggerWeakText}>Unidade</Text>
-                  <Text style={styles.strongText}>Felipe VGP - 4 kWp</Text>
+                  <Text style={styles.strongText}>
+                    {report_client_data["Nome_usina"]}
+                  </Text>
                 </View>
                 <View style={styles.unityAndPeriodItem}>
                   <Text style={styles.biggerWeakText}>Período</Text>
                   <Text style={styles.titleText}>
                     {report_client_data["Período"]}
                   </Text>
-                  <Text style={styles.strongText}>08/02/2024 a 11/03/2024</Text>
+                  <Text style={styles.strongText}></Text>
                 </View>
               </View>
               <View style={styles.logo}>
