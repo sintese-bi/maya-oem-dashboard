@@ -3,7 +3,7 @@ import { Card, Box, Typography, List, ListItem, ListItemAvatar, ListItemText, Bu
 
 
 
-const CardComponent = ({ title, description, items, buttonText, action }) => {
+const CardComponent = ({ title, description, items, buttonText, action,price }) => {
   return (
     <Card
       sx={{
@@ -62,6 +62,14 @@ const CardComponent = ({ title, description, items, buttonText, action }) => {
           </ListItem>
         ))}
       </List>
+      <Typography
+      sx={{
+        fontSize:20,
+        fontWeight:700,
+        mb:2,
+      }}>
+        {price}
+      </Typography>
       <Button
         onClick={() => action()}
         sx={{ mb: 2, width: "90%" }}

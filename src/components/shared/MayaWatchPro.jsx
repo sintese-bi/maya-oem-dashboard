@@ -74,6 +74,7 @@ const cardContents = {
       { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
     ],
     buttonText: "Assinar plano",
+    price:"R$ 1,00 por usinas/mês",
     action: handleAction
   },
   advanced: {
@@ -88,6 +89,7 @@ const cardContents = {
       { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
     ],
     buttonText: "Assinar plano",
+    price:"R$ 5,00 por usinas/mês",
     action: handleAction
 
   },
@@ -102,6 +104,7 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
       { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
     ],
+    price:"R$ 7,00 por usinas/mês",
     buttonText: "Assinar plano",
     action: handleAction
   }
