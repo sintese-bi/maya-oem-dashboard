@@ -232,20 +232,10 @@ export const ClientReport = () => {
             </View>
             <View style={styles.smallerBigNumbers}>
               <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>
-                  PAGARIA SEM A USINA (R$)
-                </Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Pagou_sem_Usina"]}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
                 <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
                 <View style={styles.smallerBigNumbersBox}>
                   <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Pago"]}
+                    {report_client_data["Pago"].toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -253,7 +243,17 @@ export const ClientReport = () => {
                 <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
                 <View style={styles.smallerBigNumbersBox}>
                   <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Economia"]}
+                    {report_client_data["Economia"].toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.smallerBigNumbersItem}>
+                <Text style={styles.smallerBigNumbersLabel}>
+                  PAGARIA SEM A USINA (R$)
+                </Text>
+                <View style={styles.smallerBigNumbersBox}>
+                  <Text style={styles.smallerBigNumbersBoxResult}>
+                    {report_client_data["Pagou_sem_Usina"].toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -263,7 +263,7 @@ export const ClientReport = () => {
                 </Text>
                 <View style={styles.smallerBigNumbersBox}>
                   <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Consumo_total"]}
+                    {report_client_data["Consumo_total"].toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -281,7 +281,7 @@ export const ClientReport = () => {
                 </Text>
                 <View style={styles.smallerBigNumbersBox}>
                   <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Desempenho"]}
+                    {report_client_data["Desempenho"].toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -313,14 +313,12 @@ export const ClientReport = () => {
                 </View>
               </View>
               <View style={styles.energy}>
-                <Text style={styles.strongText}>
-                  ENERGIA (kWh) CRÉDITO DE ENERGIA (kWh)
-                </Text>
+                <Text style={styles.strongText}>CRÉDITO DE ENERGIA (kWh)</Text>
                 <View style={styles.energyFields}>
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ANTERIOR</Text>
                     <Text style={styles.strongText}>
-                      {report_client_data["Saldo_anterior"]}
+                      {report_client_data["Saldo_anterior"].toFixed(2)}
                     </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
@@ -344,7 +342,7 @@ export const ClientReport = () => {
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ATUAL</Text>
                     <Text style={styles.strongText}>
-                      {report_client_data["Saldo_atual"]}
+                      {report_client_data["Saldo_atual"].toFixed(2)}
                     </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>

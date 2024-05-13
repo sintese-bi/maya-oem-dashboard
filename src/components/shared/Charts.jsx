@@ -43,6 +43,7 @@ import NoData from "../../assets/img/illustrations/no-data.svg";
 import { TabPanel } from "../TabPanel";
 import { brazilStates } from "src/constants/states";
 import { DashboardContext } from "src/contexts/dashboard-context";
+import { meses } from "src/helpers/months";
 
 ChartJS.register(
   CategoryScale,
@@ -191,7 +192,7 @@ export const ChartGenerationMonthlyClientReport = (props) => {
       </Card>
     );
   } else {
-    const labels = Object.keys(monthlyData);
+    const labels = Object.keys(monthlyData).map((data) => meses[Number(data)]);
     const values = Object.values(monthlyData);
     const genReal = values.map((genItem) => {
       return genItem["gen_real"];
