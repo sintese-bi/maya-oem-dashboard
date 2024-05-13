@@ -58,10 +58,18 @@ export const brandInfo = (params) => (dispatch) => {
 };
 
 export const testSSE =
-  (use_uuid, handleMassiveReportsStatusRequest) => (dispatch) => {
+  (use_uuid, handleMassiveReportsStatusRequest, massive_reports_status) =>
+  (dispatch) => {
     const eventSource = new EventSource(
       `https://email.mayaoem.com.br/v1/testeSSE/${use_uuid}`
     );
+
+    if (massive_reports_status == "executing") {
+      eventSource.close();
+      toast.success("Envio massivo cancelado", {
+        duration: 3000,
+      });
+    }
 
     eventSource.onopen = (event) => {
       toast.success("Envio massivo requesitado", {
@@ -609,6 +617,7 @@ export const massiveReportsStatus = (params) => (dispatch) => {
     .then((res) => {
       const { data } = res;
       const { use_massive_reports_status, amount_of_reports } = data;
+      console.log(use_massive_reports_status);
       dispatch({
         result: { use_massive_reports_status, amount_of_reports },
         type: users.GET_MASSIVE_REPORTS_STATUS_SUCCESS,

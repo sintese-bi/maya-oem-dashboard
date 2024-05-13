@@ -142,7 +142,13 @@ export const DashboardProvider = ({ children }) => {
 
   function handleMassEmail() {
     //dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
-    dispatch(testSSE(use_uuid, handleMassiveReportsStatusRequest));
+    dispatch(
+      testSSE(
+        use_uuid,
+        handleMassiveReportsStatusRequest,
+        usersAPIData.massive_reports_status
+      )
+    );
     handleReportCountingRequest();
   }
 

@@ -62,54 +62,9 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
 
   useEffect(() => {
     if (mass_email_amount_percentage) {
-      console.log(mass_email_amount_percentage);
       setAmountOfSentEmails(mass_email_amount_percentage);
     }
-    //const { useUuid } = getUserCookie();
-    //const eventSource = new EventSource(
-    //  `http://localhost:8081/v1/testeSSE/${useUuid}`
-    //);
-    //
-    //if (Math.round(opa) >= 100) {
-    //  eventSource.close();
-    //  return;
-    //}
-    //
-    //eventSource.onmessage = (event) => {
-    //  if (Math.round(event.data) >= 100) eventSource.close();
-    //  console.log("Received message:", event.data);
-    //};
-    //
-    //eventSource.onerror = async (error) => {
-    //  console.error("EventSource failed:", await error.message);
-    //};
-    //var exampleSocket = new WebSocket(
-    //  "wss://websocket-test-dev-1.onrender.com/",
-    //  "protocolOne"
-    //);
-    //
-    //exampleSocket.onopen = function (event) {
-    //  exampleSocket.send(
-    //    "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
-    //  );
-    //};
-    //
-    //exampleSocket.onmessage = (message) => {
-    //  console.log(message.data); // Update the state
-    //};
-    //
-    //exampleSocket.onerror = (err) => {
-    //  console.log(err);
-    //};
-    //
-    //// Clean-up function
-    //return () => {
-    //  if (exampleSocket.readyState === 1) {
-    //    // <-- This is important
-    //    exampleSocket.close();
-    //  }
-    //};
-  }, [mass_email_amount_percentage]); // Empty dependency array to run the effect only once
+  }, [mass_email_amount_percentage]);
 
   useEffect(() => {
     if (amountOfSentEmails >= 100) {
@@ -193,6 +148,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
+            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
@@ -203,7 +159,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             }}
           >
             {massive_reports_status !== "executing" ? (
-              "Envio massivo de relatórios:"
+              "Envio massivo de relatórios"
             ) : (
               <Box
                 sx={{
@@ -213,7 +169,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
                   justifyContent: "center",
                 }}
               >
-                <Typography variant="body2">Cancelar envio</Typography>
+                <Typography variant="body2">Envio em andamento</Typography>
                 <LinearProgressWithLabel value={amountOfSentEmails} />
               </Box>
             )}
