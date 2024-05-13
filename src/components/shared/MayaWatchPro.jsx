@@ -11,148 +11,126 @@ import {
   Button,
   Radio,
 } from "@mui/material";
+
 import {
   InsertDriveFile,
   Info,
   OfflinePinOutlined,
   OfflinePinRounded,
+  CancelSharpIcon ,
+  
 } from "@mui/icons-material";
+
+//Chamando o icone 
+import SolarPowerIcon from '@mui/icons-material/SolarPower';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+
+//Tela do cards 
+
+ import CardComponent from "./CardComponent";
+
+
 import { getUserCookie } from "src/services/session";
 import { useEffect, useState } from "react";
 import { Document, PDFViewer, Page } from "@react-pdf/renderer";
 import AcceptTerm from "src/assets/accept-term.pdf";
+import { CancelOutlined, CancelPresentation } from "@material-ui/icons";
+
 
 export const MayaWatchPro = ({ setTitle, setDescription }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [action, setAction] = useState("assignAction");
   useEffect(() => {
     setTitle("Maya Watch PRO");
-    setDescription(`A um passo de liberar todas as funcionalidades PRO do nosso software.
-    Tenha relatorios personalizaveis a qualquer hora, configure alertas e
-    tenha suporte continuo do nosso time de monitoramento. Veja os planos
-    disponiveis abaixo.`);
   }, []);
+
+const basic = [{
+  basico:{
+    title:"Maya watch"
+  }
+}
+]
+
+
+const handleAction = () => { setAction("acceptTerm")};
+ 
+
+
+
+
+
+const cardContents = {
+  basic: {
+    title: "Maya Watch",
+    description: "Nesse plano você contará com:",
+    items: [
+      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
+      { icon: <CancelIcon color="error" />, text: "Relatórios de todas as usinas" },
+      { icon: <CancelIcon color="error" />, text: "Relatórios usina a usina" },
+      { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
+      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
+    ],
+    buttonText: "Assinar plano",
+    action: handleAction
+  },
+  advanced: {
+    title: "Maya Watch Pro",
+    description: "Nesse plano PRO você contará com:",
+    items: [
+      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
+      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
+      { icon: <CancelIcon color="error" />, text: "Relatórios usina a usina" },
+      { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
+      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
+    ],
+    buttonText: "Assinar plano",
+    action: handleAction
+
+  },
+  premium: {
+    title: "Maya Watch Pro Max",
+    description: "Nesse plano premium você contará com:",
+    items: [
+      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
+      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
+      { icon: <CheckCircleIcon color="success" />, text: "Relatórios usina a usina" },
+      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
+    ],
+    buttonText: "Assinar plano",
+    action: handleAction
+  }
+};
+
+
 
   const ModalContent = () => {
     switch (action) {
       case "assignAction":
         return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Card
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: 320,
-              }}
-            >
-              <Typography
-                sx={{
-                  height: "100%",
-                  bgcolor: "secondary.main",
-                  py: 2,
-                  width: "100%",
-                  textAlign: "center",
-                  fontSize: "22px",
-                  fontWeight: "700",
-                }}
-              >
-                Plano MAYA WATCH PRO
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  p: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography sx={{ fontSize: "20px" }}>
-                    1 real por usinas
-                  </Typography>
-                  <Typography sx={{ fontWeight: "bold", fontSize: "26px" }}>
-                    /mês
-                  </Typography>
-                </Box>
-              </Box>
-              <List sx={{ pb: 2, width: "100%" }}>
-                <ListItem sx={{ height: "32px" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Alertas de geracao personalizados
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ height: "32px" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Receba alertas no seu Telegram
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ height: "32px", opacity: "0.9" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Relatorios de todas as usinas
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ height: "32px", opacity: "0.8" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Relatorios usina a usina
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ height: "32px", opacity: "0.7" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Envio de relatorios automaticos
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ height: "32px", opacity: "0.4" }}>
-                  <ListItemAvatar>
-                    <OfflinePinRounded color="success" />
-                  </ListItemAvatar>
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Suporte exclusivo Maya
-                  </Typography>
-                </ListItem>
-              </List>
-              <Button
-                onClick={() => setAction("acceptTerm")}
-                component={Link}
-                sx={{ mb: 2, width: "90%" }}
-                variant="contained"
-                disableRipple
-                color="success"
-              >
-                Assinar plano
-              </Button>
-            </Card>
+          <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+             width:1000,
+            bgcolor: "background.paper",
+          }}> 
+          <Box sx={{boxShadow:1}}>
+            <CardComponent{...cardContents.basic}/>
           </Box>
+              <Box>
+                    <CardComponent{...cardContents.advanced}/>
+              </Box>
+              <Box>
+                <CardComponent{...cardContents.premium}/>
+              </Box>
+              
+           </Box>
         );
         break;
       case "acceptTerm":
