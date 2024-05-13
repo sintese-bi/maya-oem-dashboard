@@ -67,7 +67,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     }
     //const { useUuid } = getUserCookie();
     //const eventSource = new EventSource(
-    //  `http://localhost:8082/v1/testeSSE/${useUuid}`
+    //  `http://localhost:8081/v1/testeSSE/${useUuid}`
     //);
     //
     //if (Math.round(opa) >= 100) {
