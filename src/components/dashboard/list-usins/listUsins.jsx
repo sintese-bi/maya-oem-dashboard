@@ -153,9 +153,9 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             color="success"
             onClick={() => {
               handleMassEmail();
-              if (massive_reports_status == "executing") {
-                setAmountOfSentEmails(0);
-              }
+              //if (massive_reports_status == "executing") {
+              //  setAmountOfSentEmails(0);
+              //}
             }}
           >
             {massive_reports_status !== "executing" ? (

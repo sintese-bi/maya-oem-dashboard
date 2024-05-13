@@ -417,8 +417,16 @@ export const DashboardProvider = ({ children }) => {
   useEffect(() => {
     setInterval(() => {
       handleBrandInfoRequest();
-    }, 18e5);
+    }, 6e5);
   }, []);
+
+  useEffect(() => {
+    if (usersAPIData.massive_reports_status == "executing") {
+      setInterval(() => {
+        handleMassiveReportsStatusRequest();
+      }, 1e5);
+    }
+  }, [usersAPIData.massive_reports_status]);
 
   return (
     <DashboardContext.Provider
