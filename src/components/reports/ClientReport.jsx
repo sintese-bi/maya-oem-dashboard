@@ -128,6 +128,7 @@ export const ClientReport = () => {
       flexDirection: "row",
       padding: "0px 50px 0px 50px",
       gap: "20px",
+      height: "1200px",
     },
     energy: {
       marginTop: "100px",
@@ -358,7 +359,8 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>
-            <View style={styles.energyAndCreditField}>
+            {/**<View style={styles.energyAndCreditField}>
+              
               <View style={styles.energy}>
                 <Text style={styles.strongText}>FLUXO DE ENERGIA (kWh)</Text>
                 <View style={styles.energyStream}>
@@ -374,7 +376,7 @@ export const ClientReport = () => {
                   <View style={{ height: "500px", width: "660px" }}></View>
                 </View>
               </View>
-            </View>
+            </View>*/}
             <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
               <Text style={styles.strongText}>
                 Sua contribuição para o mundo
