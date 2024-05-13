@@ -69,7 +69,7 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
       { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
       { icon: <CancelIcon color="error" />, text: "Relatórios de todas as usinas" },
-      { icon: <CancelIcon color="error" />, text: "Relatórios usina a usina" },
+      { icon: <CancelIcon color="error" />, text: "Gestão de desempenho " },
       { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
       { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
     ],
@@ -83,7 +83,7 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
       { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CancelIcon color="error" />, text: "Relatórios usina a usina" },
+      { icon: <CancelIcon color="error" />, text: "Gestão de desempenho " },
       { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
       { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
     ],
@@ -98,7 +98,7 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
       { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CheckCircleIcon color="success" />, text: "Relatórios usina a usina" },
+      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
       { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
     ],

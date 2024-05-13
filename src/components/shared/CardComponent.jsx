@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card, Box, Typography, List, ListItem, ListItemAvatar, ListItemText, Button } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import SolarPowerIcon from '@mui/icons-material/SolarPower';
+
+
 
 const CardComponent = ({ title, description, items, buttonText, action }) => {
   return (
@@ -36,7 +35,7 @@ const CardComponent = ({ title, description, items, buttonText, action }) => {
         >
           {title}
         </Typography>
-        <SolarPowerIcon sx={{ width: 40, height: 40 }}></SolarPowerIcon>
+       
       </Box>
       <Box
         sx={{
