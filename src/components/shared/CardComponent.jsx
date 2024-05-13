@@ -12,8 +12,8 @@ const CardComponent = ({ title, description, items, buttonText, action,price }) 
         justifyContent: "center",
         alignItems: "center",
         width: 300,
-        boxShadow:'5',
-      }}
+        boxShadow:'10',
+            }}
     >
       <Box
         sx={{

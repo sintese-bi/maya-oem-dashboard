@@ -21,13 +21,10 @@ import {
   
 } from "@mui/icons-material";
 
-//Chamando o icone 
-import SolarPowerIcon from '@mui/icons-material/SolarPower';
-import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
-//Tela do cards 
+
 
  import CardComponent from "./CardComponent";
 
@@ -56,22 +53,17 @@ const basic = [{
 
 const handleAction = () => { setAction("acceptTerm")};
  
-
-
-
-
-
 const cardContents = {
   basic: {
     title: "Maya Watch",
     description: "Nesse plano você contará com:",
     items: [
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
-      { icon: <CancelIcon color="error" />, text: "Relatórios de todas as usinas" },
-      { icon: <CancelIcon color="error" />, text: "Gestão de desempenho " },
-      { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
-      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
+      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
+      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
+      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
     ],
     buttonText: "Assinar plano",
     price:"R$ 1,00 por usinas/mês",
@@ -82,11 +74,11 @@ const cardContents = {
     description: "Nesse plano PRO você contará com:",
     items: [
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CancelIcon color="error" />, text: "Gestão de desempenho " },
-      { icon: <CancelIcon color="error" />, text: "Envio de relatórios automáticos" },
-      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" }
+      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
+      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
     ],
     buttonText: "Assinar plano",
     price:"R$ 5,00 por usinas/mês",
@@ -98,11 +90,13 @@ const cardContents = {
     description: "Nesse plano premium você contará com:",
     items: [
       { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu Telegram" },
+      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
       { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
+      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
+      { icon: <CheckCircleIcon color="success" />, text: "Faturas e cenários de geração via IA " },
     ],
     price:"R$ 7,00 por usinas/mês",
     buttonText: "Assinar plano",
@@ -120,16 +114,16 @@ const cardContents = {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-around",
-             width:1000,
+            width:1000,
             bgcolor: "background.paper",
           }}> 
-          <Box sx={{boxShadow:1}}>
+          <Box sx={{boxShadow:10}}>
             <CardComponent{...cardContents.basic}/>
           </Box>
-              <Box>
+              <Box sx={{boxShadow:10}}>
                     <CardComponent{...cardContents.advanced}/>
               </Box>
-              <Box>
+              <Box sx={{boxShadow:10}}>
                 <CardComponent{...cardContents.premium}/>
               </Box>
               
