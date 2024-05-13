@@ -78,7 +78,8 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
       { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
+      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
     ],
     buttonText: "Assinar plano",
     price:"R$ 5,00 por usinas/mês",
