@@ -22,6 +22,7 @@ import {
 } from "@mui/icons-material";
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 
@@ -63,7 +64,10 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
       { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" }
+      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
+      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" },
+      { icon: <CancelIcon color="error" />, text: "Faturas e cenários de geração via IA " },
+
     ],
     buttonText: "Assinar plano",
     price:"R$ 1,00 por usinas/mês",
@@ -78,8 +82,11 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
       { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
       { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
+      { icon: <CancelIcon color="error" />, text: "Faturas e cenários de geração via IA " },
+
+      
     ],
     buttonText: "Assinar plano",
     price:"R$ 5,00 por usinas/mês",
@@ -95,8 +102,8 @@ const cardContents = {
       { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
       { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
       { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-       { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
-     { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
+      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
+      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
       { icon: <CheckCircleIcon color="success" />, text: "Faturas e cenários de geração via IA " },
     ],
     price:"R$ 7,00 por usinas/mês",
