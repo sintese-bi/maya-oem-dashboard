@@ -21,7 +21,7 @@ export const Address = ({ value, setValues }) => {
   }, [selectedCity]);
 
   return (
-    <Box sx={{ width: 294, height: 40 }}>
+    <Box sx={{ width: 300, height: 40 }}>
       <Autocomplete
         name="address"
         options={citiesData}

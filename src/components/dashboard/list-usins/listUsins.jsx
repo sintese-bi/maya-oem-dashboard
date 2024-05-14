@@ -148,14 +148,13 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
-            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
               handleMassEmail();
-              //if (massive_reports_status == "executing") {
-              //  setAmountOfSentEmails(0);
-              //}
+              if (massive_reports_status == "executing") {
+                setAmountOfSentEmails(0);
+              }
             }}
           >
             {massive_reports_status !== "executing" ? (
@@ -169,7 +168,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
                   justifyContent: "center",
                 }}
               >
-                <Typography variant="body2">Envio em andamento</Typography>
+                <Typography variant="body2">Cancelar envio massivo</Typography>
                 <LinearProgressWithLabel value={amountOfSentEmails} />
               </Box>
             )}

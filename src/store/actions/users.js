@@ -64,22 +64,29 @@ export const testSSE =
       `https://email.mayaoem.com.br/v1/testeSSE/${use_uuid}`
     );
 
-    if (massive_reports_status == "executing") {
-      eventSource.close();
-      toast.success("Envio massivo cancelado", {
-        duration: 3000,
-      });
-    }
-
     eventSource.onopen = (event) => {
-      toast.success("Envio massivo requesitado", {
-        duration: 5000,
-      });
-      handleMassiveReportsStatusRequest();
+      toast.success(
+        massive_reports_status == "executing"
+          ? "Envio massivo cancelado"
+          : "Envio massivo requesitado",
+        {
+          duration: 5000,
+        }
+      );
     };
 
     eventSource.onmessage = (event) => {
-      if (Math.round(event.data) >= 100) eventSource.close();
+      if (
+        Math.round(event.data) >= 100 ||
+        event.data == "waiting" ||
+        event.data == "completed"
+      )
+        eventSource.close();
+
+      if (event.data == "connected") {
+        handleMassiveReportsStatusRequest();
+      }
+
       dispatch({
         type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
         result: Math.round(event.data),
@@ -1054,7 +1061,7 @@ export const deleteUser = (params, getUsers) => (dispatch) => {
 
 export const updateBrands = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: users.UPDATE_BRAND });
-
+  console.log(params);
   api
     .post("/updatebrands", params, configRequest())
     .then((res) => {

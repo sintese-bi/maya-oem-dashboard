@@ -449,7 +449,7 @@ export function DefineCapacityAndDevicesEmails({
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: "flex",
-        width: "100%",
+        width: "90vw",
         height: "60vh",
         flexDirection: "column",
       }}
