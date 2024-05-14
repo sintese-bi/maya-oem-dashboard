@@ -1,6 +1,7 @@
 import energySchema from "src/assets/img/enery-schema.png";
 import Tree from "src/assets/img/TREE.png";
 import Cloud from "src/assets/img/CLOUD.png";
+import MayaXBlueLogo from "src/assets/img/logo/maya-x-blue.png";
 
 import {
   Page,
@@ -287,7 +288,7 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>
-            <View style={styles.energyAndCreditField}>
+            {/**<View style={styles.energyAndCreditField}>
               <View style={styles.energy}>
                 <Text style={styles.strongText}>ENERGIA (kWh)</Text>
                 <View style={styles.energyFields}>
@@ -359,6 +360,7 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>
+                */}
             {/**<View style={styles.energyAndCreditField}>
               
               <View style={styles.energy}>
@@ -377,6 +379,49 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>*/}
+            <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
+              <Text style={styles.strongText}>PRODUÇÃO MENSAL (kWh)</Text>
+              <View
+                style={{
+                  width: "100%",
+                  padding: "30px 0px 30px 0px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  marginTop: "50px",
+                  borderRadius: "20px",
+                }}
+              >
+                <Image
+                  src={graphMonthlyBase64}
+                  style={{ height: "100%", width: "100%" }}
+                />
+              </View>
+            </View>
+            <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
+              <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
+              <View
+                style={{
+                  width: "100%",
+                  padding: "30px 0px 30px 0px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  marginTop: "50px",
+
+                  borderRadius: "20px",
+                }}
+              >
+                <Image
+                  src={graphDailyBase64}
+                  style={{ height: "100%", width: "100%" }}
+                />
+              </View>
+            </View>
             <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
               <Text style={styles.strongText}>
                 Sua contribuição para o mundo
@@ -463,40 +508,36 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>
-            <View style={{ marginTop: "260px", padding: "0px 50px 0px 50px" }}>
-              <Text style={styles.strongText}>PRODUÇÃO MENSAL (kWh)</Text>
+            <View
+              style={{
+                marginTop: "260px",
+                padding: "0px 50px 0px 50px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <View
                 style={{
-                  width: "100%",
+                  width: "60%",
                   padding: "30px 0px 30px 0px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-around",
-                  flexDirection: "row",
+                  flexDirection: "column",
                   backgroundColor: "white",
                   marginTop: "100px",
                   borderRadius: "20px",
                 }}
               >
-                <Image src={graphMonthlyBase64} />
-              </View>
-            </View>
-            <View style={{ marginTop: "260px", padding: "0px 50px 0px 50px" }}>
-              <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
-              <View
-                style={{
-                  width: "100%",
-                  padding: "30px 0px 30px 0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  marginTop: "100px",
-                  borderRadius: "20px",
-                }}
-              >
-                <Image src={graphDailyBase64} />
+                <Text style={styles.weakText}>
+                  Feito com carinho por Maya Tech
+                </Text>
+                <Image
+                  style={{ width: "300px", height: "200px" }}
+                  src={MayaXBlueLogo}
+                ></Image>
               </View>
             </View>
           </Page>
