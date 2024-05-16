@@ -240,10 +240,10 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           const base64Image = canvas.toDataURL("image/jpeg");
 
           // Atualizando o estado com a string base64.
-          setGraphMonthlyBase64(base64Image);
+          console.log(base64Image);
+          setGraphMonthlyBase64("arrombado");
 
           // Apagando o gráfico
-          //chart.destroy();
         },
       },
       cornerRadius: 20,
@@ -324,31 +324,14 @@ export const ChartGenerationMonthlyClientReport = (props) => {
     };
 
     return (
-      <Card
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "620px",
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
-        >
-          Relação horária de geração
-        </Typography>
-
-        <Chart
-          type="bar"
-          options={options}
-          data={data}
-          plugins={[plugin]}
-          height={520}
-        />
-      </Card>
+      <Chart
+        type="bar"
+        options={options}
+        data={data}
+        plugins={[plugin]}
+        height={620}
+        width={1352}
+      />
     );
   }
 };
@@ -434,7 +417,6 @@ export const ChartGenerationDailyClientReport = (props) => {
           setGraphDailyBase64(base64Image);
 
           // Apagando o gráfico
-          //chart.destroy();
         },
       },
       cornerRadius: 20,
@@ -515,31 +497,14 @@ export const ChartGenerationDailyClientReport = (props) => {
     };
 
     return (
-      <Card
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "620px",
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          sx={{ fontWeight: "bold", fontSize: "20px", pb: 4 }}
-        >
-          Relação horária de geração
-        </Typography>
-
-        <Chart
-          type="bar"
-          options={options}
-          data={data}
-          plugins={[plugin]}
-          height={520}
-        />
-      </Card>
+      <Chart
+        type="bar"
+        options={options}
+        data={data}
+        plugins={[plugin]}
+        height={620}
+        width={1352}
+      />
     );
   }
 };

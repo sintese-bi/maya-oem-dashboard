@@ -716,6 +716,7 @@ export const updateEmailAndCapacity =
       (device) => device.address !== undefined
     );
 
+    console.log(params);
     //stateAndCityNotUndefined.map((device) => {
     //  const dev_uuid = device.uuid;
     //  const city_name = device.address;

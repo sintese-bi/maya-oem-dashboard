@@ -1,6 +1,5 @@
 import moment from "moment-timezone";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { ClientReport } from "src/reports/ClientReport";
 import { ToolTipNoAccess } from "src/components/shared/ToolTipNoAccess";
 import { Cancel, CheckCircle, Info } from "@mui/icons-material";
 import {
@@ -23,9 +22,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DownloadForOffline } from "@mui/icons-material";
 
 import Tabs from "../../components/shared/Tabs";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { reportClient } from "src/reports/reportsRules/reportClientRule";
 import Carousel from "react-material-ui-carousel";
+import { DashboardContext } from "src/contexts/dashboard-context";
+import { ClientReport } from "../reports/ClientReport";
+import { useSelector } from "react-redux";
+import {
+  ChartGenerationDailyClientReport,
+  ChartGenerationMonthlyClientReport,
+} from "../shared/Charts";
 
 const colors = [
   "#87B8EA",
@@ -58,13 +64,41 @@ export const GenerationHeader = ({
   setStartDate,
   setEndDate,
 }) => {
+  const { handleGettingReportDataRequest } = useContext(DashboardContext);
   const [uploadImageModal, setUploadImageModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
+  const [periodo, setPeriodo] = useState(moment().format("YYYY-MM"));
+  const [KWh, setKWh] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
+  const [graphDailyBase64, setGraphDailyBase64] = useState("");
+  const [monthlyData, setMonthlyData] = useState(undefined);
+  const [dailyData, setDailyData] = useState([]);
+  const [reportIsLoading, setReportIsLoading] = useState(true);
 
   function handleUploadLogo() {
     setUploadImageModal(false);
   }
+
+  const { report_client_data } = useSelector((state) => state.devices);
+
+  useEffect(() => {
+    if (report_client_data !== undefined) {
+      setMonthlyData(report_client_data["Gráfico_Geracao_Anual"]);
+      setDailyData(report_client_data["Gráfico_Geracao_Mensal"]);
+    }
+  }, [report_client_data]);
+
+  useEffect(() => {
+    if (
+      report_client_data !== undefined &&
+      graphMonthlyBase64 != "" &&
+      graphDailyBase64 != ""
+    ) {
+      setReportIsLoading(false);
+    }
+  }, [report_client_data, graphDailyBase64, graphMonthlyBase64]);
+
   return (
     <Box
       sx={{
@@ -141,7 +175,7 @@ export const GenerationHeader = ({
             <Info fontSize="small" />
           </Tooltip>
           {useTypeMember ? (
-            isLoadingReport ? (
+            reportIsLoading ? (
               <Button
                 startIcon={<DownloadForOffline fontSize="small" />}
                 variant={useTypeMember ? "outlined" : ""}
@@ -155,23 +189,25 @@ export const GenerationHeader = ({
               </Button>
             ) : (
               <PDFDownloadLink
-                document={<ClientReport />}
+                document={
+                  <ClientReport
+                    report_client_data={report_client_data}
+                    graphDailyBase64={graphDailyBase64}
+                    graphMonthlyBase64={graphMonthlyBase64}
+                  />
+                }
                 fileName="relatório-cliente.pdf"
                 style={{ textDecoration: "none", height: "100%" }}
               >
-                {({ blob, url, loading, error }) =>
-                  loading ? (
-                    "Carregando relatório..."
-                  ) : (
-                    <Button
-                      startIcon={<DownloadForOffline fontSize="small" />}
-                      variant={useTypeMember ? "outlined" : ""}
-                      sx={{ width: "100%" }}
-                    >
-                      Relatório cliente
-                    </Button>
-                  )
-                }
+                {({ blob, url, loading, error }) => (
+                  <Button
+                    startIcon={<DownloadForOffline fontSize="small" />}
+                    variant={useTypeMember ? "outlined" : ""}
+                    sx={{ width: "100%" }}
+                  >
+                    {"Relatório cliente"}
+                  </Button>
+                )}
               </PDFDownloadLink>
             )
           ) : (
@@ -190,7 +226,7 @@ export const GenerationHeader = ({
         open={uploadImageModal}
       >
         <Carousel
-          sx={{ height: 380, width: 360 }}
+          sx={{ height: 380, width: 380 }}
           navButtonsAlwaysInvisible={true}
           indicators={false}
           indicatorIconButtonProps={{
@@ -321,14 +357,93 @@ export const GenerationHeader = ({
             <Button
               variant="contained"
               onClick={() => {
+                setCurrentPage(currentPage + 1);
                 if (selectedColor != "") {
                   reportClient.color = selectedColor;
                 }
+              }}
+            >
+              Confirmar escolha
+            </Button>
+          </Card>
+          <Card sx={{ p: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                width: "100%",
+                mb: 2,
+              }}
+            >
+              <Cancel
+                fontSize="large"
+                onClick={() => {
+                  setUploadImageModal(!uploadImageModal);
+                }}
+                sx={{ cursor: "pointer" }}
+              />
+            </Box>
+            <Typography variant="body2" sx={{ my: 2, ml: 2 }}>
+              Defina um período e o valor de KWh do seu relatório
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: 2,
+                p: 2,
+                width: "100%",
+              }}
+            >
+              <LocalizationProvider
+                dateAdapter={AdapterMoment}
+                sx={{ zIndex: 10 }}
+              >
+                <DatePicker
+                  views={["year", "month"]}
+                  openTo="month"
+                  label="Período"
+                  value={periodo}
+                  onChange={(periodo) => {
+                    setPeriodo(
+                      periodo ? moment(periodo).format("YYYY-MM") : ""
+                    );
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} sx={{ width: "100%" }} />
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleGettingReportDataRequest({
+                  periodo,
+                  KWh: 0.96,
+                  dev_uuid: deviceInfo["dev_uuid"],
+                });
                 handleUploadLogo();
               }}
             >
               Confirmar escolha
             </Button>
+            <Box sx={{ mt: 8, position: "absolute", right: 0, top: "-1000vh" }}>
+              <Box>
+                <ChartGenerationMonthlyClientReport
+                  monthlyData={monthlyData}
+                  setGraphMonthlyBase64={setGraphMonthlyBase64}
+                />
+              </Box>
+              <Box>
+                <ChartGenerationDailyClientReport
+                  dailyData={dailyData}
+                  setGraphDailyBase64={setGraphDailyBase64}
+                />
+              </Box>
+            </Box>
           </Card>
         </Carousel>
       </Modal>

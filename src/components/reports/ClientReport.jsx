@@ -20,6 +20,8 @@ import {
   ChartGenerationDailyClientReport,
   ChartGenerationMonthlyClientReport,
 } from "../shared/Charts";
+import { height } from "@mui/system";
+import { Box } from "@mui/material";
 
 Font.register({
   family: "Open Sans",
@@ -34,7 +36,11 @@ Font.register({
   ],
 });
 
-export const ClientReport = () => {
+export const ClientReport = ({
+  report_client_data,
+  graphMonthlyBase64,
+  graphDailyBase64,
+}) => {
   const styles = StyleSheet.create({
     header: {
       display: "flex",
@@ -165,130 +171,109 @@ export const ClientReport = () => {
       padding: "20px 40px 20px 40px",
     },
   });
-  const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
-  const [graphDailyBase64, setGraphDailyBase64] = useState("");
-  const [monthlyData, setMonthlyData] = useState(undefined);
-  const [dailyData, setDailyData] = useState([]);
-
-  const { report_client_data } = useSelector((state) => state.devices);
-
-  useEffect(() => {
-    if (report_client_data !== undefined) {
-      setMonthlyData(report_client_data["Gráfico_Geracao_Anual"]);
-      setDailyData(report_client_data["Gráfico_Geracao_Mensal"]);
-    }
-  }, [report_client_data]);
-
-  if (report_client_data === undefined) {
-    return "teste";
-  }
 
   return (
-    <>
-      <PDFViewer
-        style={{
-          height: "85vh",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+    <Document>
+      <Page
+        size="A0"
+        style={{ backgroundColor: "#f5f5f5", padding: "40px 0px 40px 0px" }}
       >
-        <Document>
-          <Page
-            size="A0"
-            style={{ backgroundColor: "#f5f5f5", padding: "40px 0px 40px 0px" }}
-          >
-            <View style={styles.header}>
-              <View style={styles.apresentation}>
-                <Text style={styles.titleText}>
-                  {report_client_data["Nome_usina"]}
-                </Text>
-                <Text style={styles.biggerWeakText}>
-                  Segue os resultados da sua Usina:
-                </Text>
-              </View>
-              <View style={styles.unityAndPeriod}>
-                <View style={styles.unityAndPeriodItem}>
-                  <Text style={styles.biggerWeakText}>Unidade</Text>
-                  <Text style={styles.strongText}>
-                    {report_client_data["Nome_usina"]}
-                  </Text>
-                </View>
-                <View style={styles.unityAndPeriodItem}>
-                  <Text style={styles.biggerWeakText}>Período</Text>
-                  <Text style={styles.titleText}>
-                    {report_client_data["Período"]}
-                  </Text>
-                  <Text style={styles.strongText}></Text>
-                </View>
-              </View>
-              <View style={styles.logo}>
-                <Image
-                  style={{ width: "80%", height: "80%" }}
-                  src={
-                    "https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"
-                  }
-                ></Image>
-              </View>
+        <View style={styles.header}>
+          <View style={styles.apresentation}>
+            <Text style={styles.titleText}>
+              {report_client_data["Nome_usina"]}
+            </Text>
+            <Text style={styles.biggerWeakText}>
+              Segue os resultados da sua Usina:
+            </Text>
+          </View>
+          <View style={styles.unityAndPeriod}>
+            <View style={styles.unityAndPeriodItem}>
+              <Text style={styles.biggerWeakText}>Unidade</Text>
+              <Text style={styles.strongText}>
+                {report_client_data["Nome_usina"]}
+              </Text>
             </View>
-            <View style={styles.smallerBigNumbers}>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Pago"].toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Economia"].toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>
-                  PAGARIA SEM A USINA (R$)
-                </Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Pagou_sem_Usina"].toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>
-                  CONSUMO TOTAL (KWH)
-                </Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Consumo_total"].toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>GERAÇÃO (KWH)</Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Geração"]}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.smallerBigNumbersItem}>
-                <Text style={styles.smallerBigNumbersLabel}>
-                  DESEMPENHO (%)
-                </Text>
-                <View style={styles.smallerBigNumbersBox}>
-                  <Text style={styles.smallerBigNumbersBoxResult}>
-                    {report_client_data["Desempenho"].toFixed(2)}
-                  </Text>
-                </View>
-              </View>
+            <View style={styles.unityAndPeriodItem}>
+              <Text style={styles.biggerWeakText}>Período</Text>
+              <Text style={styles.titleText}>
+                {report_client_data["Período"]}
+              </Text>
+              <Text style={styles.strongText}></Text>
             </View>
-            {/**<View style={styles.energyAndCreditField}>
+          </View>
+          <View style={styles.logo}>
+            <Image
+              style={{ width: "80%", height: "80%" }}
+              src={"https://ucarecdn.com/258f82dc-bf80-4b30-a4be-bcea7118f14a/"}
+            ></Image>
+          </View>
+        </View>
+        <View style={styles.smallerBigNumbers}>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Pago"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Economia"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>
+              PAGARIA SEM A USINA (R$)
+            </Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Pagou_sem_Usina"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>
+              CONSUMO TOTAL (KWH)
+            </Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Consumo_total"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>GERAÇÃO (KWH)</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Geração"]}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>
+              GERAÇÃO ESTIMADA(KWH)
+            </Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Geração_estimada_mês"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>DESEMPENHO (%)</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Desempenho"].toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        </View>
+        {/**<View style={styles.energyAndCreditField}>
               <View style={styles.energy}>
                 <Text style={styles.strongText}>ENERGIA (kWh)</Text>
                 <View style={styles.energyFields}>
@@ -361,7 +346,7 @@ export const ClientReport = () => {
               </View>
             </View>
                 */}
-            {/**<View style={styles.energyAndCreditField}>
+        {/**<View style={styles.energyAndCreditField}>
               
               <View style={styles.energy}>
                 <Text style={styles.strongText}>FLUXO DE ENERGIA (kWh)</Text>
@@ -379,178 +364,154 @@ export const ClientReport = () => {
                 </View>
               </View>
             </View>*/}
-            <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
-              <Text style={styles.strongText}>PRODUÇÃO MENSAL (kWh)</Text>
-              <View
-                style={{
-                  width: "100%",
-                  padding: "30px 0px 30px 0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  marginTop: "50px",
-                  borderRadius: "20px",
-                }}
-              >
-                <Image
-                  src={graphMonthlyBase64}
-                  style={{ height: "100%", width: "100%" }}
-                />
-              </View>
-            </View>
-            <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
-              <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
-              <View
-                style={{
-                  width: "100%",
-                  padding: "30px 0px 30px 0px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  marginTop: "50px",
+        <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
+          <Text style={styles.strongText}>PRODUÇÃO MENSAL (kWh)</Text>
+          <View
+            style={{
+              width: "100%",
+              padding: "30px 0px 30px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              flexDirection: "row",
+              backgroundColor: "white",
+              marginTop: "50px",
+              borderRadius: "20px",
+            }}
+          >
+            <Image
+              src={graphMonthlyBase64}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: "50px", padding: "0px 50px 0px 50px" }}>
+          <Text style={styles.strongText}>PRODUÇÃO DIÁRIA (kWh)</Text>
+          <View
+            style={{
+              width: "100%",
+              padding: "30px 0px 30px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              flexDirection: "row",
+              backgroundColor: "white",
+              marginTop: "50px",
 
-                  borderRadius: "20px",
-                }}
-              >
-                <Image
-                  src={graphDailyBase64}
-                  style={{ height: "100%", width: "100%" }}
-                />
-              </View>
-            </View>
-            <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
-              <Text style={styles.strongText}>
-                Sua contribuição para o mundo
-              </Text>
+              borderRadius: "20px",
+            }}
+          >
+            <Image
+              src={graphDailyBase64}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
+          <Text style={styles.strongText}>Sua contribuição para o mundo</Text>
+          <View
+            style={{
+              width: "100%",
+              padding: "30px 0px 30px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              flexDirection: "row",
+              marginTop: "140px",
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+                padding: "20px 100px 20px 100px",
+                height: "300px",
+                backgroundColor: "white",
+                borderRadius: "20px",
+                gap: "100px",
+              }}
+            >
+              <Image src={Tree} style={{ height: "120px", width: "120px" }} />
               <View
                 style={{
-                  width: "100%",
-                  padding: "30px 0px 30px 0px",
                   display: "flex",
+                  justifyContent: "center",
                   alignItems: "center",
-                  justifyContent: "space-around",
-                  flexDirection: "row",
-                  marginTop: "140px",
+                  height: "300px",
                 }}
               >
-                <View
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    padding: "20px 100px 20px 100px",
-                    height: "300px",
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    gap: "100px",
-                  }}
-                >
-                  <Image
-                    src={Tree}
-                    style={{ height: "120px", width: "120px" }}
-                  />
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "300px",
-                    }}
-                  >
-                    <Text
-                      style={{ fontSize: "100px", fontFamily: "Open Sans" }}
-                    >
-                      0
-                    </Text>
-                    <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
-                      Árvores foram cultivadas
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    padding: "20px 100px 20px 100px",
-                    height: "300px",
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    gap: "100px",
-                  }}
-                >
-                  <Image
-                    src={Cloud}
-                    style={{ height: "120px", width: "120px" }}
-                  />
-                  <View
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "300px",
-                      padding: "0px 10px 0px 10px",
-                    }}
-                  >
-                    <Text
-                      style={{ fontSize: "100px", fontFamily: "Open Sans" }}
-                    >
-                      0,05
-                    </Text>
-                    <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
-                      Toneladas de CO2 evitados
-                    </Text>
-                  </View>
-                </View>
+                <Text style={{ fontSize: "100px", fontFamily: "Open Sans" }}>
+                  {report_client_data["Árvores_salvas"].toFixed(2)}
+                </Text>
+                <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
+                  Árvores foram cultivadas
+                </Text>
               </View>
             </View>
             <View
               style={{
-                marginTop: "260px",
-                padding: "0px 50px 0px 50px",
-                width: "100%",
                 display: "flex",
-                justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "row",
+                padding: "20px 100px 20px 100px",
+                height: "300px",
+                backgroundColor: "white",
+                borderRadius: "20px",
+                gap: "100px",
               }}
             >
+              <Image src={Cloud} style={{ height: "120px", width: "120px" }} />
               <View
                 style={{
-                  width: "60%",
-                  padding: "30px 0px 30px 0px",
                   display: "flex",
+                  justifyContent: "center",
                   alignItems: "center",
-                  justifyContent: "space-around",
-                  flexDirection: "column",
-                  backgroundColor: "white",
-                  marginTop: "100px",
-                  borderRadius: "20px",
+                  height: "300px",
+                  padding: "0px 10px 0px 10px",
                 }}
               >
-                <Text style={styles.weakText}>
-                  Feito com carinho por Maya Tech
+                <Text style={{ fontSize: "100px", fontFamily: "Open Sans" }}>
+                  0,05
                 </Text>
-                <Image
-                  style={{ width: "300px", height: "200px" }}
-                  src={MayaXBlueLogo}
-                ></Image>
+                <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
+                  Toneladas de CO2 evitados
+                </Text>
               </View>
             </View>
-          </Page>
-        </Document>
-      </PDFViewer>
-      <ChartGenerationMonthlyClientReport
-        monthlyData={monthlyData}
-        setGraphMonthlyBase64={setGraphMonthlyBase64}
-      />
-      <ChartGenerationDailyClientReport
-        dailyData={dailyData}
-        setGraphDailyBase64={setGraphDailyBase64}
-      />
-    </>
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: "260px",
+            padding: "0px 50px 0px 50px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: "60%",
+              padding: "30px 0px 30px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              flexDirection: "column",
+              backgroundColor: "white",
+              marginTop: "100px",
+              borderRadius: "20px",
+            }}
+          >
+            <Text style={styles.weakText}>Feito com carinho por Maya Tech</Text>
+            <Image
+              style={{ width: "300px", height: "200px" }}
+              src={MayaXBlueLogo}
+            ></Image>
+          </View>
+        </View>
+      </Page>
+    </Document>
   );
 };

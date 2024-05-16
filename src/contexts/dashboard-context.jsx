@@ -116,8 +116,8 @@ export const DashboardProvider = ({ children }) => {
     dispatch(massiveReportsStatus({ use_uuid }));
   }
 
-  function handleGettingReportDataRequest() {
-    dispatch(gettingReportData());
+  function handleGettingReportDataRequest(props) {
+    dispatch(gettingReportData(props));
   }
 
   function handleGetAllDeletedDevicesRequest() {
@@ -299,7 +299,6 @@ export const DashboardProvider = ({ children }) => {
     handleDeletedDevices();
     handleAlertsFrequency();
     handleUseLogo();
-    handleGettingReportDataRequest();
   }, [use_uuid]);
 
   useEffect(() => {
@@ -476,6 +475,7 @@ export const DashboardProvider = ({ children }) => {
         handleUpdateLogo,
         handleGetDashboardRequest,
         handleMassiveReportsStatusRequest,
+        handleGettingReportDataRequest,
       }}
     >
       {children}

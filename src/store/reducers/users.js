@@ -357,6 +357,18 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_BRAND_INFO:
+      let sorted = result[0].sort((a, b) => {
+        if (a.bl_name < b.bl_name) {
+          return -1;
+        }
+        if (a.bl_name > b.bl_name) {
+          return 1;
+        }
+        return 0;
+      });
+
+      result[0] = sorted;
+
       return {
         ...state,
         brandInfoData: result,
@@ -425,6 +437,7 @@ export default function userReducer(state = initialState, action) {
           dev_image: device.dev_image,
           email: device.dev_email,
           capacity: Number(device.dev_capacity),
+          dev_install: device.dev_install,
         };
       });
 
