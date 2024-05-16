@@ -17,25 +17,19 @@ import {
   Info,
   OfflinePinOutlined,
   OfflinePinRounded,
-  CancelSharpIcon ,
-  
+  CancelSharpIcon,
 } from "@mui/icons-material";
 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-
-
-
- import CardComponent from "./CardComponent";
-
+import CardComponent from "./CardComponent";
 
 import { getUserCookie } from "src/services/session";
 import { useEffect, useState } from "react";
 import { Document, PDFViewer, Page } from "@react-pdf/renderer";
 import AcceptTerm from "src/assets/accept-term.pdf";
 import { CancelOutlined, CancelPresentation } from "@material-ui/icons";
-
 
 export const MayaWatchPro = ({ setTitle, setDescription }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -44,98 +38,164 @@ export const MayaWatchPro = ({ setTitle, setDescription }) => {
     setTitle("Maya Watch PRO");
   }, []);
 
-const basic = [{
-  basico:{
-    title:"Maya watch"
-  }
-}
-]
+  const basic = [
+    {
+      basico: {
+        title: "Maya watch",
+      },
+    },
+  ];
 
+  const handleAction = () => {
+    setAction("acceptTerm");
+  };
 
-const handleAction = () => { setAction("acceptTerm")};
- 
-const cardContents = {
-  basic: {
-    title: "Maya Watch",
-    description: "Nesse plano você contará com:",
-    items: [
-      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
-      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
-      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
-      { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" },
-      { icon: <CancelIcon color="error" />, text: "Faturas e cenários de geração via IA " },
-
-    ],
-    buttonText: "Assinar plano",
-    price:"R$ 1,00 por usinas/mês",
-    action: handleAction
-  },
-  advanced: {
-    title: "Maya Watch Pro",
-    description: "Nesse plano PRO você contará com:",
-    items: [
-      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
-      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
-      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
-      { icon: <CancelIcon color="error" />, text: "Faturas e cenários de geração via IA " },
-
-      
-    ],
-    buttonText: "Assinar plano",
-    price:"R$ 5,00 por usinas/mês",
-    action: handleAction
-
-  },
-  premium: {
-    title: "Maya Watch Pro Max",
-    description: "Nesse plano premium você contará com:",
-    items: [
-      { icon: <CheckCircleIcon color="success" />, text: "Alertas de geração personalizados" },
-      { icon: <CheckCircleIcon color="success" />, text: "Receba alertas no seu WhatsApp" },
-      { icon: <CheckCircleIcon color="success" />, text: "Relatórios de todas as usinas" },
-      { icon: <CheckCircleIcon color="success" />, text: "Gestão de desempenho " },
-      { icon: <CheckCircleIcon color="success" />, text: "Envio de relatórios automáticos" },
-      { icon: <CheckCircleIcon color="success" />, text: "Faturas de energia" },
-      { icon: <CheckCircleIcon color="success" />, text: "Suporte exclusivo Maya" },
-      { icon: <CheckCircleIcon color="success" />, text: "Faturas e cenários de geração via IA " },
-    ],
-    price:"R$ 7,00 por usinas/mês",
-    buttonText: "Assinar plano",
-    action: handleAction
-  }
-};
-
-
+  const cardContents = {
+    basic: {
+      title: "Maya Watch",
+      description: "Nesse plano você contará com:",
+      items: [
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Alertas de geração personalizados",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Receba alertas no seu WhatsApp",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Relatórios de todas as usinas",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Gestão de desempenho ",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Envio de relatórios automáticos",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Faturas de energia",
+        },
+        { icon: <CancelIcon color="error" />, text: "Suporte exclusivo Maya" },
+        {
+          icon: <CancelIcon color="error" />,
+          text: "Faturas e cenários de geração via IA ",
+        },
+      ],
+      buttonText: "Assinar plano",
+      price: "R$ 1,00 por usinas/mês",
+      action: handleAction,
+    },
+    advanced: {
+      title: "Maya Watch Pro",
+      description: "Nesse plano PRO você contará com:",
+      items: [
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Alertas de geração personalizados",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Receba alertas no seu WhatsApp",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Relatórios de todas as usinas",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Gestão de desempenho ",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Envio de relatórios automáticos",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Faturas de energia",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Suporte exclusivo Maya",
+        },
+        {
+          icon: <CancelIcon color="error" />,
+          text: "Faturas e cenários de geração via IA ",
+        },
+      ],
+      buttonText: "Assinar plano",
+      price: "R$ 5,00 por usinas/mês",
+      action: handleAction,
+    },
+    premium: {
+      title: "Maya Watch Pro Max",
+      description: "Nesse plano premium você contará com:",
+      items: [
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Alertas de geração personalizados",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Receba alertas no seu WhatsApp",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Relatórios de todas as usinas",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Gestão de desempenho ",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Envio de relatórios automáticos",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Faturas de energia",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Suporte exclusivo Maya",
+        },
+        {
+          icon: <CheckCircleIcon color="success" />,
+          text: "Faturas e cenários de geração via IA ",
+        },
+      ],
+      price: "R$ 7,00 por usinas/mês",
+      buttonText: "Assinar plano",
+      action: handleAction,
+    },
+  };
 
   const ModalContent = () => {
     switch (action) {
       case "assignAction":
         return (
-          <Box sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            width:1000,
-            bgcolor: "background.paper",
-          }}> 
-          <Box sx={{boxShadow:10}}>
-            <CardComponent{...cardContents.basic}/>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              width: 1000,
+              bgcolor: "background.paper",
+            }}
+          >
+            <Box sx={{ boxShadow: 10 }}>
+              <CardComponent {...cardContents.basic} />
+            </Box>
+            <Box sx={{ boxShadow: 10 }}>
+              <CardComponent {...cardContents.advanced} />
+            </Box>
+            <Box sx={{ boxShadow: 10 }}>
+              <CardComponent {...cardContents.premium} />
+            </Box>
           </Box>
-              <Box sx={{boxShadow:10}}>
-                    <CardComponent{...cardContents.advanced}/>
-              </Box>
-              <Box sx={{boxShadow:10}}>
-                <CardComponent{...cardContents.premium}/>
-              </Box>
-              
-           </Box>
         );
         break;
       case "acceptTerm":
@@ -219,6 +279,7 @@ const cardContents = {
         justifyContent: "center",
         flexDirection: "column",
         bgcolor: "background.paper",
+        width: "90vw",
       }}
     >
       <ModalContent />
