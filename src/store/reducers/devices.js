@@ -50,6 +50,7 @@ export default function userReducer(state = initialState, action) {
 
     case devices.GET_CLIENT_REPORT_DATA_REQUEST:
       return {
+        report_client_data: undefined,
         ...state,
       };
 

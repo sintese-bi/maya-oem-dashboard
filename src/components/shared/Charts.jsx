@@ -168,7 +168,8 @@ export const ChartsGenerationBITopAndLowValue = (props) => {
 export const ChartGenerationMonthlyClientReport = (props) => {
   const theme = useTheme();
   const { monthlyData, setGraphMonthlyBase64 } = props;
-  if (monthlyData === undefined) {
+
+  if (monthlyData.length == 0) {
     return (
       <Card
         sx={{
@@ -241,7 +242,7 @@ export const ChartGenerationMonthlyClientReport = (props) => {
 
           // Atualizando o estado com a string base64.
           console.log(base64Image);
-          setGraphMonthlyBase64("arrombado");
+          setGraphMonthlyBase64(base64Image);
 
           // Apagando o gráfico
         },
@@ -339,7 +340,7 @@ export const ChartGenerationMonthlyClientReport = (props) => {
 export const ChartGenerationDailyClientReport = (props) => {
   const theme = useTheme();
   const { dailyData, setGraphDailyBase64 } = props;
-  if (dailyData === undefined) {
+  if (dailyData.length == 0) {
     return (
       <Card
         sx={{

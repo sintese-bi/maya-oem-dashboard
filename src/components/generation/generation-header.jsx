@@ -72,7 +72,7 @@ export const GenerationHeader = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [graphMonthlyBase64, setGraphMonthlyBase64] = useState("");
   const [graphDailyBase64, setGraphDailyBase64] = useState("");
-  const [monthlyData, setMonthlyData] = useState(undefined);
+  const [monthlyData, setMonthlyData] = useState([]);
   const [dailyData, setDailyData] = useState([]);
   const [reportIsLoading, setReportIsLoading] = useState(true);
 
@@ -95,9 +95,14 @@ export const GenerationHeader = ({
       graphMonthlyBase64 != "" &&
       graphDailyBase64 != ""
     ) {
+      console.log(report_client_data, graphDailyBase64, graphMonthlyBase64);
       setReportIsLoading(false);
     }
   }, [report_client_data, graphDailyBase64, graphMonthlyBase64]);
+
+  useEffect(() => {
+    console.log(monthlyData, dailyData);
+  }, [monthlyData, dailyData]);
 
   return (
     <Box
@@ -205,7 +210,7 @@ export const GenerationHeader = ({
                     variant={useTypeMember ? "outlined" : ""}
                     sx={{ width: "100%" }}
                   >
-                    {"Relatório cliente"}
+                    {!loading ? "Carregado" : "Carregando"}
                   </Button>
                 )}
               </PDFDownloadLink>
@@ -421,32 +426,32 @@ export const GenerationHeader = ({
               variant="contained"
               onClick={() => {
                 handleGettingReportDataRequest({
-                  periodo,
-                  KWh: 0.96,
-                  dev_uuid: deviceInfo["dev_uuid"],
+                  dev_uuid: "a07016f5-2f2b-4617-8061-3c900d537986",
+                  periodo: "2024-04",
+                  kwh: 0.96,
                 });
                 handleUploadLogo();
               }}
             >
               Confirmar escolha
             </Button>
-            <Box sx={{ mt: 8, position: "absolute", right: 0, top: "-1000vh" }}>
-              <Box>
-                <ChartGenerationMonthlyClientReport
-                  monthlyData={monthlyData}
-                  setGraphMonthlyBase64={setGraphMonthlyBase64}
-                />
-              </Box>
-              <Box>
-                <ChartGenerationDailyClientReport
-                  dailyData={dailyData}
-                  setGraphDailyBase64={setGraphDailyBase64}
-                />
-              </Box>
-            </Box>
           </Card>
         </Carousel>
       </Modal>
+      <Box sx={{ mt: 8, position: "absolute", right: 0, top: "-1000vh" }}>
+        <Box>
+          <ChartGenerationMonthlyClientReport
+            monthlyData={monthlyData}
+            setGraphMonthlyBase64={setGraphMonthlyBase64}
+          />
+        </Box>
+        <Box>
+          <ChartGenerationDailyClientReport
+            dailyData={dailyData}
+            setGraphDailyBase64={setGraphDailyBase64}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };
