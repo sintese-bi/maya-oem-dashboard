@@ -16,7 +16,6 @@ export const Address = ({ value, setValues }) => {
   }, [value]);
 
   useEffect(() => {
-    console.log(selectedCity);
     setValues(selectedCity);
   }, [selectedCity]);
 

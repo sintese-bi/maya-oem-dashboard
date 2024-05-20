@@ -86,10 +86,12 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           capacity: data.capacity,
           address: data.address,
+          dev_install: data.dev_install,
         };
       }
     );
 
+    console.log(arrayplantsWithNoBase64);
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
     setUserCookie({ ...getUserCookie(), firstTime: false });
@@ -153,6 +155,7 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           address: data.address,
           capacity: data.capacity,
+          dev_install: data.dev_install,
         };
       }
     );
@@ -181,9 +184,11 @@ export function DefineCapacityAndDevicesEmails({
             ...allDevicesFromUserItem,
             address: temp[0]?.address,
             capacity: temp[0]?.capacity,
+            dev_install: temp[0]?.dev_install,
           };
         }
       );
+      console.log(setupDataWithAddressData);
       setData(setupDataWithAddressData);
     } else {
       setData(usersAPIData.devices);

@@ -472,7 +472,7 @@ export const ClientReport = ({
                 }}
               >
                 <Text style={{ fontSize: "100px", fontFamily: "Open Sans" }}>
-                  0,05
+                  {report_client_data["Carbono"].toFixed(2)}
                 </Text>
                 <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
                   Toneladas de CO2 evitados
