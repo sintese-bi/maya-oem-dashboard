@@ -11,10 +11,12 @@ import { AdministratorReport } from "src/reports/AdministratorReport";
 // icons
 
 import { DownloadForOffline } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportButtonCarousel } from "./reportButtonCarousel";
 
 export const ReportButton = ({
+  setTitle,
+  setDescription,
   handleAdminReportGeneration,
   isLoadingReportGeneration,
   useTypeMember,

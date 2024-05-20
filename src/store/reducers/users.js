@@ -50,6 +50,7 @@ const initialState = {
   invoiceValuesData: [],
   deletedDevices: undefined,
   updatingEmailAndCapacity: false,
+  devices: [],
 };
 
 export default function userReducer(state = initialState, action) {

@@ -48,22 +48,7 @@ const colors = [
   "#454545",
 ];
 
-export const GenerationHeader = ({
-  deviceInfo,
-  handleSelectDevices,
-  handleReportGeneration,
-  devices,
-  startDate,
-  endDate,
-  useTypeMember,
-  isLoadingReport,
-  generation,
-  useNameState,
-  setAction,
-  setOpen,
-  setStartDate,
-  setEndDate,
-}) => {
+export const GenerationHeader = ({ deviceInfo, useTypeMember }) => {
   const { handleGettingReportDataRequest } = useContext(DashboardContext);
   const [uploadImageModal, setUploadImageModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
@@ -98,11 +83,6 @@ export const GenerationHeader = ({
       setReportIsLoading(false);
     }
   }, [report_client_data, graphDailyBase64, graphMonthlyBase64]);
-
-  useEffect(() => {
-    console.log(deviceInfo);
-    console.log(monthlyData, dailyData);
-  }, [monthlyData, dailyData]);
 
   return (
     <Box
@@ -187,7 +167,6 @@ export const GenerationHeader = ({
                 sx={{ width: "100%" }}
                 onClick={() => {
                   setUploadImageModal(true);
-                  handleReportGeneration();
                 }}
               >
                 Preparar relatório
@@ -232,7 +211,7 @@ export const GenerationHeader = ({
         open={uploadImageModal}
       >
         <Carousel
-          sx={{ height: 380, width: 380 }}
+          sx={{ height: 380, width: { lg: 360, md: 300, sm: 300, xs: 300 } }}
           navButtonsAlwaysInvisible={true}
           indicators={false}
           indicatorIconButtonProps={{
@@ -426,6 +405,7 @@ export const GenerationHeader = ({
             <Button
               variant="contained"
               onClick={() => {
+                console.log(deviceInfo);
                 handleGettingReportDataRequest({
                   dev_uuid: deviceInfo["dev_uuid"],
                   periodo: periodo,

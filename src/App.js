@@ -4,10 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import LayoutDashboard from "./layouts/LayoutDashboard";
 import PrivateRoute from "./PrivateRoute";
 
-import energySchema from "src/assets/img/enery-schema.png";
-import Tree from "src/assets/img/TREE.png";
-import Cloud from "src/assets/img/CLOUD.png";
-
 // PAGINAS
 import PasswordRecovery from "./pages/passwordRecovery";
 import Login from "./pages/Login";
@@ -27,25 +23,10 @@ import {
   ClientCalculator,
 } from "./components/calculator";
 import { FaturaModulo } from "./components/modules/faturaModule";
-
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  Image,
-  PDFViewer,
-  Font,
-} from "@react-pdf/renderer";
-import {
-  ChartGenerationMonthlyClientReport,
-  ChartGenrealdaylasthour,
-} from "./components/shared/Charts";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { ClientReport } from "./components/reports/ClientReport";
 import { MobileTest } from "./components/mobile-test/mobile-test";
+import { MobileTestAlerts } from "./components/mobile-test/mobile-test-alerts/mobile-test-alerts";
+import { MobileTestReports } from "./components/mobile-test/mobile-test-reports/mobile-test-reports";
 
 export default function App() {
   return (
@@ -54,8 +35,14 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
-      <Route path="/mobile-test" element={<MobileTest />} />
+
       <Route element={<PrivateRoute />}>
+        <Route path="/mobile-test">
+          <Route index element={<MobileTest />} />
+          <Route path="alerts" element={<MobileTestAlerts />} />
+          <Route path="reports" element={<MobileTestReports />} />
+          <Route path="data" element={<ClientReport />} />
+        </Route>
         <Route path="dashboard" element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
           {/* <Route index path="devices" element={<Devices />} /> */}

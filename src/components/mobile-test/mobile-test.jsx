@@ -1,4 +1,5 @@
 import { Box, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import MayaXBlueLogo from "src/assets/img/logo/maya-x-blue.png";
 
 export const MobileTest = () => {
@@ -27,13 +28,31 @@ export const MobileTest = () => {
           gap: 1,
         }}
       >
-        <Button variant="contained" sx={{ width: 150 }}>
+        <Button
+          component={Link}
+          to={"alerts"}
+          variant="contained"
+          color="success"
+          sx={{ width: 150 }}
+        >
           Alertas
         </Button>
-        <Button variant="outlined" sx={{ width: 150 }}>
+        <Button
+          component={Link}
+          to={"reports"}
+          variant="outlined"
+          color="success"
+          sx={{ width: 150 }}
+        >
           Relatórios
         </Button>
-        <Button variant="outlined" sx={{ width: 150 }}>
+        <Button
+          component={Link}
+          to={"data"}
+          variant="outlined"
+          color="success"
+          sx={{ width: 150 }}
+        >
           Dados
         </Button>
       </Box>
