@@ -95,12 +95,12 @@ export const GenerationHeader = ({
       graphMonthlyBase64 != "" &&
       graphDailyBase64 != ""
     ) {
-      console.log(report_client_data, graphDailyBase64, graphMonthlyBase64);
       setReportIsLoading(false);
     }
   }, [report_client_data, graphDailyBase64, graphMonthlyBase64]);
 
   useEffect(() => {
+    console.log(deviceInfo);
     console.log(monthlyData, dailyData);
   }, [monthlyData, dailyData]);
 
@@ -206,6 +206,7 @@ export const GenerationHeader = ({
               >
                 {({ blob, url, loading, error }) => (
                   <Button
+                    disabled={loading}
                     startIcon={<DownloadForOffline fontSize="small" />}
                     variant={useTypeMember ? "outlined" : ""}
                     sx={{ width: "100%" }}
@@ -426,8 +427,8 @@ export const GenerationHeader = ({
               variant="contained"
               onClick={() => {
                 handleGettingReportDataRequest({
-                  dev_uuid: "a07016f5-2f2b-4617-8061-3c900d537986",
-                  periodo: "2024-04",
+                  dev_uuid: deviceInfo["dev_uuid"],
+                  periodo: periodo,
                   kwh: 0.96,
                 });
                 handleUploadLogo();
