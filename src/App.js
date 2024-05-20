@@ -45,6 +45,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { ClientReport } from "./components/reports/ClientReport";
+import { MobileTest } from "./components/mobile-test/mobile-test";
 
 export default function App() {
   return (
@@ -53,7 +54,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
-
+      <Route path="/mobile-test" element={<MobileTest />} />
       <Route element={<PrivateRoute />}>
         <Route path="dashboard" element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
