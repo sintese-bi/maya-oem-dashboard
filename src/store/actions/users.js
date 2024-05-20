@@ -716,16 +716,15 @@ export const updateEmailAndCapacity =
       (device) => device.address !== undefined
     );
 
-    console.log(params);
-    //stateAndCityNotUndefined.map((device) => {
-    //  const dev_uuid = device.uuid;
-    //  const city_name = device.address;
-    //  axios.post(
-    //    `https://app2.mayaoem.com.br/v2/updateLocation`,
-    //    { dev_uuid, city_name },
-    //    configRequest()
-    //  );
-    //});
+    stateAndCityNotUndefined.map((device) => {
+      const dev_uuid = device.uuid;
+      const city_name = device.address;
+      axios.post(
+        `https://app2.mayaoem.com.br/v2/updateLocation`,
+        { dev_uuid, city_name },
+        configRequest()
+      );
+    });
 
     dispatch({ type: users.UPDATE_EMAIL_CAPACITY_DEVICE_REQUEST });
     api

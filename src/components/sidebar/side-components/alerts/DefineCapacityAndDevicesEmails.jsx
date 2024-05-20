@@ -188,7 +188,6 @@ export function DefineCapacityAndDevicesEmails({
           };
         }
       );
-      console.log(setupDataWithAddressData);
       setData(setupDataWithAddressData);
     } else {
       setData(usersAPIData.devices);
