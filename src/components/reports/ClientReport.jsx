@@ -214,7 +214,7 @@ export const ClientReport = ({
             <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Pago"].toFixed(2)}
+                {report_client_data["Pago"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -222,7 +222,7 @@ export const ClientReport = ({
             <Text style={styles.smallerBigNumbersLabel}>ECONOMIA (R$)</Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Economia"].toFixed(2)}
+                {report_client_data["Economia"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -232,7 +232,7 @@ export const ClientReport = ({
             </Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Pagou_sem_Usina"].toFixed(2)}
+                {report_client_data["Pagou_sem_Usina"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -242,7 +242,7 @@ export const ClientReport = ({
             </Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Consumo_total"].toFixed(2)}
+                {report_client_data["Consumo_total"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -260,7 +260,7 @@ export const ClientReport = ({
             </Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Geração_estimada_mês"].toFixed(2)}
+                {report_client_data["Geração_estimada_mês"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -268,7 +268,7 @@ export const ClientReport = ({
             <Text style={styles.smallerBigNumbersLabel}>DESEMPENHO (%)</Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
-                {report_client_data["Desempenho"].toFixed(2)}
+                {report_client_data["Desempenho"].toFixed(1)}
               </Text>
             </View>
           </View>
@@ -305,7 +305,7 @@ export const ClientReport = ({
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ANTERIOR</Text>
                     <Text style={styles.strongText}>
-                      {report_client_data["Saldo_anterior"].toFixed(2)}
+                      {report_client_data["Saldo_anterior"].toFixed(1)}
                     </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
@@ -329,7 +329,7 @@ export const ClientReport = ({
                   <View style={styles.energyFieldsItem}>
                     <Text style={styles.weakText}>ATUAL</Text>
                     <Text style={styles.strongText}>
-                      {report_client_data["Saldo_atual"].toFixed(2)}
+                      {report_client_data["Saldo_atual"].toFixed(1)}
                     </Text>
                   </View>
                   <View style={styles.energyFieldsItem}>
@@ -442,7 +442,7 @@ export const ClientReport = ({
                 }}
               >
                 <Text style={{ fontSize: "100px", fontFamily: "Open Sans" }}>
-                  {report_client_data["Árvores_salvas"].toFixed(2)}
+                  {report_client_data["Árvores_salvas"].toFixed(1)}
                 </Text>
                 <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
                   Árvores foram cultivadas
@@ -472,7 +472,7 @@ export const ClientReport = ({
                 }}
               >
                 <Text style={{ fontSize: "100px", fontFamily: "Open Sans" }}>
-                  {report_client_data["Carbono"].toFixed(2)}
+                  {report_client_data["Carbono"].toFixed(1)}
                 </Text>
                 <Text style={{ fontSize: "42px", fontFamily: "Open Sans" }}>
                   Toneladas de CO2 evitados

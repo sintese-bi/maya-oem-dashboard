@@ -92,6 +92,7 @@ export const DeviceDetail = (props) => {
         )
         .then(() => {
           handleGetDashboardRequest();
+          dispatch(getDevices(blUuidState));
           localStorage.removeItem("setupData");
         });
 
@@ -99,7 +100,7 @@ export const DeviceDetail = (props) => {
       const gen_estimated1 = response.data;
 
       // Faça o que for necessário com o valor estimado retornado.
-      dispatch(getDevices(blUuidState));
+
       setEditInputs(!editInputs);
     } catch (error) {
       // Lida com erros, se necessário.
