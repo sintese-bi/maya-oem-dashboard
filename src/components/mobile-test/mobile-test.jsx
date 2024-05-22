@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import MayaXBlueLogo from "src/assets/img/logo/maya-x-blue.png";
 import { MobileDados } from "./mobile-test-dados/mobile-test-dados";
 
-
 export const MobileTest = () => {
   return (
     <Box
