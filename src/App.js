@@ -37,7 +37,7 @@ export default function App() {
       <Route path="/passwordaRecovery" element={<PasswordRecovery />} />
 
       <Route element={<PrivateRoute />}>
-        <Route path="/mobile-test">
+        <Route path="/mobile">
           <Route index element={<MobileTest />} />
           <Route path="alerts" element={<MobileTestAlerts />} />
           <Route path="reports" element={<MobileTestReports />} />
