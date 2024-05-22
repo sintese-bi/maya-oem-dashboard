@@ -27,6 +27,7 @@ import { ClientReport } from "./components/reports/ClientReport";
 import { MobileTest } from "./components/mobile-test/mobile-test";
 import { MobileTestAlerts } from "./components/mobile-test/mobile-test-alerts/mobile-test-alerts";
 import { MobileTestReports } from "./components/mobile-test/mobile-test-reports/mobile-test-reports";
+import { MobileTestDados } from "./components/mobile-test/mobile-test-dados/mobile-test-dados";
 
 export default function App() {
   return (
@@ -41,7 +42,7 @@ export default function App() {
           <Route index element={<MobileTest />} />
           <Route path="alerts" element={<MobileTestAlerts />} />
           <Route path="reports" element={<MobileTestReports />} />
-          <Route path="data" element={<ClientReport />} />
+          <Route path="data" element={<MobileTestDados />} />
         </Route>
         <Route path="dashboard" element={<LayoutDashboard />}>
           <Route index element={<Dashboard />} />
