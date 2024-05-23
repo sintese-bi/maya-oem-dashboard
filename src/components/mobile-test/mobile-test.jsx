@@ -53,7 +53,6 @@ export const MobileTest = () => {
           variant="outlined"
           color="success"
           sx={{ width: 150 }}
-          disabled={true}
         >
           Dados
         </Button>
