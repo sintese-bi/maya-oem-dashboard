@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env REACT_APP_STAGE=development react-app-rewired start",
+    "dev": "cross-env REACT_APP_STAGE=development react-app-rewired start",
     "prod": "cross-env REACT_APP_STAGE=prod react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -36,7 +37,6 @@
     "axios": "^0.27.2",
     "browserify-fs": "^1.0.0",
     "chart.js": "^3.9.1",
-    "cross-env": "^7.0.3",
     "events": "^3.3.0",
     "faker": "^6.6.6",
     "file-saver": "^2.0.5",
@@ -87,6 +87,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "eslint": "^8.52.0",
     "eslint-plugin-react": "^7.33.2",
