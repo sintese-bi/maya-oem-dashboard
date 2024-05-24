@@ -241,7 +241,6 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           const base64Image = canvas.toDataURL("image/jpeg");
 
           // Atualizando o estado com a string base64.
-          console.log(base64Image);
           setGraphMonthlyBase64(base64Image);
 
           // Apagando o gráfico

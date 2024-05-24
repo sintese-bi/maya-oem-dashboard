@@ -311,7 +311,6 @@ export default function userReducer(state = initialState, action) {
 
     case users.GET_ALL_DEVICES_SUCCESS:
       const allDevices = devicesData.map((device) => {
-        console.log(device.dev_address || "-");
         let deviceItem = {
           brand: device.dev_brand,
           blUuid: device.brand_login.bl_uuid,

@@ -90,8 +90,6 @@ export function DefineCapacityAndDevicesEmails({
         };
       }
     );
-
-    console.log(arrayplantsWithNoBase64);
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
 
     setUserCookie({ ...getUserCookie(), firstTime: false });

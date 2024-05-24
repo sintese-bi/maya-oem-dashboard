@@ -624,7 +624,6 @@ export const massiveReportsStatus = (params) => (dispatch) => {
     .then((res) => {
       const { data } = res;
       const { use_massive_reports_status, amount_of_reports } = data;
-      console.log(use_massive_reports_status);
       dispatch({
         result: { use_massive_reports_status, amount_of_reports },
         type: users.GET_MASSIVE_REPORTS_STATUS_SUCCESS,
@@ -1061,7 +1060,6 @@ export const deleteUser = (params, getUsers) => (dispatch) => {
 
 export const updateBrands = (params, handleBrandInfoRequest) => (dispatch) => {
   dispatch({ type: users.UPDATE_BRAND });
-  console.log(params);
   api
     .post("/updatebrands", params, configRequest())
     .then((res) => {

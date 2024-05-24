@@ -13,33 +13,49 @@ import { Box, Avatar, Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { numbers } from "src/helpers/utils";
 import { MobileBigNumberDashboard } from "../mobile-test-dashboard/MobileBigNumbers";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MobileTestCustomIndicators } from "../mobile-test-custom-indicators/mobile-test-custom-indicators";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { DashboardContext } from "src/contexts/dashboard-context";
+import { MyUsins } from "src/components/dashboard/my-usins/myUsins";
 
-export const MobileTestDados = ({
-  realGenerationLastDay = 0,
-  estimatedGenerationLastDay = 0,
-  percentLastDay = 0,
-  allDevices = [],
-  devices = [],
-  brands = [],
-  notDefined = [],
-  unactived = [],
-  online = [],
-  offline = [],
-  capacityTotal = 0,
-  alerts = 0,
-  type = "",
-  usinsByState = [],
-  handleChangeColumns = () => {},
-  monthEconomyTotal = 10,
-  treesSavedTotal = 0,
-}) => {
-  const { usersAPIData } = useContext(DashboardContext);
+export const MobileTestDados = () => {
+  const {
+    isLoadingReportGeneration,
+    data,
+    type,
+    userData,
+    usersAPIData,
+    startDate,
+    endDate,
+    optionFilter,
+    realGenerationTotal,
+    estimatedGenerationTotal,
+    percentageTotal,
+    monthEconomyTotal,
+    treesSavedTotal,
+    realGenerationFiltered,
+    estimatedGenerationFiltered,
+    percentGenerationFiltered,
+    realGenerationLastDay,
+    estimatedGenerationLastDay,
+    percentLastDay,
+    usinsByState,
+    capacityTotal,
+    devicesGenerationWithAlerts,
+    setIsLoadingReportGeneration,
+    setData,
+    setType,
+    setStartDate,
+    setEndDate,
+    setOptionFilter,
+    handleGenerationTotalValues,
+    handleGenerationLastDayValues,
+    handleGenerationFilteredValues,
+    handleAdminReportGeneration,
+  } = useContext(DashboardContext);
   const { reportsCounting = 0 } = useSelector((state) => state.users);
   const { genrealdaylasthourData = [] } = useSelector((state) => state.devices);
   const monthGeratcion = 3;
@@ -96,13 +112,12 @@ export const MobileTestDados = ({
         flexDirection: "column",
         alignItems: "center",
         p: 2,
-        gap: 4,
       }}
     >
-      <Box sx={{ width: "100%", mb: 1 }}>
+      <Box sx={{ width: "100%" }}>
         <Button
           component={Link}
-          to={"/mobile-test"}
+          to={"/mobile"}
           variant="outlined"
           startIcon={<Home />}
         >
@@ -116,10 +131,10 @@ export const MobileTestDados = ({
       <Carousel
         sx={{
           width: "100vw",
-          height: 400,
+          height: "100%",
           display: "flex",
           flexDirection: "column",
-          overflow: "scroll",
+          py: 4,
         }}
         navButtonsAlwaysInvisible={true}
         indicators={false}
@@ -131,7 +146,7 @@ export const MobileTestDados = ({
         index={currentPage}
         autoPlay={false}
       >
-        <Box
+        {/**<Box
           sx={{
             height: 400,
             display: "flex",
@@ -444,7 +459,43 @@ export const MobileTestDados = ({
             />
           </Box>
         </Box>
-        <Box sx={{ px: 1 }}>
+        */}
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            py: 4,
+            px: 1,
+          }}
+        >
+          <MyUsins
+            realGenerationTotal={realGenerationTotal}
+            estimatedGenerationTotal={estimatedGenerationTotal}
+            realGenerationLastDay={realGenerationLastDay}
+            estimatedGenerationLastDay={estimatedGenerationLastDay}
+            percentLastDay={percentLastDay}
+            allDevices={usersAPIData.allDevices}
+            brands={usersAPIData.brands}
+            notDefined={usersAPIData.notDefined}
+            unactived={usersAPIData.unactived}
+            online={usersAPIData.online}
+            offline={usersAPIData.offline}
+            alerts={usersAPIData.alerts}
+            type={type}
+            monthEconomyTotal={monthEconomyTotal}
+            treesSavedTotal={treesSavedTotal}
+            usinsByState={usinsByState}
+            handleChangeColumns={setType}
+            devices={usersAPIData.devices}
+            capacityTotal={capacityTotal}
+            percentageTotal={percentageTotal}
+          />
+        </Box>
+        <Box sx={{ px: 1, height: "100%" }}>
           <MUIDataTable
             options={options}
             data={usersAPIData.devices}
@@ -452,10 +503,12 @@ export const MobileTestDados = ({
           />
         </Box>
       </Carousel>
-      <MobileTestCustomIndicators
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <Box sx={{ width: "100%", py: 4 }}>
+        <MobileTestCustomIndicators
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </Box>
     </Box>
   );
 };

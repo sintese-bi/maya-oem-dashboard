@@ -54,7 +54,7 @@ export const MobileTestAlerts = () => {
       <Box sx={{ width: "100%", mb: 6 }}>
         <Button
           component={Link}
-          to={"/mobile-test"}
+          to={"/mobile"}
           variant="outlined"
           startIcon={<Home />}
         >

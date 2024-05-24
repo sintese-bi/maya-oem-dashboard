@@ -405,7 +405,6 @@ export const GenerationHeader = ({ deviceInfo, useTypeMember }) => {
             <Button
               variant="contained"
               onClick={() => {
-                console.log(deviceInfo);
                 handleGettingReportDataRequest({
                   dev_uuid: deviceInfo["dev_uuid"],
                   periodo: periodo,

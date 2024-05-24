@@ -58,6 +58,7 @@ export default function Dashboard() {
     optionFilter,
     realGenerationTotal,
     estimatedGenerationTotal,
+    percentageTotal,
     monthEconomyTotal,
     treesSavedTotal,
     realGenerationFiltered,
@@ -132,6 +133,7 @@ export default function Dashboard() {
             handleChangeColumns={setType}
             devices={usersAPIData.devices}
             capacityTotal={capacityTotal}
+            percentageTotal={percentageTotal}
           />
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 703 }}>
