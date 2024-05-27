@@ -12,7 +12,7 @@ export const InstallNumber = ({ value, setValuesInstallNumber }) => {
     <Box sx={{ width: 290, height: 40 }}>
       <TextField
         type="number"
-        defaultValue={install_number}
+        value={install_number}
         label="Número de Instalação"
         sx={{ width: "100%" }}
         onChange={(e) => {
