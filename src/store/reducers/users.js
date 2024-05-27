@@ -421,6 +421,7 @@ export default function userReducer(state = initialState, action) {
           name: device.dev_name,
           uuid: device.dev_uuid,
           address: device.dev_address || "-",
+          gen_estimated: Number((Math.random() * 400).toFixed(2)),
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
@@ -437,7 +438,7 @@ export default function userReducer(state = initialState, action) {
           dev_image: device.dev_image,
           email: device.dev_email,
           capacity: Number(device.dev_capacity),
-          dev_install: device.dev_install,
+          dev_install: device.dev_install || 0,
         };
       });
 

@@ -292,7 +292,7 @@ export const DashboardProvider = ({ children }) => {
     handleGenRealLastHours();
     handleBigNumberSumRequest();
     handleGetDashboardRequest();
-    //handleGetAllDevicesRequest();
+    handleGetAllDevicesRequest();
     handleGetAllDeletedDevicesRequest();
     handleGetAllDevicesFromUserRequest();
     handleBrandInfoRequest();
