@@ -6,6 +6,7 @@ import {
   Forest,
   InsertDriveFile,
   Money,
+  Percent,
   ReportProblem,
   SignalWifiOff,
   SolarPower,
@@ -19,10 +20,8 @@ import { numbers } from "src/helpers/utils";
 import { number } from "yup";
 
 export const MyUsins = ({
-  realGenerationLastDay,
-  estimatedGenerationLastDay,
-  percentLastDay,
-  allDevices,
+  realGenerationTotal,
+  estimatedGenerationTotal,
   devices,
   brands,
   notDefined,
@@ -30,12 +29,10 @@ export const MyUsins = ({
   online,
   offline,
   capacityTotal,
-  alerts,
-  type,
-  usinsByState,
   handleChangeColumns,
   monthEconomyTotal,
   treesSavedTotal,
+  percentageTotal,
 }) => {
   const { reportsCounting } = useSelector((state) => state.users);
   const { genrealdaylasthourData } = useSelector((state) => state.devices);
@@ -124,9 +121,9 @@ export const MyUsins = ({
       <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={8}
-          title="Inativo"
-          btn={false}
-          value={unactived.length}
+          title="Geração real total"
+          btn={true}
+          value={numbers(realGenerationTotal, "KWh")}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar
@@ -144,9 +141,9 @@ export const MyUsins = ({
       <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
-          title="Sem inversor"
-          btn={false}
-          value={notDefined.length}
+          title="Geração estimada total"
+          btn={true}
+          value={numbers(estimatedGenerationTotal, "KWh")}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar
@@ -244,9 +241,9 @@ export const MyUsins = ({
       <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={10}
-          title="Plantas em alerta"
-          btn={false}
-          value={genrealdaylasthourData?.length}
+          title="Desempenho"
+          btn={true}
+          value={percentageTotal}
           handleChangeColumns={handleChangeColumns}
           icon={
             <Avatar
@@ -256,7 +253,7 @@ export const MyUsins = ({
                 width: 56,
               }}
             >
-              <AttachMoney />
+              <Percent />
             </Avatar>
           }
         />

@@ -96,7 +96,7 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                   use_logo !== null ? `data:image/png;base64,${use_logo}` : Maya
                 }
                 alt=""
-                srcset=""
+                srcSet=""
                 id="user_logo"
                 style={{ width: 110, height: 40 }}
               />
@@ -199,7 +199,7 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
               flexWrap: "wrap",
             }}
           >
-            <Typography
+            <Box
               sx={{
                 color: theme.palette.text.secondary,
                 display: "flex",
@@ -232,7 +232,7 @@ export const DashboardNavbar = ({ sideState, setSideState }) => {
                   }}
                 />
               )}
-            </Typography>
+            </Box>
 
             <Box
               sx={{

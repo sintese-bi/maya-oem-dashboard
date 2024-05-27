@@ -30,6 +30,7 @@ import { getDevices } from "src/store/actions/devices";
 import { Address } from "./DefineCapacityFields/Address";
 import { Capacity } from "./DefineCapacityFields/Capacity";
 import { InstallNumber } from "./DefineCapacityFields/InstallNumber";
+import { EstimatedGeneration } from "./DefineCapacityFields/estimatedGeneration";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -86,12 +87,12 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           capacity: data.capacity,
           address: data.address,
+          dev_install: data.dev_install,
+          gen_estimated: data.gen_estimated,
         };
       }
     );
-
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
-
     setUserCookie({ ...getUserCookie(), firstTime: false });
     setOpen(false);
 
@@ -153,10 +154,13 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           address: data.address,
           capacity: data.capacity,
+          dev_install: data.dev_install,
+          gen_estimated: data.gen_estimated,
         };
       }
     );
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
+    console.log(devices);
     dispatch(
       updateEmailAndCapacity(
         { arrayplants: devices },
@@ -176,11 +180,12 @@ export function DefineCapacityAndDevicesEmails({
             (setupDataItem) =>
               setupDataItem.dev_uuid == allDevicesFromUserItem.uuid
           );
-
           return {
             ...allDevicesFromUserItem,
             address: temp[0]?.address,
             capacity: temp[0]?.capacity,
+            dev_install: temp[0]?.dev_install,
+            gen_estimated: temp[0]?.gen_estimated,
           };
         }
       );
@@ -283,7 +288,6 @@ export function DefineCapacityAndDevicesEmails({
               devices.push(newDeviceToAdd[0]);
             }
           }
-
           return (
             <Capacity
               value={dataTable.rowData[3]}
@@ -408,6 +412,46 @@ export function DefineCapacityAndDevicesEmails({
         },
       },
     },
+    {
+      name: "gen_estimated",
+      label: "Geração estimada",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          function setValuesEstimatedGeneration(estimated_generation) {
+            let gen_estimated = estimated_generation;
+
+            let deviceInfo = devices.filter(
+              (item) => item.uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].gen_estimated = gen_estimated;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].gen_estimated = gen_estimated;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+          return (
+            <EstimatedGeneration
+              value={dataTable.rowData[6]}
+              setValuesEstimatedGeneration={setValuesEstimatedGeneration}
+            />
+          );
+        },
+      },
+    },
   ];
 
   if (usersAPIData.isDashboardDataLoading) {
@@ -449,7 +493,7 @@ export function DefineCapacityAndDevicesEmails({
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: "flex",
-        width: "100%",
+        width: "90vw",
         height: "60vh",
         flexDirection: "column",
       }}

@@ -53,14 +53,13 @@ export function DefineAlertEmail({
 
   useEffect(() => {
     setTitle("Definição do email para alertas");
-    setDescription("");
+    setDescription(
+      "Por favor, define o email em que deseja receber os alertas!"
+    );
   }, [currentPage]);
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={{ fontWeight: "bold", fontSize: "20px" }}>
-        Por favor, define o email em que deseja receber os alertas!
-      </Typography>
       <TextField
         {...register("email")}
         sx={{ width: "100%" }}

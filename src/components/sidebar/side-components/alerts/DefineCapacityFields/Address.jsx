@@ -4,8 +4,8 @@ import citiesData from "src/services/municipios";
 
 export const Address = ({ value, setValues }) => {
   const [selectedCity, setSelectedCity] = useState({
-    ic_states: value.split("-")[1],
-    ic_city: value.split("-")[0],
+    ic_states: value?.split("-")[1],
+    ic_city: value?.split("-")[0],
   });
 
   useEffect(() => {
@@ -16,12 +16,11 @@ export const Address = ({ value, setValues }) => {
   }, [value]);
 
   useEffect(() => {
-    console.log(selectedCity);
     setValues(selectedCity);
   }, [selectedCity]);
 
   return (
-    <Box sx={{ width: 294, height: 40 }}>
+    <Box sx={{ width: 300, height: 40 }}>
       <Autocomplete
         name="address"
         options={citiesData}

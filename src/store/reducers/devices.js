@@ -48,6 +48,23 @@ export default function userReducer(state = initialState, action) {
         capacity: [],
       };
 
+    case devices.GET_CLIENT_REPORT_DATA_REQUEST:
+      return {
+        report_client_data: undefined,
+        ...state,
+      };
+
+    case devices.GET_CLIENT_REPORT_DATA_SUCCESS:
+      return {
+        ...state,
+        report_client_data: result,
+      };
+
+    case devices.GET_CLIENT_REPORT_DATA_FAILURE:
+      return {
+        ...state,
+      };
+
     case devices.GET_ALL_DEVICES_REQUEST:
       return {
         ...state,

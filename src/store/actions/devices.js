@@ -55,6 +55,38 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
     });
 };
 
+export const gettingReportData = (params) => (dispatch) => {
+  dispatch({ type: devices.GET_CLIENT_REPORT_DATA_REQUEST });
+  axios
+    .post("https://balance.mayaoem.com.br/plantinfo", params, {
+      headers: {
+        Authorization: `Bearer iqwj9ej1291u49310i30ke1201i312i9321oesdaleqwoijeiooiOvb`,
+      },
+    })
+    .then((res) => {
+      const { data } = res;
+      toast.success(data.message, {
+        duration: 5000,
+      });
+      console.log(data);
+      dispatch({ type: devices.GET_CLIENT_REPORT_DATA_SUCCESS, result: data });
+    })
+    .catch((error) => {
+      const { response: err } = error;
+      console.log(error);
+
+      const message =
+        err && err.data
+          ? err.data.message
+          : "Erro desconhecido - gettingReportData";
+
+      toast.error(`${message} gettingReportData`, {
+        duration: 5000,
+      });
+      dispatch({ type: devices.GET_CLIENT_REPORT_DATA_FAILURE, message });
+    });
+};
+
 export const deviceRecover =
   (params, handleGetAllDeletedDevicesRequest) => (dispatch) => {
     dispatch({ type: devices.DEVICE_RECOVER_REQUEST });

@@ -50,6 +50,7 @@ const initialState = {
   invoiceValuesData: [],
   deletedDevices: undefined,
   updatingEmailAndCapacity: false,
+  devices: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -315,7 +316,7 @@ export default function userReducer(state = initialState, action) {
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
           uuid: device.dev_uuid,
-          address: device.dev_address || "",
+          address: device.dev_address || "-",
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
@@ -356,6 +357,18 @@ export default function userReducer(state = initialState, action) {
       };
 
     case users.GET_BRAND_INFO:
+      let sorted = result[0].sort((a, b) => {
+        if (a.bl_name < b.bl_name) {
+          return -1;
+        }
+        if (a.bl_name > b.bl_name) {
+          return 1;
+        }
+        return 0;
+      });
+
+      result[0] = sorted;
+
       return {
         ...state,
         brandInfoData: result,
@@ -386,6 +399,12 @@ export default function userReducer(state = initialState, action) {
         invoiceValuesData: [],
       };
 
+    case users.MASS_EMAIL_AMOUNT_PERCENTAGE:
+      return {
+        ...state,
+        mass_email_amount_percentage: result,
+      };
+
     case users.GET_DASHBOARD_REQUEST:
       return {
         ...state,
@@ -401,7 +420,8 @@ export default function userReducer(state = initialState, action) {
           blUuid: device.brand_login.bl_uuid,
           name: device.dev_name,
           uuid: device.dev_uuid,
-          address: device.dev_address,
+          address: device.dev_address || "-",
+          gen_estimated: Number((Math.random() * 400).toFixed(2)),
           generationRealDay: Number(device.gen_real_day),
           generationRealWeek: Number(device.weeklySum.gen_real),
           generationRealMonth: Number(device.monthlySum.gen_real),
@@ -418,6 +438,7 @@ export default function userReducer(state = initialState, action) {
           dev_image: device.dev_image,
           email: device.dev_email,
           capacity: Number(device.dev_capacity),
+          dev_install: device.dev_install || 0,
         };
       });
 

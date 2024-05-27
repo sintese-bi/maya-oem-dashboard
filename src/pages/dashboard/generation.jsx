@@ -178,19 +178,7 @@ const Generation = () => {
       <Box sx={{ width: "100%" }}>
         <GenerationHeader
           deviceInfo={deviceInfo}
-          handleSelectDevices={handleSelectDevices}
-          handleReportGeneration={handleReportGeneration}
-          devices={devices}
-          startDate={startDate}
-          endDate={endDate}
           useTypeMember={useTypeMember}
-          isLoadingReport={isLoadingReport}
-          generation={generation}
-          useNameState={useNameState}
-          setAction={setAction}
-          setOpen={setOpen}
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
         />
         <Box sx={{ my: 10 }}>
           <DeviceDetail

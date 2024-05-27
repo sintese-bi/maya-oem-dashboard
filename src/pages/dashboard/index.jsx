@@ -58,6 +58,7 @@ export default function Dashboard() {
     optionFilter,
     realGenerationTotal,
     estimatedGenerationTotal,
+    percentageTotal,
     monthEconomyTotal,
     treesSavedTotal,
     realGenerationFiltered,
@@ -89,10 +90,6 @@ export default function Dashboard() {
     navigate("/dashboard/devices");
   }
 
-  const { bignumbersumValues, genrealdaylasthourData } = useSelector(
-    (state) => state.devices
-  );
-
   const devicesTableRef = useRef(null);
   const adminGraphRef = useRef(null);
 
@@ -111,8 +108,6 @@ export default function Dashboard() {
       </Backdrop>
     );
   }
-
-  //openWebScoketConnection();
 
   return (
     <Box id="index">
@@ -138,6 +133,7 @@ export default function Dashboard() {
             handleChangeColumns={setType}
             devices={usersAPIData.devices}
             capacityTotal={capacityTotal}
+            percentageTotal={percentageTotal}
           />
         </Grid>
         <Grid item xs={12} md={12} sm={12} lg={6} sx={{ height: 703 }}>
@@ -145,7 +141,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{}} xs={12} id="list-usins">
+      <Grid item sx={{}} xs={12} id="list-usins">
         <ListUsins
           data={data}
           devicesTableRef={devicesTableRef}
@@ -183,7 +179,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 6, width: "100%" }} xs={12}>
+      <Grid container sx={{ mt: 6, width: "100%" }}>
         <AlertDevices />
       </Grid>
 

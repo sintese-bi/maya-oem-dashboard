@@ -28,7 +28,7 @@ export const ReportButtonCarousel = ({
   ];
   return (
     <Carousel
-      sx={{ height: 380, width: 360 }}
+      sx={{ height: 380, width: { lg: 360, md: 300, sm: 300, xs: 300 } }}
       navButtonsAlwaysInvisible={true}
       indicators={false}
       indicatorIconButtonProps={{

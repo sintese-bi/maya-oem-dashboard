@@ -13,6 +13,7 @@ import {
   createDevice,
   genrealdayDevicelasthour,
   genrealdaylasthour,
+  gettingReportData,
 } from "src/store/actions/devices";
 import {
   alertFrequency,
@@ -29,6 +30,7 @@ import {
   portalemailLogins,
   postUseDateReport,
   reportCounting,
+  testSSE,
   updateBrands,
   updateLogo,
   uselogo,
@@ -59,6 +61,7 @@ export const DashboardProvider = ({ children }) => {
 
   const [realGenerationTotal, setRealGenerationTotal] = useState(0);
   const [estimatedGenerationTotal, setEstimatedGenerationTotal] = useState(0);
+  const [percentageTotal, setPercentageTotal] = useState(0);
   const [monthEconomyTotal, setMonthEconomyTotal] = useState(0);
   const [treesSavedTotal, setTreesSavedTotal] = useState(0);
   const [capacityTotal, setCapacityTotal] = useState(0);
@@ -114,6 +117,10 @@ export const DashboardProvider = ({ children }) => {
     dispatch(massiveReportsStatus({ use_uuid }));
   }
 
+  function handleGettingReportDataRequest(props) {
+    dispatch(gettingReportData(props));
+  }
+
   function handleGetAllDeletedDevicesRequest() {
     dispatch(getAllDeletedDevices(use_uuid));
   }
@@ -135,9 +142,15 @@ export const DashboardProvider = ({ children }) => {
   }
 
   function handleMassEmail() {
-    dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
+    //dispatch(massEmail({ use_uuid }, handleMassiveReportsStatusRequest));
+    dispatch(
+      testSSE(
+        use_uuid,
+        handleMassiveReportsStatusRequest,
+        usersAPIData.massive_reports_status
+      )
+    );
     handleReportCountingRequest();
-    handleMassiveReportsStatusRequest();
   }
 
   function handleReportCountingRequest() {
@@ -149,6 +162,7 @@ export const DashboardProvider = ({ children }) => {
   function handleGenerationTotalValues(props) {
     setRealGenerationTotal(props.realGenerationTotal);
     setEstimatedGenerationTotal(props.estimatedGenerationTotal);
+    setPercentageTotal(props.percentage);
     setMonthEconomyTotal(props.monthEconomyTotal);
     setTreesSavedTotal(props.treesSavedTotal);
   }
@@ -311,8 +325,9 @@ export const DashboardProvider = ({ children }) => {
       );
 
       handleGenerationTotalValues({
-        realGenerationTotal: generationReal,
-        estimatedGenerationTotal: generationEstimated,
+        realGenerationTotal: generationReal?.toFixed(2),
+        estimatedGenerationTotal: generationEstimated?.toFixed(2),
+        percentage: ((generationReal / generationEstimated) * 100).toFixed(0),
         monthEconomyTotal: (generationReal * 0.96).toFixed(2),
         treesSavedTotal: (generationReal * 0.000504).toFixed(2),
       });
@@ -428,6 +443,7 @@ export const DashboardProvider = ({ children }) => {
         optionFilter,
         realGenerationTotal,
         estimatedGenerationTotal,
+        percentageTotal,
         monthEconomyTotal,
         treesSavedTotal,
         realGenerationFiltered,
@@ -463,6 +479,7 @@ export const DashboardProvider = ({ children }) => {
         handleUpdateLogo,
         handleGetDashboardRequest,
         handleMassiveReportsStatusRequest,
+        handleGettingReportDataRequest,
       }}
     >
       {children}

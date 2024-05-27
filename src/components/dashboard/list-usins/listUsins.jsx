@@ -23,6 +23,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { amountOfSentEmails } from "src/services/web-socket";
 import { WebSocketContext } from "src/contexts/web-scoket";
+import { configRequest } from "src/services/api";
+import { getUserCookie } from "src/services/session";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [amountOfSentEmails, setAmountOfSentEmails] = useState(0);
@@ -39,6 +41,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
     online,
     massive_reports_status,
     amount_of_reports,
+    mass_email_amount_percentage,
   } = useSelector((state) => state.users);
 
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
@@ -55,35 +58,20 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
 
-  //useEffect(() => {
-  //  var exampleSocket = new WebSocket("ws://localhost:8081", "protocolOne");
-  //
-  //  exampleSocket.onopen = function (event) {
-  //    exampleSocket.send(
-  //      "Aqui vai algum texto que o servidor esteja aguardando urgentemente!"
-  //    );
-  //  };
-  //
-  //  exampleSocket.onmessage = (message) => {
-  //    setAmountOfSentEmails(message.data); // Update the state
-  //  };
-  //
-  //  exampleSocket.onerror = (err) => {
-  //    console.log(err);
-  //  };
-  //
-  //  // Clean-up function
-  //  return () => {
-  //    exampleSocket.close(); // Close the WebSocket connection when the component unmounts
-  //  };
-  //}, []); // Empty dependency array to run the effect only once
+  const [opa, setOpa] = useState(0);
 
-  //useEffect(() => {
-  //  if (amountOfSentEmails >= 100) {
-  //    setAmountOfSentEmails(0);
-  //    handleMassiveReportsStatusRequest();
-  //  }
-  //}, [amountOfSentEmails]);
+  useEffect(() => {
+    if (mass_email_amount_percentage) {
+      setAmountOfSentEmails(mass_email_amount_percentage);
+    }
+  }, [mass_email_amount_percentage]);
+
+  useEffect(() => {
+    if (amountOfSentEmails >= 100) {
+      setAmountOfSentEmails(0);
+      handleMassiveReportsStatusRequest();
+    }
+  }, [amountOfSentEmails]);
 
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
@@ -160,19 +148,30 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             <Info fontSize="small" />
           </Tooltip>
           <Button
-            disabled={massive_reports_status == "completed" ? false : true}
             variant="outlined"
             color="success"
             onClick={() => {
               handleMassEmail();
-              //if (massive_reports_status == "executing") {
-              //  setAmountOfSentEmails(0);
-              //}
+              if (massive_reports_status == "executing") {
+                setAmountOfSentEmails(0);
+              }
             }}
           >
-            {massive_reports_status !== "executing"
-              ? "Envio massivo de relatórios"
-              : "Envio massivo em andamento"}
+            {massive_reports_status !== "executing" ? (
+              "Envio massivo de relatórios"
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="body2">Cancelar envio massivo</Typography>
+                <LinearProgressWithLabel value={amountOfSentEmails} />
+              </Box>
+            )}
           </Button>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -195,7 +194,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
           </LocalizationProvider>
         </Box>
       </Box>
-
       <Plants
         title={"Listagem de usinas"}
         data={data}
