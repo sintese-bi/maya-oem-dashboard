@@ -410,6 +410,29 @@ export function DefineCapacityAndDevicesEmails({
         },
       },
     },
+    {
+      name: "generationRealMonth",
+      label: "Geração estimada",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+         
+        //proximo passo adicionar o fluxo de dados 
+          return (
+            <TextField
+          
+          id="outlined-required"
+          label="Geração Estimada"
+          
+        />
+          );
+        },
+      },
+    },
+
+
+    
   ];
 
   if (usersAPIData.isDashboardDataLoading) {
