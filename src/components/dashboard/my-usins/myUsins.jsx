@@ -121,7 +121,7 @@ export const MyUsins = ({
       <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={8}
-          title="Geração real total"
+          title="Geração real total (mês)"
           btn={true}
           value={numbers(realGenerationTotal, "KWh")}
           handleChangeColumns={handleChangeColumns}
@@ -141,7 +141,7 @@ export const MyUsins = ({
       <Grid item lg={4} md={4} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={7}
-          title="Geração estimada total"
+          title="Geração estimada total (mês)"
           btn={true}
           value={numbers(estimatedGenerationTotal, "KWh")}
           handleChangeColumns={handleChangeColumns}
@@ -241,7 +241,7 @@ export const MyUsins = ({
       <Grid item lg={6} md={6} sm={12} xs={12} sx={{ width: "90%" }}>
         <BigNumberDashboard
           type={10}
-          title="Desempenho"
+          title="Desempenho (mês)"
           btn={true}
           value={percentageTotal}
           handleChangeColumns={handleChangeColumns}

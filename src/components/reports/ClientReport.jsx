@@ -211,6 +211,50 @@ export const ClientReport = ({
         </View>
         <View style={styles.smallerBigNumbers}>
           <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>Geração real mês</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Geração_real_mês"].toFixed(1)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>
+              Geração estimada mês
+            </Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Geração_estimada_mês"].toFixed(1)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>Desempenho</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Desempenho"].toFixed(1)}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>Árvores salvas</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Árvores_salvas"].toFixed(1)}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.smallerBigNumbersItem}>
+            <Text style={styles.smallerBigNumbersLabel}>Carbono</Text>
+            <View style={styles.smallerBigNumbersBox}>
+              <Text style={styles.smallerBigNumbersBoxResult}>
+                {report_client_data["Carbono"].toFixed(1)}
+              </Text>
+            </View>
+          </View>
+          {/** 
+          <View style={styles.smallerBigNumbersItem}>
             <Text style={styles.smallerBigNumbersLabel}>PAGO (R$)</Text>
             <View style={styles.smallerBigNumbersBox}>
               <Text style={styles.smallerBigNumbersBoxResult}>
@@ -272,7 +316,9 @@ export const ClientReport = ({
               </Text>
             </View>
           </View>
+           */}
         </View>
+
         {/**<View style={styles.energyAndCreditField}>
               <View style={styles.energy}>
                 <Text style={styles.strongText}>ENERGIA (kWh)</Text>
@@ -408,6 +454,7 @@ export const ClientReport = ({
           </View>
         </View>
         <View style={{ marginTop: "100px", padding: "0px 50px 0px 50px" }}>
+          {/**
           <Text style={styles.strongText}>Sua contribuição para o mundo</Text>
           <View
             style={{
@@ -480,6 +527,7 @@ export const ClientReport = ({
               </View>
             </View>
           </View>
+           */}
         </View>
         <View
           style={{
