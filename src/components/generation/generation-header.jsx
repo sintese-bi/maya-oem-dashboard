@@ -369,7 +369,7 @@ export const GenerationHeader = ({ deviceInfo, useTypeMember }) => {
               />
             </Box>
             <Typography variant="body2" sx={{ my: 2, ml: 2 }}>
-              Defina um período e o valor de KWh do seu relatório
+              Defina um período do seu relatório
             </Typography>
             <Box
               sx={{

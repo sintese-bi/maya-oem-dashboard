@@ -58,7 +58,7 @@ export const bigNumberSum = (use_uuid) => (dispatch) => {
 export const gettingReportData = (params) => (dispatch) => {
   dispatch({ type: devices.GET_CLIENT_REPORT_DATA_REQUEST });
   axios
-    .post("https://balance.mayaoem.com.br/plantinfo", params, {
+    .post("https://balance.mayaoem.com.br/generationinfo", params, {
       headers: {
         Authorization: `Bearer iqwj9ej1291u49310i30ke1201i312i9321oesdaleqwoijeiooiOvb`,
       },
