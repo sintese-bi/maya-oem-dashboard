@@ -143,7 +143,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
         >
           Principais usinas.
         </Button>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/**        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Tooltip title="Essa funcionalidade envia relatório para todos os clientes com e-mail cadastrado em 'relatório mensal'.">
             <Info fontSize="small" />
           </Tooltip>
@@ -174,6 +174,8 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             )}
           </Button>
         </Box>
+         */}
+
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Tooltip title="Essa funcionalidade agenda uma data de sua escolha para o envio massivo de relatórios acontecer.">
             <Info fontSize="small" />

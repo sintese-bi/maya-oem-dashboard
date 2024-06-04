@@ -61,7 +61,7 @@ export const testSSE =
   (use_uuid, handleMassiveReportsStatusRequest, massive_reports_status) =>
   (dispatch) => {
     const eventSource = new EventSource(
-      `https://app.mayaoem.com.br/v1/testeSSE/${use_uuid}`
+      `http://localhost:8081/v1/testeSSE/${use_uuid}`
     );
 
     eventSource.onopen = (event) => {
