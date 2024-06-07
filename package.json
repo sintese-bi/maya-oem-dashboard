@@ -28,7 +28,7 @@
     "@mui/x-date-pickers": "^5.0.20",
     "@react-dnd/invariant": "^4.0.2",
     "@react-pdf/pdfkit": "^3.0.2",
-    "@react-pdf/renderer": "^3.3.4",
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

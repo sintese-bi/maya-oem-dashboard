@@ -184,15 +184,20 @@ export const GenerationHeader = ({ deviceInfo, useTypeMember }) => {
                 style={{ textDecoration: "none", height: "100%" }}
               >
                 {({ blob, url, loading, error }) => {
-                  console.log(loading);
+                  setTimeout(() => {
+                    console.log(error);
+                    if (blob) {
+                      console.log(blob);
+                    }
+                  }, 1000);
                   return (
                     <Button
-                      disabled={loading}
+                      disabled={blob ? false : true}
                       startIcon={<DownloadForOffline fontSize="small" />}
                       variant={useTypeMember ? "outlined" : ""}
                       sx={{ width: "100%" }}
                     >
-                      {loading ? "Carregando" : "Carregado"}
+                      {!blob ? "Carregando" : "Carregado"}
                     </Button>
                   );
                 }}
