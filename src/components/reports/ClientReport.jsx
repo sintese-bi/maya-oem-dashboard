@@ -212,12 +212,8 @@ export const ClientReport = ({
             </View>
           </View>
           <View style={styles.smallerBigNumbersItem}>
-            <Text style={styles.smallerBigNumbersLabel}>Desempenho</Text>
+            <Text style={styles.smallerBigNumbersLabel}>Desempenho (%)</Text>
             <View style={styles.smallerBigNumbersBox}>
-              <Image
-                style={{ width: "44px", height: "44px" }}
-                src={Percent}
-              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Desempenho"].toFixed(1)}
               </Text>

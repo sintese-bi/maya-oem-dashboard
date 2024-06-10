@@ -184,12 +184,6 @@ export const GenerationHeader = ({ deviceInfo, useTypeMember }) => {
                 style={{ textDecoration: "none", height: "100%" }}
               >
                 {({ blob, url, loading, error }) => {
-                  setTimeout(() => {
-                    console.log(error);
-                    if (blob) {
-                      console.log(blob);
-                    }
-                  }, 1000);
                   return (
                     <Button
                       disabled={blob ? false : true}
