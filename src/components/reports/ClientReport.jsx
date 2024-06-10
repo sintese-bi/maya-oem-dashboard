@@ -5,20 +5,9 @@ import {
   Document,
   StyleSheet,
   Image,
-  PDFViewer,
-  Font,
 } from "@react-pdf/renderer";
-import Tree from "src/assets/img/TREE.png";
-import Cloud from "src/assets/img/CLOUD.png";
 import MayaXBlueLogo from "src/assets/img/logo/maya-x-blue.png";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import {
-  ChartGenerationDailyClientReport,
-  ChartGenerationMonthlyClientReport,
-} from "../shared/Charts";
-import { height } from "@mui/system";
-import { Box } from "@mui/material";
+import Percent from "src/assets/img/percent.png";
 export const ClientReport = ({
   report_client_data,
   graphMonthlyBase64,
@@ -97,6 +86,11 @@ export const ClientReport = ({
       fontSize: "28px",
     },
     smallerBigNumbersBox: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "20px",
       padding: "40px 0px 40px 0px",
       width: "300px",
       backgroundColor: "white",
@@ -190,6 +184,12 @@ export const ClientReport = ({
           <View style={styles.smallerBigNumbersItem}>
             <Text style={styles.smallerBigNumbersLabel}>Geração real mês</Text>
             <View style={styles.smallerBigNumbersBox}>
+              <Image
+                style={{ width: "52px", height: "52px" }}
+                src={
+                  "https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/preview/144x144/"
+                }
+              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Geração_real_mês"].toFixed(1)}
               </Text>
@@ -200,6 +200,12 @@ export const ClientReport = ({
               Geração estimada mês
             </Text>
             <View style={styles.smallerBigNumbersBox}>
+              <Image
+                style={{ width: "52px", height: "52px" }}
+                src={
+                  "https://ucarecdn.com/9a316c8f-b101-4a3a-8752-f52188ca3e51/-/preview/144x144/"
+                }
+              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Geração_estimada_mês"].toFixed(1)}
               </Text>
@@ -208,6 +214,10 @@ export const ClientReport = ({
           <View style={styles.smallerBigNumbersItem}>
             <Text style={styles.smallerBigNumbersLabel}>Desempenho</Text>
             <View style={styles.smallerBigNumbersBox}>
+              <Image
+                style={{ width: "44px", height: "44px" }}
+                src={Percent}
+              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Desempenho"].toFixed(1)}
               </Text>
@@ -217,6 +227,12 @@ export const ClientReport = ({
           <View style={styles.smallerBigNumbersItem}>
             <Text style={styles.smallerBigNumbersLabel}>Árvores salvas</Text>
             <View style={styles.smallerBigNumbersBox}>
+              <Image
+                style={{ width: "52px", height: "52px" }}
+                src={
+                  "https://ucarecdn.com/fdd89a32-bb13-4195-8288-a4b4f2a7a535/-/preview/64x64/"
+                }
+              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Árvores_salvas"].toFixed(1)}
               </Text>
@@ -225,6 +241,12 @@ export const ClientReport = ({
           <View style={styles.smallerBigNumbersItem}>
             <Text style={styles.smallerBigNumbersLabel}>Carbono</Text>
             <View style={styles.smallerBigNumbersBox}>
+              <Image
+                style={{ width: "52px", height: "52px" }}
+                src={
+                  "https://ucarecdn.com/1f80ba16-e9a0-4e85-a96a-b96f7c1e7231/-/preview/82x82/"
+                }
+              ></Image>
               <Text style={styles.smallerBigNumbersBoxResult}>
                 {report_client_data["Carbono"].toFixed(1)}
               </Text>
