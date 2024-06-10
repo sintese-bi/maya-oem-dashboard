@@ -198,6 +198,9 @@ export const ChartGenerationMonthlyClientReport = (props) => {
     const genReal = values.map((genItem) => {
       return genItem["gen_real"];
     });
+    const genEstimated = values.map((genItem) => {
+      return genItem["gen_estimated"];
+    });
 
     const data = {
       labels,
@@ -210,6 +213,17 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           data: genReal,
           borderColor: "#8FC1B5",
           backgroundColor: "#dce6e3",
+          tension: 0.4,
+          fill: "start",
+        },
+        {
+          label: "Geração estimada",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração estimada",
+          data: genEstimated,
+          borderColor: "#8FC1B5",
+          backgroundColor: "#a0b2ad",
           tension: 0.4,
           fill: "start",
         },
@@ -366,11 +380,12 @@ export const ChartGenerationDailyClientReport = (props) => {
     const labels = dailyData.map((genItem) => {
       return moment(genItem["day"]).format("DD/MM");
     });
-
     const genReal = dailyData.map((genItem) => {
       return genItem["latest_gen_real"];
     });
-
+    const genEstimated = dailyData.map((genItem) => {
+      return genItem["latest_gen_estimated"];
+    });
     labels;
     const data = {
       labels,
@@ -383,6 +398,17 @@ export const ChartGenerationDailyClientReport = (props) => {
           data: genReal,
           borderColor: "#8FC1B5",
           backgroundColor: "#dce6e3",
+          tension: 0.4,
+          fill: "start",
+        },
+        {
+          label: "Geração estimada",
+          maxBarThickness: 16,
+          barPercentage: 0.4,
+          label: "Geração estimada",
+          data: genEstimated,
+          borderColor: "#8FC1B5",
+          backgroundColor: "#a0b2ad",
           tension: 0.4,
           fill: "start",
         },
