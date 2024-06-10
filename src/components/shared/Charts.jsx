@@ -207,25 +207,23 @@ export const ChartGenerationMonthlyClientReport = (props) => {
       datasets: [
         {
           label: "Geração real",
-          maxBarThickness: 16,
-          barPercentage: 0.4,
+          barThickness: 20, // Define explicitamente a espessura das barras
+          barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
+          categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
           label: "Geração real",
           data: genReal,
           borderColor: "#8FC1B5",
           backgroundColor: "#dce6e3",
-          tension: 0.4,
-          fill: "start",
         },
         {
           label: "Geração estimada",
-          maxBarThickness: 16,
-          barPercentage: 0.4,
+          barThickness: 20,
+          barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
+          categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
           label: "Geração estimada",
           data: genEstimated,
           borderColor: "#8FC1B5",
           backgroundColor: "#a0b2ad",
-          tension: 0.4,
-          fill: "start",
         },
       ],
     };
@@ -318,6 +316,7 @@ export const ChartGenerationMonthlyClientReport = (props) => {
               size: 15, // Tamanho da fonte para o eixo X
             },
           },
+          stacked: false,
         },
         x: {
           grid: {
@@ -392,25 +391,23 @@ export const ChartGenerationDailyClientReport = (props) => {
       datasets: [
         {
           label: "Geração real",
-          maxBarThickness: 16,
-          barPercentage: 0.4,
+          barThickness: 20, // Define explicitamente a espessura das barras
+          barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
+          categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
           label: "Geração real",
           data: genReal,
           borderColor: "#8FC1B5",
           backgroundColor: "#dce6e3",
-          tension: 0.4,
-          fill: "start",
         },
         {
           label: "Geração estimada",
-          maxBarThickness: 16,
-          barPercentage: 0.4,
+          barThickness: 20,
+          barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
+          categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
           label: "Geração estimada",
           data: genEstimated,
           borderColor: "#8FC1B5",
           backgroundColor: "#a0b2ad",
-          tension: 0.4,
-          fill: "start",
         },
       ],
     };
