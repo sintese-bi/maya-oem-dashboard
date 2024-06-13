@@ -34,7 +34,7 @@ export function reportAdministratorRule(
   optionFilter,
   setIsLoadingReportGeneration
 ) {
-  reportAdministrator.devices = devices;
+  reportAdministrator.devices = devices.sort((a, b) => b.capacity - a.capacity);
 
   let realGenerationDay = devices.map((data) => {
     let generationRealValue = data.generationRealDay;

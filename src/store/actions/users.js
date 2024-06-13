@@ -80,18 +80,24 @@ export const testSSE =
         Math.round(event.data) >= 100 ||
         event.data == "waiting" ||
         event.data == "completed"
-      )
+      ) {
         eventSource.close();
-
-      if (event.data == "connected") {
         handleMassiveReportsStatusRequest();
       }
-
+      if (event.data == "executing") {
+        handleMassiveReportsStatusRequest();
+      }
+      let data =
+        event.data == "connected" ||
+        event.data == "executing" ||
+        event.data == "waiting" ||
+        event.data == "completed"
+          ? 0
+          : Math.round(event.data);
       dispatch({
         type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
-        result: Math.round(event.data),
+        result: data,
       });
-      console.log("Received message:", event.data);
     };
 
     eventSource.onerror = async (error) => {
