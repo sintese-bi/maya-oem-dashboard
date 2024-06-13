@@ -275,7 +275,7 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
-
+      display: false,
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -296,6 +296,7 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      display: false,
       customHeadLabelRender: (data) => {
         return <p style={{ fontWeight: "bolder" }}>Histórico de geração</p>;
       },
@@ -318,6 +319,7 @@ export const columnsDevices = [
     options: {
       filter: true,
       sort: true,
+      display: false,
       customHeadLabelRender: () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
