@@ -437,6 +437,7 @@ export const DashboardProvider = ({ children }) => {
         type,
         userData,
         usersAPIData,
+        devicesAPIData,
         startDate,
         endDate,
         optionFilter,

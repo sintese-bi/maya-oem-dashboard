@@ -1,8 +1,10 @@
 import { Home } from "@mui/icons-material";
 import {
   Autocomplete,
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,6 +24,7 @@ export const MobileTestReports = () => {
   const {
     userData,
     usersAPIData,
+    devicesAPIData,
     startDate,
     endDate,
     setStartDate,
@@ -51,6 +54,12 @@ export const MobileTestReports = () => {
   }, [currentPage]);
 
   useEffect(() => {
+    if (devicesAPIData.bignumbersumValues?.length === undefined) {
+      console.log(devicesAPIData.bignumbersumValues);
+    }
+  }, [devicesAPIData.bignumbersumValues]);
+
+  useEffect(() => {
     if (usersAPIData.devices.length !== 0) {
       setDeviceInfo({
         ...usersAPIData.devices[0],
@@ -59,8 +68,15 @@ export const MobileTestReports = () => {
     }
   }, [usersAPIData.devices]);
 
-  if (usersAPIData.devices.length == 0) {
-    return "Loading";
+  if (devicesAPIData.bignumbersumValues?.length !== undefined) {
+    return (
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={devicesAPIData.bignumbersumValues?.length !== undefined}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   }
 
   return (
