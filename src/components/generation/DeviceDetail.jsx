@@ -115,7 +115,10 @@ export const DeviceDetail = (props) => {
   useEffect(() => {
     setValue("name", contactNumber);
     setValue("inverterPower", kwp);
-    setSelectedCity(null);
+    setSelectedCity({
+      ic_states: address.split("-")[1],
+      ic_city: address.split("-")[0],
+    });
   }, [devUuid]);
 
   function InputsDevices() {
@@ -196,7 +199,6 @@ export const DeviceDetail = (props) => {
                     error={!!errors.name}
                     helperText={errors.name?.message}
                     variant="outlined"
-                    defaultValue={contactNumber}
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
