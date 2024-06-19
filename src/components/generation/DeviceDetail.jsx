@@ -119,7 +119,8 @@ export const DeviceDetail = (props) => {
       ic_states: address.split("-")[1],
       ic_city: address.split("-")[0],
     });
-  }, [devUuid]);
+    console.log(contactNumber, kwp);
+  }, []);
 
   function InputsDevices() {
     return (
@@ -209,7 +210,6 @@ export const DeviceDetail = (props) => {
                     </Avatar>
                   </ListItemAvatar>
                   <TextField
-                    defaultValue={kwp}
                     sx={{ width: 200 }}
                     label="Potência do Sistema (kWp)"
                     type="number"

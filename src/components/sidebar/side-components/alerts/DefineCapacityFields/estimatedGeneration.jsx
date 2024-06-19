@@ -12,7 +12,7 @@ export const EstimatedGeneration = ({
   }, [value]);
 
   return (
-    <Box sx={{ width: 290, height: 40 }}>
+    <Box sx={{ width: 90, height: 40 }}>
       <TextField
         type="number"
         value={estimatedGeneration}
