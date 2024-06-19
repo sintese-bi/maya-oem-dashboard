@@ -9,7 +9,7 @@ export const InstallNumber = ({ value, setValuesInstallNumber }) => {
   }, [value]);
 
   return (
-    <Box sx={{ width: 290, height: 40 }}>
+    <Box sx={{ width: 120, height: 40 }}>
       <TextField
         type="number"
         value={install_number}

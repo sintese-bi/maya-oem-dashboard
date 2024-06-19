@@ -31,6 +31,7 @@ import { Address } from "./DefineCapacityFields/Address";
 import { Capacity } from "./DefineCapacityFields/Capacity";
 import { InstallNumber } from "./DefineCapacityFields/InstallNumber";
 import { EstimatedGeneration } from "./DefineCapacityFields/estimatedGeneration";
+import { WhatsAppNumber } from "./DefineCapacityFields/WhatsAppNumber";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -89,6 +90,7 @@ export function DefineCapacityAndDevicesEmails({
           address: data.address,
           dev_install: data.dev_install,
           gen_estimated: data.gen_estimated,
+          whatsapp_number: data.whatsapp_number,
         };
       }
     );
@@ -156,11 +158,11 @@ export function DefineCapacityAndDevicesEmails({
           capacity: data.capacity,
           dev_install: data.dev_install,
           gen_estimated: data.gen_estimated,
+          whatsapp_number: data.whatsapp_number,
         };
       }
     );
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
-    console.log(devices);
     dispatch(
       updateEmailAndCapacity(
         { arrayplants: devices },
@@ -186,6 +188,7 @@ export function DefineCapacityAndDevicesEmails({
             capacity: temp[0]?.capacity,
             dev_install: temp[0]?.dev_install,
             gen_estimated: temp[0]?.gen_estimated,
+            whatsapp_number: temp[0]?.whatsapp_number,
           };
         }
       );
@@ -447,6 +450,46 @@ export function DefineCapacityAndDevicesEmails({
             <EstimatedGeneration
               value={dataTable.rowData[6]}
               setValuesEstimatedGeneration={setValuesEstimatedGeneration}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: "whatsapp_number",
+      label: "Telefone WhatsApp",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          function setValuesWhatsAppNumber(whatsapp_number_new) {
+            let whatsapp_number = whatsapp_number_new;
+
+            let deviceInfo = devices.filter(
+              (item) => item.uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].whatsapp_number = whatsapp_number;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].whatsapp_number = whatsapp_number;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+          return (
+            <WhatsAppNumber
+              value={dataTable.rowData[7]}
+              setValuesWhatsAppNumber={setValuesWhatsAppNumber}
             />
           );
         },

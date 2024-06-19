@@ -439,6 +439,7 @@ export default function userReducer(state = initialState, action) {
           email: device.dev_email,
           capacity: Number(device.dev_capacity),
           dev_install: device.dev_install || 0,
+          whatsapp_number: device.dev_wpp_number || "",
         };
       });
 
