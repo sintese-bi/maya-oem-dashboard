@@ -27,7 +27,7 @@ import { configRequest } from "src/services/api";
 import { getUserCookie } from "src/services/session";
 
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
-  const [amountOfSentEmails, setAmountOfSentEmails] = useState(undefined);
+  const [amountOfSentEmails, setAmountOfSentEmails] = useState(0);
   const {
     isLoading,
     brands,
@@ -59,20 +59,14 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [massEmailFinishedState, setMassEmailFinishedState] =
     useState(massEmailFinished);
 
-  const [opa, setOpa] = useState(0);
-
   useEffect(() => {
-    if (typeof mass_email_amount_percentage !== "string") {
-      setAmountOfSentEmails(mass_email_amount_percentage);
-    }
-  }, [mass_email_amount_percentage]);
-
-  useEffect(() => {
-    if (amountOfSentEmails >= 100) {
-      setAmountOfSentEmails(undefined);
-      handleMassiveReportsStatusRequest();
-    }
-  }, [amountOfSentEmails]);
+    if (typeof mass_email_amount_percentage !== "string")
+      setAmountOfSentEmails(
+        massive_reports_status === "completed"
+          ? 0
+          : mass_email_amount_percentage
+      );
+  }, [mass_email_amount_percentage, massive_reports_status]);
 
   useEffect(() => {
     setMassEmailFinishedState(massEmailFinished);
@@ -144,8 +138,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
         >
           Principais usinas.
         </Button>
-        {/**
-         * <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Tooltip title="Essa funcionalidade envia relatório para todos os clientes com e-mail cadastrado em 'relatório mensal'.">
             <Info fontSize="small" />
           </Tooltip>
@@ -153,11 +146,15 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
             variant="outlined"
             color="success"
             onClick={() => {
+              setAmountOfSentEmails(0);
               handleMassEmail();
             }}
+            disabled={!massive_reports_status}
           >
-            {amountOfSentEmails === undefined ? (
+            {massive_reports_status === "completed" ? (
               "Envio massivo de relatórios"
+            ) : !massive_reports_status ? (
+              <Typography>Conectando com banco de dados...</Typography>
             ) : (
               <Box
                 sx={{
@@ -172,20 +169,7 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
               </Box>
             )}
           </Button>
-          <Button
-            onClick={() => {
-              console.log(
-                amountOfSentEmails,
-                massive_reports_status,
-                amountOfSentEmails == 0
-              );
-            }}
-          >
-            check value {amountOfSentEmails}
-          </Button>
         </Box>
-         */}
-
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Tooltip title="Essa funcionalidade agenda uma data de sua escolha para o envio massivo de relatórios acontecer.">
             <Info fontSize="small" />

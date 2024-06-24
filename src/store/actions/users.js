@@ -83,21 +83,24 @@ export const testSSE =
       ) {
         eventSource.close();
         handleMassiveReportsStatusRequest();
+        dispatch({
+          type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
+          result: 0,
+        });
+        return;
+      } else {
+        if (event.data == "executing") {
+          handleMassiveReportsStatusRequest();
+        }
+        let data =
+          event.data == "connected" || event.data == "executing"
+            ? 0
+            : Math.round(event.data);
+        dispatch({
+          type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
+          result: data,
+        });
       }
-      if (event.data == "executing") {
-        handleMassiveReportsStatusRequest();
-      }
-      let data =
-        event.data == "connected" ||
-        event.data == "executing" ||
-        event.data == "waiting" ||
-        event.data == "completed"
-          ? 0
-          : Math.round(event.data);
-      dispatch({
-        type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
-        result: data,
-      });
     };
 
     eventSource.onerror = async (error) => {
