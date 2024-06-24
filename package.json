@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cross-env REACT_APP_STAGE=development react-app-rewired start",
-    "dev": "cross-env REACT_APP_STAGE=development react-app-rewired start",
-    "prod": "cross-env REACT_APP_STAGE=prod react-app-rewired start",
+    "start": "cross-env PORT=3002 REACT_APP_STAGE=development react-app-rewired start",
+    "dev": "cross-env PORT=3002 REACT_APP_STAGE=development react-app-rewired start",
+    "prod": "cross-env PORT=3002 REACT_APP_STAGE=prod react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
