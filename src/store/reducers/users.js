@@ -483,6 +483,7 @@ export default function userReducer(state = initialState, action) {
     case users.GET_MASSIVE_REPORTS_STATUS_REQUEST:
       return {
         ...state,
+        massive_reports_status: undefined,
         amount_of_reports: undefined,
       };
 

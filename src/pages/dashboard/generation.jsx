@@ -157,7 +157,11 @@ const Generation = () => {
     dispatch(getDevices(blUuidState));
   }, [blUuidState]);
 
-  if (isLoadingGeneration == true && isLoadingDevices == true) {
+  if (
+    isLoadingGeneration == true &&
+    isLoadingDevices == true &&
+    Object.keys(deviceInfo).length == 0
+  ) {
     return (
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
