@@ -59,61 +59,11 @@ export const brandInfo = (params) => (dispatch) => {
 
 export const testSSE =
   (use_uuid, handleMassiveReportsStatusRequest, massive_reports_status) =>
-  (dispatch) => {
-    const eventSource = new EventSource(
-      `http://localhost:8081/v1/testeSSE/${use_uuid}`
-    );
-
-    eventSource.onopen = (event) => {
-      toast.success(
-        massive_reports_status == "executing"
-          ? "Envio massivo cancelado"
-          : "Envio massivo requesitado",
-        {
-          duration: 5000,
-        }
-      );
-    };
-
-    eventSource.onmessage = (event) => {
-      if (
-        Math.round(event.data) >= 100 ||
-        event.data == "waiting" ||
-        event.data == "completed"
-      ) {
-        eventSource.close();
-        handleMassiveReportsStatusRequest();
-        dispatch({
-          type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
-          result: 0,
-        });
-        return;
-      } else {
-        if (event.data == "executing") {
-          handleMassiveReportsStatusRequest();
-        }
-        let data =
-          event.data == "connected" || event.data == "executing"
-            ? 0
-            : Math.round(event.data);
-        dispatch({
-          type: users.MASS_EMAIL_AMOUNT_PERCENTAGE,
-          result: data,
-        });
-      }
-    };
-
-    eventSource.onerror = async (error) => {
-      toast.error(`EventSource failed:${error}`, {
-        duration: 3000,
-      });
-    };
-  };
+  (dispatch) => {};
 
 export const massEmail =
   (params, handleMassiveReportsStatusRequest) => (dispatch) => {
     dispatch({ type: users.MASS_EMAIL_REQUEST });
-
     api
       .post("/massemail", params, configRequest())
       .then((res) => {
