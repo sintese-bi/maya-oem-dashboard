@@ -165,7 +165,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
                 }}
               >
                 <Typography variant="body2">Cancelar envio massivo</Typography>
-                <LinearProgressWithLabel value={amountOfSentEmails} />
               </Box>
             )}
           </Button>

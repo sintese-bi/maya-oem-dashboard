@@ -210,7 +210,6 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           barThickness: 20, // Define explicitamente a espessura das barras
           barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
           categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
-          label: "Geração real",
           data: genReal,
           borderColor: "#8FC1B5",
           backgroundColor: "#dce6e3",
@@ -220,7 +219,6 @@ export const ChartGenerationMonthlyClientReport = (props) => {
           barThickness: 20,
           barPercentage: 0.9, // Ajuste fino da largura da barra dentro da categoria
           categoryPercentage: 0.8, // Ajuste fino do espaçamento entre categorias
-          label: "Geração estimada",
           data: genEstimated,
           borderColor: "#8FC1B5",
           backgroundColor: "#a0b2ad",
