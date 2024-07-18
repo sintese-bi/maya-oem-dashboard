@@ -32,6 +32,7 @@ import { Capacity } from "./DefineCapacityFields/Capacity";
 import { InstallNumber } from "./DefineCapacityFields/InstallNumber";
 import { EstimatedGeneration } from "./DefineCapacityFields/estimatedGeneration";
 import { WhatsAppNumber } from "./DefineCapacityFields/WhatsAppNumber";
+import { Email } from "./DefineCapacityFields/Email";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -91,6 +92,7 @@ export function DefineCapacityAndDevicesEmails({
           dev_install: data.dev_install,
           gen_estimated: data.gen_estimated,
           whatsapp_number: data.whatsapp_number,
+          email: data.email,
         };
       }
     );
@@ -105,40 +107,11 @@ export function DefineCapacityAndDevicesEmails({
       }
     );
   }
-
-  function handleScroll() {
-    const container = containerRef.current;
-    if (scrolled != container.scrollTop) {
-      scrolled = container.scrollTop;
-      const scrollPercent = (
-        (container.scrollTop /
-          (container.scrollHeight - container.clientHeight)) *
-        100
-      ).toFixed(2);
-
-      if (parseFloat(scrollPercent) > 99) {
-        if (dataRef.current.length != allDevicesFromUserRef.current.length) {
-          firstIndexRef.current = firstIndexRef.current + 10;
-          lastIndexRef.current = lastIndexRef.current + 10;
-          setData(
-            dataRef.current.concat(
-              allDevicesFromUserRef.current.slice(
-                firstIndexRef.current,
-                lastIndexRef.current
-              )
-            )
-          );
-        }
-      }
-    }
-  }
-
   useEffect(() => {
     setTitle("Geração estimada das usinas");
     setDescription(`Defina o email e a potência das plantas. Esses dados são necessários para os alertas, e
     para cálcularmos valores como a geração estimada. Para pesquisar uma planta utilize a 'lupa', no campo superior direito da tabela.`);
   }, []);
-
   useEffect(() => {
     dataRef.current = data;
   }, [data]);
@@ -159,10 +132,12 @@ export function DefineCapacityAndDevicesEmails({
           dev_install: data.dev_install,
           gen_estimated: data.gen_estimated,
           whatsapp_number: data.whatsapp_number,
+          email: data.email,
         };
       }
     );
     localStorage.setItem("setupData", JSON.stringify(arrayplantsWithNoBase64));
+    console.log(devices);
     dispatch(
       updateEmailAndCapacity(
         { arrayplants: devices },
@@ -189,6 +164,7 @@ export function DefineCapacityAndDevicesEmails({
             dev_install: temp[0]?.dev_install,
             gen_estimated: temp[0]?.gen_estimated,
             whatsapp_number: temp[0]?.whatsapp_number,
+            email: temp[0]?.email,
           };
         }
       );
@@ -490,6 +466,46 @@ export function DefineCapacityAndDevicesEmails({
             <WhatsAppNumber
               value={dataTable.rowData[7]}
               setValuesWhatsAppNumber={setValuesWhatsAppNumber}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: "email",
+      label: "email",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (name, dataTable) => {
+          function setValuesEmailNumber(email_new) {
+            let email = email_new;
+
+            let deviceInfo = devices.filter(
+              (item) => item.uuid === dataTable.rowData[0]
+            );
+
+            if (deviceInfo.length != 0) {
+              deviceInfo[0].email = email;
+
+              const indiceObjetoExistente = devices.findIndex(
+                (item) => item.uuid === deviceInfo[0].dev_uuid
+              );
+
+              devices[indiceObjetoExistente] = deviceInfo[0];
+            } else {
+              let newDeviceToAdd = data.filter(
+                (item) => item.uuid === dataTable.rowData[0]
+              );
+              newDeviceToAdd[0].email = email;
+
+              devices.push(newDeviceToAdd[0]);
+            }
+          }
+          return (
+            <Email
+              value={dataTable.rowData[8]}
+              setValuesEmailNumber={setValuesEmailNumber}
             />
           );
         },
