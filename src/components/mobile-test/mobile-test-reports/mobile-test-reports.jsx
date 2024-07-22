@@ -1,4 +1,4 @@
-import { Home } from "@mui/icons-material";
+import { Home, Info } from "@mui/icons-material";
 import {
   Autocomplete,
   Backdrop,
@@ -6,6 +6,7 @@ import {
   Button,
   CircularProgress,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -19,8 +20,10 @@ import { GenerationHeader } from "src/components/generation/generation-header";
 import { DashboardContext } from "src/contexts/dashboard-context";
 import { MobileTestCustomIndicators } from "../mobile-test-custom-indicators/mobile-test-custom-indicators";
 import citiesData from "src/services/municipios";
+import { useSelector } from "react-redux";
 
 export const MobileTestReports = () => {
+  const { massive_reports_status } = useSelector((state) => state.users);
   const {
     userData,
     usersAPIData,
@@ -32,6 +35,7 @@ export const MobileTestReports = () => {
     handleAdminReportGeneration,
     isLoadingReportGeneration,
     setIsLoadingReportGeneration,
+    handleMassEmail,
   } = useContext(DashboardContext);
   const [currentPage, setCurrentPage] = useState(0);
   const [title, setTitle] = useState("");
@@ -52,12 +56,6 @@ export const MobileTestReports = () => {
         break;
     }
   }, [currentPage]);
-
-  useEffect(() => {
-    if (devicesAPIData.bignumbersumValues?.length === undefined) {
-      console.log(devicesAPIData.bignumbersumValues);
-    }
-  }, [devicesAPIData.bignumbersumValues]);
 
   useEffect(() => {
     if (usersAPIData.devices.length !== 0) {
@@ -131,6 +129,7 @@ export const MobileTestReports = () => {
             justifyContent: "center",
             flexDirection: "column",
             alignItems: "center",
+            gap: 4,
           }}
         >
           <Box sx={{ display: "flex", gap: 1 }}>
@@ -157,14 +156,63 @@ export const MobileTestReports = () => {
               />
             </LocalizationProvider>
           </Box>
-          <ReportButton
-            setTitle={setTitle}
-            setDescription={setDescription}
-            isLoadingReportGeneration={isLoadingReportGeneration}
-            useTypeMember={userData.useTypeMember}
-            handleAdminReportGeneration={handleAdminReportGeneration}
-            setIsLoadingReportGeneration={setIsLoadingReportGeneration}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "start",
+              alignItems: "start",
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                width: "100%",
+              }}
+            >
+              <Tooltip title="Essa funcionalidade envia relatório para todos os clientes com e-mail cadastrado em 'relatório mensal'.">
+                <Info fontSize="small" />
+              </Tooltip>
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => {
+                  handleMassEmail();
+                }}
+                disabled={!massive_reports_status}
+              >
+                {massive_reports_status === "completed" ? (
+                  "Envio massivo de relatórios"
+                ) : !massive_reports_status ? (
+                  <Typography>Conectando com banco de dados...</Typography>
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography variant="body2">
+                      Cancelar envio massivo
+                    </Typography>
+                  </Box>
+                )}
+              </Button>
+            </Box>
+            <ReportButton
+              setTitle={setTitle}
+              setDescription={setDescription}
+              isLoadingReportGeneration={isLoadingReportGeneration}
+              useTypeMember={userData.useTypeMember}
+              handleAdminReportGeneration={handleAdminReportGeneration}
+              setIsLoadingReportGeneration={setIsLoadingReportGeneration}
+            />
+          </Box>
         </Box>
         <Box
           sx={{

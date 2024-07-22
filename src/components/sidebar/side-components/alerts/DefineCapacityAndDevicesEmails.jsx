@@ -473,7 +473,7 @@ export function DefineCapacityAndDevicesEmails({
     },
     {
       name: "email",
-      label: "email",
+      label: "Email",
       options: {
         filter: true,
         sort: true,
