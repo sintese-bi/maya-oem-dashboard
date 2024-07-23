@@ -9,6 +9,7 @@ import {
   Settings,
   ShoppingCart,
   SolarPower,
+  Telegram,
 } from "@mui/icons-material";
 
 export const topItems = [

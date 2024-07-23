@@ -201,6 +201,7 @@ export const auth = (params) => (dispatch) => {
               useEmail: use_email,
               useTypeMember: use_type_member,
               use_logo: use_logo,
+              useTelephone: use_telephone,
             },
             use_devices_amount: result.use_devices_amount,
           },

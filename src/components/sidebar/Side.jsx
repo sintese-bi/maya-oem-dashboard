@@ -1,23 +1,12 @@
-import {
-  Link,
-  useLocation,
-  useParams,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import MayaLogo from "../../../src/assets/img/logo/maya-watch-logo.png";
-import "./side.css";
-import {
-  getUserCookie,
-  removeUserCookie,
-  setUserCookie,
-} from "src/services/session";
+import { useContext, useEffect, useState } from 'react';
+import MayaLogo from '../../../src/assets/img/logo/maya-watch-logo.png';
+import './side.css';
+import { getUserCookie, setUserCookie } from 'src/services/session';
 
-import AlertPercentageForm from "src/components/sidebar/side-components/AlertPercentageForm";
-import { PaymentWarn } from "src/components/shared/PaymentWarn";
-import { Portal } from "src/components/portals/Portal";
-import { MayaWatchPro } from "src/components/shared/MayaWatchPro";
+import AlertPercentageForm from 'src/components/sidebar/side-components/AlertPercentageForm';
+import { PaymentWarn } from 'src/components/shared/PaymentWarn';
+import { Portal } from 'src/components/portals/Portal';
+import { MayaWatchPro } from 'src/components/shared/MayaWatchPro';
 
 // COMPONENTS
 import {
@@ -27,14 +16,42 @@ import {
   Toolbar,
   Typography,
   Modal,
-  Divider,
   List,
   ListItem,
+} from '@mui/material';
+import { Cancel } from '@mui/icons-material';
+import { UserInfo } from './side-components/UserInfo';
+import { DefineCapacityAndDevicesEmails } from './side-components/alerts/DefineCapacityAndDevicesEmails';
+import { ModuleOM } from '../modules/moduleO&M';
+import { FaturaModulo } from '../modules/faturaModule';
+import { Reports } from '../reports/Reports';
+import { Help } from '../help/help';
+import { ConfigPortals } from '../configPortals/configPortal';
+import {
+  bottomItems,
+  mainItems,
+  topItems,
+} from 'src/modal-actions/modal-actions';
+import { DeletedDevicesModal } from '../deleted-devices-modal/deletedDevicesModal';
+import { DashboardContext } from 'src/contexts/dashboard-context';
+import { AlertsModal } from '../alerts-modal/alerts-modal';
+
+import {
+  Link,
+  useLocation,
+  useParams,
+  useNavigate,
+  Outlet,
+} from 'react-router-dom';
+import { removeUserCookie } from 'src/services/session';
+
+import {
+  Divider,
   ListItemText,
   ListItemButton,
   ListItemIcon,
-} from "@mui/material";
-import { theme } from "src/theme";
+} from '@mui/material';
+import { theme } from 'src/theme';
 import {
   AccountCircle,
   BrandingWatermark,
@@ -47,7 +64,6 @@ import {
   AddCircle,
   Error,
   Info,
-  Cancel,
   Settings,
   Delete,
   Person,
@@ -59,24 +75,9 @@ import {
   FileCopy,
   HelpCenter,
   SettingsApplications,
-} from "@mui/icons-material";
-import { UserInfo } from "./side-components/UserInfo";
-import { DefineCapacityAndDevicesEmails } from "./side-components/alerts/DefineCapacityAndDevicesEmails";
-import { ModuleOM } from "../modules/moduleO&M";
-import { FaturaModulo } from "../modules/faturaModule";
-import { Reports } from "../reports/Reports";
-import { Help } from "../help/help";
-import { ConfigPortals } from "../configPortals/configPortal";
-import {
-  bottomItems,
-  mainItems,
-  topItems,
-} from "src/modal-actions/modal-actions";
-import { DeletedDevicesModal } from "../deleted-devices-modal/deletedDevicesModal";
-import { useSelector } from "react-redux";
-import { deleteDevice } from "src/store/actions/devices";
-import { DashboardContext } from "src/contexts/dashboard-context";
-import { AlertsModal } from "../alerts-modal/alerts-modal";
+} from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import { deleteDevice } from 'src/store/actions/devices';
 
 export const Side = ({ sideState, setSideState }) => {
   const {
@@ -91,27 +92,16 @@ export const Side = ({ sideState, setSideState }) => {
 
   const { deletedDevices } = useContext(DashboardContext);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [action, setAction] = useState(
-    firstTime ? "alertFrequency" : "devicesWithAlert"
+    firstTime ? 'alertFrequency' : 'devicesWithAlert',
   );
   const [secondaryAction, setSecondaryAction] = useState(
-    "AlertsDefineComponent"
+    'AlertsDefineComponent',
   );
   const [welcome, setWelcome] = useState(true);
   const [open, setOpen] = useState(firstTime ? true : false);
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setSideState(open);
-  };
 
   useEffect(() => {
     setWelcome(firstTime);
@@ -119,7 +109,7 @@ export const Side = ({ sideState, setSideState }) => {
 
   const ModalContent = () => {
     switch (action) {
-      case "deletedPlants":
+      case 'deletedPlants':
         return (
           <Box>
             <DeletedDevicesModal
@@ -136,7 +126,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "devicesWithAlert":
+      case 'devicesWithAlert':
         return (
           <Box>
             <AlertsModal
@@ -151,7 +141,7 @@ export const Side = ({ sideState, setSideState }) => {
             />
           </Box>
         );
-      case "alertFrequency":
+      case 'alertFrequency':
         return (
           <Box>
             {useTypeMember ? (
@@ -175,7 +165,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "device":
+      case 'device':
         return (
           <Box>
             <Portal
@@ -187,7 +177,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "reports":
+      case 'reports':
         return (
           <Box>
             <Reports
@@ -199,7 +189,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "assignPlan":
+      case 'assignPlan':
         return (
           <Box>
             <MayaWatchPro
@@ -211,7 +201,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "userAccount":
+      case 'userAccount':
         return (
           <Box>
             <UserInfo
@@ -229,7 +219,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "configSetup":
+      case 'configSetup':
         return (
           <Box>
             <DefineCapacityAndDevicesEmails
@@ -243,7 +233,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "configPortals":
+      case 'configPortals':
         return (
           <Box sx={{ p: 4 }}>
             <ConfigPortals
@@ -252,7 +242,7 @@ export const Side = ({ sideState, setSideState }) => {
             />
           </Box>
         );
-      case "module-orm":
+      case 'module-orm':
         return (
           <Box>
             <ModuleOM
@@ -266,7 +256,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "module-fatura":
+      case 'module-fatura':
         return (
           <Box sx={{ p: 4 }}>
             <FaturaModulo
@@ -278,7 +268,7 @@ export const Side = ({ sideState, setSideState }) => {
           </Box>
         );
         break;
-      case "help":
+      case 'help':
         return (
           <Box sx={{ p: 4 }}>
             <Help
@@ -296,8 +286,8 @@ export const Side = ({ sideState, setSideState }) => {
   };
 
   function handleModalState(actionType) {
-    setSecondaryAction("AlertsDefineComponent");
-    if (action == "alertFrequency" && actionType == "assignPlan") {
+    setSecondaryAction('AlertsDefineComponent');
+    if (action == 'alertFrequency' && actionType == 'assignPlan') {
       setAction(actionType);
       setOpen(true);
     } else {
@@ -312,29 +302,29 @@ export const Side = ({ sideState, setSideState }) => {
       <Box
         id="sidebar"
         sx={{
-          bgcolor: "background.paper",
-          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.4)",
-          height: "100%",
+          bgcolor: 'background.paper',
+          boxShadow: '2px 2px 10px rgba(0, 0, 0, 0.4)',
+          height: '100%',
         }}
       >
         <Box
           className="sidebar-content"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            overflow: "auto",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'start',
+            overflow: 'auto',
+            height: '100%',
             width: sideState ? 236 : 100,
           }}
         >
           <Toolbar />
           <List
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             {topItems.map((data, index) => (
@@ -353,11 +343,11 @@ export const Side = ({ sideState, setSideState }) => {
                 ) : (
                   <Button
                     sx={{
-                      color: "neutral.700",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      color: 'neutral.700',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                     onClick={() => {
                       setAction(data?.action);
@@ -365,7 +355,7 @@ export const Side = ({ sideState, setSideState }) => {
                     }}
                   >
                     {data?.icon}
-                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: '10px', fontWeight: 'bold' }}>
                       {data?.label}
                     </Typography>
                   </Button>
@@ -379,7 +369,7 @@ export const Side = ({ sideState, setSideState }) => {
                     startIcon={data?.icon}
                     variant="contained"
                     onClick={() => {
-                      if (data?.action == "deletePlants") {
+                      if (data?.action == 'deletePlants') {
                         window.scrollTo(0, 2000);
                       } else {
                         setAction(data?.action);
@@ -392,14 +382,14 @@ export const Side = ({ sideState, setSideState }) => {
                 ) : (
                   <Button
                     sx={{
-                      color: "neutral.700",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      color: 'neutral.700',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                     onClick={() => {
-                      if (data?.action == "deletePlants") {
+                      if (data?.action == 'deletePlants') {
                         window.scrollTo(0, 2000);
                       } else {
                         setAction(data?.action);
@@ -408,7 +398,7 @@ export const Side = ({ sideState, setSideState }) => {
                     }}
                   >
                     {data?.icon}
-                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: '10px', fontWeight: 'bold' }}>
                       {data?.label}
                     </Typography>
                   </Button>
@@ -422,7 +412,7 @@ export const Side = ({ sideState, setSideState }) => {
                     startIcon={data?.icon}
                     variant="contained"
                     onClick={() => {
-                      if (data?.action == "deletePlants") {
+                      if (data?.action == 'deletePlants') {
                         window.scrollTo(0, 2000);
                       } else {
                         setAction(data?.action);
@@ -435,14 +425,14 @@ export const Side = ({ sideState, setSideState }) => {
                 ) : (
                   <Button
                     sx={{
-                      color: "neutral.700",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      color: 'neutral.700',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                     onClick={() => {
-                      if (data?.action == "deletePlants") {
+                      if (data?.action == 'deletePlants') {
                         window.scrollTo(0, 2000);
                       } else {
                         setAction(data?.action);
@@ -451,7 +441,7 @@ export const Side = ({ sideState, setSideState }) => {
                     }}
                   >
                     {data?.icon}
-                    <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+                    <Typography sx={{ fontSize: '10px', fontWeight: 'bold' }}>
                       {data?.label}
                     </Typography>
                   </Button>
@@ -467,43 +457,43 @@ export const Side = ({ sideState, setSideState }) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             p: 1,
           }}
         >
           <Box
             sx={{
-              bgcolor: "background.paper",
+              bgcolor: 'background.paper',
               pb: 6,
               px: { lg: 4, md: 4, sm: 1, xs: 1 },
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               gap: 2,
-              alignItems: "center",
+              alignItems: 'center',
               borderRadius: 1,
               border: 0,
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
                 py: 1,
               }}
             >
-              <Box sx={{ width: "620px" }} id="labelingModals">
-                {action == "assignPlan" ? (
+              <Box sx={{ width: '620px' }} id="labelingModals">
+                {action == 'assignPlan' ? (
                   <img
                     src={MayaLogo}
                     style={{
-                      height: "100px",
-                      width: "200px",
-                      marginTop: "10px",
-                      marginBottom: "10px",
+                      height: '100px',
+                      width: '200px',
+                      marginTop: '10px',
+                      marginBottom: '10px',
                     }}
                   />
                 ) : (
@@ -516,15 +506,15 @@ export const Side = ({ sideState, setSideState }) => {
                 onClick={() => {
                   setOpen(false);
                 }}
-                sx={{ cursor: "pointer" }}
+                sx={{ cursor: 'pointer' }}
               />
             </Box>
 
             <Box
               sx={{
                 py: 2,
-                width: "100%",
-                height: "100%",
+                width: '100%',
+                height: '100%',
               }}
             >
               <ModalContent />
