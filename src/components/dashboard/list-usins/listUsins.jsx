@@ -29,30 +29,18 @@ import { getUserCookie } from "src/services/session";
 export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
   const [amountOfSentEmails, setAmountOfSentEmails] = useState(0);
   const {
-    isLoading,
-    brands,
     devices,
-    generationBelowEstimated,
     massEmailFinished,
-    alerts,
-    notDefined,
-    unactived,
-    offline,
-    online,
     massive_reports_status,
     amount_of_reports,
     mass_email_amount_percentage,
-    mass_email_status,
   } = useSelector((state) => state.users);
 
   const [massiveEmailDate, setMasssiveEmailDate] = useState(
     moment().format("YYYY-MM-DD")
   );
-  const {
-    handleMassEmail,
-    handlePostUseDateReport,
-    handleMassiveReportsStatusRequest,
-  } = useContext(DashboardContext);
+  const { handleMassEmail, handlePostUseDateReport } =
+    useContext(DashboardContext);
 
   const [open, setOpen] = useState(false);
 
@@ -165,7 +153,6 @@ export const ListUsins = ({ data, devicesTableRef, type, usinsByState }) => {
                 }}
               >
                 <Typography variant="body2">Cancelar envio massivo</Typography>
-                <LinearProgressWithLabel value={amountOfSentEmails} />
               </Box>
             )}
           </Button>
