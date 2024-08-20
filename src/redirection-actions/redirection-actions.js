@@ -19,13 +19,13 @@ export function handleRoutes() {
       disabled:
         profileLevel === "admin" && useName == "Maya Energy" ? true : false,
     },
-    {
-      label: "Manager",
-      to: "/dashboard/manager",
-      icon: <AttachMoney fontSize="small" />,
-      disabled:
-        profileLevel === "admin" && useName == "Maya Energy" ? true : false,
-    },
+    //{
+    //  label: "Manager",
+    //  to: "/dashboard/manager",
+    //  icon: <AttachMoney fontSize="small" />,
+    //  disabled:
+    //    profileLevel === "admin" && useName == "Maya Energy" ? true : false,
+    //},
     //{
     //  label: "Plantas",
     //  to: "/dashboard/devices",
