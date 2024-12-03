@@ -375,26 +375,27 @@ export const DashboardProvider = ({ children }) => {
   }, [usersAPIData.graphData]);
 
   useEffect(() => {
-    if (devicesAPIData.bignumbersumValues.realGeneration !== undefined) {
-      let lastRealGenerationDay =
-        devicesAPIData.bignumbersumValues.realGeneration[
-          `${moment().format("YYYY-MM-DD")}`
-        ];
-      let lastEstimatedGenerationDay =
-        devicesAPIData.bignumbersumValues.estimatedGeneration[
-          `${moment().format("YYYY-MM-DD")}`
-        ];
+    const { realGeneration, estimatedGeneration } =
+    devicesAPIData.bignumbersumValues || {};
 
-      let lastPercentGenerationDay = (
-        (lastRealGenerationDay / lastEstimatedGenerationDay) *
-        100
-      ).toFixed();
+    if (realGeneration && estimatedGeneration) {
+      const todayKey = moment().format("YYYY-MM-DD");
 
-      handleGenerationLastDayValues({
-        realGenerationLastDay: lastRealGenerationDay.toFixed(2),
-        estimatedGenerationLastDay: lastEstimatedGenerationDay.toFixed(2),
-        percentLastDay: lastPercentGenerationDay,
-      });
+      const lastRealGenerationDay = realGeneration[todayKey];
+      const lastEstimatedGenerationDay = estimatedGeneration[todayKey];
+
+      if (lastRealGenerationDay !== undefined && lastEstimatedGenerationDay !== undefined) {
+        const lastPercentGenerationDay = (
+          (lastRealGenerationDay / lastEstimatedGenerationDay) *
+          100
+        ).toFixed();
+
+        handleGenerationLastDayValues({
+          realGenerationLastDay: lastRealGenerationDay.toFixed(2),
+          estimatedGenerationLastDay: lastEstimatedGenerationDay.toFixed(2),
+          percentLastDay: lastPercentGenerationDay,
+        });
+      }
     }
   }, [devicesAPIData.bignumbersumValues]);
 

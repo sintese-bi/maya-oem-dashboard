@@ -186,7 +186,7 @@ export default function ListUsers() {
                             src={
                               listBrand.filter(
                                 (brand) => brand.params === item.bl_name
-                              )[0].media
+                              )[0]?.media
                             }
                           />
                         }
