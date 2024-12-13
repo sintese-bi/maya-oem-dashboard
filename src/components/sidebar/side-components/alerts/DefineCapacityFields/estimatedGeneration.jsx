@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, InputAdornment } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export const EstimatedGeneration = ({
@@ -12,7 +12,7 @@ export const EstimatedGeneration = ({
   }, [value]);
 
   return (
-    <Box sx={{ width: 90, height: 40 }}>
+    <Box sx={{ width: 140, height: 40 }}>
       <TextField
         type="number"
         value={estimatedGeneration}
@@ -22,6 +22,9 @@ export const EstimatedGeneration = ({
         onChange={(e) => {
           setEstimatedGeneration(e.target.value);
           setValuesEstimatedGeneration(e.target.value);
+        }}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">kWh</InputAdornment>,
         }}
       />
     </Box>

@@ -33,6 +33,7 @@ import { InstallNumber } from "./DefineCapacityFields/InstallNumber";
 import { EstimatedGeneration } from "./DefineCapacityFields/estimatedGeneration";
 import { WhatsAppNumber } from "./DefineCapacityFields/WhatsAppNumber";
 import { Email } from "./DefineCapacityFields/Email";
+import { IrradiationGeneration } from "./DefineCapacityFields/irradiationGeneration";
 
 export function DefineCapacityAndDevicesEmails({
   setOpen,
@@ -89,10 +90,12 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           capacity: data.capacity,
           address: data.address,
-          dev_install: data.dev_install,
+          //dev_install: data.dev_install,
+          dev_irradiation_gen_est: data.dev_irradiation_gen_est,
           gen_estimated: data.gen_estimated,
           whatsapp_number: data.whatsapp_number,
           email: data.email,
+
         };
       }
     );
@@ -129,7 +132,8 @@ export function DefineCapacityAndDevicesEmails({
           dev_uuid: data.uuid,
           address: data.address,
           capacity: data.capacity,
-          dev_install: data.dev_install,
+          //dev_install: data.dev_install,
+          dev_irradiation_gen_est: data.dev_irradiation_gen_est,
           gen_estimated: data.gen_estimated,
           whatsapp_number: data.whatsapp_number,
           email: data.email,
@@ -161,8 +165,9 @@ export function DefineCapacityAndDevicesEmails({
             ...allDevicesFromUserItem,
             address: temp[0]?.address,
             capacity: temp[0]?.capacity,
-            dev_install: temp[0]?.dev_install,
             gen_estimated: temp[0]?.gen_estimated,
+            //dev_install: temp[0]?.dev_install,
+            dev_irradiation_gen_est: temp[0]?.dev_irradiation_gen_est,
             whatsapp_number: temp[0]?.whatsapp_number,
             email: temp[0]?.email,
           };
@@ -209,7 +214,6 @@ export function DefineCapacityAndDevicesEmails({
         customBodyRender: (name, dataTable) => {
           function setValues(value) {
             let selectedCity = value;
-
             let deviceInfo = devices.filter(
               (item) => item.uuid === dataTable.rowData[0]
             );
@@ -242,6 +246,7 @@ export function DefineCapacityAndDevicesEmails({
       options: {
         filter: true,
         sort: true,
+        setCellHeaderProps: () => ({ style: { width: "200px" }}),
         customBodyRender: (name, dataTable) => {
           function setValuesCapacity(capacityValue) {
             let capacity = capacityValue;
@@ -351,52 +356,53 @@ export function DefineCapacityAndDevicesEmails({
         },
       },
     },
-    {
-      name: "dev_install",
-      label: "Número de Instalação",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (name, dataTable) => {
-          function setValuesInstallNumber(install_number) {
-            let dev_install = install_number;
+    // {
+    //   name: "dev_install",
+    //   label: "Número de Instalação",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //     customBodyRender: (name, dataTable) => {
+    //       function setValuesInstallNumber(install_number) {
+    //         let dev_install = install_number;
 
-            let deviceInfo = devices.filter(
-              (item) => item.uuid === dataTable.rowData[0]
-            );
+    //         let deviceInfo = devices.filter(
+    //           (item) => item.uuid === dataTable.rowData[0]
+    //         );
 
-            if (deviceInfo.length != 0) {
-              deviceInfo[0].dev_install = dev_install;
+    //         if (deviceInfo.length != 0) {
+    //           deviceInfo[0].dev_install = dev_install;
 
-              const indiceObjetoExistente = devices.findIndex(
-                (item) => item.uuid === deviceInfo[0].dev_uuid
-              );
+    //           const indiceObjetoExistente = devices.findIndex(
+    //             (item) => item.uuid === deviceInfo[0].dev_uuid
+    //           );
 
-              devices[indiceObjetoExistente] = deviceInfo[0];
-            } else {
-              let newDeviceToAdd = data.filter(
-                (item) => item.uuid === dataTable.rowData[0]
-              );
-              newDeviceToAdd[0].dev_install = dev_install;
+    //           devices[indiceObjetoExistente] = deviceInfo[0];
+    //         } else {
+    //           let newDeviceToAdd = data.filter(
+    //             (item) => item.uuid === dataTable.rowData[0]
+    //           );
+    //           newDeviceToAdd[0].dev_install = dev_install;
 
-              devices.push(newDeviceToAdd[0]);
-            }
-          }
-          return (
-            <InstallNumber
-              value={dataTable.rowData[5]}
-              setValuesInstallNumber={setValuesInstallNumber}
-            />
-          );
-        },
-      },
-    },
+    //           devices.push(newDeviceToAdd[0]);
+    //         }
+    //       }
+    //       return (
+    //         <InstallNumber
+    //           value={dataTable.rowData[5]}
+    //           setValuesInstallNumber={setValuesInstallNumber}
+    //         />
+    //       );
+    //     },
+    //   },
+    // },
     {
       name: "gen_estimated",
-      label: "Geração estimada",
+      label: "Geração estimada manual",
       options: {
         filter: true,
         sort: true,
+        setCellHeaderProps: () => ({ style: { width: "200px" }}),
         customBodyRender: (name, dataTable) => {
           function setValuesEstimatedGeneration(estimated_generation) {
             let gen_estimated = estimated_generation;
@@ -424,11 +430,25 @@ export function DefineCapacityAndDevicesEmails({
           }
           return (
             <EstimatedGeneration
-              value={dataTable.rowData[6]}
+              value={dataTable.rowData[5]}
               setValuesEstimatedGeneration={setValuesEstimatedGeneration}
             />
           );
         },
+      },
+    },
+    {
+      name: "dev_irradiation_gen_est",
+      label: "Geração estimada por irradiação geografica",
+      options: {
+        filter: true,
+        sort: true,
+        setCellHeaderProps: () => ({ style: { width: "200px" }}),
+        customBodyRender: (name, dataTable) => {
+          return(
+          <IrradiationGeneration value={dataTable.rowData[6]?.toFixed(2)} />
+          )
+        }
       },
     },
     {
