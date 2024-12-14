@@ -160,6 +160,7 @@ const Generation = () => {
   if (
     isLoadingGeneration == true &&
     isLoadingDevices == true &&
+    deviceInfo &&
     Object.keys(deviceInfo).length == 0
   ) {
     return (

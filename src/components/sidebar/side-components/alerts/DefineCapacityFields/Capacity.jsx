@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, InputAdornment } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export const Capacity = ({ value, setValuesCapacity }) => {
@@ -9,7 +9,7 @@ export const Capacity = ({ value, setValuesCapacity }) => {
   }, [value]);
 
   return (
-    <Box sx={{ width: 82, height: 40 }}>
+    <Box sx={{ width: 140, height: 40 }}>
       <TextField
         type="number"
         value={capacity}
@@ -18,6 +18,9 @@ export const Capacity = ({ value, setValuesCapacity }) => {
         onChange={(e) => {
           setCapacity(e.target.value);
           setValuesCapacity(e.target.value);
+        }}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">kWp</InputAdornment>,
         }}
       />
     </Box>

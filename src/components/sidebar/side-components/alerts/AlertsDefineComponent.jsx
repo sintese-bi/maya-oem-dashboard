@@ -90,10 +90,10 @@ export function AlertsDefineComponent({
 
   async function onSubmit(values) {
     const { percentage, frequencyName } = values;
-    //handlePatchAlertFrequency({
-    //  use_percentage: percentage,
-    //  use_date: frequencyName,
-    //});
+    handlePatchAlertFrequency({
+      use_percentage: percentage,
+      use_date: frequencyName,
+    });
 
     setSecondaryAction("DefineAlertEmail");
   }

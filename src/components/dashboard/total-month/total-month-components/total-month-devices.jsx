@@ -61,8 +61,8 @@ export default function Plants(props) {
 
   const options = {
     sortOrder: {
-      name: "capacity",
-      direction: "desc",
+      name: "perfomance",
+      direction: "asc",
     },
     filter: true,
     rowsPerPage: 10,

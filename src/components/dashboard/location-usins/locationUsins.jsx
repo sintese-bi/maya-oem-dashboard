@@ -23,7 +23,7 @@ export const LocationUsins = ({ devices }) => {
 
   useEffect(() => {
     let devicesWithLatAndLong = devices.filter(
-      (data) => data.dev_lat && data.dev_long != null
+      (data) => data.dev_lat != null && data.dev_long != null
     );
     setData(devicesWithLatAndLong);
   }, [devices]);
